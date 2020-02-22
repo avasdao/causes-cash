@@ -781,7 +781,7 @@ ul.socials-top li:hover i{
 .site-main .sideshow{
     position: relative;
     height: 674px;
-    background-image: url('../images/sideshow-img.jpg');
+    background-image: url('../images/slideshow-img.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -799,7 +799,7 @@ ul.socials-top li:hover i{
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    max-width: 570px;
+    max-width: 750px;
 }
 .sideshow-content .button a{
     font-weight: 500;

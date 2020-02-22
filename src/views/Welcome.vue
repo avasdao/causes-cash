@@ -13,102 +13,11 @@
         </div>
 
         <div id="wrapper">
-            <header id="header" class="site-header">
-                <div class="top-header clearfix">
-                    <div class="container">
-                        <ul class="socials-top">
-                            <li><a href="https://twitter.com/search?q=%23BitcoinCauses" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li><a href="https://reddit.com/r/CausesCash" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a></li>
-                            <li><a href="https://github.com/modenero/causes-cash" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
-                        </ul>
-                        <div class="phone"><em>Bring YOUR Cause to the Blockchain</em></div>
-                    </div>
-                </div>
-
-                <div class="content-header">
-                    <div class="container">
-                        <div class="site-brand">
-                            <a href="/"><img src="https://preview.thememusion.com/ideapress/images/assets/logo.png" alt=""></a>
-                        </div>
-                        <!-- .site-brand -->
-                        <div class="right-header">
-                            <nav class="main-menu">
-                                <button class="c-hamburger c-hamburger--htx"><span></span></button>
-                                <ul>
-                                    <li>
-                                        <a href="/">Home</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript://">Discover</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript://">Causes<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="javascript://">Create a campaign</a></li>
-                                            <li><a href="javascript://">Manage a campaign</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="javascript://">Contact</a></li>
-                                    <li>
-                                        <a href="javascript://">Account<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="https://preview.thememusion.com/ideapress/dashboard.html">Dashboard</a></li>
-                                            <li><a href="https://preview.thememusion.com/ideapress/profile.html">Profile</a></li>
-                                            <li><a href="https://preview.thememusion.com/ideapress/account_my_campaigns.html">My Campaigns</a></li>
-                                            <li><a href="https://preview.thememusion.com/ideapress/account_pledges_received.html">Pledges Received</a></li>
-                                            <li><a href="https://preview.thememusion.com/ideapress/account_backed_campaigns.html">Backed Campaigns</a></li>
-                                            <li><a href="https://preview.thememusion.com/ideapress/account_rewards.html">Rewards</a></li>
-                                            <li><a href="https://preview.thememusion.com/ideapress/account_payments.html">Payments</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <!-- .main-menu -->
-                            <div class="search-icon">
-                                <a href="javascript://" class="ion-ios-search-strong"></a>
-                                <div class="form-search"></div>
-                                <form action="javascript://" method="POST" id="searchForm">
-                                    <input type="text" value="" name="search" placeholder="Search..." />
-                                    <button type="submit" value=""><span class="ion-ios-search-strong"></span></button>
-                                </form>
-                            </div>
-
-                            <div class="login login-button">
-                                <a href="https://preview.thememusion.com/ideapress/login.html" class="btn-primary">Login</a>
-                            </div>
-                            <!-- .login -->
-                        </div>
-                        <!--. right-header -->
-                    </div>
-                    <!-- .container -->
-                </div>
-            </header>
-            <!-- .site-header -->
+            <Header />
 
             <main id="main" class="site-main">
-                <div class="sideshow">
-                    <div class="container">
-                        <div class="sideshow-content">
-                            <h1 class="wow fadeInUp" data-wow-delay=".1s">Bring new ideas to life, anywhere</h1>
-                            <div class="sideshow-description wow fadeInUp" data-wow-delay=".1s">Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu teus.</div>
-                            <div class="process wow fadeInUp" data-scroll-nav="1">
-                                <div class="raised"><span></span></div>
-                                <div class="process-info">
-                                    <div class="process-funded"><span>46%</span>funded</div>
-                                    <div class="process-pledged"><span>$46.000</span>pledged</div>
-                                    <div class="process-backers"><span>32</span>backers</div>
-                                    <div class="process-time"><span>21</span>days ago</div>
-                                </div>
-                            </div>
-                            <div class="button wow fadeInUp" data-wow-delay="0.1s">
-                                <a href="javascript://" class="btn-secondary">See Campaign</a>
-                                <a href="javascript://" class="btn-primary">Buy Now</a>
-                            </div>
-                        </div>
-                        <!-- .sideshow-content -->
-                    </div>
-                </div>
-                <!-- .sideshow -->
+                <Slideshow />
+
                 <div class="project-love">
                     <div class="container">
                         <h2 class="title">Projects We Love</h2>
@@ -483,7 +392,7 @@
                                 <div class="item-work">
                                     <div class="item-icon"><span>02</span><i class="fa fa-leaf" aria-hidden="true"></i></div>
                                     <div class="item-content">
-                                        <h3 class="item-title">Create a Campaigns</h3>
+                                        <h3 class="item-title">Create a NEW Cause</h3>
                                         <div class="item-desc">
                                             <p>Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues.</p>
                                         </div>
@@ -507,7 +416,7 @@
                 <!-- .how-it-work -->
                 <div class="latest campaign">
                     <div class="container">
-                        <h2 class="title">Discover Campaigns</h2>
+                        <h2 class="title">Discover Causes</h2>
                         <div class="campaign-tabs filter-theme">
                             <button class="button is-checked" data-filter=".filterinteresting">Interesting</button>
                             <button class="button" data-filter=".filtersuccessful">Successful</button>
@@ -656,7 +565,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="latest-button"><a href="javascript://" class="btn-primary">View all Campaigns</a></div>
+                        <div class="latest-button"><a href="javascript://" class="btn-primary">View all Causes</a></div>
                     </div>
                 </div>
                 <!-- .latest -->
@@ -760,10 +669,14 @@
 <script>
 /* Import components. */
 import Footer from '@/components/Footer.vue'
+import Header from '@/components/Header.vue'
+import Slideshow from '@/components/Slideshow.vue'
 
 export default {
     components: {
-        Footer
-    }
+        Footer,
+        Header,
+        Slideshow,
+    },
 }
 </script>

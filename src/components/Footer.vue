@@ -20,10 +20,10 @@
                         </div>
                     </div>
 
-                    <!-- Campaigns -->
+                    <!-- Causes -->
                     <div class="col-lg-3 col-sm-4 col-4">
                         <div class="footer-menu-item">
-                            <h3>Campaigns</h3>
+                            <h3>Causes</h3>
 
                             <ul>
                                 <li><a href="javascript://">Start Your Campaign</a></li>
@@ -135,9 +135,6 @@ import '@/compiled-icons/xrp'
 const $ = window.jQuery
 
 export default {
-    props: {
-        //
-    },
     data: () => {
         return {
             //

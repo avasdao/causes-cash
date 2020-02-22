@@ -76,10 +76,11 @@ export default {
             return numeral(this.goal).format('$0,0.00[00]')
         },
         fundedPctDisplay: function () {
-            const pct = this.pledged / this.funded
-            console.log('Funded', pct)
+            /* Calculate (funded) amount. */
+            const amount = this.pledged / this.goal
+            console.log('Funded', amount)
 
-            return numeral(pct).format('0,0.00[0000]%')
+            return numeral(amount).format('0,0.00[0000]%')
         },
         numBackersDisplay: function () {
             return numeral(this.numBackers).format('0,0')
@@ -90,10 +91,10 @@ export default {
             featuredTitle: 'A Community IFP for the future of Bitcoin Cash',
             // featuredTitle: 'A Community IFP for the\nfuture of Bitcoin Cash',
             featuredSummary: `
-            NO more in-fighting
-            NO more depending on whales
-            NO more talk of forking
-            Let's ALL time take care of OUR Core Developers and #MakeBitcoinCashAgain
+            NO more debating
+            NO more proposals
+            NO more forks
+            Let's take care of OUR Core Developers and #MakeBitcoinCashAgain
             `,
             pledged: 1.00,
             goal: 6000000.00,
@@ -171,9 +172,20 @@ export default {
     overflow: hidden;
 }
 
-@media screen and (max-width: 450px) {
+.process .process-info span {
+    margin-right: 0px !important;
+}
+.process .process-info div {
+    margin-right: 55px !important;
+}
+
+@media screen and (max-width: 767px) {
     .sideshow-description {
         display: none;
+    }
+
+    .process .process-info span {
+        margin-right: 30px !important;
     }
 }
 </style>

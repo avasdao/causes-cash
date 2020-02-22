@@ -11,7 +11,6 @@
                     <li class="mc-option" data-tab="pp3"><a href="javascript://" data-slide-index="3">Design &amp; Art</a></li>
                     <li class="mc-option" data-tab="pp4"><a href="javascript://" data-slide-index="4">Fashion</a></li>
                     <li class="mc-option" data-tab="pp5"><a href="javascript://" data-slide-index="5">Film & Video</a></li>
-                    <li class="mc-option" data-tab="pp6"><a href="javascript://" data-slide-index="6">Food</a></li>
                     <li class="mc-option" data-tab="pp7"><a href="javascript://" data-slide-index="7">Music</a></li>
                     <li class="mc-option" data-tab="pp8"><a href="javascript://" data-slide-index="8">Games</a></li>
                     <li class="mc-option" data-tab="pp9"><a href="javascript://" data-slide-index="9">Performances</a></li>
@@ -24,7 +23,6 @@
                     <div class="popular-project">
                         <div id="bitcoin-cash" class="pp-item active">
                             <svgicon class="" icon="bitcoin-cash-logo-text" width="60" height="60" :fill="false" :original="true"></svgicon>
-                            <!-- <img class="category-icon" src="https://www.bitcoincash.org/media-kit/3-bitcoin-cash-logo-ot.svg" alt=""> -->
                             <h4>29+ Bitcoin Cash Projects</h4>
                         </div>
                         <div id="pp1" class="pp-item">
@@ -74,32 +72,8 @@
 
                 <div class="col-lg-8">
                     <ul class="project-love-slider pls-col">
-                        <li>
-                            <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/project-love.jpg" alt=""></a>
-                                <div class="project-love-item-content project-love-box">
-                                    <a href="javascript://" class="category">Book</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">The Everlast Notebook</a></h3>
-                                    <div class="project-love-description">One smart, reusable notebook to last the rest of your life? That's not magic, that's the Everlast.</div>
-                                    <div class="project-love-author">
-                                        <div class="author-profile">
-                                            <a class="author-avatar" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/staff-picks-author.png" alt=""></a>by <a class="author-name" href="javascript://">Andrew Noah</a>
-                                        </div>
-                                        <div class="author-address"><span class="ion-location"></span>Melbourne, Victoria, AU</div>
-                                    </div>
-                                    <div class="process">
-                                        <div class="raised"><span></span></div>
-                                        <div class="process-info">
-                                            <div class="process-pledged"><span>$5000</span>pledged</div>
-                                            <div class="process-funded"><span>41%</span>funded</div>
-                                            <div class="process-time"><span>37</span>backers</div>
-                                            <div class="process-time"><span>23</span>days ago</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
 
+                        <BitcoinCash />
                         <Comics />
 
                         <li>
@@ -311,6 +285,7 @@
 
 <script>
 /* Import components. */
+import BitcoinCash from '@/components/StaffPicks/BitcoinCash.vue'
 import Comics from '@/components/StaffPicks/Comics.vue'
 
 /* Import icons. */
@@ -322,6 +297,7 @@ import '@/compiled-icons/bitcoin-cash-logo-text'
 
 export default {
     components: {
+        BitcoinCash,
         Comics,
     },
     data: () => {

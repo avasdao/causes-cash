@@ -11,6 +11,7 @@
                 <span class="slice"></span>
             </div>
         </div>
+
         <div id="wrapper">
             <header id="header" class="site-header">
                 <div class="top-header clearfix">
@@ -23,6 +24,7 @@
                         <div class="phone"><em>Bring YOUR Cause to the Blockchain</em></div>
                     </div>
                 </div>
+
                 <div class="content-header">
                     <div class="container">
                         <div class="site-brand">

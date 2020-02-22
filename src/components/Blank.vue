@@ -5,6 +5,9 @@
 </template>
 
 <script>
+/* Import components. */
+// import Name from '@/components/Name.vue'
+
 /* Import icons. */
 // import '@/compiled-icons/<icon-name>'
 

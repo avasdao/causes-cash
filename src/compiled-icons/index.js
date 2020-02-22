@@ -1,5 +1,7 @@
 /* eslint-disable */
 require('./bch')
+require('./bitcoin-cash-logo-text')
+require('./bitcoin-cash-logo')
 require('./btc')
 require('./dai')
 require('./eth')

@@ -81,7 +81,8 @@
                 <!-- Payment Options + Localization -->
                 <div class="footer-top">
                     <p class="payment-img">
-                        <svgicon class="coin-icon" icon="bch" width="42" height="42" :fill="false" :original="true"></svgicon>
+                        <svgicon class="coin-icon" icon="bitcoin-cash-logo" width="42" height="42" :fill="false" :original="true"></svgicon>
+                        <!-- <svgicon class="coin-icon" icon="bch" width="42" height="42" :fill="false" :original="true"></svgicon> -->
                         <svgicon class="coin-icon" icon="dai" width="36" height="36" :fill="false" :original="true"></svgicon>
                         <svgicon class="coin-icon" icon="btc" width="36" height="36" :fill="false" :original="true"></svgicon>
                         <svgicon class="coin-icon" icon="eth" width="36" height="36" :fill="false" :original="true"></svgicon>
@@ -122,7 +123,8 @@
 
 <script>
 /* Import icons. */
-import '@/compiled-icons/bch'
+// import '@/compiled-icons/bch'
+import '@/compiled-icons/bitcoin-cash-logo'
 import '@/compiled-icons/btc'
 import '@/compiled-icons/dai'
 import '@/compiled-icons/eth'

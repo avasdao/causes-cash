@@ -1,16 +1,16 @@
 # Assurance Campaign
 
-Funds are collected until goal is reach, then total is sent to receiver.
+Funds are collected until a goal is reach. Then the total of all funds collected are sent to receiver.
 
 ### Flipstarter
 
 __https://flipstarter.cash__
 
-Source: __https://gitlab.com/flipstarter/flipstarter-electron-cash__
+__Source:__ https://gitlab.com/flipstarter/flipstarter-electron-cash
 
-Announcement: __https://read.cash/@flipstarter/introducing-flipstarter-695d4d50__
+__Announcement:__ https://read.cash/@flipstarter/introducing-flipstarter-695d4d50
 
-A group of volunteers came together to create Flipstarter and move the Bitcoin Cash community one step closer to solving the problem of voluntary funding of the Bitcoin Cash commons:
+A group of volunteers came together to create Flipstarter; and move the Bitcoin Cash community one step closer to __solving these problems__ _(through voluntary funding of the Bitcoin Cash commons):_
 
 1. Can it work at the large scale we need?
 2. Can it be reliable enough to make long term plans based on it?

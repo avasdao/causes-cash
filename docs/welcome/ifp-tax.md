@@ -1,8 +1,10 @@
-# But why Shomari?
+# Is the IFP a "tax"?
 
-> __Disclaimer:__ The following is strictly an op-ed piece by: Shomari Prince (nyusternie). This is NOT going to remain part of the "official" documentation once this project is successfully "off-the-ground"; however, considering that much of this project's motivation is inspired by the IFP, it seems quite relevant at this time.
+> __Disclaimer:__ The following is strictly an op-ed piece by: __[Shomari Prince (nyusternie);](https://ash2.cash)__ and a __"temporary"__ addition to this documentation. Considering that much of this project's motivation is inspired by the, __"Is the IFP a tax?"__ debate; it seems quite relevant at this time.
 
-Sometimes a good idea takes a lot of funds and collective effort. You could ask for donations, but donors prefer to give to projects they are more certain that will get traction and proper funding. This is an example where a crowdfunding would be ideal: you set up a goal and a deadline for reaching it. If you miss your goal, the donations are returned, therefore reducing the risk for donors.
+Sometimes a good idea takes a lot of funds and collective effort. You could ask for donations, but donors prefer to give to projects they are more certain that will get traction and proper funding.
+
+This is an example where a crowdfunding would be ideal: you set up a goal and a deadline for reaching it. If you miss your goal, the donations are returned, therefore reducing the risk for donors.
 
 Since the code is open and auditable, there is no need for a centralized trusted platform and therefore the only fees everyone will pay are just the on-chain (miner) fees.
 

@@ -2,10 +2,8 @@
 
 > __TL;DR__ Every cause gets its own token; allowing contributors to manage their individual contributions and vote on __how much__ gets distributed and __how often__ it gets distributed.
 
-Decentralized Radical Investment Performance Pool (DRIPP), is a NEW system based on DAICO, the proposal originally made by Vitalik Buterin and Jason Teusch. DAICO's have NOT been used widely by the community, however, the principles do make a lot of sense for our purposes here.
+__Decentralized Radical Investment Performance Pool (DRIPP),__ is a NEW system based on DAICO. The proposal was originally made by Vitalik Buterin and Jason Teusch. DAICO's have NOT been used widely by the crypto community. However, the principles do make a lot of sense for our purposes here.
 
-> TL;DR—Contributors/investors collectively vote to maintain control over the "rate" of dispersement of funds held within the pool. At ANY point, contributors are free to withdraw ANY portion of their own contributions/investments (forfeiting their proportional voting rights).
+### How does it work?
 
-...
-
-> Please Note: In the context of Causes.cash, there will be NO (ZERO) expected return on investment (ROI); other than the growth of the BCH community, as a result of the growth in active community services.
+Sponsors will contribute to a funding pool _(specific to a single cause);_ and collectively __VOTE__ to maintain control over the __rate of dispersement__ of funds held within the pool. At __ANY__ point during the campaign, contributors are free to withdraw __ANY__ portion of their own contributions/investments _(forfeiting their proportional voting rights)._

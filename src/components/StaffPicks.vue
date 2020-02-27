@@ -15,7 +15,7 @@
                     <li class="mc-option" data-tab="pp8"><a href="javascript://" data-slide-index="8">Games</a></li>
                     <li class="mc-option" data-tab="pp9"><a href="javascript://" data-slide-index="9">Performances</a></li>
                     <li class="mc-option" data-tab="pp10"><a href="javascript://" data-slide-index="10">Publishing</a></li>
-                    <li class="cat-more"><a href="https://preview.thememusion.com/ideapress/explore_layout_one.html">More</a></li>
+                    <li class="cat-more"><a href="javascript://">More</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -66,7 +66,8 @@
                             Discover projects just for you and get great recommendations when you select your interests.
                         </p>
 
-                        <a href="javascript://" class="btn-primary">Contribute Now!</a>
+                        <router-link to="/details" class="btn btn-lg btn-primary">Contribute Now!</router-link>
+                        <!-- <a href="javascript://" class="btn-primary">Contribute Now!</a> -->
                     </div>
                 </div>
 
@@ -78,10 +79,10 @@
 
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-02.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-02.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Crafts</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">The Oreous Pillow</a></h3>
+                                    <h3><a href="javascript://">The Oreous Pillow</a></h3>
                                     <div class="project-love-description">A watch designed to be an heirloom to be passed down to the next generation.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -103,10 +104,10 @@
                         </li>
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-03.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-03.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Design & Art</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">Bring back Fun House</a></h3>
+                                    <h3><a href="javascript://">Bring back Fun House</a></h3>
                                     <div class="project-love-description">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -128,10 +129,10 @@
                         </li>
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-01.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-01.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Fashion</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">Bike as a Mobile Art Gallery</a></h3>
+                                    <h3><a href="javascript://">Bike as a Mobile Art Gallery</a></h3>
                                     <div class="project-love-description">He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -153,10 +154,10 @@
                         </li>
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-02.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-02.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Film & Video</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">Bike as a Mobile Art Gallery</a></h3>
+                                    <h3><a href="javascript://">Bike as a Mobile Art Gallery</a></h3>
                                     <div class="project-love-description">He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -178,10 +179,10 @@
                         </li>
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-01.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-01.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Music</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">Bike as a Mobile Art Gallery</a></h3>
+                                    <h3><a href="javascript://">Bike as a Mobile Art Gallery</a></h3>
                                     <div class="project-love-description">He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -203,10 +204,10 @@
                         </li>
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-02.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-02.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Games</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">Redefine Your VR Experience</a></h3>
+                                    <h3><a href="javascript://">Redefine Your VR Experience</a></h3>
                                     <div class="project-love-description">I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -228,10 +229,10 @@
                         </li>
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-03.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-03.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Performances</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">Uncompromising Ski Gear</a></h3>
+                                    <h3><a href="javascript://">Uncompromising Ski Gear</a></h3>
                                     <div class="project-love-description">The Orsden Slope Pants don't compromise delivering performance, fit, and value directly to </div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -253,10 +254,10 @@
                         </li>
                         <li>
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="https://preview.thememusion.com/ideapress/campaign_detail.html"><img src="https://preview.thememusion.com/ideapress/images/journal-01.jpg" alt=""></a>
+                                <a class="project-love-image" href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/journal-01.jpg" alt=""></a>
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category">Publishing</a>
-                                    <h3><a href="https://preview.thememusion.com/ideapress/campaign_detail.html">Bike as a Mobile Art Gallery</a></h3>
+                                    <h3><a href="javascript://">Bike as a Mobile Art Gallery</a></h3>
                                     <div class="project-love-description">He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">

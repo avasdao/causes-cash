@@ -18,6 +18,7 @@ import History from './Details/History.vue'
 import Title from './Details/Title.vue'
 
 /* Import jQuery. */
+// FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
 
 function makePages() {

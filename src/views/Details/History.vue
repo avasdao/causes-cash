@@ -254,6 +254,10 @@
                     <div class="support support-campaign">
                         <h3 class="support-campaign-title">Back this Campaign</h3>
 
+                        <p class="campaignTypeDesc">
+                            All pledges are placed into escrow to be withdrawn based on the preset terms of the DRIPP campaign.
+                        </p>
+
                         <div class="plan">
                             <a href="javascript://">
                                 <h4>Pledge $10 - $20</h4>
@@ -378,5 +382,9 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.campaignTypeDesc {
+    text-align: center;
+    color: rgba(180, 30, 30, 0.5);
+    margin-bottom: 25px;
+}
 </style>

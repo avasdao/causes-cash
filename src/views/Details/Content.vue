@@ -24,29 +24,24 @@
 					</div>
 
                     <div class="campaign-box">
-						<a href="javascript://" class="category">Crafts</a>
+						<a href="javascript://" class="category">{{category}}</a>
 
-                        <h3>The Oreous Pillow</h3>
+                        <h3>{{title}}</h3>
 
                         <div class="campaign-description">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Etiam tempor, ipsum ut mattis commodo, eros justo feugiat ante, sed tristique erat urna et nibh.
-                                Donec nec rhoncus mi, non laoreet tortor. Proin ullamcorper ipsum interdum tellus scelerisque, a ultricies urna vehicula.
-                                Mauris faucibus metus quis commodo pharetra.
-                            </p>
+                            <p>{{description}}</p>
                         </div>
 
                         <div class="campaign-author clearfix">
 							<div class="author-profile">
 								<a class="author-icon" href="javascript://">
-                                    <img src="@/assets/img/author-01.png" alt=""></a>
-                                    by <a class="author-name" href="javascript://">Andrew Noah</a>
+                                    <img :src="authorImgUrl" alt=""></a>
+                                    by <a class="author-name" href="javascript://">{{authorName}}</a>
 							</div>
 
                             <div class="author-address">
                                 <span class="ion-location"></span>
-                                Melbourne, Victoria, AU
+                                {{campaignType}}
                             </div>
 						</div>
 
@@ -87,7 +82,7 @@
 
                         <div class="share">
 							<p>
-                                Share this project
+                                Share this project <em class="text-muted">(auto affiliate links)</em>
                             </p>
 
                             <ul>
@@ -136,11 +131,34 @@ export default {
     },
     data: () => {
         return {
-            //
+            category: null,
+            title: null,
         }
     },
     methods: {
         //
+    },
+    created: function () {
+        /* Set category. */
+        this.category = 'Product Development'
+
+        /* Set title. */
+        this.title = `Nito Cash`
+
+        /* Set description. */
+        this.description = `
+Nito Cash is the most user-friendly, privacy shielding wallet for crypto newcomers.
+The Nito Cash Treasury is the first digital bank to support the nascent CashFusion protocol via a mobile wallet.
+        `
+
+        /* Set author name. */
+        this.authorName = 'Bitcoin Cash Please'
+
+        /* Set author location. */
+        this.campaignType = 'DRIPP Campaign'
+
+        /* Set author image url. */
+        this.authorImgUrl = 'https://i.imgur.com/f1kian5.png'
     },
 }
 </script>

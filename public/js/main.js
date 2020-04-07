@@ -1,5 +1,5 @@
 function  readURL(input,thumbimage) {
-   	if  (input.files && input.files[0]) { 
+   	if  (input.files && input.files[0]) {
    	var  reader = new FileReader();
     reader.onload = function (e) {
     $("#thumbimage").attr('src', e.target.result);
@@ -14,10 +14,10 @@ function  readURL(input,thumbimage) {
     $('.choicefile').css('background', '#C4C4C4');
     $('.choicefile').css('cursor', 'default');
     $(".removeimg").show();
-    $(".choicefile").hide();       
+    $(".choicefile").hide();
 }
 function  readURL1(input,thumbimage) {
-   	if  (input.files && input.files[0]) { 
+   	if  (input.files && input.files[0]) {
    	var  reader = new FileReader();
     reader.onload = function (e) {
     $("#thumbimage1").attr('src', e.target.result);
@@ -32,10 +32,10 @@ function  readURL1(input,thumbimage) {
     $('.choicefile1').css('background', '#C4C4C4');
     $('.choicefile1').css('cursor', 'default');
     $(".removeimg1").show();
-    $(".choicefile1").hide();       
+    $(".choicefile1").hide();
 }
 function  readURL2(input,thumbimage) {
-   	if  (input.files && input.files[0]) { 
+   	if  (input.files && input.files[0]) {
    	var  reader = new FileReader();
     reader.onload = function (e) {
     $("#thumbimage2").attr('src', e.target.result);
@@ -50,10 +50,10 @@ function  readURL2(input,thumbimage) {
     $('.choicefile2').css('background', '#C4C4C4');
     $('.choicefile2').css('cursor', 'default');
     $(".removeimg2").show();
-    $(".choicefile2").hide();       
+    $(".choicefile2").hide();
 }
 function  readURL3(input,thumbimage) {
-   	if  (input.files && input.files[0]) { 
+   	if  (input.files && input.files[0]) {
    	var  reader = new FileReader();
     reader.onload = function (e) {
     $("#thumbimage3").attr('src', e.target.result);
@@ -68,10 +68,10 @@ function  readURL3(input,thumbimage) {
     $('.choicefile3').css('background', '#C4C4C4');
     $('.choicefile3').css('cursor', 'default');
     $(".removeimg3").show();
-    $(".choicefile3").hide();       
+    $(".choicefile3").hide();
 }
 function  readURL4(input,thumbimage) {
-   	if  (input.files && input.files[0]) { 
+   	if  (input.files && input.files[0]) {
    	var  reader = new FileReader();
     reader.onload = function (e) {
     $("#thumbimage4").attr('src', e.target.result);
@@ -86,10 +86,10 @@ function  readURL4(input,thumbimage) {
     $('.choicefile4').css('background', '#C4C4C4');
     $('.choicefile4').css('cursor', 'default');
     $(".removeimg4").show();
-    $(".choicefile4").hide();       
+    $(".choicefile4").hide();
 }
 function  readURL5(input,thumbimage) {
-   	if  (input.files && input.files[0]) { 
+   	if  (input.files && input.files[0]) {
    	var  reader = new FileReader();
     reader.onload = function (e) {
     $("#thumbimage5").attr('src', e.target.result);
@@ -104,10 +104,10 @@ function  readURL5(input,thumbimage) {
     $('.choicefile5').css('background', '#C4C4C4');
     $('.choicefile5').css('cursor', 'default');
     $(".removeimg5").show();
-    $(".choicefile5").hide();       
+    $(".choicefile5").hide();
 }
 function  readURL6(input,thumbimage) {
-   	if  (input.files && input.files[0]) { 
+   	if  (input.files && input.files[0]) {
    	var  reader = new FileReader();
     reader.onload = function (e) {
     $("#thumbimage6").attr('src', e.target.result);
@@ -122,17 +122,17 @@ function  readURL6(input,thumbimage) {
     $('.choicefile6').css('background', '#C4C4C4');
     $('.choicefile6').css('cursor', 'default');
     $(".removeimg6").show();
-    $(".choicefile6").hide();       
+    $(".choicefile6").hide();
 }
 (function($) {
 	"use strict";
 
 	/*  [ jQuery Upload File ]
         - - - - - - - - - - - - - - - - - - - - */
-	
+
 	$(document).ready(function() {
 
-		$(".choicefile").bind('click', function  () { 
+		$(".choicefile").bind('click', function  () {
 	    	$("#uploadfile").click();
 	    });
 	   	$(".removeimg").on('click', function() {
@@ -148,7 +148,7 @@ function  readURL6(input,thumbimage) {
 	      	$(".filename").text("");
 	    });
 
-	    $(".choicefile1").bind('click', function  () { 
+	    $(".choicefile1").bind('click', function  () {
 	    	$("#uploadfile1").click();
 	    });
 	   	$(".removeimg1").on('click', function() {
@@ -164,7 +164,7 @@ function  readURL6(input,thumbimage) {
 	      	$(".filename1").text("");
 	    });
 
-	    $(".choicefile2").bind('click', function  () { 
+	    $(".choicefile2").bind('click', function  () {
 	    	$("#uploadfile2").click();
 	    });
 	   	$(".removeimg2").on('click', function() {
@@ -179,7 +179,7 @@ function  readURL6(input,thumbimage) {
 	      	$('.choicefile2').css('cursor', 'pointer');
 	      	$(".filename2").text("");
 	    });
-	    $(".choicefile3").bind('click', function  () { 
+	    $(".choicefile3").bind('click', function  () {
 	    	$("#uploadfile3").click();
 	    });
 	   	$(".removeimg3").on('click', function() {
@@ -194,7 +194,7 @@ function  readURL6(input,thumbimage) {
 	      	$('.choicefile3').css('cursor', 'pointer');
 	      	$(".filename3").text("");
 	    });
-	    $(".choicefile4").bind('click', function  () { 
+	    $(".choicefile4").bind('click', function  () {
 	    	$("#uploadfile4").click();
 	    });
 	   	$(".removeimg4").on('click', function() {
@@ -209,7 +209,7 @@ function  readURL6(input,thumbimage) {
 	      	$('.choicefile4').css('cursor', 'pointer');
 	      	$(".filename4").text("");
 	    });
-	    $(".choicefile5").bind('click', function  () { 
+	    $(".choicefile5").bind('click', function  () {
 	    	$("#uploadfile5").click();
 	    });
 	   	$(".removeimg5").on('click', function() {
@@ -224,7 +224,7 @@ function  readURL6(input,thumbimage) {
 	      	$('.choicefile5').css('cursor', 'pointer');
 	      	$(".filename5").text("");
 	    });
-	    $(".choicefile6").bind('click', function  () { 
+	    $(".choicefile6").bind('click', function  () {
 	    	$("#uploadfile6").click();
 	    });
 	   	$(".removeimg6").on('click', function() {
@@ -376,7 +376,7 @@ function  readURL6(input,thumbimage) {
 	                    'background-size': 'cover',
 	                })
 	        });
-	    };	
+	    };
 
 	    /*  [ Owl Shop ]
         - - - - - - - - - - - - - - - - - - - - */
@@ -399,7 +399,7 @@ function  readURL6(input,thumbimage) {
 	                    'background-size': 'cover',
 	                })
 	        });
-	    };	
+	    };
 
 	    /*  [ Tab Controls ]
         - - - - - - - - - - - - - - - - - - - - */
@@ -529,7 +529,7 @@ function  readURL6(input,thumbimage) {
         });
         setTimeout(function(){
         	$('.preloading').fadeOut();
-		}, 3000); 
+		}, 3000);
 		$('#start-tag').magicSuggest({
         	placeholder: '',
         	maxEntryLength: 50,
@@ -553,11 +553,11 @@ function  readURL6(input,thumbimage) {
 			$("#"+tab_id).addClass('active');
 		});
 		var toolbarOptions = [
-            ['bold'],        // toggled buttons                       
+            ['bold'],        // toggled buttons
 
             [{ 'size': [false, 'large', 'huge'] }],  // custom dropdown
-            [ 'link' ],  
-            [ 'image' ],   
+            [ 'link' ],
+            [ 'image' ],
             [ 'video' ],
             ['clean'],
         ];
@@ -623,10 +623,11 @@ function  readURL6(input,thumbimage) {
 		$("#import").bind("DOMSubtreeModified", function() {
 			$('.reward-delete').on('click', function (e){
 				e.preventDefault();
-				$(this).parent().parent().fadeOut(0);	
+				$(this).parent().parent().fadeOut(0);
 			});
 		});
 	});
+
 	$(window).on('load', function() {
 		$( '.grid' ).each( function() {
 	    	var $grid = $('.grid').isotope({

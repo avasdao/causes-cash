@@ -114,8 +114,12 @@
 
         <div class="footer-copyright">
             <div class="container">
-                <p class="copyright">&copy; 2020 by Modenero. All Rights Reserved.</p>
-                <a href="javascript:backToTop()" class="back-top">Back to top<span class="ion-android-arrow-up"></span></a>
+                <p class="copyright">
+                    &copy; 2020 by Bitcoin Cash Please. All rights reserved.
+                </p>
+
+                <a href="javascript:backToTop()" class="back-top">
+                    Back to top<span class="ion-android-arrow-up"></span></a>
             </div>
         </div>
     </footer>

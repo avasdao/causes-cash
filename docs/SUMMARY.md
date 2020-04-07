@@ -5,12 +5,13 @@
     * [0.1. Is the IFP a "tax"?](welcome/ifp-tax.md)
     * [0.2. Open source?](welcome/open-source.md)
 
-* [1. Campaigns](campaigns.md)
+* [1. Campaigns]()
 
-    * [1.1. Direct](campaigns/direct.md)
-    * [1.2. Assurance](campaigns/assurance.md)
-    * [1.3. DRIPP](campaigns/DRIPP.md)
-    * [1.4. Blind](campaigns/blind.md)
+    * [1.1. Introduction](campaigns/intro.md)
+    * [1.2. Direct](campaigns/direct.md)
+    * [1.3. Assurance](campaigns/assurance.md)
+    * [1.4. DRIPP](campaigns/DRIPP.md)
+    * [1.5. Blind](campaigns/blind.md)
 
 * [2. Contributions]()
 

@@ -62,7 +62,7 @@
                 </div>
 
                 <Discover />
-                <Journal />
+                <Articles />
 
                 <!-- .latest -->
                 <!-- .story -->
@@ -103,8 +103,8 @@
 
 <script>
 /* Import views. */
+import Articles from '@/views/Welcome/Articles.vue'
 import Discover from '@/views/Welcome/Discover.vue'
-import Journal from '@/views/Welcome/Journal.vue'
 
 /* Import components. */
 import Footer from '@/components/Footer.vue'
@@ -115,16 +115,13 @@ import StaffPicks from '@/components/StaffPicks.vue'
 /* Initialize ethers. */
 import { ethers } from 'ethers'
 
-/* Initialize Web3. */
-// const Web3 = require('web3')
-
 /* Initialize BITBOX. */
 // const bitbox = new window.BITBOX()
 
 export default {
     components: {
         Discover,
-        Journal,
+        Articles,
 
         Footer,
         Header,
@@ -280,14 +277,14 @@ export default {
     },
     created: function () {
         console.log('WEB4BCH', window.web4bch)
-        window.web4bch.bch.sign(
-            window.web4bch.bch.defaultAccount,
-            'hello world',
-            (err, res) => {
-                console.log('SIGN ERROR', err)
-                console.log('SIGN RESULT', res)
-            }
-        )
+        // window.web4bch.bch.sign(
+        //     window.web4bch.bch.defaultAccount,
+        //     'hello world',
+        //     (err, res) => {
+        //         console.log('SIGN ERROR', err)
+        //         console.log('SIGN RESULT', res)
+        //     }
+        // )
         // this.createSSPKWallet()
         // this.initEthereum()
         // this.initEthers()

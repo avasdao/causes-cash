@@ -23,6 +23,19 @@
     * [3.1. Pay It Forward](community/pay-it-forward.md)
     * [3.1. PIF Token](community/PIF.md)
 
-* [4. Appendices]()
+* [4. Bitcoin Chamber of Commerce](coc.md)
 
-    * [4.1. Liberal Radicalism](appendices/liberal-radicalism.md)
+    * [4.1. BCH Please Foundation](coc/bch-please.md)
+    * [4.1. Non-profit](coc/non-profit.md)
+
+* [5. Legal]()
+
+    * [5.1. Code of Conduct](legal/CODE_OF_CONDUCT.md)
+    * [5.2. Terms of Use]()
+    * [5.3. Privacy Notice]()
+    * [5.4. Cookie Notice]()
+
+* [6. Appendices]()
+
+    * [6.1. Liberal Radicalism](appendices/liberal-radicalism.md)
+    * [6.2. Signed Seed Private Key](appendices/sspk.md)

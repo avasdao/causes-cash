@@ -1,5 +1,7 @@
 .DS_Store
 node_modules
+/build
+/contracts
 /cryptoSVG
 /dist
 _book
@@ -22,5 +24,6 @@ yarn-error.log*
 *.sln
 *.sw?
 
+api
 NOTES
 REF

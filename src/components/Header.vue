@@ -5,16 +5,16 @@
                 <ul class="socials-top">
                     <li><a href="https://twitter.com/search?q=%23BitcoinCauses" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
                     <li><a href="https://reddit.com/r/CausesCash" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a></li>
-                    <li><a href="https://github.com/modenero/causes-cash" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                    <li><a href="https://gitlab.com/bchplease/causes.cash" target="_blank"><i class="fa fa-gitlab" aria-hidden="true"></i></a></li>
                 </ul>
-                <div class="phone"><em>Bring YOUR Cause to the Blockchain</em></div>
+                <div class="phone"><em class="text-muted">Fundraising <strong>Bitcoin Cash</strong> for the <strong>Freedom to Wealth™</strong></em></div>
             </div>
         </div>
 
         <div class="content-header">
             <div class="container">
                 <div class="site-brand">
-                    <a href="/"><img src="https://preview.thememusion.com/ideapress/images/assets/logo.png" alt=""></a>
+                    <a href="/"><img src="@/assets/logo.png" alt=""></a>
                 </div>
 
                 <div class="right-header">
@@ -133,5 +133,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.phone strong {
+    font-weight: 500;
+}
 </style>

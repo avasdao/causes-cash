@@ -33,10 +33,14 @@
                                 <img :src="campaign.coverImgUrl" alt="">
                             <!-- </div> -->
                             <div class="campaign-box">
-                                <a href="javascript://" class="category">{{campaign.category}}</a>
+                                <router-link class="category" to="/details">
+                                    {{campaign.title}}
+                                </router-link>
 
                                 <h3>
-                                    <a href="javascript://">{{campaign.title}}</a>
+                                    <router-link to="/details">
+                                        {{campaign.title}}
+                                    </router-link>
                                 </h3>
 
                                 <div class="campaign-description">
@@ -44,9 +48,10 @@
                                 </div>
 
                                 <div class="campaign-author">
-                                    <a class="author-icon" href="javascript://">
-                                        <img :src="campaign.authorImgUrl" alt=""></a>
-                                        by <a class="author-name" href="javascript://">{{campaign.authorName}}</a>
+                                    <router-link class="author-icon" to="/details">
+                                        <img :src="campaign.authorImgUrl" alt="">
+                                        by {{campaign.authorName}}
+                                    </router-link>
                                 </div>
 
                                 <div class="process">

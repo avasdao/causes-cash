@@ -7,7 +7,7 @@
                     <!-- About -->
                     <div class="col-lg-3 col-sm-4 col-4">
                         <div class="footer-menu-item">
-                            <h3>About Causes.cash</h3>
+                            <h3>About Cash Causes</h3>
                             <ul>
                                 <li><a href="javascript://">What is Startup Idea</a></li>
                                 <li><a href="javascript://">About us</a></li>
@@ -61,7 +61,7 @@
 
                             <div class="newsletter-description">Private, secure, spam-free</div>
 
-                            <form action="https://preview.thememusion.com/ideapress/s" method="POST" id="newsletterForm">
+                            <form action="javascript://" method="POST" id="newsletterForm">
                                 <input type="text" value="" name="s" placeholder="Enter your email..." />
                                 <button type="submit" value=""><span class="ion-android-drafts"></span></button>
                             </form>
@@ -71,7 +71,7 @@
                                 <ul>
                                     <li class="twitter"><a href="https://twitter.com/search?q=%23BitcoinCauses" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
                                     <li class="instagram"><a href="https://reddit.com/r/CausesCash" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a></li>
-                                    <li class="facebook"><a href="https://github.com/modenero/causes-cash" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                                    <li class="facebook"><a href="https://gitlab.com/bchplease/causes.cash" target="_blank"><i class="fa fa-gitlab" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
         <div class="footer-copyright">
             <div class="container">
                 <p class="copyright">
-                    &copy; 2020 by Bitcoin Cash Please. All rights reserved.
+                    &copy; {{curYear}} by <a href="https://bchplease.org" target="_blank">Bitcoin Cash Please.</a> All rights reserved.
                 </p>
 
                 <a href="javascript:backToTop()" class="back-top">
@@ -126,6 +126,9 @@
 </template>
 
 <script>
+/* Import modules. */
+import moment from 'moment'
+
 /* Import icons. */
 // import '@/compiled-icons/bch'
 import '@/compiled-icons/bitcoin-cash-logo'
@@ -144,6 +147,11 @@ export default {
     data: () => {
         return {
             //
+        }
+    },
+    computed: {
+        curYear() {
+            return moment().format('YYYY')
         }
     },
     methods: {
@@ -167,4 +175,9 @@ export default {
 /* svgicon {
     margin: 0 5px;
 } */
+
+.copyright a {
+    display: inline;
+    color: rgba(255, 255, 255, 0.8);
+}
 </style>

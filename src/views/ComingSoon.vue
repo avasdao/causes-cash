@@ -11,21 +11,17 @@
 
             <main id="main" class="site-main">
                 <div class="container">
-                    <h2>We're launching our</h2>
+                    <h2>Bitcoin Cash Please Is BUIDLing</h2>
 
-                    <h1>New Website</h1>
+                    <h1>A New Website</h1>
 
                     <div class="desc">
-                        Working hard for something we don't care about is called stress.
-                        Working hard for smething we love is called passion.
+                        Working hard for something you <strong>DON'T</strong> care about is called <strong>STRESS.</strong>
+                        <br />Working hard for something you <strong>LOVE</strong> is called <strong>PASSION.</strong>
                     </div>
 
                     <div class="time">
                         <ul>
-                            <!-- <li class="time-item"><span>4</span> Days</li> -->
-                            <!-- <li class="time-item"><span>4</span> Hours</li> -->
-                            <!-- <li class="time-item"><span>4</span> Mins</li> -->
-                            <!-- <li class="time-item"><span>4</span> Seconds</li> -->
                             <li><div class="time-item"><p>{{days}}</p><span>Days</span></div></li>
                             <li><div class="time-item"><p>{{hours}}</p><span>Hours</span></div></li>
                             <li><div class="time-item"><p>{{mins}}</p><span>Mins</span></div></li>
@@ -33,38 +29,12 @@
                         </ul>
                     </div>
 
-                    <div class="button button-popup">
-                        <a href="javascript://" class="btn-primary">Notify US</a>
+                    <!-- <div class="button button-popup"> -->
+                    <div class="button">
+                        <a href="/" class="btn-primary">Check Out the LIVE Preview</a>
                     </div>
-
-                    <!-- .button -->
-                    <div class="popup">
-                        <div class="newsletter-popup">
-                            <div class="popup-wrapper">
-                                <div class="form-header clearfix">
-                                    <img src="images/assets/letter.png" alt="">
-                                    <div class="form-text">
-                                        <h2>Sign Up</h2>
-                                        <div class="form-desc">
-                                            <p>Be first to know about the latest updates and get exclusive offer on our grand opening</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-content">
-                                    <form action="s" method="POST" id="newsletterpopupForm">
-                                        <input type="text" value="" name="s" placeholder="Email..." />
-                                        <button type="submit" value="Subscribe" class="btn-primary">Subscribe</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <span class="ion-close-round close"></span>
-                        </div>
-                        <!-- .newsletter-popup -->
-                    </div>
-                    <!-- .popup -->
                 </div>
             </main>
-            <!-- .site-main -->
 
             <footer id="footer" class="site-footer">
                 <div class="footer-copyright clearfix">
@@ -82,33 +52,18 @@
                     </div>
                 </div>
             </footer>
-            <!-- site-footer -->
         </div>
-        <!-- #wrapper -->
     </main>
 </template>
 
 <script>
-/* Import components. */
-// import Footer from '@/components/Footer.vue'
-// import Header from '@/components/Header.vue'
-
-// import Content from './Details/Content.vue'
-// import History from './Details/History.vue'
-// import Title from './Details/Title.vue'
-
 /* Import jQuery. */
 // FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
 
 export default {
     components: {
-        // Footer,
-        // Header,
-
-        // Content,
-        // History,
-        // Title,
+        //
     },
     data: () => {
         return {
@@ -175,7 +130,7 @@ export default {
 .coming-soon .site-header{
   height: auto;
   text-align: center;
-  padding: 100px 0;
+  padding: 50px 0;
   margin-bottom: 10px;
 }
 .coming-soon .site-header,
@@ -214,7 +169,7 @@ export default {
 }
 .coming-soon .site-main .time{
   max-width: 690px;
-  margin: 115px auto 0;
+  margin: 65px auto 0;
 }
 .coming-soon .site-main .time ul{
   margin: 0 -15px;

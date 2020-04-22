@@ -7,7 +7,7 @@
                     <li><a href="https://reddit.com/r/CausesCash" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a></li>
                     <li><a href="https://gitlab.com/bchplease/causes.cash" target="_blank"><i class="fa fa-gitlab" aria-hidden="true"></i></a></li>
                 </ul>
-                <div class="phone"><em class="text-muted">Fundraising <strong>Bitcoin Cash</strong> for the <strong>Freedom to Wealth™</strong></em></div>
+                <div class="phone"><em class="text-muted">Raising <strong>Bitcoin Cash</strong> and the <strong>Freedom to Wealth™</strong></em></div>
             </div>
         </div>
 

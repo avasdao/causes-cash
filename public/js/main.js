@@ -432,13 +432,6 @@ function  readURL6(input,thumbimage) {
 			window.location.href = url;
 		});
 
-		/*  [ Project Love Slider ]
-        - - - - - - - - - - - - - - - - - - - - */
-	 	$('.project-love-slider').bxSlider({
-		  	pagerCustom: '#bx-pager',
-		  	mode: 'vertical',
-		  	controls: false,
-		});
 	    /*  [ Search Form ]
         - - - - - - - - - - - - - - - - - - - - */
 	    $('.search-icon a').on('click', function (e){

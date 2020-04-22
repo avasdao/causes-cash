@@ -1,7 +1,7 @@
 <template>
     <div class="home">
 
-        <div class="preloading">
+        <!-- <div class="preloading">
             <div class="preloader loading">
                 <span class="slice"></span>
                 <span class="slice"></span>
@@ -10,7 +10,7 @@
                 <span class="slice"></span>
                 <span class="slice"></span>
             </div>
-        </div>
+        </div> -->
 
         <div id="wrapper">
             <Header />

@@ -146,20 +146,6 @@ export default {
 
         /* Campaign */
         this.campaigns.push({
-            id: '2e4ac230-3e24-43a0-9ce5-4c1783d6ea66',
-            category: 'Infrastructure Development',
-            title: `Bitcoin Cash Node Initiative`,
-            summary: `The primary goal of the Bitcoin Cash Node initiative is to provide a safe and professional node implementation that will neutrally follow the longest Bitcoin Cash chain without contributing to the risk of a chain split.`,
-            coverImgUrl: 'https://i.imgur.com/SClCyuv.png',
-            authorName: 'Bitcoin Cash Node',
-            authorImgUrl: 'https://i.imgur.com/WzqwbU2.png',
-            pledged: 36711.38,
-            fundedPct: 0,
-            lastUpdate: '2'
-        })
-
-        /* Campaign */
-        this.campaigns.push({
             id: '52baf5aa-5297-4dc6-9995-9deb328fcec6',
             category: 'Health & Wellness',
             title: `eatBCH`,
@@ -170,6 +156,20 @@ export default {
             pledged: 0.00,
             fundedPct: 0,
             lastUpdate: '1'
+        })
+
+        /* Campaign */
+        this.campaigns.push({
+            id: '2e4ac230-3e24-43a0-9ce5-4c1783d6ea66',
+            category: 'Infrastructure Development',
+            title: `Bitcoin Cash Node Initiative`,
+            summary: `The primary goal of the Bitcoin Cash Node initiative is to provide a safe and professional node implementation that will neutrally follow the longest Bitcoin Cash chain without contributing to the risk of a chain split.`,
+            coverImgUrl: 'https://i.imgur.com/SClCyuv.png',
+            authorName: 'Bitcoin Cash Node',
+            authorImgUrl: 'https://i.imgur.com/WzqwbU2.png',
+            pledged: 36711.38,
+            fundedPct: 0,
+            lastUpdate: '2'
         })
 
         /* Campaign */

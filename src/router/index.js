@@ -5,6 +5,7 @@ import Welcome from '../views/Welcome.vue'
 
 import ComingSoon from '../views/ComingSoon.vue'
 import Details from '../views/Details.vue'
+import FAQ from '../views/FAQ.vue'
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,9 @@ const routes = [{
 }, {
     path: '/details',
     component: Details
+}, {
+    path: '/faq',
+    component: FAQ
 }]
 
 const router = new VueRouter({

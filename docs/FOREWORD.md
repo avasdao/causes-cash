@@ -1,4 +1,8 @@
-# Is the IFP a "tax"?
+# Foreword
+
+> __Disclaimer:__ This is the opinion of Shomari Prince (nyusternie) and __DOES NOT__ represent the view of the greater Bitcoin Cash Please Foundation.
+
+### Is the IFP a "tax"?
 
 > __Disclaimer:__ The following is strictly an op-ed piece by: __[Shomari Prince (nyusternie);](https://ash2.cash)__ and a __"temporary"__ addition to this documentation. Considering that much of this project's motivation is inspired by the, __"Is the IFP a tax?"__ debate; it seems quite relevant at this time.
 

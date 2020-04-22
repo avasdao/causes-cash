@@ -43,3 +43,12 @@ Apparently the IFP is far from novel in the space of OSS and more specifically t
 4. [SustainOSS](https://sustainoss.org/)
 
 5. [Liberal Radicalism: A Flexible Design For Philanthropic Matching Funds](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3243656)
+
+### Fully Decentralized
+
+Utilizing a combination of __[Bitcoin Files Protocol (BFP)](https://bitcoinfiles.com/)__ and the __[InterPlanetary File System (IPFS)](https://ipfs.io),__ we have developed a completed decentralized, 100% transparent system for public use.
+
+After the scheduled May 15th hard-fork, BFP will be able to support approximately 10KiB files.
+
+> __NOTE:__ If you require more than the 10KiB limit for any single piece of content, then an IPFS link can be provided to the FULL content, while BFP can be used for an abbreviated version.  
+We recommend __[Piñata,](https://pinata.cloud/pricing)__ which offers up to 1GiB of FREE pinning.

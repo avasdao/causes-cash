@@ -1,7 +1,7 @@
 {
   "name": "causes.cash",
-  "version": "20.4.7",
-  "private": true,
+  "version": "20.4.22",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

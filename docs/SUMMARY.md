@@ -1,9 +1,12 @@
 # Summary
 
-* [Welcome](README.md)
+* [Welcome]()
 
-    * [0.1. Is the IFP a "tax"?](welcome/ifp-tax.md)
-    * [0.2. Open source?](welcome/open-source.md)
+    * [0.1. Readme](README.md)
+    * [0.2. Foreword](FOREWORD.md)
+    * [0.3. Changelog]()
+    * [0.4. Roadmap]()
+    * [0.5. Contributing](CONTRIBUTING.md)
 
 * [1. Campaigns]()
 

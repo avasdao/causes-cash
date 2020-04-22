@@ -12,15 +12,21 @@
                     </div>
 
                     <ul class="project-love-slider">
-                        <li>
+
+
+
+                        <li v-for="cause of causes" :key="cause.id">
                             <div class="project-love-item clearfix">
-                                <a class="project-love-image" href="campaign_detail.html">
-                                    <img src="@/assets/img/category-adoption.jpg" alt=""></a>
+                                <router-link to="/details" class="project-love-image">
+                                    <img src="@/assets/img/category-adoption.jpg" alt="">
+                                </router-link>
 
                                 <div class="project-love-item-content project-love-box">
-                                    <a href="javascript://" class="category category-link">Adoption</a>
+                                    <router-link to="/discover" class="category category-link">
+                                        {{cause.category}}
+                                    </router-link>
 
-                                    <h3><a href="campaign_detail.html">The Everlast Notebook</a></h3>
+                                    <h3><a href="campaign_detail.html">{{cause.title}}</a></h3>
                                     <div class="project-love-description">One smart, reusable notebook to last the rest of your life? That's not magic, that's the Everlast.</div>
                                     <div class="project-love-author">
                                         <div class="author-profile">
@@ -40,6 +46,10 @@
                                 </div>
                             </div>
                         </li>
+
+
+
+
                         <li>
                             <div class="project-love-item clearfix">
                                 <a class="project-love-image" href="campaign_detail.html">
@@ -401,14 +411,19 @@ export default {
     },
     data: () => {
         return {
-            //
+            causes: [],
         }
     },
     methods: {
         //
     },
     created: function () {
-        //
+        /* Add cause. */
+        this.causes.push({
+            id: '5f40508f-c083-4c3b-83bf-0e8c00641daa',
+            title: `The Everlast Notebook`,
+            category: 'Adoption',
+        })
     },
     mounted: function () {
         $('.project-love-slider').bxSlider({
@@ -417,6 +432,7 @@ export default {
             mode: 'vertical',
             controls: false,
             startSlide: 1,
+            touchEnabled : (navigator.maxTouchPoints > 0),
         })
 
     },

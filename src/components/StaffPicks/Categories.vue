@@ -15,8 +15,9 @@
                 </li>
             </ul>
 
-            <a class="all-project" href="javascript://">
-                View all projects</a>
+            <router-link to="/discover" class="all-project">
+                View all projects
+            </router-link>
         </div>
     </div>
 </template>
@@ -74,13 +75,6 @@ export default {
             title: 'Comics?'
         })
 
-        /* Crafts. */
-        this.slides.push({
-            index: index++,
-            id: 'crafts',
-            title: 'Crafts?'
-        })
-
         /* Design & Art. */
         this.slides.push({
             index: index++,
@@ -128,6 +122,13 @@ export default {
             index: index++,
             id: 'infrastructure',
             title: 'Infrastructure'
+        })
+
+        /* Privacy. */
+        this.slides.push({
+            index: index++,
+            id: 'privacy',
+            title: 'Privacy'
         })
 
         /* Publishing. */

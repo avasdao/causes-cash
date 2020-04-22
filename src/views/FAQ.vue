@@ -7,7 +7,7 @@
 				<h1>Frequently Asked Questions</h1>
 				<div class="breadcrumbs">
 					<ul>
-						<li><a href="/">Home</a><span>/</span></li>
+						<li><router-link to="/">Home</router-link><span>/</span></li>
 						<li>FAQ</li>
 					</ul>
 				</div>

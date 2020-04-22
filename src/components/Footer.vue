@@ -115,7 +115,7 @@
         <div class="footer-copyright">
             <div class="container">
                 <p class="copyright">
-                    &copy; {{curYear}} by <a href="https://bchplease.org" target="_blank">Bitcoin Cash Please.</a> All rights reserved.
+                    &copy; {{curYear}} <a href="https://bchplease.org" target="_blank">Bitcoin Cash Please.</a> All rights reserved.
                 </p>
 
                 <a href="javascript:backToTop()" class="back-top">

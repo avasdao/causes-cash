@@ -506,20 +506,6 @@ function  readURL6(input,thumbimage) {
             $(this).next().slideToggle().parent().addClass('open');
         });
 
-		/*  [ jQuery Countdown ]
-        - - - - - - - - - - - - - - - - - - - - */
-        var endDate = 'July 25, 2018';
-        $( '.time ul' ).countdown({
-            date: endDate,
-            render: function(data) {
-                $(this.el).html(
-                    '<li><div class="time-item"><p>' + this.leadingZeros(data.days, 2) + '</p><span>Days</span></div></li>'
-                    + '<li><div class="time-item"><p>' + this.leadingZeros(data.hours, 2) + '</p><span>Hours</span></div></li>'
-                    + '<li><div class="time-item"><p>' + this.leadingZeros(data.min, 2) + '</p><span>Mins</span></div></li>'
-                    + '<li><div class="time-item"><p>' + this.leadingZeros(data.sec, 2) + '</p><span>Seconds</span></div></li>'
-                );
-            }
-        });
         setTimeout(function(){
         	$('.preloading').fadeOut();
 		}, 3000);

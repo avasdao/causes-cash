@@ -71,14 +71,14 @@ export default {
         this.slides.push({
             index: index++,
             id: 'comics',
-            title: 'Comics'
+            title: 'Comics?'
         })
 
         /* Crafts. */
         this.slides.push({
             index: index++,
             id: 'crafts',
-            title: 'Crafts'
+            title: 'Crafts?'
         })
 
         /* Design & Art. */
@@ -109,18 +109,18 @@ export default {
             title: 'Food'
         })
 
+        /* Fun & Games. */
+        this.slides.push({
+            index: index++,
+            id: 'fun-games',
+            title: 'Fun & Games'
+        })
+
         /* Music. */
         this.slides.push({
             index: index++,
             id: 'music',
             title: 'Music'
-        })
-
-        /* Games. */
-        this.slides.push({
-            index: index++,
-            id: 'games',
-            title: 'Games'
         })
 
         /* Infrastructure. */
@@ -130,13 +130,6 @@ export default {
             title: 'Infrastructure'
         })
 
-        /* Performances. */
-        this.slides.push({
-            index: index++,
-            id: 'performances',
-            title: 'Performances'
-        })
-
         /* Publishing. */
         this.slides.push({
             index: index++,
@@ -144,18 +137,18 @@ export default {
             title: 'Publishing'
         })
 
+        /* Security. */
+        this.slides.push({
+            index: index++,
+            id: 'security',
+            title: 'Security'
+        })
+
         /* Technology. */
         this.slides.push({
             index: index++,
             id: 'technology',
             title: 'Technology'
-        })
-
-        /* Theater. */
-        this.slides.push({
-            index: index++,
-            id: 'theater',
-            title: 'Theater'
         })
 
     },

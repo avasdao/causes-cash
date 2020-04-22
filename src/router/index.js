@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Welcome from '../views/Welcome.vue'
 
+import ComingSoon from '../views/ComingSoon.vue'
 import Details from '../views/Details.vue'
 
 Vue.use(VueRouter)
@@ -10,6 +11,9 @@ Vue.use(VueRouter)
 const routes = [{
     path: '/',
     component: Welcome
+}, {
+    path: '/coming-soon',
+    component: ComingSoon
 }, {
     path: '/details',
     component: Details

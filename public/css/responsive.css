@@ -207,7 +207,7 @@
 		margin-bottom: 10px;
 	}
 	.staff-picks.section .staff-picks-item .staff-picks-item-content .process-info div span{
-		margin-right: 150px !important; 
+		margin-right: 150px !important;
 	}
 	.main-menu ul li i{
 		display: inline-block;
@@ -295,9 +295,6 @@
 	.order-notes{
 		margin-bottom: 30px;
 	}
-	.coming-soon .site-header{
-		background-color: initial;
-	}
 	.contact-content .entry-content,
 	.form-contact,
 	.contact-info{
@@ -375,7 +372,7 @@
 		margin-right: 30px;
 	}
 	.product-table{
-		overflow-x: auto; 
+		overflow-x: auto;
 	}
 	.product-table table{
 		width: 767px;
@@ -383,24 +380,6 @@
 	.coupon-form form input{
 		width: 100%;
 		padding: 0 145px 0 15px;
-	}
-	.coming-soon .site-header{
-		padding: 40px 0;
-	}
-	.coming-soon .site-footer .footer-copyright{
-		padding: 40px;
-	}
-	.coming-soon .site-main .time{
-		margin-top: 60px;
-	}
-	.coming-soon .site-main{
-		padding: 0;
-	}
-	.coming-soon .site-main .time .time-item p{
-		font-size: 60px;
-	}
-	.coming-soon .site-main .time .time-item span{
-		margin-top: 10px;
 	}
 	.product{
 		width: 33.33%;
@@ -609,24 +588,9 @@
 	.coupon-form .button .update-cart{
 		margin-right: 8px;
 	}
-	.coming-soon .site-main .desc{
-		width: 100%;
-	}
 	.time .col-3{
 		width: 50%;
 		margin-bottom: 30px;
-	}
-	.coming-soon .site-main .button{
-		margin-top: 20px;
-	}
-	.coming-soon .site-footer .footer-copyright p{
-		float: none;
-		margin: 0 0 15px 0;
-		text-align: center;
-	}
-	.coming-soon .site-footer .footer-copyright .follow{
-		float: none;
-		text-align: center;
 	}
 	.campaigns .campaign-content .col-6{
 		width: 100%;
@@ -647,10 +611,6 @@
 		position: relative;
 		width: 100%;
 		margin-top: 20px;
-	}
-	.coming-soon .site-main .time li{
-		width: 50%;
-		margin-bottom: 30px;
 	}
 	.project-love .col-9,
 	.project-love .col-3{
@@ -911,11 +871,10 @@
 		top: 60px;
 	}
 	.statics-content .statics-item h3,
-	.page-title h1,
-	.coming-soon .site-main h2{
+	.page-title h1{
 		font-size: 18px;
 	}
-	.title,.coming-soon .site-main h1{
+	.title{
 		font-size: 24px;
 	}
 	.entry-content ul.list,
@@ -946,14 +905,6 @@
 	}
 	.calculate-shipping .field .align-left{
 		margin-bottom: 20px;
-	}
-	.coming-soon .site-main .time .time-item p{
-		font-size: 40px;
-		display: inline-block;
-		line-height: 100px;
-	}
-	.coming-soon .site-main .time .time-item span{
-		margin-top: 0;
 	}
 	ul.menu-category li{
 		width: 50%;

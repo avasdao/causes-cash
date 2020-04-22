@@ -15,13 +15,10 @@
                         <li>
                             <div class="project-love-item clearfix">
                                 <a class="project-love-image" href="campaign_detail.html">
-                                    <img src="https://i.imgur.com/ywCCMxq.png" alt=""></a>
+                                    <img src="@/assets/img/category-adoption.jpg" alt=""></a>
 
                                 <div class="project-love-item-content project-love-box">
-                                    <!-- <a href="javascript://" class="category">Book</a> -->
-
-                                    <a href="javascript://" class="category category-btn">
-                                        <svgicon class="" icon="bitcoin-cash-logo-text" width="60" height="60" :fill="false" :original="true"></svgicon></a>
+                                    <a href="javascript://" class="category category-link">Adoption</a>
 
                                     <h3><a href="campaign_detail.html">The Everlast Notebook</a></h3>
                                     <div class="project-love-description">One smart, reusable notebook to last the rest of your life? That's not magic, that's the Everlast.</div>
@@ -46,7 +43,7 @@
                         <li>
                             <div class="project-love-item clearfix">
                                 <a class="project-love-image" href="campaign_detail.html">
-                                    <img src="https://i.imgur.com/Zbmo9XF.png" alt=""></a>
+                                    <img src="@/assets/img/category-bitcoin-cash.jpg" alt=""></a>
 
                                 <div class="project-love-item-content project-love-box">
                                     <a href="javascript://" class="category category-btn">
@@ -427,10 +424,7 @@ export default {
 </script>
 
 <style scoped>
-.category-btn {
+.category-btn, .category-link {
     float: right;
-    /* margin-top: -10px; */
-    /* width: 60px; */
-    /* height: 60px; */
 }
 </style>

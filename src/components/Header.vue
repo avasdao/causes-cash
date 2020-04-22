@@ -14,7 +14,7 @@
         <div class="content-header">
             <div class="container">
                 <div class="site-brand">
-                    <a href="/"><img src="@/assets/logo.png" alt=""></a>
+                    <router-link to="/" exact><img src="@/assets/logo.png" alt=""></router-link>
                 </div>
 
                 <div class="right-header">
@@ -22,29 +22,66 @@
                         <button class="c-hamburger c-hamburger--htx"><span></span></button>
                         <ul>
                             <li>
-                                <a href="/">Home</a>
+                                <router-link to="/" exact>Home</router-link>
                             </li>
+
                             <li>
-                                <a href="javascript://">Discover</a>
+                                <router-link to="/discover">Discover</router-link>
                             </li>
+
                             <li>
-                                <a href="javascript://">Causes<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                <a href="javascript://">
+                                    Causes<i class="fa fa-caret-down" aria-hidden="true"></i>
+                                </a>
+
                                 <ul class="sub-menu">
-                                    <li><a href="javascript://">Create a campaign</a></li>
-                                    <li><a href="javascript://">Manage a campaign</a></li>
+                                    <li>
+                                        <router-link to="/create">Create a cause</router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link to="/manage">Manage a cause</router-link>
+                                    </li>
                                 </ul>
                             </li>
-                            <li><a href="javascript://">Contact</a></li>
+
                             <li>
-                                <a href="javascript://">Account<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                <router-link to="/contact">Contact</router-link>
+                            </li>
+
+                            <li>
+                                <a href="javascript://">
+                                    Account<i class="fa fa-caret-down" aria-hidden="true"></i>
+                                </a>
+
                                 <ul class="sub-menu">
-                                    <li><router-link to="/account/dashboard">Dashboard</router-link></li>
-                                    <li><router-link to="/account/profile">My Profile</router-link></li>
-                                    <li><router-link to="/account/causes">My Causes</router-link></li>
-                                    <li><router-link to="/account/backing">Backed Causes</router-link></li>
-                                    <li><router-link to="/account/received">Pledges Received</router-link></li>
-                                    <li><router-link to="/account/rewards">Rewards</router-link></li>
-                                    <li><router-link to="/account/payments">Payments</router-link></li>
+                                    <li>
+                                        <router-link to="/account/dashboard">Dashboard</router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link to="/account/profile">My Profile</router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link to="/account/causes">My Causes</router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link to="/account/backing">Backed Causes</router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link to="/account/received">Pledges Received</router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link to="/account/rewards">Rewards</router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link to="/account/payments">Payments</router-link>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -57,7 +94,10 @@
 
                         <form action="javascript://" method="POST" id="searchForm">
                             <input type="text" value="" name="search" placeholder="Search..." />
-                            <button type="submit" value=""><span class="ion-ios-search-strong"></span></button>
+
+                            <button type="submit" value="">
+                                <span class="ion-ios-search-strong"></span>
+                            </button>
                         </form>
                     </div>
 
@@ -85,6 +125,7 @@ export default {
     },
     methods: {
         async signIn() {
+            alert('This feature is currently unavailable.')
             // const web3 = new Web3(window.ethereum)
             // const address = await web3.eth.getCoinbase()
             // web3.eth.sign('0x74657374206d657373616765', address)

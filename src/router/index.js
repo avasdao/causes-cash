@@ -15,10 +15,14 @@ import AccountRewards from '../views/Account/Rewards.vue'
 /* Causes. */
 import CauseCreate from '../views/Cause/Create.vue'
 import CauseDetails from '../views/Cause/Details.vue'
+import CauseDiscover from '../views/Cause/Discover.vue'
 import CauseManage from '../views/Cause/Manage.vue'
 
 /* Coming soon. */
 import ComingSoon from '../views/ComingSoon.vue'
+
+/* Contact. */
+import Contact from '../views/Contact.vue'
 
 /* FAQ. */
 import FAQ from '../views/FAQ.vue'
@@ -65,6 +69,9 @@ const routes = [{
     path: '/details',
     component: CauseDetails
 }, {
+    path: '/discover',
+    component: CauseDiscover
+}, {
     // TODO: Create alias for UUID at root.
     //       eg. https://causes.cash/ffcf25d3-103e-406d-8551-007d8680bb0e/manage
     path: '/manage',
@@ -74,6 +81,11 @@ const routes = [{
     /* Coming soon. */
     path: '/coming-soon',
     component: ComingSoon
+}, {
+
+    /* Contact. */
+    path: '/contact',
+    component: Contact
 }, {
 
     /* FAQ. */

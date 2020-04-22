@@ -4,8 +4,8 @@
             <ul>
                 <li :class="{active: tab === 'dashboard'}"><router-link to="/account/dashboard">Dashboard</router-link></li>
                 <li :class="{active: tab === 'profile'}"><router-link to="/account/profile">My Profile</router-link></li>
-                <li :class="{active: tab === 'campaigns'}"><router-link to="/account/campaigns">My Campaigns</router-link></li>
-                <li :class="{active: tab === 'backing'}"><router-link to="/account/backing">Backed Campaigns</router-link></li>
+                <li :class="{active: tab === 'causes'}"><router-link to="/account/causes">My Causes</router-link></li>
+                <li :class="{active: tab === 'backing'}"><router-link to="/account/backing">Backed Causes</router-link></li>
                 <li :class="{active: tab === 'received'}"><router-link to="/account/received">Pledges Received</router-link></li>
                 <li :class="{active: tab === 'rewards'}"><router-link to="/account/rewards">Rewards</router-link></li>
                 <li :class="{active: tab === 'payments'}"><router-link to="/account/payments">Payments</router-link></li>

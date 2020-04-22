@@ -14,7 +14,7 @@
 			</div>
 		</div>
 
-        <div class="account-wrapper">
+        <section>
 			<div class="container">
 				<div class="row">
                     <Sidenav tab="rewards" />
@@ -68,8 +68,8 @@
 						</div>
 					</div>
 				</div>
-			</div><!-- .container -->
-		</div><!-- .account-content -->
+			</div>
+		</section>
 
         <Footer />
     </main>
@@ -97,7 +97,5 @@ export default {
 </script>
 
 <style scoped>
-.faq-content {
-    margin-bottom: 100px;
-}
+/*  */
 </style>

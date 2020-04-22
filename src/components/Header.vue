@@ -38,13 +38,13 @@
                             <li>
                                 <a href="javascript://">Account<i class="fa fa-caret-down" aria-hidden="true"></i></a>
                                 <ul class="sub-menu">
-                                    <li><a href="javascript://">Dashboard</a></li>
-                                    <li><a href="javascript://">Profile</a></li>
-                                    <li><a href="javascript://">My Causes</a></li>
-                                    <li><a href="javascript://">Pledges Received</a></li>
-                                    <li><a href="javascript://">Backed Causes</a></li>
-                                    <li><a href="javascript://">Rewards</a></li>
-                                    <li><a href="javascript://">Payments</a></li>
+                                    <li><router-link to="/account/dashboard">Dashboard</router-link></li>
+                                    <li><router-link to="/account/profile">My Profile</router-link></li>
+                                    <li><router-link to="/account/causes">My Causes</router-link></li>
+                                    <li><router-link to="/account/backing">Backed Causes</router-link></li>
+                                    <li><router-link to="/account/received">Pledges Received</router-link></li>
+                                    <li><router-link to="/account/rewards">Rewards</router-link></li>
+                                    <li><router-link to="/account/payments">Payments</router-link></li>
                                 </ul>
                             </li>
                         </ul>

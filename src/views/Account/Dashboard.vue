@@ -14,7 +14,7 @@
 			</div>
 		</div>
 
-		<div class="account-wrapper">
+		<section>
 			<div class="container">
 				<div class="row">
                     <Sidenav tab="dashboard" />
@@ -34,7 +34,7 @@
 									</div>
 								</div>
 								<div class="dashboard-latest">
-									<h3>My Latest Campaigns</h3>
+									<h3>My Latest Cause</h3>
 									<ul>
 										<li>
 											<a href="javascript://"><img src="@/assets/img/my-campaigns-01.jpg" alt=""></a>
@@ -60,8 +60,8 @@
 						</div>
 					</div>
 				</div>
-			</div><!-- .container -->
-		</div><!-- .account-content -->
+			</div>
+		</section>
 
         <Footer />
     </main>
@@ -89,7 +89,5 @@ export default {
 </script>
 
 <style scoped>
-.faq-content {
-    margin-bottom: 100px;
-}
+/*  */
 </style>

@@ -26,9 +26,9 @@
                             <h3>Causes</h3>
 
                             <ul>
-                                <li><a href="javascript://">Start Your Campaign</a></li>
-                                <li><a href="javascript://">Pricing Campaign</a></li>
-                                <li><a href="javascript://">Campaign Support</a></li>
+                                <li><a href="javascript://">Start Your Cause</a></li>
+                                <li><a href="javascript://">Pricing Cause</a></li>
+                                <li><a href="javascript://">Cause Support</a></li>
                                 <li><a href="javascript://">Trust &amp; Safety</a></li>
                                 <li><a href="javascript://">Support</a></li>
                                 <li><a href="javascript://">Terms of Use</a></li>

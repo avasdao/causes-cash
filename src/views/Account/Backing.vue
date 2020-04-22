@@ -4,24 +4,24 @@
 
         <div class="page-title background-page">
 			<div class="container">
-				<h1>Backed Campaigns</h1>
+				<h1>Backed Causes</h1>
 				<div class="breadcrumbs">
 					<ul>
 						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>Backed Campaigns</li>
+						<li>Backed Causes</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 
-        <div class="account-wrapper">
+        <section>
 			<div class="container">
 				<div class="row">
                     <Sidenav tab="backing" />
 
 					<div class="col-lg-9">
 						<div class="account-content backed-campaigns account-table">
-							<h3 class="account-title">Backed Campaigns</h3>
+							<h3 class="account-title">Backed Causes</h3>
 							<div class="account-main">
 								<table>
 									<thead>
@@ -68,8 +68,8 @@
 						</div>
 					</div>
 				</div>
-			</div><!-- .container -->
-		</div><!-- .account-content -->
+			</div>
+		</section>
 
         <Footer />
     </main>
@@ -97,7 +97,5 @@ export default {
 </script>
 
 <style scoped>
-.faq-content {
-    margin-bottom: 100px;
-}
+/*  */
 </style>

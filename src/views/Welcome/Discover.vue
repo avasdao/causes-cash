@@ -25,32 +25,32 @@
                 <div class="row">
 
                     <div
-                        v-for="campaign of campaigns"
-                        :key="campaign.id"
+                        v-for="cause of causes"
+                        :key="cause.id"
                         class="col-lg-4 col-md-6 col-sm-6 col-6 filterinteresting filterpopular filterlatest">
                         <div class="campaign-item">
                             <!-- <div class="overlay" href="javascript://"> -->
-                                <img :src="campaign.coverImgUrl" alt="">
+                                <img :src="cause.coverImgUrl" alt="">
                             <!-- </div> -->
                             <div class="campaign-box">
                                 <router-link class="category" to="/details">
-                                    {{campaign.title}}
+                                    {{cause.title}}
                                 </router-link>
 
                                 <h3>
                                     <router-link to="/details">
-                                        {{campaign.title}}
+                                        {{cause.title}}
                                     </router-link>
                                 </h3>
 
                                 <div class="campaign-description">
-                                    {{campaign.summary}}
+                                    {{cause.summary}}
                                 </div>
 
                                 <div class="campaign-author">
                                     <router-link class="author-icon" to="/details">
-                                        <img :src="campaign.authorImgUrl" alt="">
-                                        by {{campaign.authorName}}
+                                        <img :src="cause.authorImgUrl" alt="">
+                                        by {{cause.authorName}}
                                     </router-link>
                                 </div>
 
@@ -61,15 +61,15 @@
 
                                     <div class="process-info">
                                         <div class="process-pledged">
-                                            <span>{{formatAmount(campaign.pledged)}}</span>pledged
+                                            <span>{{formatAmount(cause.pledged)}}</span>pledged
                                         </div>
 
                                         <div class="process-funded">
-                                            <span>{{formatFunded(campaign.fundedPct)}}</span>funded
+                                            <span>{{formatFunded(cause.fundedPct)}}</span>funded
                                         </div>
 
                                         <div class="process-time">
-                                            <span>{{campaign.lastUpdate}}</span>days ago
+                                            <span>{{cause.lastUpdate}}</span>days ago
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@ export default {
     },
     data: () => {
         return {
-            campaigns: [],
+            causes: [],
         }
     },
     computed: {
@@ -130,8 +130,8 @@ export default {
         },
     },
     created: function () {
-        /* Campaign */
-        this.campaigns.push({
+        /* Cause */
+        this.causes.push({
             id: '91c22c50-f2a4-470a-9679-452240c032cf',
             category: 'Infrastructure Development',
             title: `Bitcoin Cash Protocol Development Fundraiser`,
@@ -144,8 +144,8 @@ export default {
             lastUpdate: '2'
         })
 
-        /* Campaign */
-        this.campaigns.push({
+        /* Cause */
+        this.causes.push({
             id: '52baf5aa-5297-4dc6-9995-9deb328fcec6',
             category: 'Health & Wellness',
             title: `eatBCH`,
@@ -158,8 +158,8 @@ export default {
             lastUpdate: '1'
         })
 
-        /* Campaign */
-        this.campaigns.push({
+        /* Cause */
+        this.causes.push({
             id: '2e4ac230-3e24-43a0-9ce5-4c1783d6ea66',
             category: 'Infrastructure Development',
             title: `Bitcoin Cash Node Initiative`,
@@ -172,8 +172,8 @@ export default {
             lastUpdate: '2'
         })
 
-        /* Campaign */
-        this.campaigns.push({
+        /* Cause */
+        this.causes.push({
             id: '8b0b0f38-df9f-498b-bbbb-e9830763afb9',
             category: 'Our Community',
             title: `Pay It Forward`,
@@ -186,8 +186,8 @@ export default {
             lastUpdate: '1'
         })
 
-        /* Campaign */
-        this.campaigns.push({
+        /* Cause */
+        this.causes.push({
             id: 'e584e3d9-2fa3-4c41-b4ac-1a7cc42bf7b1',
             category: 'Product Development',
             title: `Nito Cash`,
@@ -200,8 +200,8 @@ export default {
             lastUpdate: '1'
         })
 
-        /* Campaign */
-        this.campaigns.push({
+        /* Cause */
+        this.causes.push({
             id: '32988e8e-dd6a-4bd1-99cb-afc19be326e4',
             category: 'Business & Commerce',
             title: `Pioneer Cash`,

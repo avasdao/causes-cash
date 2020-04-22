@@ -5,15 +5,22 @@ import Welcome from '../views/Welcome.vue'
 
 /* Account. */
 import AccountBacking from '../views/Account/Backing.vue'
-import AccountCampaigns from '../views/Account/Campaigns.vue'
+import AccountCauses from '../views/Account/Causes.vue'
 import AccountDashboard from '../views/Account/Dashboard.vue'
 import AccountPayments from '../views/Account/Payments.vue'
 import AccountProfile from '../views/Account/Profile.vue'
 import AccountReceived from '../views/Account/Received.vue'
 import AccountRewards from '../views/Account/Rewards.vue'
 
+/* Causes. */
+import CauseCreate from '../views/Cause/Create.vue'
+import CauseDetails from '../views/Cause/Details.vue'
+import CauseManage from '../views/Cause/Manage.vue'
+
+/* Coming soon. */
 import ComingSoon from '../views/ComingSoon.vue'
-import Details from '../views/Details.vue'
+
+/* FAQ. */
 import FAQ from '../views/FAQ.vue'
 
 Vue.use(VueRouter)
@@ -22,11 +29,13 @@ const routes = [{
     path: '/',
     component: Welcome
 }, {
+
+    /* Account. */
     path: '/account/backing',
     component: AccountBacking
 }, {
-    path: '/account/campaigns',
-    component: AccountCampaigns
+    path: '/account/causes',
+    component: AccountCauses
 }, {
     path: '/account/dashboard',
     component: AccountDashboard
@@ -43,12 +52,31 @@ const routes = [{
     path: '/account/rewards',
     component: AccountRewards
 }, {
+    path: '/account/rewards',
+    component: AccountRewards
+}, {
+
+    /* Causes. */
+    path: '/create',
+    component: CauseCreate
+}, {
+    // TODO: Create alias for UUID at root.
+    //       eg. https://causes.cash/ffcf25d3-103e-406d-8551-007d8680bb0e
+    path: '/details',
+    component: CauseDetails
+}, {
+    // TODO: Create alias for UUID at root.
+    //       eg. https://causes.cash/ffcf25d3-103e-406d-8551-007d8680bb0e/manage
+    path: '/manage',
+    component: CauseManage
+}, {
+
+    /* Coming soon. */
     path: '/coming-soon',
     component: ComingSoon
 }, {
-    path: '/details',
-    component: Details
-}, {
+
+    /* FAQ. */
     path: '/faq',
     component: FAQ
 }]

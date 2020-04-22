@@ -41,7 +41,7 @@
         <div class="button">
             <form action="javascript://" id="priceForm" class="campaign-price quantity">
                 <input type="number" value="1" min="0" name="s" placeholder="">
-                <button class="btn-primary" type="submit">Back this Campaign</button>
+                <button class="btn-primary" type="submit">Back this Cause</button>
             </form>
 
             <a href="javascript://" class="btn-secondary">

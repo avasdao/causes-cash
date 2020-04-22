@@ -3,5 +3,7 @@
 </template>
 
 <style>
-/*  */
+section .container {
+    margin-bottom: 100px;
+}
 </style>

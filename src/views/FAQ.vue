@@ -14,7 +14,7 @@
 			</div>
 		</div>
 
-        <div class="faq-content">
+        <section>
 			<div class="container">
 				<div class="faq-section">
 					<div class="border-title">
@@ -162,7 +162,7 @@
 					</ul>
 				</div>
 			</div>
-		</div>
+		</section>
 
         <Footer />
     </main>
@@ -185,7 +185,5 @@ export default {
 </script>
 
 <style scoped>
-.faq-content {
-    margin-bottom: 100px;
-}
+/*  */
 </style>

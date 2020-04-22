@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="button wow fadeInUp" data-wow-delay="0.1s">
-                    <a href="javascript://" class="btn-secondary">View Campaign Details</a>
+                    <a href="javascript://" class="btn-secondary">View Cause Details</a>
                     <a href="javascript://" class="btn-primary">Contribute Now!</a>
                 </div>
             </div>

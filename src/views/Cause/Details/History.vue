@@ -7,7 +7,7 @@
                     <div class="campaign-tabs">
                         <ul class="tabs-controls">
                             <li class="active" data-tab="campaign">
-                                <a href="javascript://">Campaign Story</a>
+                                <a href="javascript://">Cause Story</a>
                             </li>
 
                             <li data-tab="backer">
@@ -252,7 +252,7 @@
 
                 <div class="col-lg-4">
                     <div class="support support-campaign">
-                        <h3 class="support-campaign-title">Back this Campaign</h3>
+                        <h3 class="support-campaign-title">Back this Cause</h3>
 
                         <p class="campaignTypeDesc">
                             All pledges are placed into escrow to be withdrawn based on the preset terms of the DRIPP campaign.

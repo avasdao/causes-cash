@@ -73,7 +73,7 @@
 
                                         <div class="staff-picks-author">
                                             <div class="author-profile">
-                                                <a class="author-avatar" href="javascript://"><img src="@/assets/img/staff-picks-author.png" alt=""></a>by <a class="author-name" href="javascript://">Andrew Noah</a>
+                                                <a class="author-avatar" href="javascript://"><img src="@/assets/img/author-01.png" alt=""></a>by <a class="author-name" href="javascript://">Andrew Noah</a>
                                             </div>
 
                                             <div class="author-address">

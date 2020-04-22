@@ -16,7 +16,7 @@
             </ul>
 
             <router-link to="/discover" class="all-project">
-                View all projects
+                View All Causes
             </router-link>
         </div>
     </div>
@@ -48,7 +48,7 @@ export default {
     },
     created: function () {
         /* Initialize active slide. */
-        this.activeSlide = 'bitcoin-cash'
+        this.activeSlide = 'infrastructure'
 
         /* Initialize index. */
         // FOR DEVELOPMENT PURPOSES ONLY
@@ -61,18 +61,18 @@ export default {
             title: 'Adoption'
         })
 
-        /* Bitcoin Cash. */
+        /* Community. */
         this.slides.push({
             index: index++,
-            id: 'bitcoin-cash',
-            title: 'Bitcoin Cash'
+            id: 'community',
+            title: 'Community'
         })
 
-        /* Comics. */
+        /* DApps. */
         this.slides.push({
             index: index++,
-            id: 'comics',
-            title: 'Comics?'
+            id: 'dapps',
+            title: 'DApps'
         })
 
         /* Design & Art. */
@@ -82,25 +82,11 @@ export default {
             title: 'Design & Art'
         })
 
-        /* Fashion. */
-        this.slides.push({
-            index: index++,
-            id: 'fasion',
-            title: 'Fashion'
-        })
-
         /* Film & Video. */
         this.slides.push({
             index: index++,
             id: 'film-video',
             title: 'Film & Video'
-        })
-
-        /* Food. */
-        this.slides.push({
-            index: index++,
-            id: 'food',
-            title: 'Food'
         })
 
         /* Fun & Games. */
@@ -110,11 +96,18 @@ export default {
             title: 'Fun & Games'
         })
 
-        /* Music. */
+        /* Hardware. */
         this.slides.push({
             index: index++,
-            id: 'music',
-            title: 'Music'
+            id: 'hardware',
+            title: 'Hardware'
+        })
+
+        /* Health. */
+        this.slides.push({
+            index: index++,
+            id: 'health',
+            title: 'Health'
         })
 
         /* Infrastructure. */
@@ -122,6 +115,13 @@ export default {
             index: index++,
             id: 'infrastructure',
             title: 'Infrastructure'
+        })
+
+        /* Music. */
+        this.slides.push({
+            index: index++,
+            id: 'music',
+            title: 'Music'
         })
 
         /* Privacy. */
@@ -145,11 +145,18 @@ export default {
             title: 'Security'
         })
 
-        /* Technology. */
+        /* Software. */
         this.slides.push({
             index: index++,
-            id: 'technology',
-            title: 'Technology'
+            id: 'software',
+            title: 'Software'
+        })
+
+        /* World. */
+        this.slides.push({
+            index: index++,
+            id: 'world',
+            title: 'World'
         })
 
     },

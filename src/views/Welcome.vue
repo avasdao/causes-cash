@@ -17,7 +17,7 @@
 
             <main id="main" class="site-main">
                 <Slideshow />
-                <StaffPicks />
+                <PIF />
 
                 <div class="how-it-work">
                     <div class="container">
@@ -109,8 +109,8 @@ import Discover from '@/views/Welcome/Discover.vue'
 /* Import components. */
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
+import PIF from '@/components/PIF.vue'
 import Slideshow from '@/components/Slideshow.vue'
-import StaffPicks from '@/components/StaffPicks.vue'
 
 /* Initialize ethers. */
 import { ethers } from 'ethers'
@@ -125,8 +125,8 @@ export default {
 
         Footer,
         Header,
+        PIF,
         Slideshow,
-        StaffPicks,
     },
     methods: {
         async initEthers () {

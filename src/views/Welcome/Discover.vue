@@ -4,11 +4,11 @@
             <h2 class="title">Discover Causes</h2>
 
             <div class="campaign-tabs filter-theme">
-                <button class="button is-checked" data-filter=".filterinteresting">
+                <button class="button" data-filter=".filterinteresting">
                     Ending Soon
                 </button>
 
-                <button class="button" data-filter=".filterpopular">
+                <button class="button is-checked" data-filter=".filterpopular">
                     Popular
                 </button>
 
@@ -79,7 +79,11 @@
 
                 </div>
             </div>
-            <div class="latest-button"><a href="javascript://" class="btn-primary">View all Causes</a></div>
+            <div class="latest-button">
+                <router-link to="/discover" class="btn-primary">
+                    Discover More Causes
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -192,7 +196,7 @@ export default {
             category: 'Product Development',
             title: `Nito Cash`,
             summary: `Nito.cash is the most user-friendly, privacy shielding wallet for crypto newcomers.`,
-            coverImgUrl: 'https://i.imgur.com/ilXSAlp.jpg',
+            coverImgUrl: 'https://i.imgur.com/oj1uOCA.png',
             authorName: 'Bitcoin Cash Please',
             authorImgUrl: 'https://i.imgur.com/f1kian5.png',
             pledged: 0.00,

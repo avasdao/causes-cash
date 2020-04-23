@@ -15,9 +15,25 @@
                 </li>
             </ul>
 
-            <router-link to="/discover" class="all-project">
+            <!-- <ul id="bx-pager" class="menu-category">
+                <li>
+                    <a
+                        href="javascript://"
+                        @click="openCategories"
+                    >Show all</a>
+                </li>
+            </ul> -->
+
+            <!-- <router-link to="/discover" class="all-project">
                 View All Causes
-            </router-link>
+            </router-link> -->
+            <a
+                href="javascript://"
+                onClick="openCategories"
+                class="all-project text-danger"
+            >
+                More categories
+            </a>
         </div>
     </div>
 </template>
@@ -44,7 +60,12 @@ export default {
          */
         setActive(_slideId) {
             this.activeSlide = _slideId
-        }
+        },
+
+        openCategories() {
+            alert('opening all categories')
+        },
+
     },
     created: function () {
         /* Initialize active slide. */
@@ -76,10 +97,17 @@ export default {
         })
 
         /* Design & Art. */
+        // this.slides.push({
+        //     index: index++,
+        //     id: 'design-art',
+        //     title: 'Design & Art'
+        // })
+
+        /* Education. */
         this.slides.push({
             index: index++,
-            id: 'design-art',
-            title: 'Design & Art'
+            id: 'education',
+            title: 'Education'
         })
 
         /* Film & Video. */
@@ -118,11 +146,11 @@ export default {
         })
 
         /* Music. */
-        this.slides.push({
-            index: index++,
-            id: 'music',
-            title: 'Music'
-        })
+        // this.slides.push({
+        //     index: index++,
+        //     id: 'music',
+        //     title: 'Music'
+        // })
 
         /* Privacy. */
         this.slides.push({
@@ -152,11 +180,18 @@ export default {
             title: 'Software'
         })
 
-        /* World. */
+        /* World View. */
         this.slides.push({
             index: index++,
-            id: 'world',
-            title: 'World'
+            id: 'world-view',
+            title: 'World View'
+        })
+
+        /* Youth. */
+        this.slides.push({
+            index: index++,
+            id: 'youth',
+            title: 'Youth'
         })
 
     },

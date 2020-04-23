@@ -1216,7 +1216,8 @@ ul.menu-category li.active:after{
 .project-love .tab-menu a.all-project{
     position: absolute;
     top: 10px;
-    left: -125px;
+    /* left: -125px; */
+    left: -135px;
     font-weight: 500;
 }
 .project-love .project-love-title{

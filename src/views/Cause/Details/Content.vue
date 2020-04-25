@@ -1,7 +1,6 @@
 <template>
     <div class="campaign-content">
 		<div class="container">
-
 			<div class="">
 			<!-- <div class="campaign"> -->
 
@@ -142,17 +141,57 @@ export default {
         /* Set category. */
         this.category = 'Product Development'
 
+        /* Set cause. */
+        const cause = this.$route.params.cause
+
+        /* Initialize cause id. */
+        let causeId = null
+
+        /* Initialize referrer id. */
+        let referrerId = null
+
+        /* Validate cause. */
+        if (cause && cause.lastIndexOf('-') !== -1) {
+            /* Set cause id. */
+            causeId = cause.slice(0, cause.lastIndexOf('-'))
+
+            /* Set referrer id. */
+            referrerId = cause.slice(cause.lastIndexOf('-') + 1)
+        }
+
         /* Set title. */
-        this.title = `Nito Cash`
+        switch(cause.toLowerCase()) {
+        case '':
+            this.title = `Nito Cash`
+            break
+        default:
+            this.title = `Unknown Cause`
+        }
+
+        this.title = `[${causeId}] ... [${referrerId}]`
 
         /* Set description. */
         this.description = `
 Nito Cash is the most user-friendly, privacy shielding wallet for crypto newcomers.
 The Nito Cash Treasury is the first digital bank to support the nascent CashFusion protocol via a mobile wallet.
         `
+        /* Set user. */
+        const user = this.$route.params.pathMatch
+
+        // TODO: Validate the user.
 
         /* Set author name. */
-        this.authorName = 'Bitcoin Cash Please'
+        switch(user.toLowerCase()) {
+        case 'bchplease':
+            this.authorName = 'Bitcoin Cash Please'
+            break
+        case 'freetrader':
+            this.authorName = 'freetrader'
+            break
+        default:
+            this.authorName = 'Unknown'
+        }
+
 
         /* Set author location. */
         this.campaignType = 'DRIPP Campaign'

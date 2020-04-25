@@ -4,11 +4,11 @@
 
         <div class="page-title background-page">
 			<div class="container">
-				<h1>My Causes</h1>
+                <h1 class="text-capitalize">@{{this.user}} Causes</h1>
 				<div class="breadcrumbs">
 					<ul>
 						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>My Causes</li>
+						<li>Causes</li>
 					</ul>
 				</div>
 			</div>
@@ -73,8 +73,18 @@ export default {
 
         Sidenav,
     },
-    mounted: function () {
-        //
+    data: () => {
+        return {
+            user: null,
+        }
+    },
+    created: function () {
+        /* Set user. */
+        const user = this.$route.params.pathMatch
+
+        /* Validate user. */
+        // FIXME: What should we do if validation fails??
+        this.user = user
     },
 }
 </script>

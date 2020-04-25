@@ -35,28 +35,26 @@ const routes = [{
 }, {
 
     /* Account. */
-    path: '/account/backing',
+    path: '/@*/backing',
     component: AccountBacking
 }, {
-    path: '/account/causes',
+    path: '/@*/causes',
     component: AccountCauses
 }, {
-    path: '/account/dashboard',
+    path: '/@*/dashboard',
     component: AccountDashboard
 }, {
-    path: '/account/payments',
+    path: '/@*/payments',
     component: AccountPayments
 }, {
-    path: '/account/profile',
+    path: '/@*/profile',
+    // TODO: Do we still need this??
     component: AccountProfile
 }, {
-    path: '/account/received',
+    path: '/@*/received',
     component: AccountReceived
 }, {
-    path: '/account/rewards',
-    component: AccountRewards
-}, {
-    path: '/account/rewards',
+    path: '/@*/rewards',
     component: AccountRewards
 }, {
 
@@ -64,18 +62,18 @@ const routes = [{
     path: '/create',
     component: CauseCreate
 }, {
-    // TODO: Create alias for UUID at root.
-    //       eg. https://causes.cash/ffcf25d3-103e-406d-8551-007d8680bb0e
-    path: '/details',
-    component: CauseDetails
-}, {
     path: '/discover',
     component: CauseDiscover
 }, {
-    // TODO: Create alias for UUID at root.
-    //       eg. https://causes.cash/ffcf25d3-103e-406d-8551-007d8680bb0e/manage
-    path: '/manage',
+    // eg. https://causes.cash/@bchplease/nito-cash-8680bb0e/manage
+    // NOTE: Avoid other wildcard conflicts.
+    path: '/@*/:cause/manage',
     component: CauseManage
+}, {
+    // eg. https://causes.cash/@bchplease/nito-cash-8680bb0e
+    // NOTE: Avoid other wildcard conflicts.
+    path: '/@*/:cause',
+    component: CauseDetails
 }, {
 
     /* Coming soon. */
@@ -91,6 +89,17 @@ const routes = [{
     /* FAQ. */
     path: '/faq',
     component: FAQ
+}, {
+
+    /* (Wildcard) Account Profile. */
+    // NOTE: Avoid other wildcard conflicts.
+    path: '/@*',
+    component: AccountProfile
+}, {
+
+    /* 404 Error. */
+    path: '*',
+    component: Welcome
 }]
 
 const router = new VueRouter({

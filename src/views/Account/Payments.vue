@@ -4,7 +4,7 @@
 
         <div class="page-title background-page">
 			<div class="container">
-				<h1>Payments</h1>
+                <h1 class="text-capitalize">@{{this.user}} Payments</h1>
 				<div class="breadcrumbs">
 					<ul>
 						<li><router-link to="/">Home</router-link><span>/</span></li>
@@ -90,8 +90,18 @@ export default {
 
         Sidenav,
     },
-    mounted: function () {
-        //
+    data: () => {
+        return {
+            user: null,
+        }
+    },
+    created: function () {
+        /* Set user. */
+        const user = this.$route.params.pathMatch
+
+        /* Validate user. */
+        // FIXME: What should we do if validation fails??
+        this.user = user
     },
 }
 </script>

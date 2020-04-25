@@ -11,3 +11,7 @@ Every cause needs to decide on the type of campaign they wish to run.
 ##### Staff Pick Image
 
 470px by 340px; either JPG or PNG
+
+##### Details Page Images
+
+570px by 400px; either JPG or PNG

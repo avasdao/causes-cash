@@ -1,0 +1,16 @@
+{
+    "id": "b3668bc5-7cc9-4a9c-907e-f837f2d17747",
+    "slug": "bitcoin-cash-node",
+    "title": "Bitcoin Cash Node",
+    "category": "Infrastructure",
+    "description": "The primary goal of the Bitcoin Cash Node initiative is to provide a safe and professional node implementation that will neutrally follow the longest Bitcoin Cash chain without contributing to the risk of a chain split.",
+    "authorName": "Bitcoin Cash Node",
+    "authorAvatar": "https://i.imgur.com/vkrLrfD.png",
+    "authorLink": "https://bitcoincashnode.org",
+    "location": "Worldwide",
+    "imgUrl": "https://i.imgur.com/J4CN5kV.png",
+    "pledged": 10000.00,
+    "funded": 81,
+    "backers": 37,
+    "duration": 23
+}

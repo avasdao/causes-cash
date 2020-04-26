@@ -1,0 +1,16 @@
+{
+    "id": "8ed37b3e-69ba-4ae7-a01e-6ecee5eb74e2",
+    "slug": "memo",
+    "title": "Memo",
+    "category": "DApps",
+    "description": "Memo is an on-chain social network built on Bitcoin Cash. Memo is both a protocol and a front-end application. The protocol works by writing transactions to the Bitcoin Cash blockchain. Client applications can read these transactions to see the activity on the network.",
+    "authorName": "@memo",
+    "authorAvatar": "https://i.imgur.com/j9wPbDN.png",
+    "authorLink": "https://memo.cash/profile/1F5GrRezwGokQhxmF4fYaBbbNrPPaeBqMm",
+    "location": "Unknown",
+    "imgUrl": "https://i.imgur.com/2MTtG3P.jpg",
+    "pledged": 10000.00,
+    "funded": 81,
+    "backers": 37,
+    "duration": 23
+}

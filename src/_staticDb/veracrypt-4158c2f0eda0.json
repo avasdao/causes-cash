@@ -1,0 +1,16 @@
+{
+    "id": "9d7ad0c5-698f-43c8-b512-4158c2f0eda0",
+    "slug": "veracrypt",
+    "title": "VeraCrypt",
+    "category": "Security",
+    "description": "VeraCrypt is a free open source disk encryption software for Windows, Mac OSX and Linux.",
+    "authorName": "IDRIX",
+    "authorAvatar": "https://i.imgur.com/1tPTEHA.png",
+    "authorLink": "https://veracrypt.fr",
+    "location": "Paris, France",
+    "imgUrl": "https://i.imgur.com/9wWdKFk.png",
+    "pledged": 10000.00,
+    "funded": 81,
+    "backers": 37,
+    "duration": 23
+}

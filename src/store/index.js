@@ -7,6 +7,7 @@ import createPersistedState from 'vuex-persistedstate'
 
 /* Import (local) modules. */
 // import blockchain from './modules/blockchain'
+import campaigns from './modules/campaigns'
 // import profile from './modules/profile'
 import storage from './modules/storage'
 // import system from './modules/system'
@@ -19,6 +20,7 @@ Vue.use(Vuex)
 /* Set modules. */
 const modules = {
     // blockchain,
+    campaigns,
     // profile,
     storage,
     // system,

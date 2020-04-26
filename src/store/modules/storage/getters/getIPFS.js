@@ -1,13 +1,11 @@
 /* Import core modules. */
 import IPFS from 'ipfs'
 
-/**
- * Initialize IPFS handler.
- */
+// FIXME: Move this to state.ipfs
 let node = null
 
 /**
-* Get IPFS.
+* Get IPFS
 */
 const getIPFS = async () => {
     console.log('GET IPFS!!!')
@@ -44,7 +42,7 @@ const getIPFS = async () => {
         // })
         node = await IPFS.create() // eslint-disable-line require-atomic-updates
         // FIXME: https://eslint.org/docs/rules/require-atomic-updates
-        console.log('NODE', node)
+        console.log('STATE (ipfs)', node)
 
         return node
     }

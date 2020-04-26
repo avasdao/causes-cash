@@ -1,13 +1,11 @@
 /* Import core modules. */
 import OrbitDB from 'orbit-db'
 
-/**
- * Initialize OrbitDB handler.
- */
+// FIXME: Move this to state.orbitdb
 let orbitdb = null
 
 /**
-* Get OrbitDB.
+* Get OrbitDB
 */
 const getOrbitDB = async (state, getters) => {
     /* Validate OrbitDB. */

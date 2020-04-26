@@ -35,7 +35,7 @@ const state = {
      *
      * NOTE: OrbitDB requires an active connection to IPFS.
      */
-    orbit: null,
+    orbitdb: null,
 }
 
 /* Getters. */
@@ -46,7 +46,7 @@ const getters = {
 
 /* Actions. */
 const actions = {
-    // 
+    //
 }
 
 /* Mutations. */

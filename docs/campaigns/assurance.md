@@ -15,3 +15,7 @@ A group of volunteers came together to create Flipstarter; and move the Bitcoin 
 1. Can it work at the large scale we need?
 2. Can it be reliable enough to make long term plans based on it?
 3. Is it possible to have meaningful accountability with a distributed group of supporters?
+
+### Campaign structure
+
+1. Permits up to 650 contributors (based on the 100 KiB single transaction limit).

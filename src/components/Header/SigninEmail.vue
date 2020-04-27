@@ -6,7 +6,7 @@
             Causes Cash accounts are <strong>simple, private and secure.</strong>
             You can signin using <strong>ANY email and password</strong> combination that you prefer.
             Your email and password are <strong>NOT verified</strong> by anyone, they are <strong>NOT sent</strong> anywhere and they are <strong>NOT stored</strong> anywhere.
-            They are <strong>ONLY</strong> used to create a Bitcoin Cash (BCH) wallet that will be stored <strong>ONLY</strong> in your web browser.
+            They are <strong>ONLY</strong> used to create a Bitcoin Cash (BCH) wallet that will be stored <strong>ONLY</strong> in your current web browser.
 
             <div class="warning text-center">
                 !! WARNING: DO NOT FORGET YOUR SIGN IN, OR YOU WILL LOSE ACCESS TO YOUR IRRECOVERABLE WALLET !!

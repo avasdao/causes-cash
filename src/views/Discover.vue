@@ -211,8 +211,11 @@
                         </div>
                     </div>
 
-                    <div class="latest-button text-center">
-                        <a href="javascript://" class="btn-primary">
+                    <div
+                        v-if="causes.length < campaigns.length"
+                        class="latest-button text-center"
+                    >
+                        <a href="javascript://" @click="loadMore" class="btn-primary">
                             Load More Causes
                         </a>
                     </div>
@@ -247,7 +250,9 @@ export default {
     data: () => {
         return {
             causes: [],
+            campaigns: [],
             featured: null,
+            numDisplayed: null,
         }
     },
     computed: {
@@ -335,6 +340,34 @@ export default {
         },
 
         /**
+         * Load More
+         */
+        loadMore() {
+            /* Set number of (currently) displayed. */
+            const numDisplayed = this.causes.length
+
+            /* Set total number of campaigns. */
+            const numCampaigns = this.campaigns.length
+
+            /* Initialize number to display. */
+            let numToDisplay = 0
+
+            /* Set number of campaigns to display. */
+            if (numCampaigns - numDisplayed > 3) {
+                numToDisplay = 3
+            } else {
+                numToDisplay = numCampaigns - numDisplayed
+            }
+
+            /* Add campaigns to causes. */
+            for (let i = 0; i < numToDisplay; i++) {
+                /* Add campaign to cause. */
+                this.causes.push(this.getCampaign(this.campaigns[numDisplayed + i]))
+            }
+
+        },
+
+        /**
          * Format Requested
          */
         formatRequested(_cause) {
@@ -384,41 +417,68 @@ export default {
 
     },
     created: function () {
+        /* Initialize number of campaigns displayed. */
+        this.numDisplayed = 9
+
         /* Make a featured campaign. */
         this.makeFeatured()
 
         /* Initialize all qualified campaigns. */
-        const campaigns = [
-            'bitcoin-verde-node-development-14214ea4cd41',
+        this.campaigns = [
+            'bch-pizza-0e8c00641daa',
             'bchd-node-development-8331b54814ea',
             'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
-            'knuth-platform-development-158ef2f48aa0',
-            'nito-exchange-desktop-443db3869688',
-            'coins-4-clothes-93e037309d77',
-            'bch-pizza-0e8c00641daa',
+            'bitcoin-verde-node-development-14214ea4cd41',
             'blockchain-poker-52c6e99fff12',
+            'coins-4-clothes-93e037309d77',
+            'crescent-cash-303ceda57eba',
+            'knuth-platform-development-158ef2f48aa0',
             'memo-6ecee5eb74e2',
             'naomi-brockwell-tv-fcc6e720c27f',
             'nito-cash-07dd70f04162',
+            'nito-exchange-desktop-443db3869688',
             'read-cash-fund-44c7d3cfe560',
             'veracrypt-4158c2f0eda0',
         ]
 
-        /* Shuffle campaigns (array). */
-        this.getShuffledArray(campaigns)
+        /**
+         * Remove Item Once
+         */
+        function _removeItemOnce(arr, value) {
+            const index = arr.indexOf(value)
 
-        /* Add campains to causes. */
-        campaigns.forEach(campaign => {
-            /* Set (featured) extended slug. */
-            const extSlug = `${this.featured.slug}-${this.featured.id
-                .slice(this.featured.id.lastIndexOf('-') + 1)}`
-            console.log(campaign, extSlug)
-
-            /* Skip the featured campaign. */
-            if (campaign !== extSlug) {
-                this.causes.push(this.getCampaign(campaign))
+            if (index > -1) {
+                arr.splice(index, 1);
             }
-        })
+
+            return arr
+        }
+
+        /* Set (featured) extended slug. */
+        const extSlug = `${this.featured.slug}-${this.featured.id
+            .slice(this.featured.id.lastIndexOf('-') + 1)}`
+
+        /* Remove featured campaign. */
+        _removeItemOnce(this.campaigns, extSlug)
+
+        /* Shuffle campaigns (array). */
+        this.getShuffledArray(this.campaigns)
+
+        /* Initialize number of campaigns to display. */
+        let numToDisplay = 0
+
+        /* Set number of campaigns to display. */
+        if (this.campaigns.length > 9) {
+            numToDisplay = 9
+        } else {
+            numToDisplay = this.campaigns.length
+        }
+
+        /* Add campaigns to causes. */
+        for (let i = 0; i < numToDisplay; i++) {
+            /* Add campaign to cause. */
+            this.causes.push(this.getCampaign(this.campaigns[i]))
+        }
 
     },
     mounted: function () {

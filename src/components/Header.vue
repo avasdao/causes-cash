@@ -111,55 +111,7 @@
                         </form>
                     </div>
 
-                    <div class="login login-button signin-btn">
-                        <a href="javascript://" class="btn-primary" @click="signIn">Sign In</a>
-
-                        <div class="form-signin"></div>
-
-                        <form action="javascript://" method="POST" id="signinForm">
-                            <div class="form-group row">
-                                <div class="col-sm-2">
-                                    &nbsp;
-                                    <!-- offset fix -->
-                                </div>
-
-                                <label for="inputEmail3" class="col-sm-2 col-form-label">
-                                    Email
-                                </label>
-
-                                <div class="col-sm-6">
-                                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-sm-2">
-                                    &nbsp;
-                                    <!-- offset fix -->
-                                </div>
-
-                                <label for="inputPassword3" class="col-sm-2 col-form-label">
-                                    Password
-                                </label>
-
-                                <div class="col-sm-6">
-                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-sm-2">
-                                    &nbsp;
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-sm-8 text-right">
-                                    <button type="submit" class="btn btn-primary">Sign in</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
+                    <Signin />
                 </div>
             </div>
         </div>
@@ -167,11 +119,17 @@
 </template>
 
 <script>
+/* Import components. */
+import Signin from './Header/Signin'
+
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
 
 export default {
+    components: {
+        Signin,
+    },
     data: () => {
         return {
             //
@@ -239,33 +197,15 @@ export default {
             $(this).parent().find('#searchForm').fadeToggle()
         })
 
-        /* Signin handler. */
-        $('.signin-btn a').on('click', function (e) {
-            e.preventDefault()
-
-            $(this).parent().find('.form-signin').fadeToggle()
-            $(this).parent().find('#signinForm').fadeToggle()
-        })
-        $('.form-signin').on('click', function (e) {
-            e.preventDefault()
-
-            $(this).fadeToggle()
-            $(this).parent().find('#signinForm').fadeToggle()
-        })
-
-		// $('.button-popup').on('click', function (e) {
-		// 	e.preventDefault()
-        //     $('.popup').addClass('open')
-        // })
-        // $('.close').on('click', function () {
-        //     $('.popup').removeClass('open')
-        // })
-
     },
 }
 </script>
 
 <style scoped>
+.top-header .slogan {
+    float: right;
+    color: #6a6a6a;
+}
 .slogan strong {
     font-weight: 500;
 }
@@ -318,44 +258,6 @@ export default {
 .search-icon form button span {
     font-size: 24px;
     vertical-align: -6px;
-}
-
-/* Signin */
-.form-signin {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 99;
-    display: none;
-}
-.signin-btn form {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    right: 0;
-    max-width: 960px;
-    margin: 0 auto;
-    line-height: 60px;
-    border-radius: 3px;
-    overflow: hidden;
-    z-index: 9999;
-    display: none;
-    /* padding: 0 15px; */
-
-    background-color: rgba(180, 180, 180, 0.9);
-    padding: 50px 0 30px;
-}
-.signin-btn form input {
-    width: 100%;
-    padding: 0 73px 0 15px;
-    line-height: 60px;
-    border: 0;
-    border-radius: 3px;
-    overflow: hidden;
 }
 
 </style>

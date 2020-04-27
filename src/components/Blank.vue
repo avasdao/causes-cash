@@ -27,6 +27,12 @@ export default {
     methods: {
         //
     },
+    created: function () {
+        //
+    },
+    mounted: function () {
+        //
+    },
 }
 </script>
 

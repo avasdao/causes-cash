@@ -613,10 +613,6 @@ textarea:focus {
 ul.socials-top{
     float: left;
 }
-.top-header .phone{
-    float: right;
-    color: #6a6a6a;
-}
 ul.socials-top li{
     list-style: none;
     display: inline-block;

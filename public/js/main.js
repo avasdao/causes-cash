@@ -194,14 +194,14 @@ function readURL2(input, thumbimage) {
 
         /*  [ Header Fixed ]
         - - - - - - - - - - - - - - - - - - - - */
-        if ($(window).width()<992) {
-	        $(window).scroll(function(){
-	        	if($(this).scrollTop()>0){
-					$('#header').addClass('fixed');
-			    }else{
-					$('#header').removeClass('fixed');
-			    }
-	        });
+        if ($(window).width() < 992) {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 0) {
+					$('#header').addClass('fixed')
+                } else {
+					$('#header').removeClass('fixed')
+                }
+            })
         }
 
         /*  [ Sub Menu ]
@@ -209,15 +209,6 @@ function readURL2(input, thumbimage) {
         $( '.main-menu ul > li' ).on('click', function () {
 			$( this ).find('.sub-menu').slideToggle();
 		});
-
-	    /*  [ Faq ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.faq-desc').hide();
-        $('.list-faq li a').on('click', function(e){
-        	e.preventDefault();
-            $('.list-faq li a').not(this).next().slideUp().parent().removeClass('open');
-            $(this).next().slideToggle().parent().addClass('open');
-        });
 
         setTimeout(function(){
         	$('.preloading').fadeOut();

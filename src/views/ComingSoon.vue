@@ -29,7 +29,6 @@
                         </ul>
                     </div>
 
-                    <!-- <div class="button button-popup"> -->
                     <div class="button">
                         <a href="/" class="btn-primary">Check Out the LIVE Preview</a>
                     </div>
@@ -226,54 +225,6 @@ export default {
   bottom: 0;
   right: 0;
   background: rgba(0,0,0,0.3);
-}
-.popup{
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.3);
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.4s;
-}
-.popup.open{
-  visibility: visible;
-  opacity: 1;
-}
-.newsletter-popup{
-  background: repeating-linear-gradient( 135deg, #4251db, #4251db 10px, #fff 10px, #fff 20px, #f84d3b 20px, #f84d3b 30px, #fff 30px, #fff 40px ) !important;
-  position: relative;
-  height: 320px;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 640px;
-  margin: 0 auto;
-}
-.newsletter-popup .close{
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  color: #222;
-  opacity: 1;
-  height: 30px;
-  width: 30px;
-  background-color: #fff;
-  text-align: center;
-  line-height: 30px;
-  border-radius: 50%;
-  font-size: 14px;
-}
-.popup-wrapper{
-  background-color: #fff;
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  right: 6px;
-  bottom: 6px;
 }
 .form-header{
   position: relative;

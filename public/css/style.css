@@ -677,54 +677,6 @@ ul.socials-top li:hover i{
     vertical-align: middle;
     padding: 0 5px;
 }
-.form-search{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 99;
-    display: none;
-}
-.search-icon form{
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    right: 0;
-    max-width: 960px;
-    margin: 0 auto;
-    line-height: 60px;
-    border-radius: 3px;
-    overflow: hidden;
-    z-index: 9999;
-    display: none;
-    padding: 0 15px;
-}
-.search-icon form input{
-    width: 100%;
-    padding: 0 73px 0 15px;
-    line-height: 60px;
-    border: 0;
-    border-radius: 3px;
-    overflow: hidden;
-}
-.search-icon form button{
-    position: absolute;
-    top: 0;
-    right: 15px;
-    bottom: 0;
-    border: 0;
-    background-color: #fff;
-    padding: 0 20px;
-    border-radius: 3px;
-    overflow: hidden;
-}
-.search-icon form button span{
-    font-size: 24px;
-    vertical-align: -6px;
-}
 .main-menu ul{
     letter-spacing: -0.3em;
 }

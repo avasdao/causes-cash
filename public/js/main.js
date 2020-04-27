@@ -146,133 +146,34 @@ function readURL2(input, thumbimage) {
             }, 700)
         })
 
-	    /*  [ Story Slider ]
+        /*  [ Tab Controls ]
         - - - - - - - - - - - - - - - - - - - - */
-        $('.story-slider').owlCarousel({
-			loop:true,
-			autoplay:true,
-			autoplayTimeout:3000,
-   			autoplayHoverPause:true,
-   			items: 3,
-   			margin: 30,
-   			responsive:{
-		        0:{
-		            items:1,
-		        },
-		        450:{
-		            items:1,
-		        },
-		        576:{
-		            items:2,
-		        },
-		        992:{
-		            items:3,
-		        }
-		    }
-		});
+        $('.menu-category li.mc-option').on('click', function (e) {
+            e.preventDefault()
+			var tab_id = $(this).attr('data-tab')
+			$('.menu-category li.mc-option').removeClass('active')
+			$('.popular-project .pp-item').removeClass('active')
+			$(this).addClass('active')
+			$("#"+tab_id).addClass('active')
+		})
 
-        /*  [ Featured Places Slider ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.featured-places-slider').owlCarousel({
-			loop:true,
-			autoplay:true,
-			autoplayTimeout:3000,
-   			autoplayHoverPause:true,
-   			margin: 30,
-   			nav: true,
-   			navText: ['<span class="ion-ios-arrow-back"></span>', '<span class="ion-ios-arrow-forward"></span>'],
-   			responsive:{
-		        0:{
-		            items:1,
-		        },
-		        360:{
-		            items:3,
-		        },
-		        576:{
-		            items:4,
-		        },
-		        992:{
-		            items:5,
-		        },
-		        1200:{
-		            items:6,
-		        }
-		    }
-		});
+        $('.tabs-controls li').on('click', function (e) {
+            e.preventDefault()
+			var tab_id = $(this).attr('data-tab')
+			$('.tabs-controls li').removeClass('active')
+			$('.campaign-content .tabs').removeClass('active')
+			$(this).addClass('active')
+			$("#"+tab_id).addClass('active')
+		})
 
-		/*  [ Owl Campaign ]
-        - - - - - - - - - - - - - - - - - - - - */
-		$("#owl-campaign").owlCarousel({
-	        navigation: true,
-	        navigationText: ['<span class="ion-ios-arrow-back"></span>', '<span class="ion-ios-arrow-forward"></span>'],
-	        loop:true,
-			autoplay:true,
-			autoplayTimeout:3000,
-   			autoplayHoverPause:true,
-	        singleItem: true,
-	        afterInit: makePages,
-	        afterUpdate: makePages
-	    });
-	    function makePages() {
-	        $.each(this.owl.userItems, function(i) {
-	            $('.owl-controls .owl-page').eq(i)
-	                .css({
-	                    'background': 'url(' + $(this).find('img').attr('src') + ')',
-	                    'background-size': 'cover',
-	                })
-	        });
-	    };
-
-	    /*  [ Owl Shop ]
-        - - - - - - - - - - - - - - - - - - - - */
-		$("#owl-shop").owlCarousel({
-	        navigation: true,
-	        navigationText: ['<span class="ion-ios-arrow-back"></span>', '<span class="ion-ios-arrow-forward"></span>'],
-	        loop:true,
-			autoplay:true,
-			autoplayTimeout:3000,
-   			autoplayHoverPause:true,
-	        singleItem: true,
-	        afterInit: makePages,
-	        afterUpdate: makePages
-	    });
-	    function makePages1() {
-	        $.each(this.owl.userItems, function(i) {
-	            $('.owl-controls .owl-page').eq(i)
-	                .css({
-	                    'background': 'url(' + $(this).find('img').attr('src') + ')',
-	                    'background-size': 'cover',
-	                })
-	        });
-	    };
-
-	    /*  [ Tab Controls ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.menu-category li.mc-option').on('click', function (e){
-	    	e.preventDefault();
-			var tab_id = $(this).attr('data-tab');
-			$('.menu-category li.mc-option').removeClass('active');
-			$('.popular-project .pp-item').removeClass('active');
-			$(this).addClass('active');
-			$("#"+tab_id).addClass('active');
-		});
-
-	    $('.tabs-controls li').on('click', function (e){
-	    	e.preventDefault();
-			var tab_id = $(this).attr('data-tab');
-			$('.tabs-controls li').removeClass('active');
-			$('.campaign-content .tabs').removeClass('active');
-			$(this).addClass('active');
-			$("#"+tab_id).addClass('active');
-		});
 		/*  [ Menu Category ]
         - - - - - - - - - - - - - - - - - - - - */
-		$('.menu-category li.mc-option').on('click', function (){
+		$('.menu-category li.mc-option').on('click', function () {
 			var tab_id = $(this).attr('data-hash');
 			$('.menu-category li.mc-option').removeClass('active');
 			$(this).addClass('active');
 		});
-		$('.menu-category li.cat-more a').on('click', function (){
+		$('.menu-category li.cat-more a').on('click', function () {
 			var url = $(this).attr('href');
 			window.location.href = url;
 		});
@@ -289,16 +190,6 @@ function readURL2(input, thumbimage) {
                 $( 'body' ).removeClass( 'menu-open' );
                 $( '.c-hamburger' ).removeClass('is-active');
             }
-        });
-
-        /*  [ Popup ]
-        - - - - - - - - - - - - - - - - - - - - */
-		$( '.button-popup' ).on( 'click', function(e) {
-			e.preventDefault();
-            $( '.popup' ).addClass('open');
-        });
-        $( '.close' ).on( 'click', function() {
-            $( '.popup' ).removeClass('open');
         });
 
         /*  [ Header Fixed ]
@@ -335,7 +226,7 @@ function readURL2(input, thumbimage) {
         	placeholder: '',
         	maxEntryLength: 50,
     	});
-	    $('.process-model li.pm-option').on('click', function (e){
+	    $('.process-model li.pm-option').on('click', function (e) {
 	    	e.preventDefault();
 			var tab_id = $(this).attr('data-tab');
 			$('.process-model li.pm-option').removeClass('active');
@@ -346,7 +237,7 @@ function readURL2(input, thumbimage) {
 			$(this).prevAll().addClass("visited");
 		});
 		$('.process-model li:nth-child(1)').removeClass('visited');
-	    $('.pane-tab li').on('click', function (){
+	    $('.pane-tab li').on('click', function () {
 			var tab_id = $(this).attr('data-tab');
 			$('.pane-tab li').removeClass('active');
 			$('#story .pane-box').removeClass('active');
@@ -376,53 +267,53 @@ function readURL2(input, thumbimage) {
 			  ],
 		    theme: 'snow'
 		});
-		$('.create-perk').on('click', function (e){
+		$('.create-perk').on('click', function (e) {
 			e.preventDefault();
 			$(this).parent().fadeOut(0);
 			$(this).parent().parent().find('.start-form').fadeIn();
 		});
-		$('.view-fees').on('click', function (e){
+		$('.view-fees').on('click', function (e) {
 			e.preventDefault();
 			$(this).parent().parent().find('.spopup-bg').fadeIn();
 			$(this).parent().parent().find('.fees-popup').fadeIn();
 		});
-		$('.spopup-bg').on('click', function (e){
+		$('.spopup-bg').on('click', function (e) {
 			e.preventDefault();
 			$(this).fadeOut();
 			$(this).parent().find('.fees-popup').fadeOut();
 			$(this).parent().find('.item-popup').fadeOut();
 		});
-		$('.spopup-close').on('click', function (e){
+		$('.spopup-close').on('click', function (e) {
 			e.preventDefault();
 			$(this).parent().parent().fadeOut();
 			$(this).parent().parent().parent().find('.spopup-bg').fadeOut();
 		});
-		$('.item-cancel').on('click', function (e){
+		$('.item-cancel').on('click', function (e) {
 			e.preventDefault();
 			$(this).parent().parent().fadeOut();
 			$(this).parent().parent().parent().find('.spopup-bg').fadeOut();
 		});
-		$('.add-item').on('click', function (e){
+		$('.add-item').on('click', function (e) {
 			e.preventDefault();
 			$(this).parent().find('.spopup-bg').fadeIn();
 			$(this).parent().find('.item-popup').fadeIn();
 		});
-		$('.connect-fb').on('click', function (e){
+		$('.connect-fb').on('click', function (e) {
 			e.preventDefault();
 			$(this).fadeOut(0);
 			$(this).parent().find('.fb-content').fadeIn();
 		});
-		$('.fb-content a').on('click', function (e){
+		$('.fb-content a').on('click', function (e) {
 			e.preventDefault();
 			$(this).parent().fadeOut(0);
 			$(this).parent().parent().find('.connect-fb').fadeIn();
 		});
-		$('.add-reward').on('click', function (e){
+		$('.add-reward').on('click', function (e) {
 			e.preventDefault();
 			$("#import").append($("#itemform").html());
 		});
 		$("#import").bind("DOMSubtreeModified", function() {
-			$('.reward-delete').on('click', function (e){
+			$('.reward-delete').on('click', function (e) {
 				e.preventDefault();
 				$(this).parent().parent().fadeOut(0);
 			});

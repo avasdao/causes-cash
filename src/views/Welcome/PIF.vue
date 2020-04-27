@@ -68,9 +68,9 @@
                                                 <span>{{cause.backers}}</span>backers
                                             </div>
 
-                                            <div class="process-time">
+                                            <!-- <div class="process-time">
                                                 <span>{{cause.updatedAt}}</span>days ago
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -283,6 +283,7 @@ export default {
 }
 
 .img-rounded {
+    border: 2px solid rgba(180, 180, 180, 0.2);
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px; /* future proofing */

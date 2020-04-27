@@ -24,14 +24,20 @@
             <div class="campaign-content grid">
                 <div class="row">
 
+                    <!-- Start causes. -->
                     <div
                         v-for="cause of causes"
                         :key="cause.id"
                         class="col-lg-4 col-md-6 col-sm-6 col-6 filterinteresting filterpopular filterlatest">
                         <div class="campaign-item">
-                                <a class="category" href="javascript://" @click="loadDetails(cause)">
-                                    <img :src="cause.coverImgUrl" alt="">
-                                </a>
+                            <!-- <a class="overlay" href="javascript://" @click="loadDetails(cause)">
+                                <img :src="cause.coverImgUrl" alt="">
+                                <span class="ion-ios-search-strong"></span>
+                            </a> -->
+                            <a class="category" href="javascript://" @click="loadDetails(cause)">
+                                <img :src="cause.coverImgUrl" alt="">
+                            </a>
+
                             <div class="campaign-box">
                                 <a class="category" href="javascript://" @click="loadCategory(cause)">
                                     {{cause.category}}
@@ -76,9 +82,11 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End causes. -->
 
                 </div>
             </div>
+
             <div class="latest-button">
                 <router-link to="/discover" class="btn-primary">
                     Discover More Causes
@@ -94,12 +102,6 @@ import { mapGetters } from 'vuex'
 
 /* Import modules. */
 import numeral from 'numeral'
-
-/* Import components. */
-// import Name from '@/components/Name.vue'
-
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
 
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
@@ -165,11 +167,6 @@ export default {
 
             /* Load details. */
             this.$router.push(`@${authorId}/${extSlug}`)
-        },
-
-        details(_cause) {
-            console.log('CAUSE', _cause)
-            return '@bchplease/nito-cash-8680bb0e'
         },
 
         /**

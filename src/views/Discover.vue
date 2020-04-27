@@ -74,18 +74,18 @@
                             <!-- Start featured. -->
                             <div class="col-lg-12">
                                 <div class="campaign-big-item clearfix">
-                                    <a href="javascript://" class="campaign-big-image">
+                                    <a href="javascript://" class="campaign-big-image" @click="loadDetails(featured)">
                                         <!-- <img src="@/assets/img/campaign-big-item.jpg" alt=""> -->
                                         <img :src="featured.coverImgUrl" class="featured-img" alt="">
                                     </a>
 
                                     <div class="campaign-big-box">
-                                        <a href="javascript://" class="category">
+                                        <a href="javascript://" class="category" @click="loadCategory(featured)">
                                             {{featured.category}}
                                         </a>
 
-                                        <h3>
-                                            <a href="javascript://">
+                                        <h3 class="featured-title">
+                                            <a href="javascript://" @click="loadDetails(featured)">
                                                 {{featured.title}}
                                             </a>
                                         </h3>
@@ -113,24 +113,33 @@
 
                                         <div class="process">
                                             <div class="raised">
-                                                <span :style="{ width: completedPct(featured, true) + '%'}"></span>
+                                                <span :style="{ width: getCompletedPct(featured, true) + '%'}"></span>
                                             </div>
 
                                             <div class="process-info">
                                                 <div class="process-pledged">
-                                                    <span>{{formatPledged(featured)}}</span>pledged
+                                                    <span>{{formatRequested(featured)}}</span>
+                                                    requested
+                                                </div>
+
+                                                <div class="process-pledged">
+                                                    <span>{{formatPledged(featured)}}</span>
+                                                    pledged
                                                 </div>
 
                                                 <div class="process-funded">
-                                                    <span>{{formatFunded(featured)}}</span>funded
+                                                    <span>{{getFormatFunded(featured)}}</span>
+                                                    funded
                                                 </div>
 
                                                 <div class="process-time">
-                                                    <span>{{featured.backers}}</span>backers
+                                                    <span>{{featured.backers}}</span>
+                                                    backers
                                                 </div>
 
                                                 <!-- <div class="process-time">
-                                                    <span>{{featured.updatedAt}}</span>days ago
+                                                    <span>{{featured.updatedAt}}</span>
+                                                    days ago
                                                 </div> -->
                                             </div>
                                         </div>
@@ -176,17 +185,17 @@
                                         </div>
 
                                         <div class="process">
-                                            <div class="raised">
-                                                <span :style="{ width: completedPct(cause, true) + '%'}"></span>
-                                            </div>
-
                                             <div class="process-info">
+                                                <div class="raised">
+                                                    <span :style="{ width: getCompletedPct(cause, true) + '%'}"></span>
+                                                </div>
+
                                                 <div class="process-pledged">
                                                     <span>{{formatPledged(cause)}}</span>pledged
                                                 </div>
 
                                                 <div class="process-funded">
-                                                    <span>{{formatFunded(cause)}}</span>funded
+                                                    <span>{{getFormatFunded(cause)}}</span>funded
                                                 </div>
 
                                                 <div class="process-time">
@@ -238,6 +247,7 @@ export default {
     data: () => {
         return {
             causes: [],
+            featured: null,
         }
     },
     computed: {
@@ -245,13 +255,25 @@ export default {
             'getCampaign',
         ]),
 
-        featured() {
+        ...mapGetters('utils', [
+            'getCompletedPct',
+            'getFormatFunded',
+            'getShuffledArray',
+        ]),
+
+    },
+    methods: {
+        /**
+         * Make Featured
+         */
+        makeFeatured() {
             /* Initialize featured candidates. */
             const candidates = [
-                'bitcoin-verde-14214ea4cd41',
-                'bchd-8331b54814ea',
-                'bitcoin-abc-43eda61596e7',
-                'knuth-158ef2f48aa0',
+                'bitcoin-verde-node-development-14214ea4cd41',
+                'bchd-node-development-8331b54814ea',
+                'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
+                'knuth-platform-development-158ef2f48aa0',
+                'nito-exchange-desktop-443db3869688',
             ]
 
             /* Choose a "random" campaign id. */
@@ -261,13 +283,10 @@ export default {
             ]
 
             /* Set featured campaign. */
-            const featured = this.getCampaign(campaignId)
+            this.featured = this.getCampaign(campaignId)
 
-            /* Return featured. */
-            return featured
         },
-    },
-    methods: {
+
         /**
          * Load Category
          */
@@ -316,18 +335,27 @@ export default {
         },
 
         /**
-         * Completed Percentage
+         * Format Requested
          */
-        completedPct(_cause, _integer = false) {
-            /* Calculate completion percentage. */
-            const completedPct = (_cause.pledged / _cause.requested)
+        formatRequested(_cause) {
+            /* Set requested amount. */
+            const requested = _cause.requested
 
-            /* Validate integer flag. */
-            if (_integer) {
-                return parseInt(completedPct * 100)
+            /* Initialize dollar value. */
+            let dollar = null
+
+            /* Calculate dollar value. */
+            if (_cause.currency === 'BCH') {
+                dollar = requested * 244.18
             } else {
-                return completedPct
+                dollar = requested
             }
+
+            /* Format pledge. */
+            const formatted = numeral(dollar).format('$0,0.00')
+
+            /* Return formatted. */
+            return formatted
         },
 
         /**
@@ -354,47 +382,43 @@ export default {
             return formatted
         },
 
-        /**
-         * Format Funded
-         */
-        formatFunded(_cause) {
-            /* Set percentage. */
-            const pct = _cause.pct
-
-            /* Initialize formatted. */
-            let formatted = null
-
-            if (pct === 0) {
-                formatted = 'ongoing'
-            } else {
-                const completePct = this.completedPct(_cause)
-
-                formatted = numeral(completePct).format('0.00%')
-            }
-
-            /* Return formatted. */
-            return formatted
-        },
-
     },
     created: function () {
-        /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-verde-14214ea4cd41'))
+        /* Make a featured campaign. */
+        this.makeFeatured()
 
-        /* Cause */
-        this.causes.push(this.getCampaign('bchd-8331b54814ea'))
+        /* Initialize all qualified campaigns. */
+        const campaigns = [
+            'bitcoin-verde-node-development-14214ea4cd41',
+            'bchd-node-development-8331b54814ea',
+            'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
+            'knuth-platform-development-158ef2f48aa0',
+            'nito-exchange-desktop-443db3869688',
+            'coins-4-clothes-93e037309d77',
+            'bch-pizza-0e8c00641daa',
+            'blockchain-poker-52c6e99fff12',
+            'memo-6ecee5eb74e2',
+            'naomi-brockwell-tv-fcc6e720c27f',
+            'nito-cash-07dd70f04162',
+            'read-cash-fund-44c7d3cfe560',
+            'veracrypt-4158c2f0eda0',
+        ]
 
-        /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-abc-43eda61596e7'))
+        /* Shuffle campaigns (array). */
+        this.getShuffledArray(campaigns)
 
-        /* Cause */
-        this.causes.push(this.getCampaign('knuth-158ef2f48aa0'))
+        /* Add campains to causes. */
+        campaigns.forEach(campaign => {
+            /* Set (featured) extended slug. */
+            const extSlug = `${this.featured.slug}-${this.featured.id
+                .slice(this.featured.id.lastIndexOf('-') + 1)}`
+            console.log(campaign, extSlug)
 
-        /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
-
-        /* Cause */
-        this.causes.push(this.getCampaign('eatbch-b6ce6ceb819f'))
+            /* Skip the featured campaign. */
+            if (campaign !== extSlug) {
+                this.causes.push(this.getCampaign(campaign))
+            }
+        })
 
     },
     mounted: function () {
@@ -419,6 +443,12 @@ export default {
     cursor: pointer;
 }
 
+.featured-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .featured-img {
     border: 1px solid rgba(180, 180, 180, 0.2);
     width: 570px;
@@ -426,4 +456,7 @@ export default {
 }
 /* TODO: Add media queries. */
 
+.process-info div span {
+    margin-right: 60px !important;
+}
 </style>

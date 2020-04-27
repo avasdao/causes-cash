@@ -232,7 +232,7 @@ export default {
 
         /* Infrastructure. */
         // this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
-        this.causes.push(this.getCampaign('bitcoin-verde-14214ea4cd41'))
+        this.causes.push(this.getCampaign('bitcoin-verde-node-development-14214ea4cd41'))
 
         /* Privacy. */
         this.causes.push(this.getCampaign('nito-cash-07dd70f04162'))

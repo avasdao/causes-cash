@@ -233,16 +233,16 @@ export default {
     },
     created: function () {
         /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-verde-14214ea4cd41'))
+        this.causes.push(this.getCampaign('bitcoin-verde-node-development-14214ea4cd41'))
 
         /* Cause */
-        this.causes.push(this.getCampaign('bchd-8331b54814ea'))
+        this.causes.push(this.getCampaign('bchd-node-development-8331b54814ea'))
 
         /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-abc-43eda61596e7'))
+        this.causes.push(this.getCampaign('bitcoin-cash-protocol-development-fundraiser-43eda61596e7'))
 
         /* Cause */
-        this.causes.push(this.getCampaign('knuth-158ef2f48aa0'))
+        this.causes.push(this.getCampaign('knuth-platform-development-158ef2f48aa0'))
 
         /* Cause */
         this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))

@@ -11,7 +11,7 @@ import campaigns from './modules/campaigns'
 // import profile from './modules/profile'
 import storage from './modules/storage'
 // import system from './modules/system'
-// import utils from './modules/utils'
+import utils from './modules/utils'
 // import wallets from './modules/wallets'
 
 /* Initialize Vuex. */
@@ -24,7 +24,7 @@ const modules = {
     // profile,
     storage,
     // system,
-    // utils,
+    utils,
     // wallets,
 }
 

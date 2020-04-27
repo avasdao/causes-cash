@@ -9,8 +9,8 @@
     "authorLink": "https://veracrypt.fr",
     "location": "Paris, France",
     "imgUrl": "https://i.imgur.com/9wWdKFk.png",
-    "pledged": 10000.00,
-    "funded": 81,
+    "requested": 10000.00,
+    "pledged": 81,
     "backers": 37,
     "duration": 23
 }

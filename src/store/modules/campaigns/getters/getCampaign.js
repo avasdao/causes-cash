@@ -2,7 +2,7 @@
 * Get Campaign
 */
 const getCampaign = () => (_campaignId) => {
-    console.log('Retrieving campaign...', _campaignId)
+    // console.log('Retrieving campaign...', _campaignId)
 
     /* Initialize campaign. */
     let campaign = null

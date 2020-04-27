@@ -9,8 +9,8 @@
     "authorLink": "https://www.coins4clothes.com",
     "location": "Toronto, Canada",
     "imgUrl": "https://i.imgur.com/8dt51Yn.png",
-    "pledged": 10000.00,
-    "funded": 81,
+    "requested": 10000.00,
+    "pledged": 81,
     "backers": 37,
     "duration": 23
 }

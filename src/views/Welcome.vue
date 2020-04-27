@@ -18,49 +18,7 @@
             <main id="main" class="site-main">
                 <Slideshow />
                 <PIF />
-
-                <div class="how-it-work">
-                    <div class="container">
-                        <h2 class="title">See How It Work</h2>
-                        <div class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="item-work">
-                                    <div class="item-icon"><span>01</span><i class="fa fa-flask" aria-hidden="true"></i></div>
-                                    <div class="item-content">
-                                        <h3 class="item-title">Discover Ideas</h3>
-                                        <div class="item-desc">
-                                            <p>A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="item-work">
-                                    <div class="item-icon"><span>02</span><i class="fa fa-leaf" aria-hidden="true"></i></div>
-                                    <div class="item-content">
-                                        <h3 class="item-title">Create a NEW Cause</h3>
-                                        <div class="item-desc">
-                                            <p>Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="item-work">
-                                    <div class="item-icon"><span>03</span><i class="fa fa-money" aria-hidden="true"></i></div>
-                                    <div class="item-content">
-                                        <h3 class="item-title">Get Funded</h3>
-                                        <div class="item-desc">
-                                            <p>Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <Pledges />
                 <Discover />
                 <Articles />
 
@@ -105,12 +63,13 @@
 /* Import views. */
 import Articles from '@/views/Welcome/Articles.vue'
 import Discover from '@/views/Welcome/Discover.vue'
+import PIF from '@/views/Welcome/PIF.vue'
+import Pledges from '@/views/Welcome/Pledges.vue'
+import Slideshow from '@/views/Welcome/Slideshow.vue'
 
 /* Import components. */
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
-import PIF from '@/components/PIF.vue'
-import Slideshow from '@/components/Slideshow.vue'
 
 /* Initialize ethers. */
 import { ethers } from 'ethers'
@@ -120,13 +79,14 @@ import { ethers } from 'ethers'
 
 export default {
     components: {
-        Discover,
         Articles,
+        Discover,
+        Pledges,
+        PIF,
+        Slideshow,
 
         Footer,
         Header,
-        PIF,
-        Slideshow,
     },
     methods: {
         async initEthers () {

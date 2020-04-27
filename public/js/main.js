@@ -446,15 +446,6 @@ function  readURL6(input,thumbimage) {
 			$( this ).parent().find('#searchForm').fadeToggle();
 		});
 
-		$(".raised > span").each(function() {
-			$(this)
-				.data("origWidth", $(this).width())
-				.width(0)
-				.animate({
-					width: $(this).data("origWidth")
-				}, 1200);
-		});
-
 		/*  [ Main Menu ]
         - - - - - - - - - - - - - - - - - - - - */
 		$( '.c-hamburger' ).on( 'click', function() {

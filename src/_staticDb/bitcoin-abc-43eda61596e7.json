@@ -1,0 +1,21 @@
+{
+    "id": "6eb7c667-698d-472d-a446-43eda61596e7",
+    "slug": "bitcoin-abc",
+    "title": "Bitcoin Cash Protocol Development Fundraiser",
+    "category": "Infrastructure Development",
+    "summary": "Bitcoin ABC develops, maintains and secures the most essential Bitcoin Cash infrastructure, our full node software which is used to mine almost every Bitcoin Cash block.",
+    "description": "Bitcoin ABC develops, maintains and secures the most essential Bitcoin Cash infrastructure, our full node software which is used to mine almost every Bitcoin Cash block.",
+    "authorName": "Bitcoin ABC",
+    "authorAvatar": "https://i.imgur.com/AmFwzEx.png",
+    "authorLink": "https://bitcoinabc.org",
+    "location": "Worldwide",
+    "imgUrl": "https://i.imgur.com/zT4S3LB.png",
+    "coverImgUrl": "https://i.imgur.com/1KA9cYe.jpg",
+    "currency": "BCH",
+    "requested": 14500.00,
+    "pledged": 6374.20,
+    "backers": 9,
+    "duration": 14,
+    "createdAt": 2,
+    "updatedAt": 1
+}

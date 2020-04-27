@@ -9,8 +9,8 @@
     "authorLink": "https://memo.cash/profile/1F5GrRezwGokQhxmF4fYaBbbNrPPaeBqMm",
     "location": "Unknown",
     "imgUrl": "https://i.imgur.com/2MTtG3P.jpg",
-    "pledged": 10000.00,
-    "funded": 81,
+    "requested": 10000.00,
+    "pledged": 81,
     "backers": 37,
     "duration": 23
 }

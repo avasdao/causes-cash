@@ -55,11 +55,11 @@
 
                                         <div class="process-info">
                                             <div class="process-pledged">
-                                                <span>{{cause.pledged}}</span>pledged
+                                                <span>{{cause.requested}}</span>requested
                                             </div>
 
                                             <div class="process-funded">
-                                                <span>{{cause.funded}}</span>funded
+                                                <span>{{cause.pledged}}</span>pledged
                                             </div>
 
                                             <div class="process-time">
@@ -88,7 +88,7 @@
 import { mapGetters } from 'vuex'
 
 /* Import components. */
-import Categories from '@/components/PIF/Categories.vue'
+import Categories from './PIF/Categories.vue'
 
 /* Import icons. */
 import '@/compiled-icons/bitcoin-cash-logo-text'

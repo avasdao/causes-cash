@@ -34,7 +34,7 @@
                             <!-- </div> -->
                             <div class="campaign-box">
                                 <router-link class="category" to="/details">
-                                    {{cause.title}}
+                                    {{cause.category}}
                                 </router-link>
 
                                 <h3>
@@ -49,27 +49,27 @@
 
                                 <div class="campaign-author">
                                     <router-link class="author-icon" to="/details">
-                                        <img :src="cause.authorImgUrl" alt="">
+                                        <img :src="cause.authorAvatar" alt="">
                                         by {{cause.authorName}}
                                     </router-link>
                                 </div>
 
                                 <div class="process">
                                     <div class="raised">
-                                        <span></span>
+                                        <span :style="{ width: completedPct(cause, true) + '%'}"></span>
                                     </div>
 
                                     <div class="process-info">
                                         <div class="process-pledged">
-                                            <span>{{formatAmount(cause.pledged)}}</span>pledged
+                                            <span>{{formatPledged(cause)}}</span>pledged
                                         </div>
 
                                         <div class="process-funded">
-                                            <span>{{formatFunded(cause.fundedPct)}}</span>funded
+                                            <span>{{formatFunded(cause)}}</span>funded
                                         </div>
 
                                         <div class="process-time">
-                                            <span>{{cause.lastUpdate}}</span>days ago
+                                            <span>{{cause.updatedAt}}</span>days ago
                                         </div>
                                     </div>
                                 </div>
@@ -89,6 +89,9 @@
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapGetters } from 'vuex'
+
 /* Import modules. */
 import numeral from 'numeral'
 
@@ -100,7 +103,7 @@ import numeral from 'numeral'
 
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
+const $ = window.jQuery
 
 export default {
     components: {
@@ -112,69 +115,82 @@ export default {
         }
     },
     computed: {
-        //
+        ...mapGetters('campaigns', [
+            'getCampaign',
+        ]),
     },
     methods: {
         /**
-         * Format Amount
+         * Completed Percentage
          */
-        formatAmount(_amount) {
-            return numeral(_amount).format('$0,0.00')
+        completedPct(_cause, _integer = false) {
+            /* Calculate completion percentage. */
+            const completedPct = (_cause.pledged / _cause.requested)
+
+            /* Validate integer flag. */
+            if (_integer) {
+                return parseInt(completedPct * 100)
+            } else {
+                return completedPct
+            }
+        },
+
+        /**
+         * Format Pledged
+         */
+        formatPledged(_cause) {
+            /* Set pledged amount. */
+            const pledged = _cause.pledged
+
+            /* Initialize dollar value. */
+            let dollar = null
+
+            /* Calculate dollar value. */
+            if (_cause.currency === 'BCH') {
+                dollar = pledged * 244.18
+            } else {
+                dollar = pledged
+            }
+
+            /* Format pledge. */
+            const formatted = numeral(dollar).format('$0,0.00')
+
+            /* Return formatted. */
+            return formatted
         },
 
         /**
          * Format Funded
          */
-        formatFunded(_pct) {
-            if (_pct === 0) {
-                return 'ongoing'
+        formatFunded(_cause) {
+            /* Set percentage. */
+            const pct = _cause.pct
+
+            /* Initialize formatted. */
+            let formatted = null
+
+            if (pct === 0) {
+                formatted = 'ongoing'
             } else {
-                return numeral(_pct).format('0.00%')
+                const completePct = this.completedPct(_cause)
+
+                formatted = numeral(completePct).format('0.00%')
             }
+
+            /* Return formatted. */
+            return formatted
         },
+
     },
     created: function () {
         /* Cause */
-        this.causes.push({
-            id: '91c22c50-f2a4-470a-9679-452240c032cf',
-            category: 'Infrastructure Development',
-            title: `Bitcoin Cash Protocol Development Fundraiser`,
-            summary: `Bitcoin ABC develops, maintains and secures the most essential Bitcoin Cash infrastructure, our full node software which is used to mine almost every Bitcoin Cash block.`,
-            coverImgUrl: 'https://i.imgur.com/1KA9cYe.jpg',
-            authorName: 'Bitcoin ABC',
-            authorImgUrl: 'https://i.imgur.com/AmFwzEx.png',
-            pledged: 1450680.00,
-            fundedPct: 0.4396,
-            lastUpdate: '2'
-        })
+        this.causes.push(this.getCampaign('bitcoin-abc-43eda61596e7'))
 
         /* Cause */
-        this.causes.push({
-            id: '52baf5aa-5297-4dc6-9995-9deb328fcec6',
-            category: 'Health & Wellness',
-            title: `eatBCH`,
-            summary: `eatBCH is not a typical charity. We simply provide food to people that prepare and deliver meals to their community. Kind of like when a neighbor knocks on your door to share a freshly baked slice of apple pie.`,
-            coverImgUrl: 'https://i.imgur.com/IdIsYhz.jpg',
-            authorName: 'eatBCH',
-            authorImgUrl: 'https://i.imgur.com/rIEYsKy.png',
-            pledged: 0.00,
-            fundedPct: 0,
-            lastUpdate: '1'
-        })
+        this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
 
         /* Cause */
-        this.causes.push({
-            id: '2e4ac230-3e24-43a0-9ce5-4c1783d6ea66',
-            category: 'Infrastructure Development',
-            title: `Bitcoin Cash Node Initiative`,
-            summary: `The primary goal of the Bitcoin Cash Node initiative is to provide a safe and professional node implementation that will neutrally follow the longest Bitcoin Cash chain without contributing to the risk of a chain split.`,
-            coverImgUrl: 'https://i.imgur.com/SClCyuv.png',
-            authorName: 'Bitcoin Cash Node',
-            authorImgUrl: 'https://i.imgur.com/WzqwbU2.png',
-            pledged: 36711.38,
-            fundedPct: 0,
-            lastUpdate: '2'
-        })
+        this.causes.push(this.getCampaign('eatbch-b6ce6ceb819f'))
 
         /* Cause */
         this.causes.push({
@@ -184,10 +200,10 @@ export default {
             summary: `A community token (PIF) and fund supporting projects enabling the Freedom to Wealth™.`,
             coverImgUrl: 'https://i.imgur.com/8JY3eiw.jpg',
             authorName: 'Bitcoin Cash Please',
-            authorImgUrl: 'https://i.imgur.com/f1kian5.png',
+            authorAvatar: 'https://i.imgur.com/f1kian5.png',
             pledged: 0.00,
             fundedPct: 0,
-            lastUpdate: '1'
+            updatedAt: '1'
         })
 
         /* Cause */
@@ -198,25 +214,23 @@ export default {
             summary: `Nito.cash is the most user-friendly, privacy shielding wallet for crypto newcomers.`,
             coverImgUrl: 'https://i.imgur.com/oj1uOCA.png',
             authorName: 'Bitcoin Cash Please',
-            authorImgUrl: 'https://i.imgur.com/f1kian5.png',
+            authorAvatar: 'https://i.imgur.com/f1kian5.png',
             pledged: 0.00,
             fundedPct: 0,
-            lastUpdate: '1'
+            updatedAt: '1'
         })
 
-        /* Cause */
-        this.causes.push({
-            id: '32988e8e-dd6a-4bd1-99cb-afc19be326e4',
-            category: 'Business & Commerce',
-            title: `Pioneer Cash`,
-            summary: `Empowering the community with the tools needed to onboard every merchant in their circle.`,
-            coverImgUrl: 'https://i.imgur.com/Ya0rfps.jpg',
-            authorName: 'Bitcoin Cash Please',
-            authorImgUrl: 'https://i.imgur.com/f1kian5.png',
-            pledged: 0.00,
-            fundedPct: 0,
-            lastUpdate: '1'
-        })
+    },
+    mounted: function () {
+        $('.raised > span').each(function () {
+			$(this)
+				.data('origWidth', $(this).width())
+				.width(0)
+				.animate({
+					// width: $(this).data('origWidth')
+					width: $(this).data('origWidth')
+				}, 1200);
+		});
 
     },
 }

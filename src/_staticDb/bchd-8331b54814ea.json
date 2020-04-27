@@ -1,0 +1,21 @@
+{
+    "id": "eb43dbbf-0273-45b2-b8dd-8331b54814ea",
+    "slug": "bchd",
+    "title": "BCHD Development Fundraiser",
+    "category": "Infrastructure Development",
+    "summary": "BCHD is a full node and blockchain server written in Go. The immediate goals of this project is to first and foremost support application development as a high performance blockchain server.",
+    "description": "The immediate goals of this project is to first and foremost support application development as a high performance blockchain server. This will include adding an SLP index to support the burgeoning token sector. Secondly we want BCHD to become a fully capable mining node to help support mining diversity in Bitcoin Cash.",
+    "authorName": "BCHD",
+    "authorAvatar": "https://i.imgur.com/Huz0U9L.jpg",
+    "authorLink": "https://bchd.cash",
+    "location": "Worldwide",
+    "imgUrl": "https://i.imgur.com/EEv70Ck.jpg",
+    "coverImgUrl": "https://i.imgur.com/pe72i5A.jpg",
+    "currency": "BCH",
+    "requested": 360.00,
+    "pledged": 250.54,
+    "backers": 18,
+    "duration": 14,
+    "createdAt": 2,
+    "updatedAt": 1
+}

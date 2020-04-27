@@ -184,41 +184,22 @@ export default {
     },
     created: function () {
         /* Cause */
+        this.causes.push(this.getCampaign('bitcoin-verde-14214ea4cd41'))
+
+        /* Cause */
+        this.causes.push(this.getCampaign('bchd-8331b54814ea'))
+
+        /* Cause */
         this.causes.push(this.getCampaign('bitcoin-abc-43eda61596e7'))
+
+        /* Cause */
+        this.causes.push(this.getCampaign('knuth-158ef2f48aa0'))
 
         /* Cause */
         this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
 
         /* Cause */
         this.causes.push(this.getCampaign('eatbch-b6ce6ceb819f'))
-
-        /* Cause */
-        this.causes.push({
-            id: '8b0b0f38-df9f-498b-bbbb-e9830763afb9',
-            category: 'Our Community',
-            title: `Pay It Forward`,
-            summary: `A community token (PIF) and fund supporting projects enabling the Freedom to Wealth™.`,
-            coverImgUrl: 'https://i.imgur.com/8JY3eiw.jpg',
-            authorName: 'Bitcoin Cash Please',
-            authorAvatar: 'https://i.imgur.com/f1kian5.png',
-            pledged: 0.00,
-            fundedPct: 0,
-            updatedAt: '1'
-        })
-
-        /* Cause */
-        this.causes.push({
-            id: 'e584e3d9-2fa3-4c41-b4ac-1a7cc42bf7b1',
-            category: 'Product Development',
-            title: `Nito Cash`,
-            summary: `Nito.cash is the most user-friendly, privacy shielding wallet for crypto newcomers.`,
-            coverImgUrl: 'https://i.imgur.com/oj1uOCA.png',
-            authorName: 'Bitcoin Cash Please',
-            authorAvatar: 'https://i.imgur.com/f1kian5.png',
-            pledged: 0.00,
-            fundedPct: 0,
-            updatedAt: '1'
-        })
 
     },
     mounted: function () {

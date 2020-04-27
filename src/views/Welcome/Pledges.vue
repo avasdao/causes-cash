@@ -2,10 +2,10 @@
     <main>
         <div class="how-it-work">
             <div class="container">
-                <h2 class="title">3 Ways To Support</h2>
+                <h2 class="title">3 Ways To Offer Your Support</h2>
 
                 <div class="description">
-                    Choose your preferred method of pledging support to your favorite cause(s).
+                    Choose your preferred method of showing ❤️ to your favorite cause(s).
                 </div>
 
                 <div class="row">

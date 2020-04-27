@@ -1,10 +1,11 @@
 {
     "id": "6eb7c667-698d-472d-a446-43eda61596e7",
-    "slug": "bitcoin-abc",
+    "slug": "bitcoin-cash-protocol-development-fundraiser",
     "title": "Bitcoin Cash Protocol Development Fundraiser",
     "category": "Infrastructure Development",
     "summary": "Bitcoin ABC develops, maintains and secures the most essential Bitcoin Cash infrastructure, our full node software which is used to mine almost every Bitcoin Cash block.",
     "description": "Bitcoin ABC develops, maintains and secures the most essential Bitcoin Cash infrastructure, our full node software which is used to mine almost every Bitcoin Cash block.",
+    "authorId": "bitcoinabc",
     "authorName": "Bitcoin ABC",
     "authorAvatar": "https://i.imgur.com/AmFwzEx.png",
     "authorLink": "https://bitcoinabc.org",

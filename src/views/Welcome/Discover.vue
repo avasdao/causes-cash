@@ -29,18 +29,18 @@
                         :key="cause.id"
                         class="col-lg-4 col-md-6 col-sm-6 col-6 filterinteresting filterpopular filterlatest">
                         <div class="campaign-item">
-                            <!-- <div class="overlay" href="javascript://"> -->
-                                <img :src="cause.coverImgUrl" alt="">
-                            <!-- </div> -->
+                                <a class="category" href="javascript://" @click="loadDetails(cause)">
+                                    <img :src="cause.coverImgUrl" alt="">
+                                </a>
                             <div class="campaign-box">
-                                <router-link class="category" to="/details">
+                                <a class="category" href="javascript://" @click="loadCategory(cause)">
                                     {{cause.category}}
-                                </router-link>
+                                </a>
 
                                 <h3>
-                                    <router-link to="/details">
+                                    <a href="javascript://" @click="loadDetails(cause)">
                                         {{cause.title}}
-                                    </router-link>
+                                    </a>
                                 </h3>
 
                                 <div class="campaign-description">
@@ -48,10 +48,10 @@
                                 </div>
 
                                 <div class="campaign-author">
-                                    <router-link class="author-icon" to="/details">
+                                    <a class="author-icon" :href="cause.authorLink" target="_blank">
                                         <img :src="cause.authorAvatar" alt="">
                                         by {{cause.authorName}}
-                                    </router-link>
+                                    </a>
                                 </div>
 
                                 <div class="process">
@@ -120,6 +120,58 @@ export default {
         ]),
     },
     methods: {
+        /**
+         * Load Category
+         */
+        loadCategory(_cause) {
+            /* Set category. */
+            const category = _cause.category
+
+            alert('goto ' + category)
+        },
+
+        /**
+         * Load Details
+         */
+        loadDetails(_cause) {
+            // console.log('CAUSE', _cause)
+
+            /* Set campaign id. */
+            const id = _cause.id
+
+            /* Validate id. */
+            if (!id) {
+                return alert('Invalid ID!')
+            }
+
+            /* Set slug. */
+            const slug = _cause.slug
+
+            /* Validate slug. */
+            if (!slug) {
+                return alert('Invalid slug!')
+            }
+
+            /* Set author id. */
+            const authorId = _cause.authorId
+
+            /* Validate author id. */
+            if (!authorId) {
+                return alert('Invalid author!')
+            }
+
+            /* Set extended slug. */
+            const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
+
+            /* Load details. */
+            this.$router.push(`@${authorId}/${extSlug}`)
+        },
+
+        details(_cause) {
+            console.log('CAUSE', _cause)
+            return '@bchplease/nito-cash-8680bb0e'
+        },
+
         /**
          * Completed Percentage
          */
@@ -203,15 +255,15 @@ export default {
 
     },
     mounted: function () {
+        /* Animated completion bar. */
         $('.raised > span').each(function () {
 			$(this)
 				.data('origWidth', $(this).width())
 				.width(0)
 				.animate({
-					// width: $(this).data('origWidth')
 					width: $(this).data('origWidth')
 				}, 1200);
-		});
+		})
 
     },
 }

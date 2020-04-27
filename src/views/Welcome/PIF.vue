@@ -51,15 +51,17 @@
                                     </div>
 
                                     <div class="process">
-                                        <div class="raised"><span></span></div>
+                                        <div class="raised">
+                                            <span :style="{ width: completedPct(cause, true) + '%'}"></span>
+                                        </div>
 
                                         <div class="process-info">
                                             <div class="process-pledged">
-                                                <span>{{cause.requested}}</span>requested
+                                                <span>{{formatRequested(cause)}}</span>requested
                                             </div>
 
                                             <div class="process-funded">
-                                                <span>{{cause.pledged}}</span>pledged
+                                                <span>{{formatPledged(cause)}}</span>pledged
                                             </div>
 
                                             <div class="process-time">
@@ -67,7 +69,7 @@
                                             </div>
 
                                             <div class="process-time">
-                                                <span>{{cause.duration}}</span>days ago
+                                                <span>{{cause.updatedAt}}</span>days ago
                                             </div>
                                         </div>
                                     </div>
@@ -86,6 +88,9 @@
 <script>
 /* Initialize vuex. */
 import { mapGetters } from 'vuex'
+
+/* Import modules. */
+import numeral from 'numeral'
 
 /* Import components. */
 import Categories from './PIF/Categories.vue'
@@ -114,7 +119,91 @@ export default {
         ]),
     },
     methods: {
-        //
+        /**
+         * Completed Percentage
+         */
+        completedPct(_cause, _integer = false) {
+            /* Calculate completion percentage. */
+            const completedPct = (_cause.pledged / _cause.requested)
+
+            /* Validate integer flag. */
+            if (_integer) {
+                return parseInt(completedPct * 100)
+            } else {
+                return completedPct
+            }
+        },
+
+        /**
+         * Format Requested
+         */
+        formatRequested(_cause) {
+            /* Set requested amount. */
+            const requested = _cause.requested
+
+            /* Initialize dollar value. */
+            let dollar = null
+
+            /* Calculate dollar value. */
+            if (_cause.currency === 'BCH') {
+                dollar = requested * 244.18
+            } else {
+                dollar = requested
+            }
+
+            /* Format pledge. */
+            const formatted = numeral(dollar).format('$0,0.00')
+
+            /* Return formatted. */
+            return formatted
+        },
+
+        /**
+         * Format Pledged
+         */
+        formatPledged(_cause) {
+            /* Set pledged amount. */
+            const pledged = _cause.pledged
+
+            /* Initialize dollar value. */
+            let dollar = null
+
+            /* Calculate dollar value. */
+            if (_cause.currency === 'BCH') {
+                dollar = pledged * 244.18
+            } else {
+                dollar = pledged
+            }
+
+            /* Format pledge. */
+            const formatted = numeral(dollar).format('$0,0.00')
+
+            /* Return formatted. */
+            return formatted
+        },
+
+        /**
+         * Format Funded
+         */
+        formatFunded(_cause) {
+            /* Set percentage. */
+            const pct = _cause.pct
+
+            /* Initialize formatted. */
+            let formatted = null
+
+            if (pct === 0) {
+                formatted = 'ongoing'
+            } else {
+                const completePct = this.completedPct(_cause)
+
+                formatted = numeral(completePct).format('0.00%')
+            }
+
+            /* Return formatted. */
+            return formatted
+        },
+
     },
     created: function () {
         /* Adoption. */
@@ -142,7 +231,8 @@ export default {
         this.causes.push(this.getCampaign('eatbch-b6ce6ceb819f'))
 
         /* Infrastructure. */
-        this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
+        // this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
+        this.causes.push(this.getCampaign('bitcoin-verde-14214ea4cd41'))
 
         /* Privacy. */
         this.causes.push(this.getCampaign('nito-cash-07dd70f04162'))
@@ -172,6 +262,16 @@ export default {
             startSlide: 8,
             touchEnabled : (navigator.maxTouchPoints > 0),
         })
+
+        /* Animated completion bar. */
+        // $('.raised > span').each(function () {
+		// 	$(this)
+		// 		.data('origWidth', $(this).width())
+		// 		.width(0)
+		// 		.animate({
+		// 			width: $(this).data('origWidth')
+		// 		}, 1200);
+		// })
 
     },
 }

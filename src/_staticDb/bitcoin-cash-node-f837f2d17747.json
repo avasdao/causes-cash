@@ -1,10 +1,11 @@
 {
     "id": "b3668bc5-7cc9-4a9c-907e-f837f2d17747",
-    "slug": "bitcoin-cash-node",
+    "slug": "bitcoin-cash-node-initiative",
     "title": "Bitcoin Cash Node Initiative",
     "category": "Infrastructure Development",
     "summary": "Bitcoin Cash Node (BCHN) is a full node project which aims to provide a safe client implementation for the BCH network, supported by an engaged community of professional developers, testers and supporting staff.",
     "description": "The primary goal of the Bitcoin Cash Node initiative is to provide a safe and professional node implementation that will neutrally follow the longest Bitcoin Cash chain without contributing to the risk of a chain split.",
+    "authorId": "bitcoincashnode",
     "authorName": "Bitcoin Cash Node",
     "authorAvatar": "https://i.imgur.com/vkrLrfD.png",
     "authorLink": "https://bitcoincashnode.org",

@@ -9,8 +9,11 @@
     "authorLink": "https://veracrypt.fr",
     "location": "Paris, France",
     "imgUrl": "https://i.imgur.com/9wWdKFk.png",
-    "requested": 10000.00,
-    "pledged": 81,
-    "backers": 37,
-    "duration": 23
+    "currency": "BCH",
+    "requested": 0.00,
+    "pledged": 1.72016100,
+    "backers": 88,
+    "duration": 0,
+    "createdAt": 2,
+    "updatedAt": 6
 }

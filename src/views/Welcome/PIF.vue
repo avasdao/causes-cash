@@ -228,10 +228,10 @@ export default {
         this.causes.push(this.getCampaign('bitcoin-cashdrive-28c4c05ad744'))
 
         /* Health. */
-        this.causes.push(this.getCampaign('eatbch-b6ce6ceb819f'))
+        this.causes.push(this.getCampaign('help-us-deliver-food-for-one-month-b6ce6ceb819f'))
 
         /* Infrastructure. */
-        // this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
+        // this.causes.push(this.getCampaign('bitcoin-cash-node-initiative-f837f2d17747'))
         this.causes.push(this.getCampaign('bitcoin-verde-node-development-14214ea4cd41'))
 
         /* Privacy. */

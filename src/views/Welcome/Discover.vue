@@ -245,10 +245,10 @@ export default {
         this.causes.push(this.getCampaign('knuth-platform-development-158ef2f48aa0'))
 
         /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-cash-node-f837f2d17747'))
+        this.causes.push(this.getCampaign('bitcoin-cash-node-initiative-f837f2d17747'))
 
         /* Cause */
-        this.causes.push(this.getCampaign('eatbch-b6ce6ceb819f'))
+        this.causes.push(this.getCampaign('help-us-deliver-food-for-one-month-b6ce6ceb819f'))
 
     },
     mounted: function () {

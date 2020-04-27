@@ -21,41 +21,11 @@
                 <Pledges />
                 <Discover />
                 <Articles />
-
-                <!-- .latest -->
-                <!-- .story -->
-                <div class="partners">
-                    <div class="container">
-                        <div class="partners-slider owl-carousel">
-                            <div>
-                                <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-01.png" alt=""></a>
-                            </div>
-                            <div>
-                                <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-02.png" alt=""></a>
-                            </div>
-                            <div>
-                                <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-03.png" alt=""></a>
-                            </div>
-                            <div>
-                                <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-04.png" alt=""></a>
-                            </div>
-                            <div>
-                                <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-05.png" alt=""></a>
-                            </div>
-                            <div>
-                                <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-06.png" alt=""></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- .partners -->
+                <Partners />
             </main>
-            <!-- .site-main -->
 
             <Footer />
         </div>
-        <!-- #wrapper -->
-
     </div>
 </template>
 
@@ -63,6 +33,7 @@
 /* Import views. */
 import Articles from '@/views/Welcome/Articles.vue'
 import Discover from '@/views/Welcome/Discover.vue'
+import Partners from '@/views/Welcome/Partners.vue'
 import PIF from '@/views/Welcome/PIF.vue'
 import Pledges from '@/views/Welcome/Pledges.vue'
 import Slideshow from '@/views/Welcome/Slideshow.vue'
@@ -81,6 +52,7 @@ export default {
     components: {
         Articles,
         Discover,
+        Partners,
         Pledges,
         PIF,
         Slideshow,

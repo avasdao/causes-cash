@@ -7,19 +7,29 @@
                     <li><a href="https://reddit.com/r/CausesCash" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a></li>
                     <li><a href="https://gitlab.com/bchplease/causes.cash" target="_blank"><i class="fa fa-gitlab" aria-hidden="true"></i></a></li>
                 </ul>
-                <div class="phone"><em class="text-muted">Raising <strong>Bitcoin Cash</strong> and the <strong>Freedom to Wealth™</strong></em></div>
+
+                <div class="phone">
+                    <em class="text-muted">
+                        Raising <strong>Bitcoin Cash</strong> and the <strong>Freedom to Wealth™</strong>
+                    </em>
+                </div>
             </div>
         </div>
 
         <div class="content-header">
             <div class="container">
                 <div class="site-brand">
-                    <router-link to="/" exact><img src="@/assets/logo.png" alt=""></router-link>
+                    <router-link to="/" exact>
+                        <img src="@/assets/logo.png" alt="">
+                    </router-link>
                 </div>
 
                 <div class="right-header">
                     <nav class="main-menu">
-                        <button class="c-hamburger c-hamburger--htx"><span></span></button>
+                        <button class="c-hamburger c-hamburger--htx">
+                            <span></span>
+                        </button>
+
                         <ul>
                             <li>
                                 <router-link to="/" exact>Home</router-link>
@@ -111,11 +121,9 @@
 </template>
 
 <script>
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
-
-/* Initialize Web3. */
-// const Web3 = require('web3')
+/* Import JQuery. */
+// FIXME: Remove ALL jQuery dependencies.
+const $ = window.jQuery
 
 export default {
     data: () => {
@@ -169,7 +177,23 @@ export default {
         // web3.eth.getAccounts().then(console.log)
         // const test = Buffer.from('686920746865726521', 'hex')
         // console.log('DECODED', test.toString('utf8'))
-    }
+    },
+    mounted: function () {
+        $('.search-icon a').on('click', function (e) {
+            e.preventDefault()
+
+            $(this).parent().find('.form-search').fadeToggle()
+            $(this).parent().find('#searchForm').fadeToggle()
+        })
+
+        $('.form-search').on('click', function (e) {
+            e.preventDefault()
+
+            $(this).fadeToggle()
+            $(this).parent().find('#searchForm').fadeToggle()
+        })
+
+    },
 }
 </script>
 

@@ -72,13 +72,13 @@ function readURL2(input, thumbimage) {
 
 	/*  [ jQuery Upload File ]
         - - - - - - - - - - - - - - - - - - - - */
-	$(document).ready(function() {
+	$(document).ready(function () {
 		$(".choicefile").bind('click', function () {
             $("#uploadfile").click()
         })
         $(".removeimg").on('click', function () {
             $("#thumbimage").attr('src', '').hide()
-            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />')
+            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this)" />')
             $(".removeimg").hide()
             $(".choicefile").show()
             $(".choicefile").bind('click', function () {
@@ -90,13 +90,13 @@ function readURL2(input, thumbimage) {
         })
 
         $(".choicefile1").bind('click', function () {
-            $("#uploadfile1").click();
+            $("#uploadfile1").click()
         })
         $(".removeimg1").on('click', function () {
-            $("#thumbimage1").attr('src', '').hide();
-            $("#myfileupload1").html('<input type="file" id="uploadfile1"  onchange="readURL1(this);" />');
-            $(".removeimg1").hide();
-            $(".choicefile1").show();
+            $("#thumbimage1").attr('src', '').hide()
+            $("#myfileupload1").html('<input type="file" id="uploadfile1"  onchange="readURL1(this)" />')
+            $(".removeimg1").hide()
+            $(".choicefile1").show()
             $(".choicefile1").bind('click', function () {
                 $("#uploadfile1").click()
             })
@@ -106,11 +106,11 @@ function readURL2(input, thumbimage) {
         })
 
         $(".choicefile2").bind('click', function () {
-            $("#uploadfile2").click();
+            $("#uploadfile2").click()
         })
-        $(".removeimg2").on('click', function() {
+        $(".removeimg2").on('click', function () {
             $("#thumbimage2").attr('src', '').hide()
-            $("#myfileupload2").html('<input type="file" id="uploadfile2"  onchange="readURL2(this);" />')
+            $("#myfileupload2").html('<input type="file" id="uploadfile2"  onchange="readURL2(this)" />')
             $(".removeimg2").hide()
             $(".choicefile2").show()
             $(".choicefile2").bind('click', function () {
@@ -133,7 +133,7 @@ function readURL2(input, thumbimage) {
         function toggleHandler(toggle) {
             toggle.addEventListener( "click", function(e) {
                 e.preventDefault();
-                (this.classList.contains("is-active") === true) ? this.classList.remove("is-active") : this.classList.add("is-active");
+                (this.classList.contains("is-active") === true) ? this.classList.remove("is-active") : this.classList.add("is-active")
             })
         }
 
@@ -169,28 +169,28 @@ function readURL2(input, thumbimage) {
 		/*  [ Menu Category ]
         - - - - - - - - - - - - - - - - - - - - */
 		$('.menu-category li.mc-option').on('click', function () {
-			var tab_id = $(this).attr('data-hash');
-			$('.menu-category li.mc-option').removeClass('active');
-			$(this).addClass('active');
-		});
+			var tab_id = $(this).attr('data-hash')
+			$('.menu-category li.mc-option').removeClass('active')
+			$(this).addClass('active')
+		})
 		$('.menu-category li.cat-more a').on('click', function () {
-			var url = $(this).attr('href');
+			var url = $(this).attr('href')
 			window.location.href = url;
-		});
+		})
 
 		/*  [ Main Menu ]
         - - - - - - - - - - - - - - - - - - - - */
-		$( '.c-hamburger' ).on( 'click', function() {
-            $( this ).parents( '.main-menu' ).toggleClass('open');
-            $( 'body' ).toggleClass( 'menu-open' );
-        });
+		$( '.c-hamburger' ).on( 'click', function () {
+            $( this ).parents( '.main-menu' ).toggleClass('open')
+            $( 'body' ).toggleClass( 'menu-open' )
+        })
         $( 'html' ).on( 'click', function(e) {
             if( $( e.target ).closest( '.main-menu.open' ).length == 0 ) {
-                $( '.main-menu' ).removeClass( 'open' );
-                $( 'body' ).removeClass( 'menu-open' );
-                $( '.c-hamburger' ).removeClass('is-active');
+                $( '.main-menu' ).removeClass( 'open' )
+                $( 'body' ).removeClass( 'menu-open' )
+                $( '.c-hamburger' ).removeClass('is-active')
             }
-        });
+        })
 
         /*  [ Header Fixed ]
         - - - - - - - - - - - - - - - - - - - - */
@@ -207,34 +207,31 @@ function readURL2(input, thumbimage) {
         /*  [ Sub Menu ]
     	- - - - - - - - - - - - - - - - - - - - */
         $( '.main-menu ul > li' ).on('click', function () {
-			$( this ).find('.sub-menu').slideToggle();
-		});
+			$( this ).find('.sub-menu').slideToggle()
+		})
 
-        setTimeout(function(){
-        	$('.preloading').fadeOut();
-		}, 3000);
-		$('#start-tag').magicSuggest({
-        	placeholder: '',
-        	maxEntryLength: 50,
-    	});
-	    $('.process-model li.pm-option').on('click', function (e) {
-	    	e.preventDefault();
-			var tab_id = $(this).attr('data-tab');
-			$('.process-model li.pm-option').removeClass('active');
-			$('.tab-content .tab-pane').removeClass('active');
-			$('.process-model li').removeClass();
-			$(this).addClass('active');
-			$("#"+tab_id).addClass('active');
-			$(this).prevAll().addClass("visited");
-		});
-		$('.process-model li:nth-child(1)').removeClass('visited');
-	    $('.pane-tab li').on('click', function () {
-			var tab_id = $(this).attr('data-tab');
-			$('.pane-tab li').removeClass('active');
-			$('#story .pane-box').removeClass('active');
-			$(this).addClass('active');
-			$("#"+tab_id).addClass('active');
-		});
+        $('#start-tag').magicSuggest({
+            placeholder: '',
+            maxEntryLength: 50,
+        })
+        $('.process-model li.pm-option').on('click', function (e) {
+            e.preventDefault()
+			var tab_id = $(this).attr('data-tab')
+			$('.process-model li.pm-option').removeClass('active')
+			$('.tab-content .tab-pane').removeClass('active')
+			$('.process-model li').removeClass()
+			$(this).addClass('active')
+			$("#"+tab_id).addClass('active')
+			$(this).prevAll().addClass("visited")
+		})
+		$('.process-model li:nth-child(1)').removeClass('visited')
+        $('.pane-tab li').on('click', function () {
+			var tab_id = $(this).attr('data-tab')
+			$('.pane-tab li').removeClass('active')
+			$('#story .pane-box').removeClass('active')
+			$(this).addClass('active')
+			$("#"+tab_id).addClass('active')
+		})
 		var toolbarOptions = [
             ['bold'],        // toggled buttons
 
@@ -243,133 +240,123 @@ function readURL2(input, thumbimage) {
             [ 'image' ],
             [ 'video' ],
             ['clean'],
-        ];
-		var quill = new Quill('#editor', {
-    		modules: {
+        ]
+		var quill = new window.Quill('#editor', {
+            modules: {
                 toolbar: toolbarOptions,
             },
             formats: [
-			    'bold',
-			    'size',
-			    'link',
-			    'image',
-			    'video',
-			    'clean',
-			  ],
-		    theme: 'snow'
-		});
+                'bold',
+                'size',
+                'link',
+                'image',
+                'video',
+                'clean',
+            ],
+            theme: 'snow'
+		})
 		$('.create-perk').on('click', function (e) {
-			e.preventDefault();
-			$(this).parent().fadeOut(0);
-			$(this).parent().parent().find('.start-form').fadeIn();
-		});
+			e.preventDefault()
+			$(this).parent().fadeOut(0)
+			$(this).parent().parent().find('.start-form').fadeIn()
+		})
 		$('.view-fees').on('click', function (e) {
-			e.preventDefault();
-			$(this).parent().parent().find('.spopup-bg').fadeIn();
-			$(this).parent().parent().find('.fees-popup').fadeIn();
-		});
+			e.preventDefault()
+			$(this).parent().parent().find('.spopup-bg').fadeIn()
+			$(this).parent().parent().find('.fees-popup').fadeIn()
+		})
 		$('.spopup-bg').on('click', function (e) {
-			e.preventDefault();
-			$(this).fadeOut();
-			$(this).parent().find('.fees-popup').fadeOut();
-			$(this).parent().find('.item-popup').fadeOut();
-		});
+			e.preventDefault()
+			$(this).fadeOut()
+			$(this).parent().find('.fees-popup').fadeOut()
+			$(this).parent().find('.item-popup').fadeOut()
+		})
 		$('.spopup-close').on('click', function (e) {
-			e.preventDefault();
-			$(this).parent().parent().fadeOut();
-			$(this).parent().parent().parent().find('.spopup-bg').fadeOut();
-		});
+			e.preventDefault()
+			$(this).parent().parent().fadeOut()
+			$(this).parent().parent().parent().find('.spopup-bg').fadeOut()
+		})
 		$('.item-cancel').on('click', function (e) {
-			e.preventDefault();
-			$(this).parent().parent().fadeOut();
-			$(this).parent().parent().parent().find('.spopup-bg').fadeOut();
-		});
+			e.preventDefault()
+			$(this).parent().parent().fadeOut()
+			$(this).parent().parent().parent().find('.spopup-bg').fadeOut()
+		})
 		$('.add-item').on('click', function (e) {
-			e.preventDefault();
-			$(this).parent().find('.spopup-bg').fadeIn();
-			$(this).parent().find('.item-popup').fadeIn();
-		});
+			e.preventDefault()
+			$(this).parent().find('.spopup-bg').fadeIn()
+			$(this).parent().find('.item-popup').fadeIn()
+		})
 		$('.connect-fb').on('click', function (e) {
-			e.preventDefault();
-			$(this).fadeOut(0);
-			$(this).parent().find('.fb-content').fadeIn();
-		});
+			e.preventDefault()
+			$(this).fadeOut(0)
+			$(this).parent().find('.fb-content').fadeIn()
+		})
 		$('.fb-content a').on('click', function (e) {
-			e.preventDefault();
-			$(this).parent().fadeOut(0);
-			$(this).parent().parent().find('.connect-fb').fadeIn();
-		});
+			e.preventDefault()
+			$(this).parent().fadeOut(0)
+			$(this).parent().parent().find('.connect-fb').fadeIn()
+		})
 		$('.add-reward').on('click', function (e) {
-			e.preventDefault();
-			$("#import").append($("#itemform").html());
-		});
-		$("#import").bind("DOMSubtreeModified", function() {
+			e.preventDefault()
+			$("#import").append($("#itemform").html())
+		})
+		$("#import").bind("DOMSubtreeModified", function () {
 			$('.reward-delete').on('click', function (e) {
-				e.preventDefault();
-				$(this).parent().parent().fadeOut(0);
-			});
-		});
-	});
+				e.preventDefault()
+				$(this).parent().parent().fadeOut(0)
+			})
+		})
+	})
 
-	$(window).on('load', function() {
-		$( '.grid' ).each( function() {
-	    	var $grid = $('.grid').isotope({
-			  itemSelector: '.filterinteresting',
-			  layoutMode: 'fitRows',
-			  getSortData: {
-			    name: '.name',
-			    symbol: '.symbol',
-			    number: '.number parseInt',
-			    category: '[data-category]',
-			    weight: function( itemElem ) {
-			      var weight = $( itemElem ).find('.weight').text();
-			      return parseFloat( weight.replace( /[\(\)]/g, '') );
-			    }
-			  }
-			});
-
-			// filter functions
-			var filterFns = {
-			  // show if number is greater than 50
-			  numberGreaterThan50: function() {
-			    var number = $(this).find('.number').text();
-			    return parseInt( number, 10 ) > 50;
-			  },
-			  // show if name ends with -ium
-			  ium: function() {
-			    var name = $(this).find('.name').text();
-			    return name.match( /ium$/ );
-			  }
-			};
-
-			// bind filter button click
-			$('.filter-theme').on( 'click', 'button', function() {
-			  var filterValue = $( this ).attr('data-filter');
-			  // use filterFn if matches value
-			  filterValue = filterFns[ filterValue ] || filterValue;
-			  $grid.isotope({ filter: filterValue });
-			});
-
-
-
-			// change is-checked class on buttons
-			$('.campaign-tabs').each( function( i, buttonGroup ) {
-			  var $buttonGroup = $( buttonGroup );
-			  $buttonGroup.on( 'click', 'button', function() {
-			    $buttonGroup.find('.is-checked').removeClass('is-checked');
-			    $( this ).addClass('is-checked');
-			  });
-			});
-	    });
-	});
-})(jQuery);
-wow = new WOW(
-  {
-    animateClass: 'animated',
-    offset:       100,
-    callback:     function(box) {
-      console.log("WOW: animating <" + box.tagName.toLowerCase() + ">")
-    }
-  }
-);
-wow.init();
+    // $(window).on('load', function () {
+    //     $( '.grid' ).each( function () {
+    //         var $grid = $('.grid').isotope({
+    //             itemSelector: '.filterinteresting',
+    //             layoutMode: 'fitRows',
+    //             getSortData: {
+    //                 name: '.name',
+    //                 symbol: '.symbol',
+    //                 number: '.number parseInt',
+    //                 category: '[data-category]',
+    //                 weight: function( itemElem ) {
+    //                     var weight = $( itemElem ).find('.weight').text()
+    //                     return parseFloat( weight.replace( /[\(\)]/g, '') )
+    //                 }
+    //             }
+    //         })
+    //
+	// 		// filter functions
+	// 		var filterFns = {
+    //             // show if number is greater than 50
+    //             numberGreaterThan50: function () {
+    //                 var number = $(this).find('.number').text()
+    //                 return parseInt( number, 10 ) > 50
+    //             },
+    //             // show if name ends with -ium
+    //             ium: function () {
+    //                 var name = $(this).find('.name').text()
+    //                 return name.match( /ium$/ )
+    //             }
+    //         }
+    //
+	// 		// bind filter button click
+	// 		$('.filter-theme').on( 'click', 'button', function () {
+    //             var filterValue = $( this ).attr('data-filter')
+    //
+    //             // use filterFn if matches value
+    //             filterValue = filterFns[ filterValue ] || filterValue;
+    //             $grid.isotope({ filter: filterValue })
+    //         })
+    //
+	// 		// change is-checked class on buttons
+	// 		$('.campaign-tabs').each( function( i, buttonGroup ) {
+    //             var $buttonGroup = $( buttonGroup )
+    //
+    //             $buttonGroup.on( 'click', 'button', function () {
+    //                 $buttonGroup.find('.is-checked').removeClass('is-checked')
+    //                 $( this ).addClass('is-checked')
+    //             })
+	// 		})
+    //     })
+	// })
+})(window.jQuery)

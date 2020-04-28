@@ -48,6 +48,16 @@ export default {
         await this.getOrbitDB
 
     },
+    mounted: async function () {
+        /* Initialize WOW. */
+        new window.WOW({
+            animateClass: 'animated',
+            offset: 100,
+            callback: function(box) {
+                console.log('WOW: animating <' + box.tagName.toLowerCase() + '>')
+            }
+        }).init()
+    },
 }
 
 </script>

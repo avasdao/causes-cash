@@ -221,5 +221,11 @@ export default {
         // this.initEthereum()
         // this.initEthers()
     },
+    mounted: function () {
+        // setTimeout(function(){
+        // 	$('.preloading').fadeOut()
+		// }, 3000)
+        
+    }
 }
 </script>

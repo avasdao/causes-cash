@@ -19,7 +19,7 @@
 
                 <li>
                     Your email and password are
-                    <strong>NOT verified</strong> by anyone, 
+                    <strong>NOT verified</strong> by anyone,
                     they are <strong>NOT sent</strong> anywhere
                     and they are <strong>NOT stored</strong> anywhere.
                 </li>
@@ -94,7 +94,10 @@
 
 <script>
 /* Initialize vuex. */
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+/* Import modules. */
+import scrypt from 'scrypt-js'
 
 /* Import components. */
 // import Name from '@/components/Name.vue'
@@ -104,7 +107,7 @@ import { mapGetters } from 'vuex'
 
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
+const $ = window.jQuery
 
 export default {
     components: {
@@ -122,14 +125,70 @@ export default {
         ]),
     },
     methods: {
+        ...mapActions('profile', [
+            'updateMasterSeed',
+            'updateNickname',
+        ]),
+
+        /**
+         * Sign In
+         */
         signIn() {
+            /* Validate email. */
+            // TODO: Improve email validation.
+            if (!this.email) {
+                return alert('Invalid email address. Please try again.')
+            }
+
+            /* Validate password. */
+            // TODO: Improve "strong" password validation.
+            if (!this.password) {
+                return alert('Invalid password. Please try again.')
+            }
+
             /* Set password. */
             const password = Buffer.from(this.password.normalize('NFKC'))
-            console.log('Password/password', password, this.password, this.password.normalize('NFKC'))
 
             /* Set salt (email address). */
             const salt = Buffer.from(this.email.normalize('NFKC'))
-            console.log('Salt/email', salt, this.email, this.email.normalize('NFKC'))
+
+            /* Set CPU (memory) cost. */
+            // NOTE: increasing this increases the overall difficulty.
+            // const N = 1024
+            const N = 4096
+
+            /* Set block size. */
+            // NOTE: Increasing this increases the dependency on memory
+            //       latency and bandwidth.
+            const r = 8
+
+            /* Set parallelization cost. */
+            // NOTE: Increasing this increases the dependency on
+            //       multi-processing.
+            const p = 1
+
+            /* Set derived key length (in bytes). */
+            const dkLen = 32
+
+            /* Compute key. */
+            const keyPromise = scrypt
+                .scrypt(password, salt, N, r, p, dkLen)
+
+            /* Resolve key. */
+            keyPromise.then(key => {
+                console.log('Derived Key (async): ', key)
+
+                /* Update master seed. */
+                this.updateMasterSeed(key)
+
+                // FOR DEVELPMENT PURPOSES ONLY
+                this.updateNickname(this.email)
+
+                /* Close modal. */
+                $('.form-signin').fadeToggle()
+                $('#signinForm').fadeToggle()
+            })
+
         },
     },
 }

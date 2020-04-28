@@ -1,6 +1,11 @@
 <template>
-    <div class="login login-button signin-btn">
-        <a href="javascript://" class="btn-primary">Sign In</a>
+    <div class="login login-button auth-btn">
+        <a v-if="!hasAuth" href="javascript://" class="btn-primary" @click="signIn">
+            Sign In
+        </a>
+        <a v-else href="javascript://" class="btn-primary" @click="signOut">
+            Sign Out
+        </a>
 
         <div class="form-signin"></div>
 
@@ -37,6 +42,9 @@
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapActions, mapGetters } from 'vuex'
+
 /* Import components. */
 import Email from './SigninEmail'
 import Extensions from './SigninExtensions'
@@ -60,20 +68,49 @@ export default {
             //
         }
     },
+    computed: {
+        ...mapGetters('profile', [
+            'getNickname',
+        ]),
+
+        hasAuth() {
+            // TODO: Improve authorization scheme.
+            if (this.getNickname) {
+                return true
+            } else {
+                return false
+            }
+        },
+
+    },
     methods: {
-        //
+        ...mapActions('profile', [
+            'updateNickname',
+        ]),
+
+        /**
+         * Sign In
+         */
+        signIn() {
+            $('.form-signin').fadeToggle()
+            $('#signinForm').fadeToggle()
+        },
+
+        /**
+         * Sign Out
+         *
+         * TODO: Show a notification of confirmation.
+         */
+        signOut() {
+            this.updateNickname(null)
+
+            alert(`You've been signed out successfully.`)
+        },
     },
     created: function () {
-        //
+        // 
     },
     mounted: function () {
-        /* Signin handler. */
-        $('.signin-btn a').on('click', function (e) {
-            e.preventDefault()
-
-            $(this).parent().find('.form-signin').fadeToggle()
-            $(this).parent().find('#signinForm').fadeToggle()
-        })
         $('.form-signin').on('click', function (e) {
             e.preventDefault()
 
@@ -95,7 +132,7 @@ export default {
     z-index: 99;
     display: none;
 }
-.signin-btn form {
+.auth-btn form {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
@@ -112,7 +149,7 @@ export default {
     background-color: rgba(180, 180, 180, 0.85);
     padding: 0;
 }
-.signin-btn .tab-pane {
+.auth-btn .tab-pane {
     background-color: rgba(255, 255, 255, 0.85);
     padding: 30px 0 15px;
 }

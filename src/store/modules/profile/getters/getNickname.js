@@ -1,10 +1,13 @@
+/* Import modules. */
+const msgpack = require('msgpack-lite')
+
 /**
- * Get Master Seed
+ * Get Nickname
  */
-const getMasterSeed = (state) => {
-    /* Return master seed. */
-    return state.masterSeed
+const getNickname = (state) => {
+    /* Return nickname. */
+    return msgpack.decode(Buffer.from(state.nickname))
 }
 
 /* Export module. */
-export default getMasterSeed
+export default getNickname

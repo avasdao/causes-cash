@@ -1,10 +1,10 @@
 /**
- * Update Master Seed
+ * Update Nickname
  */
-const updateMasterSeed = ({ commit }, _seed) => {
-    /* Commit wallet's master seed. */
-    commit('setMasterSeed', _seed)
+const updateNickname = ({ commit }, _nickname) => {
+    /* Commit nickname. */
+    commit('setNickname', _nickname)
 }
 
 /* Export module. */
-export default updateMasterSeed
+export default updateNickname

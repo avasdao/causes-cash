@@ -6,7 +6,7 @@
 
 <script>
 /* Initialize vuex. */
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 /* Import components. */
 // import Name from '@/components/Name.vue'
@@ -37,7 +37,15 @@ export default {
         ]),
     },
     methods: {
-        //
+        ...mapActions([
+            'displayError',
+            'displayNotification',
+        ]),
+
+        // ...mapActions('campaigns', [
+        //     'addCampaign',
+        // ]),
+
     },
     created: function () {
         //

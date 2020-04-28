@@ -3,15 +3,18 @@
 
 /* Import modules (getters). */
 import getMasterSeed from './profile/getters/getMasterSeed'
+import getNickname from './profile/getters/getNickname'
 
 /* Import modules (actions). */
 import destroyProfile from './profile/actions/destroyProfile'
 import initProfile from './profile/actions/initProfile'
 import updateMasterSeed from './profile/actions/updateMasterSeed'
+import updateNickname from './profile/actions/updateNickname'
 
 /* Import modules (mutations). */
 import setEmptyProfile from './profile/mutations/setEmptyProfile'
 import setMasterSeed from './profile/mutations/setMasterSeed'
+import setNickname from './profile/mutations/setNickname'
 
 /* Initialize state. */
 const state = {
@@ -37,6 +40,7 @@ const state = {
 /* Getters. */
 const getters = {
     getMasterSeed,
+    getNickname,
 }
 
 /* Actions. */
@@ -44,12 +48,14 @@ const actions = {
     destroyProfile,
     initProfile,
     updateMasterSeed,
+    updateNickname,
 }
 
 /* Mutations. */
 const mutations = {
     setEmptyProfile,
     setMasterSeed, // WARNING: This is the highest risk attack vector.
+    setNickname,
 }
 
 /* Export. */

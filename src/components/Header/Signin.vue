@@ -1,6 +1,6 @@
 <template>
     <div class="login login-button signin-btn">
-        <a href="javascript://" class="btn-primary" @click="signIn">Sign In</a>
+        <a href="javascript://" class="btn-primary">Sign In</a>
 
         <div class="form-signin"></div>
 

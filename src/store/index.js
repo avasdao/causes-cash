@@ -10,9 +10,9 @@ import createPersistedState from 'vuex-persistedstate'
 import campaigns from './modules/campaigns'
 import profile from './modules/profile'
 import storage from './modules/storage'
-// import system from './modules/system'
+import system from './modules/system'
 import utils from './modules/utils'
-// import wallets from './modules/wallets'
+import wallet from './modules/wallet'
 
 /* Initialize Vuex. */
 Vue.use(Vuex)
@@ -23,9 +23,9 @@ const modules = {
     campaigns,
     profile,
     storage,
-    // system,
+    system,
     utils,
-    // wallets,
+    wallet,
 }
 
 /* Set plugins. */

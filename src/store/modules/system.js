@@ -3,6 +3,7 @@
 
 /* Import modules (getters). */
 import getFlags from './system/getters/getFlags'
+import getHelp from './system/getters/getHelp'
 import getLocale from './system/getters/getLocale'
 
 /* Import modules (actions). */
@@ -89,6 +90,7 @@ const state = {
 /* Getters. */
 const getters = {
     getFlags,
+    getHelp,
     getLocale,
 }
 

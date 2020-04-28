@@ -22,6 +22,16 @@ const state = {
      * from an existing wallet.
      */
     masterSeed: null,
+
+    /**
+     * Nickname
+     *
+     * This is a public alias.
+     *
+     * NOTE: Only alpha-numeric characters are accepted.
+     *       Both upper and lower-case characters are accepted.
+     */
+    nickname: null,
 }
 
 /* Getters. */

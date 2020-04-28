@@ -5,6 +5,9 @@
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapGetters } from 'vuex'
+
 /* Import components. */
 // import Name from '@/components/Name.vue'
 
@@ -23,6 +26,15 @@ export default {
         return {
             //
         }
+    },
+    computed: {
+        // ...mapGetters('campaigns', [
+        //     'getCampaign',
+        // ]),
+
+        ...mapGetters([
+            'getHelp',
+        ]),
     },
     methods: {
         //

@@ -66,4 +66,8 @@ export default {
 section .container {
     margin-bottom: 100px;
 }
+
+.fa-question-circle-o {
+    cursor: pointer;
+}
 </style>

@@ -91,26 +91,52 @@
 
                                 <ul class="sub-menu">
                                     <li>
+                                        <div class="nav-section-title">
+                                            Your Public Information
+                                            <br /><span>(published transparently)</span>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/@' + getNickname">
+                                            Profile
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/@' + getNickname + '/causes'">
+                                            Causes
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/@' + getNickname + '/payments'">
+                                            Payments Received
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <router-link :to="'/@' + getNickname + '/rewards'">
+                                            Rewards Received
+                                        </router-link>
+                                    </li>
+
+                                    <li>
+                                        <div class="nav-section-title">
+                                            Your Private Information
+                                            <br /><span>(encryption + anonymity)</span>
+                                        </div>
+                                    </li>
+
+                                    <li>
                                         <router-link :to="'/@' + getNickname + '/dashboard'">
                                             Dashboard
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link :to="'/@' + getNickname">
-                                            My Profile
-                                        </router-link>
-                                    </li>
-
-                                    <li>
-                                        <router-link :to="'/@' + getNickname + '/causes'">
-                                            My Causes
-                                        </router-link>
-                                    </li>
-
-                                    <li>
-                                        <router-link :to="'/@' + getNickname + '/backing'">
-                                            Backed Causes
+                                        <router-link :to="'/@' + getNickname + '/wallet'">
+                                            Cash Wallet
                                         </router-link>
                                     </li>
 
@@ -121,16 +147,11 @@
                                     </li>
 
                                     <li>
-                                        <router-link :to="'/@' + getNickname + '/rewards'">
-                                            Rewards
+                                        <router-link :to="'/@' + getNickname + '/backing'">
+                                            Backed Causes
                                         </router-link>
                                     </li>
 
-                                    <li>
-                                        <router-link :to="'/@' + getNickname + '/payments'">
-                                            Payments
-                                        </router-link>
-                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -232,6 +253,17 @@ export default {
 }
 .slogan strong {
     font-weight: 500;
+}
+
+.nav-section-title {
+    margin: 10px 0 5px 15px;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: rgba(255, 90, 90, 0.8);
+}
+.nav-section-title span {
+    font-weight: 500;
+    color: rgba(150, 150, 150, 0.8);
 }
 
 /* Search */

@@ -1,6 +1,7 @@
 <template>
     <main class="faq">
         <Header />
+        <Banner page="payments" />
 
         <div class="page-title background-page">
 			<div class="container">
@@ -81,6 +82,7 @@ import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
 /* Import (account) components. */
+import Banner from '@/components/Account/Banner.vue'
 import Sidenav from '@/components/Account/Sidenav.vue'
 
 export default {
@@ -88,20 +90,16 @@ export default {
         Footer,
         Header,
 
+        Banner,
         Sidenav,
     },
     data: () => {
         return {
-            user: null,
+            //
         }
     },
     created: function () {
-        /* Set user. */
-        const user = this.$route.params.pathMatch
-
-        /* Validate user. */
-        // FIXME: What should we do if validation fails??
-        this.user = user
+        //
     },
 }
 </script>

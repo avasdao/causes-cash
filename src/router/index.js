@@ -13,6 +13,7 @@ import AccountPayments from '../views/Account/Payments.vue'
 import AccountProfile from '../views/Account/Profile.vue'
 import AccountReceived from '../views/Account/Received.vue'
 import AccountRewards from '../views/Account/Rewards.vue'
+import AccountWallet from '../views/Account/Wallet.vue'
 
 /* Causes */
 import CauseCreate from '../views/Cause/Create.vue'
@@ -53,15 +54,14 @@ const routes = [{
     path: '/@*/payments', // Payments
     component: AccountPayments
 }, {
-    // path: '/@*/profile', // Profile
-    // TODO: Do we still need this??
-    // component: AccountProfile
-// }, {
     path: '/@*/received', // Received
     component: AccountReceived
 }, {
     path: '/@*/rewards', // Rewards
     component: AccountRewards
+}, {
+    path: '/@*/wallet', // Wallet
+    component: AccountWallet
 }, {
 
     /* Causes */

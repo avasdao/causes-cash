@@ -5,7 +5,7 @@
     "category": "Infrastructure Development",
     "summary": "BCHD is a full node and blockchain server written in Go. The immediate goals of this project is to first and foremost support application development as a high performance blockchain server.",
     "description": "The immediate goals of this project is to first and foremost support application development as a high performance blockchain server. This will include adding an SLP index to support the burgeoning token sector. Secondly we want BCHD to become a fully capable mining node to help support mining diversity in Bitcoin Cash.",
-    "authorId": "bchd",
+    "authorId": "BCHD",
     "authorName": "BCHD",
     "authorAvatar": "https://i.imgur.com/Huz0U9L.jpg",
     "authorLink": "https://bchd.cash",

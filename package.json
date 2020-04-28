@@ -17,6 +17,7 @@
     "ethers": "4.0.45",
     "ipfs": "0.40.0",
     "moment": "2.24.0",
+    "msgpack-lite": "0.1.26",
     "numeral": "2.0.6",
     "orbit-db": "0.23.1",
     "vue": "2.6.11",

@@ -53,9 +53,9 @@ export default {
         new window.WOW({
             animateClass: 'animated',
             offset: 100,
-            callback: function(box) {
-                console.log('WOW: animating <' + box.tagName.toLowerCase() + '>')
-            }
+            // callback: function (box) {
+            //     console.log('WOW: animating <' + box.tagName.toLowerCase() + '>')
+            // }
         }).init()
     },
 }

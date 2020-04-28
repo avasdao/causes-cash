@@ -3,7 +3,7 @@
  */
 const setAppStarts = (state) => {
     /* Increment application starts. */
-    state.as++
+    state.appStarts++
 }
 
 /* Export module. */

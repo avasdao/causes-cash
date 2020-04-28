@@ -3,7 +3,7 @@
  */
 const SetError = (state, _error) => {
     /* Set error message. */
-    state.em = _error
+    state.errorMsg = _error
 }
 
 /* Export module. */

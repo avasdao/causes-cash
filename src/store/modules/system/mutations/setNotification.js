@@ -3,7 +3,7 @@
  */
 const setNotification = (state, _notification) => {
     /* Set notification message. */
-    state.nm = _notification
+    state.notifMsg = _notification
 }
 
 /* Export module. */

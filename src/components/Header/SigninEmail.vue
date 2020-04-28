@@ -146,6 +146,8 @@ export default {
                 return alert('Invalid password. Please try again.')
             }
 
+            // FIXME: We MUST check and update system.authHashes, if necessary.
+
             /* Set password. */
             const password = Buffer.from(this.password.normalize('NFKC'))
 
@@ -154,8 +156,11 @@ export default {
 
             /* Set CPU (memory) cost. */
             // NOTE: increasing this increases the overall difficulty.
-            // const N = 1024
-            const N = 4096
+            // TODO: Test params on mobile devices (scale back, if necessary).
+            // const N = 16384 // 2^14 (original recommendation)
+            // const N = 32768 // 2^15 (safe recommendation)
+            const N = 65536 // 2^16 (JS-native recommendation)
+            // const N = 1048576 // 2^20 (optimal recommendation)
 
             /* Set block size. */
             // NOTE: Increasing this increases the dependency on memory
@@ -176,8 +181,6 @@ export default {
 
             /* Resolve key. */
             keyPromise.then(key => {
-                console.log('Derived Key (async): ', key)
-
                 /* Update master seed. */
                 this.updateMasterSeed(key)
 

@@ -1,6 +1,6 @@
 {
   "name": "causes.cash",
-  "version": "20.4.27",
+  "version": "20.4.28",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -20,7 +20,7 @@
     "msgpack-lite": "0.1.26",
     "numeral": "2.0.6",
     "orbit-db": "0.23.1",
-    "scrypt-js": "^3.0.0",
+    "scrypt-js": "3.0.0",
     "vue": "2.6.11",
     "vue-router": "3.1.5",
     "vuex": "3.1.2",

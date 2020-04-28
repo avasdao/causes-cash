@@ -84,50 +84,50 @@
                                 </router-link>
                             </li>
 
-                            <li>
+                            <li v-if="hasAuth">
                                 <a href="javascript://">
-                                    Account<i class="fa fa-caret-down" aria-hidden="true"></i>
+                                    My Account<i class="fa fa-caret-down" aria-hidden="true"></i>
                                 </a>
 
                                 <ul class="sub-menu">
                                     <li>
-                                        <router-link to="/account/dashboard">
+                                        <router-link :to="'/@' + getNickname + '/dashboard'">
                                             Dashboard
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link to="/account/profile">
+                                        <router-link :to="'/@' + getNickname">
                                             My Profile
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link to="/account/causes">
+                                        <router-link :to="'/@' + getNickname + '/causes'">
                                             My Causes
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link to="/account/backing">
+                                        <router-link :to="'/@' + getNickname + '/backing'">
                                             Backed Causes
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link to="/account/received">
+                                        <router-link :to="'/@' + getNickname + '/received'">
                                             Pledges Received
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link to="/account/rewards">
+                                        <router-link :to="'/@' + getNickname + '/rewards'">
                                             Rewards
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link to="/account/payments">
+                                        <router-link :to="'/@' + getNickname + '/payments'">
                                             Payments
                                         </router-link>
                                     </li>
@@ -163,6 +163,9 @@
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapGetters } from 'vuex'
+
 /* Import components. */
 import Signin from './Header/Signin'
 
@@ -179,11 +182,29 @@ export default {
             //
         }
     },
+    computed: {
+        ...mapGetters('profile', [
+            'getNickname',
+        ]),
+
+        /**
+         * Has Authorization
+         */
+        hasAuth() {
+            // TODO: Improve authorization scheme.
+            if (this.getNickname) {
+                return true
+            } else {
+                return false
+            }
+        },
+
+    },
     methods: {
         //
     },
     created: function () {
-        // 
+        //
     },
     mounted: function () {
         /* Search handler. */

@@ -73,6 +73,9 @@ export default {
             'getNickname',
         ]),
 
+        /**
+         * Has Authorization
+         */
         hasAuth() {
             // TODO: Improve authorization scheme.
             if (this.getNickname) {
@@ -108,7 +111,7 @@ export default {
         },
     },
     created: function () {
-        // 
+        //
     },
     mounted: function () {
         $('.form-signin').on('click', function (e) {

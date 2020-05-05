@@ -8,6 +8,8 @@ Development Demo — __https://demo.causes.cash__
 
 Documentation — __https://docs.causes.cash__
 
+Join our Slack — __https://join.slack.com/t/bchplease/shared_invite/zt-e7jj03j5-vJbe47kNrPBjTgTXwLNRkA__
+
 ### Donate to YOUR "good" cause
 
 Everyone has their favorite team (sports, politics, religion). Why should crypto be any different? Pick your favorite team/project and put your money where your mouth is.

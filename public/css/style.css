@@ -3756,18 +3756,17 @@ form .create-account input[type="checkbox"]{
 .follow li:last-child{
     margin-right: 0px;
 }
-.follow li.facebook i{
+.follow li.slack i{
     color: #3b5998;
 }
-.follow li.facebook:hover{
+.follow li.slack:hover{
     background-color: #3b5998;
     transition: 0.3s all;
 }
-.follow li.facebook:hover i,
+.follow li.slack:hover i,
 .follow li.twitter:hover i,
-.follow li.instagram:hover i,
-.follow li.google:hover i,
-.follow li.youtube:hover i{
+.follow li.reddit:hover i,
+.follow li.gitlab:hover i{
     color: #fff;
 }
 .follow li.twitter i{
@@ -3777,24 +3776,17 @@ form .create-account input[type="checkbox"]{
     background-color: #1da1f2;
     transition: 0.3s all;
 }
-.follow li.instagram i{
+.follow li.reddit i{
     color: #f56040;
 }
-.follow li.instagram:hover{
+.follow li.reddit:hover{
     background-color: #f56040;
     transition: 0.3s all;
 }
-.follow li.google i{
-    color: #dd4b39;
-}
-.follow li.google:hover{
-    background-color: #dd4b39;
-    transition: 0.3s all;
-}
-.follow li.youtube i{
+.follow li.gitlab i{
     color: #cd201f;
 }
-.follow li.youtube:hover{
+.follow li.gitlab:hover{
     background-color: #cd201f;
     transition: 0.3s all;
 }

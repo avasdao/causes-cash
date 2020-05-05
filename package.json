@@ -1,6 +1,6 @@
 {
   "name": "causes.cash",
-  "version": "20.4.28",
+  "version": "20.5.5",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",

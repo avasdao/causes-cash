@@ -4,8 +4,8 @@
 
     * [0.1. Readme](README.md)
     * [0.2. Foreword](FOREWORD.md)
-    * [0.3. Changelog]()
-    * [0.4. Roadmap]()
+    * [0.3. Changelog](CHANGELOG.md)
+    * [0.4. Roadmap](ROADMAP.md)
     * [0.5. Contributing](CONTRIBUTING.md)
 
 * [1. Campaigns]()

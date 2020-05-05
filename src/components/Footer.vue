@@ -133,23 +133,29 @@
                                 <h3>Check out these places</h3>
 
                                 <ul>
-                                    <li class="twitter">
-                                        <a href="https://twitter.com/search?q=%23BitcoinCauses" target="_blank">
-                                            <i class="fa fa-twitter" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-
-                                    <li class="instagram">
+                                    <li class="reddit">
                                         <a href="https://reddit.com/r/CausesCash" target="_blank">
                                             <i class="fa fa-reddit" aria-hidden="true"></i>
                                         </a>
                                     </li>
 
-                                    <li class="facebook">
+                                    <li class="slack">
+                                        <a href="https://join.slack.com/t/bchplease/shared_invite/zt-e7jj03j5-vJbe47kNrPBjTgTXwLNRkA" target="_blank">
+                                            <i class="fa fa-slack" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="gitlab">
                                         <a href="https://gitlab.com/bchplease/causes.cash" target="_blank">
                                             <i class="fa fa-gitlab" aria-hidden="true"></i>
                                         </a>
                                     </li>
+
+                                    <!-- <li class="twitter">
+                                        <a href="https://twitter.com/search?q=%23BitcoinCauses" target="_blank">
+                                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                                        </a>
+                                    </li> -->
                                 </ul>
                             </div>
                         </div>

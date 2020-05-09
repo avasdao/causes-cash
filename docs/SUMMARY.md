@@ -38,4 +38,5 @@
 * [5. Appendices]()
 
     * [5.1. Liberal Radicalism](appendices/liberal-radicalism.md)
-    * [5.2. Signed Seed Private Key](appendices/sspk.md)
+    * [5.2. Mecenas](appendices/mecenas.md)
+    * [5.3. Signed Seed Private Key](appendices/sspk.md)

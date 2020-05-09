@@ -1,12 +1,12 @@
-# Direct Campaign
+# Direct
 
 This is the __simplest__ of the 4 donation options. You can simply __send BCH directly__ to the __"registered"__ address of your favorite cause(s).
 
-### Notable causes
+## Notable causes
 
 > The causes listed below are in no particular order. Please contact our support team, if you would like your cause to be considered for addition to the list.
 
-### EatBCH
+## EatBCH
 
 __https://eatbch.org__
 

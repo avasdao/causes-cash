@@ -1,12 +1,14 @@
-# DRIPP Campaign
+# DRIPP
 
 > __TL;DR__ Every cause gets its own token; allowing contributors to manage their individual contributions and vote on __how much__ gets distributed and __how often__ it gets distributed.
 
 __Decentralized Radical Investment Performance Pool (DRIPP),__ is a NEW system based on DAICO. The proposal was originally made by Vitalik Buterin and Jason Teusch. DAICO's have NOT been used widely by the crypto community. However, the principles do make a lot of sense for our purposes here.
 
-### How does it work?
+## How does it work?
 
 Sponsors will contribute to a funding pool _(specific to a single cause);_ and collectively __VOTE__ to maintain control over the __rate of dispersement__ of funds held within the pool. At __ANY__ point during the campaign, contributors are free to withdraw __ANY__ portion of their own contributions/investments _(forfeiting their proportional voting rights)._
+
+
 
 # Financial Independence
 

@@ -1,8 +1,8 @@
-# Assurance Campaign
+# Assurance
 
 Funds are collected until a goal is reach. Then the total of all funds collected are sent to receiver.
 
-### Flipstarter
+## Flipstarter
 
 __https://flipstarter.cash__
 
@@ -16,6 +16,6 @@ A group of volunteers came together to create Flipstarter; and move the Bitcoin 
 2. Can it be reliable enough to make long term plans based on it?
 3. Is it possible to have meaningful accountability with a distributed group of supporters?
 
-### Campaign structure
+## Campaign structure
 
 1. Permits up to 650 contributors (based on the 100 KiB single transaction limit).

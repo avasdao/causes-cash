@@ -1,6 +1,6 @@
 # Capital-constrained Liberal Radicalism (CLR)
 
-__It's a mouthful!__
+### It's a mouthful!
 
 Here's another, __"Square of the sum of square roots."__  
 _(Remember that, cause we'll talk about it at the end of this lesson..)_

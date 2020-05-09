@@ -4,35 +4,33 @@
 
 ### https://causes.cash
 
-Development Demo — __https://demo.causes.cash__
-
 Documentation — __https://docs.causes.cash__
 
-Join our Slack — __https://join.slack.com/t/bchplease/shared_invite/zt-e7jj03j5-vJbe47kNrPBjTgTXwLNRkA__
+Open Source — __https://gitlab.com/bchplease/causes.cash__
 
-### Donate to YOUR "good" cause
+[![Join us on Slack](https://i.imgur.com/dzi0IWb.jpg)](https://join.slack.com/t/bchplease/shared_invite/zt-e7jj03j5-vJbe47kNrPBjTgTXwLNRkA)
 
-Everyone has their favorite team (sports, politics, religion). Why should crypto be any different? Pick your favorite team/project and put your money where your mouth is.
+## Donate to YOUR "good" cause
 
-### Giving the community what it wants
+Everyone has their favorite team _(sports, politics, religion)._ Why should crypto be any different? Pick your favorite team / project and put your money where your mouth is.
 
-Infrastructure is the foundation upon which we BUIDL .. But then what? What are we actually BUIDLing? The read.cash community is an absolute treasure, but who is going to come "here", unless they're already part of (or searching within) the crypto community.
+## Giving the community what it wants
 
-We need fresh faces. We need the un-intiated. We just need more users. How do we do that? We need to #MakeBitcoinCashAgain
+Infrastructure is the foundation upon which we BUIDL .. But then what? What are we actually BUIDLing? We need fresh faces. We should welcome the un-intiated. We just need more users all across the world using Bitcoin as their daily driver for cash transactions. How do we do that? We need to #MakeBitcoinCashAgain
 
-Who gives a damn? Can volunteer funding work?
+##### Who gives a damn about developers? Can volunteer funding work?
 
 This has been suggested by several "funders", who have put their money where their mouth is.
 
 > Coinholders know they can easily afford to donate 1% of their holding and will likely make a profit doing so in seeing value of their BCH go up more.—MarcDeMesel
 
-### A NEW Lighthouse?
+## A NEW Lighthouse?
 
 The community has been talking about a NEW lighthouse since the IFP was announced:
 
 - [BCH Dev Fund: Why Not Crowdfund?](https://www.reddit.com/r/btc/comments/eubjqb/bch_dev_fund_why_not_crowdfund/)
 
-### Best laid plans of the OSS community thus far
+## Best laid plans of the OSS community thus far
 
 Apparently the IFP is far from novel in the space of OSS and more specifically the world of crypto. There have been, and continue to be many innovative ideas working to solve the problem of developer funding:
 
@@ -46,7 +44,7 @@ Apparently the IFP is far from novel in the space of OSS and more specifically t
 
 5. [Liberal Radicalism: A Flexible Design For Philanthropic Matching Funds](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3243656)
 
-### Fully Decentralized
+## Fully Decentralized
 
 Utilizing a combination of __[Bitcoin Files Protocol (BFP)](https://bitcoinfiles.com/)__ and the __[InterPlanetary File System (IPFS)](https://ipfs.io),__ we have developed a completed decentralized, 100% transparent system for public use.
 

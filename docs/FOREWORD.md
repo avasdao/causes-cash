@@ -1,10 +1,10 @@
 # Foreword
 
-> __Disclaimer:__ This is the opinion of Shomari Prince (nyusternie) and __DOES NOT__ represent the view of the greater Bitcoin Cash Please Foundation.
+> __Disclaimer:__ This is the opinion of Shomari Prince (nyusternie) and __DOES NOT__ represent the view of the greater Bitcoin Cash Please community.
 
-### Is the IFP a "tax"?
+## Is the IFP a "tax"?
 
-> __Disclaimer:__ The following is strictly an op-ed piece by: __[Shomari Prince (nyusternie);](https://ash2.cash)__ and a __"temporary"__ addition to this documentation. Considering that much of this project's motivation is inspired by the, __"Is the IFP a tax?"__ debate; it seems quite relevant at this time.
+> __Please Note:__ Although it is now May, this piece was written back during the height of the IFP, and until we successfully navigate through the May 15th hard-fork, I believe it it still relevant for an improved understanding of the purpose for this platform.
 
 Sometimes a good idea takes a lot of funds and collective effort. You could ask for donations, but donors prefer to give to projects they are more certain that will get traction and proper funding.
 
@@ -12,26 +12,26 @@ This is an example where a crowdfunding would be ideal: you set up a goal and a 
 
 Since the code is open and auditable, there is no need for a centralized trusted platform and therefore the only fees everyone will pay are just the on-chain (miner) fees.
 
-### Too much drama in the BCH
+## Too much drama in the BCH
 
 For weeks, the BCH community has been debating the __Infrastructure Funding Proposal (IFP).__ The drama has (at times) seriously gotten out of control.
 
-### How many revisions?!? Oh my!
+## How many revisions?!? Oh my!
 
 - [Original Proposal](https://medium.com/@jiangzhuoer/infrastructure-funding-plan-for-bitcoin-cash-131fdcd2412e)
 - [1st Revision](https://read.cash/@Jiang_Zhuoer_BTC.TOP_CEO/bch-miner-donation-plan-update-0cf20809)
 - [2nd Revision](https://read.cash/@Jiang_Zhuoer_BTC.TOP_CEO/bch-miner-donation-plan-update-again-72ea9248)
 - [ABC Announcement](https://www.bitcoinabc.org/2020-02-15-miner-fund/)
 
-### Are you FOR or AGAINST the IFP?
+## Are you FOR or AGAINST the IFP?
 
 There has been exceptional debate back and forth; and both sides have expressed some very persuasive arguments to support their respective stance on the topic.
 
-##### In favor of the IFP..
+### In favor of the IFP..
 
 None other than [TobiasRuck,](https://read.cash/@TobiasRuck/why-i-support-the-ifp-despite-the-community-seeming-to-hate-it-and-how-to-fix-it-d128e975) has put forth what I consider to be the stongest argument.
 
-##### Against the IFP..
+### Against the IFP..
 
 As I am strongly AGAINST the IFP, I will briefly state my reasons:
 

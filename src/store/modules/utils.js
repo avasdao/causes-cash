@@ -2,8 +2,10 @@
 // import telr from '../../api/telr'
 
 /* Import modules (getters). */
+import getBytesFromIPFS from './utils/getters/getBytesFromIPFS'
 import getCompletedPct from './utils/getters/getCompletedPct'
 import getFormatFunded from './utils/getters/getFormatFunded'
+import getIPFSFromBytes from './utils/getters/getIPFSFromBytes'
 import getShuffledArray from './utils/getters/getShuffledArray'
 
 /* Import modules (actions). */
@@ -19,8 +21,10 @@ const state = {
 
 /* Getters. */
 const getters = {
+    getBytesFromIPFS,
     getCompletedPct,
     getFormatFunded,
+    getIPFSFromBytes,
     getShuffledArray,
 }
 

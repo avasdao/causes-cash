@@ -4,7 +4,7 @@
 
 <script>
 /* Initialize vuex. */
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 /* Import components. */
 // import { Notification } from '@/components'
@@ -17,6 +17,10 @@ export default {
         ]),
     },
     methods: {
+        ...mapActions([
+            'updateAssetSource',
+        ]),
+
         /**
          * Test IPFS Connection
          */
@@ -46,6 +50,9 @@ export default {
 
         /* Initialize OrbitDB connection. */
         await this.getOrbitDB
+
+        /* Initialize assets. */
+        this.updateAssetSource()
 
     },
     mounted: async function () {

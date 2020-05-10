@@ -13,6 +13,7 @@
     "@ledgerhq/hw-app-btc": "5.13.1",
     "@ledgerhq/hw-app-eth": "5.14.0",
     "@ledgerhq/hw-transport-webusb": "5.13.1",
+    "bs58": "4.0.1",
     "core-js": "3.6.4",
     "dompurify": "2.0.11",
     "ethers": "4.0.45",

@@ -10,7 +10,7 @@
 
 <script>
 /* Initialize vuex. */
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 /* Import components. */
 import Footer from '@/components/Footer.vue'
@@ -53,6 +53,14 @@ export default {
     computed: {
         ...mapGetters('campaigns', [
             'getCampaign',
+            'getDescription',
+            'getSummary',
+        ]),
+
+    },
+    methods: {
+        ...mapActions('campaigns', [
+            'updateAsset',
         ]),
 
     },
@@ -87,6 +95,47 @@ export default {
             this.campaign.referrerId = referrerId
         }
 
+        /* Set description. */
+        const description = this.getDescription(
+            this.campaign.ownerId, this.campaign.extSlug)
+        // console.log('STORY (description):', description)
+
+        // FOR DEVELOPMENT PURPOSES ONLY
+        // this.description = null
+
+        /* Validate description. */
+        if (!description) {
+            /* Set asset. */
+            const asset = {
+                owner: this.campaign.ownerId,
+                id: this.campaign.extSlug,
+                type: 'description',
+            }
+
+            /* Request asset update. */
+            this.updateAsset(asset)
+        }
+
+        /* Set summary. */
+        const summary = this.getSummary(
+            this.campaign.ownerId, this.campaign.extSlug)
+        // console.log('STORY (summary):', summary)
+
+        // FOR DEVELOPMENT PURPOSES ONLY
+        // this.summary = ''
+
+        /* Validate summary. */
+        if (!summary) {
+            /* Set asset. */
+            const asset = {
+                owner: this.campaign.ownerId,
+                id: this.campaign.extSlug,
+                type: 'summary',
+            }
+
+            /* Request asset update. */
+            this.updateAsset(asset)
+        }
 
     },
     mounted: function () {

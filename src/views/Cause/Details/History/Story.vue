@@ -10,7 +10,7 @@
 
 <script>
 /* Initialize vuex. */
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 /* Import modules. */
 import DOMPurify from 'dompurify'
@@ -51,10 +51,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('campaigns', [
-            'updateAsset',
-        ]),
-
         /**
          * Cleaner
          *
@@ -103,42 +99,10 @@ export default {
             this.campaign.ownerId, this.campaign.extSlug)
         // console.log('STORY (description):', this.description)
 
-        // FOR DEVELOPMENT PURPOSES ONLY
-        // this.description = null
-
-        /* Validate description. */
-        if (!this.description) {
-            /* Set asset. */
-            const asset = {
-                owner: this.campaign.ownerId,
-                id: this.campaign.extSlug,
-                type: 'description',
-            }
-
-            /* Request asset update. */
-            this.updateAsset(asset)
-        }
-
         /* Set summary. */
         this.summary = this.getSummary(
             this.campaign.ownerId, this.campaign.extSlug)
         // console.log('STORY (summary):', this.summary)
-
-        // FOR DEVELOPMENT PURPOSES ONLY
-        // this.summary = ''
-
-        /* Validate summary. */
-        if (!this.summary) {
-            /* Set asset. */
-            const asset = {
-                owner: this.campaign.ownerId,
-                id: this.campaign.extSlug,
-                type: 'summary',
-            }
-
-            /* Request asset update. */
-            this.updateAsset(asset)
-        }
 
     },
 }

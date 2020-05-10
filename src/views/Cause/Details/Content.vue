@@ -28,7 +28,7 @@
                         <h3>{{title}}</h3>
 
                         <div class="campaign-description">
-                            <p>{{description}}</p>
+                            <p v-html="summaryDisplay" />
                         </div>
 
                         <div class="campaign-author clearfix">
@@ -114,15 +114,12 @@
 </template>
 
 <script>
-/* Import components. */
-// import Summary from './Content/Summary.vue'
+/* Initialize vuex. */
+import { mapGetters } from 'vuex'
 
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
-
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
+/* Import modules. */
+import DOMPurify from 'dompurify'
+import showdown from 'showdown'
 
 export default {
     props: {
@@ -135,10 +132,76 @@ export default {
         return {
             category: null,
             title: null,
+            description: null,
+            summary: null,
         }
     },
+    computed: {
+        ...mapGetters('campaigns', [
+            'getDescription',
+            'getSummary',
+        ]),
+
+        descriptionDisplay() {
+            /* Validate description. */
+            if (this.description) {
+                return this.markdown(this.description)
+            } else {
+                return ''
+            }
+        },
+
+        summaryDisplay() {
+            /* Validate summary. */
+            if (this.summary) {
+                return this.markdown(this.summary)
+            } else {
+                return ''
+            }
+        },
+    },
     methods: {
-        //
+        /**
+         * Cleaner
+         *
+         * Uses DOM Purify to sanitize HTML.
+         * (source: https://github.com/cure53/DOMPurify)
+         */
+        cleaner(_html) {
+            /* Return cleaned HTML. */
+            return DOMPurify.sanitize(_html)
+        },
+
+        /**
+         * Markdown Manager
+         *
+         * Generates HTML from markdown and vice-versa.
+         * (source: https://github.com/showdownjs/showdown)
+         */
+        markdown(_content) {
+            /* Initialize converter. */
+            const converter = new showdown.Converter()
+
+            /* Set converter to GitHub Flavored Markdown (GFM). */
+            converter.setFlavor('github')
+
+            /* Generate HTML content. */
+            const html = converter.makeHtml(_content)
+            // console.log('HTML', html)
+
+            /* Sanitize HTML content. */
+            // const sanitized = this.cleaner(html)
+
+            /* Format HTML. */
+            // NOTE: Display fixes, probably related to our CSS.
+            const sanitized = html
+                .replace(/<ol>/gi, `<ol class="markdown-ul">`)
+                .replace(/<ul>/gi, `<ul class="markdown-ul">`)
+
+            /* Return sanitized content (for display). */
+            // return sanitized
+            return sanitized
+        },
     },
     created: function () {
         /* Set category. */
@@ -148,8 +211,9 @@ export default {
         this.title = this.campaign.title
         // this.title = `[${causeId}] ... [${referrerId}]`
 
-        /* Set description. */
-        this.description = this.campaign.description
+        /* Set summary. */
+        this.summary = this.getSummary(
+            this.campaign.ownerId, this.campaign.extSlug)
 
         /* Set user. */
         // const user = this.$route.params.pathMatch
@@ -159,8 +223,21 @@ export default {
         /* Set author name. */
         this.ownerName = this.campaign.ownerName
 
-        /* Set author location. */
-        this.campaignType = this.campaign.type
+        /* Set campaign type. */
+        switch(this.campaign.type) {
+        case 'assurance':
+            this.campaignType = 'Assurance campaign'
+            break
+        case 'direct':
+            this.campaignType = 'Direct campaign'
+            break
+        case 'dripp':
+            this.campaignType = 'DRIPP campaign'
+            break
+        default:
+            this.campaignType = 'Unknown campaign'
+            break
+        }
 
         /* Set author image url. */
         this.ownerAvatar = this.campaign.ownerAvatar

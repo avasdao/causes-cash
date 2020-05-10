@@ -2,6 +2,8 @@
 // import telr from '../../api/telr'
 
 /* Import modules (getters). */
+import getAssetSource from './system/getters/getAssetSource'
+import getEternalDbAddr from './system/getters/getEternalDbAddr'
 import getFlags from './system/getters/getFlags'
 import getHelp from './system/getters/getHelp'
 import getLocale from './system/getters/getLocale'
@@ -9,9 +11,11 @@ import getLocale from './system/getters/getLocale'
 /* Import modules (actions). */
 import displayError from './system/actions/displayError'
 import displayNotification from './system/actions/displayNotification'
+import updateAssetSource from './system/actions/updateAssetSource'
 
 /* Import modules (mutations). */
 import setAppStarts from './system/mutations/setAppStarts'
+import setAssetSource from './system/mutations/setAssetSource'
 import setError from './system/mutations/setError'
 import setFlags from './system/mutations/setFlags'
 import setLocale from './system/mutations/setLocale'
@@ -28,6 +32,14 @@ const state = {
      * Application Version
      */
     appVersion: null,
+
+    /**
+     * Assets (Sources)
+     *
+     * An object, used to retrieve the address / location of
+     * our latest assets from our IPFS storage.
+     */
+    assets: {},
 
     /**
      * Authorization Hashes
@@ -89,6 +101,8 @@ const state = {
 
 /* Getters. */
 const getters = {
+    getAssetSource,
+    getEternalDbAddr,
     getFlags,
     getHelp,
     getLocale,
@@ -98,11 +112,13 @@ const getters = {
 const actions = {
     displayError,
     displayNotification,
+    updateAssetSource,
 }
 
 /* Mutations. */
 const mutations = {
     setAppStarts,
+    setAssetSource,
     setError,
     setFlags,
     setLocale,

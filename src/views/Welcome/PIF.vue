@@ -244,7 +244,7 @@ export default {
         this.causes.push(this.getCampaign('veracrypt-4158c2f0eda0'))
 
         /* Software. */
-        this.causes.push(this.getCampaign('nito-exchange-desktop-443db3869688'))
+        this.causes.push(this.getCampaign('nito-exchange-gateway-443db3869688'))
 
         /* World View. */
         this.causes.push(this.getCampaign('coins-4-clothes-93e037309d77'))

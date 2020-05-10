@@ -3,6 +3,7 @@
     "slug": "bchd-node-development",
     "title": "BCHD Node Development",
     "category": "Infrastructure Development",
+    "type": "assurance",
     "summary": "BCHD is a full node and blockchain server written in Go. The immediate goals of this project is to first and foremost support application development as a high performance blockchain server.",
     "description": "The immediate goals of this project is to first and foremost support application development as a high performance blockchain server. This will include adding an SLP index to support the burgeoning token sector. Secondly we want BCHD to become a fully capable mining node to help support mining diversity in Bitcoin Cash.",
     "ownerId": "BCHD",

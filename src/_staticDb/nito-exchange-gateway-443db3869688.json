@@ -1,8 +1,10 @@
 {
     "id": "6203f72c-334f-4c8f-94ec-443db3869688",
-    "slug": "nito-exchange-desktop",
-    "title": "Nito Exchange Desktop",
+    "slug": "nito-exchange-gateway",
+    "title": "Nito Exchange Gateway",
     "category": "Software",
+    "type": "direct",
+    "type": "Direct",
     "summary": "A simple, decentralized gateway to use the leading Bitcoin Cash (BCH) anonymity protocols CashShuffle and CashFusion from ANY supporting wallet.",
     "description": "A simple, decentralized gateway to use the leading Bitcoin Cash (BCH) anonymity protocols CashShuffle and CashFusion from ANY supporting wallet.",
     "ownerId": "BCHPlease",

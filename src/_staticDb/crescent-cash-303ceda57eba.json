@@ -3,6 +3,7 @@
     "slug": "crescent-cash",
     "title": "Crescent Cash",
     "category": "Software",
+    "type": "direct",
     "summary": "Crescent combines the simplicity of traditional, centralized money apps with the security of trustless Bitcoin wallets.",
     "description": "Crescent combines the simplicity of traditional, centralized money apps with the security of trustless Bitcoin wallets.",
     "ownerId": "crescentcash",

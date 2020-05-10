@@ -3,6 +3,7 @@
     "slug": "read-cash-fund",
     "title": "Read.cash Fund",
     "category": "Publishing",
+    "type": "direct",
     "summary": "It is an experiment, where anyone with Bitcoin Cash could pledge some amount of money to support the active users of read.cash and thereby bring more people to the world of Bitcoin Cash.",
     "description": "It is an experiment, where anyone with Bitcoin Cash could pledge some amount of money to support the active users of read.cash and thereby bring more people to the world of Bitcoin Cash.",
     "ownerId": "readcash",

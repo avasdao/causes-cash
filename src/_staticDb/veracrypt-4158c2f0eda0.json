@@ -3,6 +3,7 @@
     "slug": "veracrypt",
     "title": "VeraCrypt",
     "category": "Security",
+    "type": "direct",
     "summary": "VeraCrypt is a free open source disk encryption software for Windows, Mac OSX and Linux.",
     "description": "VeraCrypt is a free open source disk encryption software for Windows, Mac OSX and Linux.",
     "ownerId": "idrix",

@@ -3,6 +3,7 @@
     "slug": "knuth-platform-development",
     "title": "Knuth Platform Development",
     "category": "Infrastructure Development",
+    "type": "assurance",
     "summary": "Knuth is a high performance implementation of the Bitcoin protocol focused on users requiring extra performance and flexibility, what makes it the best platform for wallets, exchanges, block explorers and miners.",
     "description": "Knuth envisions bringing Bitcoin Cash to everyday life. We plan to do so by building a scalable monetary platform that offers one service: decentralized, uncensored electronic cash. We are convinced that the path best suited for that involves simple and lean structures. Knuth stands firmly with that perspective, recognizing that the most powerful catalyst for global adoption is accessibility.",
     "ownerId": "knuth",

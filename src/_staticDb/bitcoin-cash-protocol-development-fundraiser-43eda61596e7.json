@@ -3,6 +3,7 @@
     "slug": "bitcoin-cash-protocol-development-fundraiser",
     "title": "Bitcoin Cash Protocol Development Fundraiser",
     "category": "Infrastructure Development",
+    "type": "assurance",
     "summary": "Bitcoin ABC develops, maintains and secures the most essential Bitcoin Cash infrastructure, our full node software which is used to mine almost every Bitcoin Cash block.",
     "description": "Bitcoin ABC develops, maintains and secures the most essential Bitcoin Cash infrastructure, our full node software which is used to mine almost every Bitcoin Cash block.",
     "ownerId": "bitcoinabc",

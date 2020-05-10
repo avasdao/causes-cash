@@ -3,6 +3,7 @@
     "slug": "bitcoin-verde-node-development",
     "title": "Bitcoin Verde Node Development",
     "category": "Infrastructure Development",
+    "type": "assurance",
     "summary": "Bitcoin Verde is a BCH full-node implementation founded by Josh Green, owner of Software Verde. Software Verde is a group of full-stack software developers from Columbus, Ohio dedicated to developing technology that serves our community, clients, and friends.",
     "description": "Our goal for this campaign is to generate enough interest and support to fund our current development roadmap. Currently, Bitcoin Verde has four core features identified that we believe will be necessary to continue to operate as a competitive, viable option for BCH operators, whether they be full-nodes or miners.",
     "ownerId": "bitcoinverde",

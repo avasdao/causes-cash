@@ -160,7 +160,7 @@ export default {
         this.ownerName = this.campaign.ownerName
 
         /* Set author location. */
-        // this.campaignType = 'DRIPP Campaign'
+        this.campaignType = this.campaign.type
 
         /* Set author image url. */
         this.ownerAvatar = this.campaign.ownerAvatar

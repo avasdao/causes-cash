@@ -6,54 +6,29 @@
 
                     <div class="campaign-tabs">
                         <ul class="tabs-controls">
-                            <li class="active" data-tab="campaign">
-                                <a href="javascript://">Cause Story</a>
+                            <li class="active" data-tab="story">
+                                <a href="javascript://">Story</a>
+                            </li>
+
+                            <li data-tab="events">
+                                <a href="javascript://">Events</a>
                             </li>
 
                             <li data-tab="backer">
-                                <a href="javascript://">Backer List</a>
+                                <a href="javascript://">Backers</a>
                             </li>
 
                             <li data-tab="faq">
                                 <a href="javascript://">FAQ</a>
                             </li>
 
-                            <li data-tab="updates">
-                                <a href="javascript://">Updates</a>
-                            </li>
-
                             <li data-tab="comment">
-                                <a href="javascript://">Comments</a>
+                                <a href="javascript://">Articles</a>
                             </li>
                         </ul>
 
                         <div class="campaign-content">
-                            <div id="campaign" class="tabs active">
-                                <p>
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-                                </p>
-
-                                <img src="@/assets/img/campaign-tabs.jpg" alt="">
-
-                                <p>
-                                    A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.
-                                    I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine.
-                                    I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.
-                                    I should be incapable of drawing a single stroke at the present moment.
-                                </p>
-
-                                <p>
-                                    One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.
-                                    He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.
-                                    The bedding was hardly able to cover it and seemed ready to slide off any moment.
-                                    His many legs, pitifully thin compared with the size of the rest of him, waved
-                                </p>
-                            </div>
+                            <Story :campaign="campaign" />
 
                             <div id="backer" class="tabs">
                                 <table>
@@ -108,7 +83,7 @@
                                 <a href="javascript://" class="btn-primary">Ask a question</a>
                             </div>
 
-                            <div id="updates" class="tabs">
+                            <div id="events" class="tabs">
                                 <ul>
                                     <li>
                                         <p class="date">
@@ -315,7 +290,7 @@
 
 <script>
 /* Import components. */
-// import Name from '@/components/Name.vue'
+import Story from './History/Story'
 
 /* Import icons. */
 // import '@/compiled-icons/<icon-name>'
@@ -325,8 +300,11 @@
 const $ = window.jQuery
 
 export default {
+    props: {
+        campaign: Object,
+    },
     components: {
-        //
+        Story,
     },
     data: () => {
         return {

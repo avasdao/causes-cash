@@ -1,14 +1,17 @@
 <template>
     <main class="campaign-detail">
-        <Header />
-        <Title />
-        <Content />
-        <History />
+        <Header :campaign="campaign" />
+        <Title :campaign="campaign" />
+        <Content :campaign="campaign" />
+        <History :campaign="campaign" />
         <Footer />
     </main>
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapGetters } from 'vuex'
+
 /* Import components. */
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
@@ -40,6 +43,52 @@ export default {
         History,
         Title,
     },
+    data: () => {
+        return {
+            campaign: null,
+            campaignId: null,
+            // referrerId: null,
+        }
+    },
+    computed: {
+        ...mapGetters('campaigns', [
+            'getCampaign',
+        ]),
+
+    },
+    created: function () {
+        /* Set cause. */
+        const cause = this.$route.params.cause
+
+        /* Validate cause. */
+        if (cause && cause.lastIndexOf('-') !== -1) {
+            /* Set campaign id. */
+            this.campaignId = cause.slice(0, cause.lastIndexOf('-'))
+            // console.log('this.campaignId', this.campaignId)
+
+            /* Set referrer id. */
+            const referrerId = cause.slice(cause.lastIndexOf('-') + 1)
+            // console.log('referrerId', referrerId)
+
+            /* Set extended slug. */
+            const extSlug = `${this.campaignId}-${referrerId}`
+
+            /* Set owner id. */
+            // FIXME: Pull this dynamicaly.
+            const ownerId = 'BCHPlease'
+
+            /* Set campaign. */
+            this.campaign = this.getCampaign(ownerId, extSlug)
+
+            /* Set extended slug (to campaign). */
+            this.campaign.extSlug = extSlug
+
+            /* Set referrer id (to campaign). */
+            this.campaign.referrerId = referrerId
+        }
+
+
+    },
     mounted: function () {
         /*  [ Project Love Slider ]
         - - - - - - - - - - - - - - - - - - - - */
@@ -66,3 +115,7 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+/*  */
+</style>

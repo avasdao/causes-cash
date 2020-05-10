@@ -19,3 +19,7 @@ Every cause needs to decide on the type of campaign they wish to run.
 ### Featured Discover Image
 
 570px by 350px; either JPG or PNG
+
+### Banner Image
+
+1920px by 220px; either JPG or PNG

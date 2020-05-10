@@ -1,5 +1,6 @@
 <template>
-    <div class="page-title background-campaign">
+    <!-- <div class="page-title background-campaign"> -->
+    <div class="page-title" :style="{ 'background-image': 'url(' + bannerImg + ')' }">
         <div class="container">
             <h1>{{title}}</h1>
 
@@ -36,7 +37,16 @@ export default {
     data: () => {
         return {
             title: null,
+            bannerUrl: null,
         }
+    },
+    computed: {
+        /**
+         * Banner Image
+         */
+        bannerImg() {
+            return this.bannerUrl
+        },
     },
     methods: {
         //
@@ -44,10 +54,15 @@ export default {
     created: function () {
         /* Set title. */
         this.title = 'Nito Cash'
+
+        /* Set banner URL. */
+        setTimeout(() => {
+            this.bannerUrl = 'https://i.imgur.com/3UPJZT6.jpg'
+        }, 3000)
     }
 }
 </script>
-
+background-image: url('../images/campaign.jpg')
 <style scoped>
 /*  */
 </style>

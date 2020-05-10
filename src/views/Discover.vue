@@ -96,12 +96,12 @@
 
                                         <div class="staff-picks-author">
                                             <div class="author-profile">
-                                                <a class="author-avatar" :href="featured.authorLink" target="_blank">
-                                                    <img :src="featured.authorAvatar" alt="">
+                                                <a class="author-avatar" :href="featured.ownerLink" target="_blank">
+                                                    <img :src="featured.ownerAvatar" alt="">
                                                 </a>
                                                 by
-                                                <a class="author-name" :href="featured.authorLink" target="_blank">
-                                                    {{featured.authorName}}
+                                                <a class="author-name" :href="featured.ownerLink" target="_blank">
+                                                    {{featured.ownerName}}
                                                 </a>
                                             </div>
 
@@ -178,9 +178,9 @@
                                         </div>
 
                                         <div class="campaign-author">
-                                            <a class="author-icon" :href="cause.authorLink" target="_blank">
-                                                <img :src="cause.authorAvatar" alt="">
-                                                by {{cause.authorName}}
+                                            <a class="author-icon" :href="cause.ownerLink" target="_blank">
+                                                <img :src="cause.ownerAvatar" alt="">
+                                                by {{cause.ownerName}}
                                             </a>
                                         </div>
 
@@ -325,10 +325,10 @@ export default {
             }
 
             /* Set author id. */
-            const authorId = _cause.authorId
+            const ownerId = _cause.ownerId
 
             /* Validate author id. */
-            if (!authorId) {
+            if (!ownerId) {
                 return alert('Invalid author!')
             }
 
@@ -336,7 +336,7 @@ export default {
             const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
 
             /* Load details. */
-            this.$router.push(`@${authorId}/${extSlug}`)
+            this.$router.push(`@${ownerId}/${extSlug}`)
         },
 
         /**

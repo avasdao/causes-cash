@@ -2,32 +2,45 @@
 // import telr from '../../api/telr'
 
 /* Import modules (getters). */
+import getAsset from './campaigns/getters/getAsset'
 import getCampaign from './campaigns/getters/getCampaign'
+import getDescription from './campaigns/getters/getDescription'
+import getSummary from './campaigns/getters/getSummary'
 
 /* Import modules (actions). */
-// ...
+import updateAsset from './campaigns/actions/updateAsset'
 
 /* Import modules (mutations). */
-// ...
+import setAsset from './campaigns/mutations/setAsset'
 
 /* Initialize state. */
 const state = {
-    //
+    /**
+     * Assets
+     *
+     * These assets are stored for quick access.
+     *
+     * NOTE: They are regularly updated, based on timestamps.
+     */
+    assets: {},
 }
 
 /* Getters. */
 const getters = {
+    getAsset,
     getCampaign,
+    getDescription,
+    getSummary,
 }
 
 /* Actions. */
 const actions = {
-    //
+    updateAsset,
 }
 
 /* Mutations. */
 const mutations = {
-    //
+    setAsset,
 }
 
 /* Export. */

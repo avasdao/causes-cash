@@ -35,12 +35,12 @@
 
                                     <div class="project-love-author">
                                         <div class="author-profile">
-                                            <a class="author-avatar" :href="cause.authorLink" target="_blank">
-                                                <img :src="cause.authorAvatar" alt="">
+                                            <a class="author-avatar" :href="cause.ownerLink" target="_blank">
+                                                <img :src="cause.ownerAvatar" alt="">
                                             </a>
                                             by
-                                            <a class="author-name" :href="cause.authorLink" target="_blank">
-                                                {{cause.authorName}}
+                                            <a class="author-name" :href="cause.ownerLink" target="_blank">
+                                                {{cause.ownerName}}
                                             </a>
                                         </div>
 

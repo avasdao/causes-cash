@@ -54,9 +54,9 @@
                                 </div>
 
                                 <div class="campaign-author">
-                                    <a class="author-icon" :href="cause.authorLink" target="_blank">
-                                        <img :src="cause.authorAvatar" alt="">
-                                        by {{cause.authorName}}
+                                    <a class="author-icon" :href="cause.ownerLink" target="_blank">
+                                        <img :src="cause.ownerAvatar" alt="">
+                                        by {{cause.ownerName}}
                                     </a>
                                 </div>
 
@@ -155,10 +155,10 @@ export default {
             }
 
             /* Set author id. */
-            const authorId = _cause.authorId
+            const ownerId = _cause.ownerId
 
             /* Validate author id. */
-            if (!authorId) {
+            if (!ownerId) {
                 return alert('Invalid author!')
             }
 
@@ -166,7 +166,7 @@ export default {
             const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
 
             /* Load details. */
-            this.$router.push(`@${authorId}/${extSlug}`)
+            this.$router.push(`@${ownerId}/${extSlug}`)
         },
 
         /**

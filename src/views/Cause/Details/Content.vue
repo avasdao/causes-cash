@@ -34,8 +34,8 @@
                         <div class="campaign-author clearfix">
 							<div class="author-profile">
 								<a class="author-icon" href="javascript://">
-                                    <img :src="authorImgUrl" alt=""></a>
-                                    by <a class="author-name" href="javascript://">{{authorName}}</a>
+                                    <img :src="ownerAvatar" alt=""></a>
+                                    by <a class="author-name" href="javascript://">{{ownerName}}</a>
 							</div>
 
                             <div class="author-address">
@@ -125,6 +125,9 @@
 // const $ = window.jQuery
 
 export default {
+    props: {
+        campaign: Object,
+    },
     components: {
         // Summary,
     },
@@ -139,65 +142,28 @@ export default {
     },
     created: function () {
         /* Set category. */
-        this.category = 'Product Development'
-
-        /* Set cause. */
-        const cause = this.$route.params.cause
-
-        /* Initialize cause id. */
-        let causeId = null
-
-        /* Initialize referrer id. */
-        let referrerId = null
-
-        /* Validate cause. */
-        if (cause && cause.lastIndexOf('-') !== -1) {
-            /* Set cause id. */
-            causeId = cause.slice(0, cause.lastIndexOf('-'))
-
-            /* Set referrer id. */
-            referrerId = cause.slice(cause.lastIndexOf('-') + 1)
-        }
+        this.category = this.campaign.category
 
         /* Set title. */
-        switch(cause.toLowerCase()) {
-        case '':
-            this.title = `Nito Cash`
-            break
-        default:
-            this.title = `Unknown Cause`
-        }
-
-        this.title = `[${causeId}] ... [${referrerId}]`
+        this.title = this.campaign.title
+        // this.title = `[${causeId}] ... [${referrerId}]`
 
         /* Set description. */
-        this.description = `
-Nito Cash is the most user-friendly, privacy shielding wallet for crypto newcomers.
-The Nito Cash Treasury is the first digital bank to support the nascent CashFusion protocol via a mobile wallet.
-        `
+        this.description = this.campaign.description
+
         /* Set user. */
-        const user = this.$route.params.pathMatch
+        // const user = this.$route.params.pathMatch
 
         // TODO: Validate the user.
 
         /* Set author name. */
-        switch(user.toLowerCase()) {
-        case 'bchplease':
-            this.authorName = 'Bitcoin Cash Please'
-            break
-        case 'freetrader':
-            this.authorName = 'freetrader'
-            break
-        default:
-            this.authorName = 'Unknown'
-        }
-
+        this.ownerName = this.campaign.ownerName
 
         /* Set author location. */
-        this.campaignType = 'DRIPP Campaign'
+        // this.campaignType = 'DRIPP Campaign'
 
         /* Set author image url. */
-        this.authorImgUrl = 'https://i.imgur.com/f1kian5.png'
+        this.ownerAvatar = this.campaign.ownerAvatar
     },
 }
 </script>

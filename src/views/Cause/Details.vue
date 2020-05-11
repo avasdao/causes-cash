@@ -96,8 +96,8 @@ export default {
 
         /* Set description. */
         const description = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.extSlug}.description`)
-        // console.log('STORY (description):', description)
+            this.campaign.ownerId, `${this.campaign.slug}.description`)
+        // console.log('DETAILS (description):', description)
 
         // FOR DEVELOPMENT PURPOSES ONLY
         // this.description = null
@@ -117,8 +117,8 @@ export default {
 
         /* Set summary. */
         const summary = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.extSlug}.summary`)
-        // console.log('STORY (summary):', summary)
+            this.campaign.ownerId, `${this.campaign.slug}.summary`)
+        // console.log('DETAILS (summary):', summary)
 
         // FOR DEVELOPMENT PURPOSES ONLY
         // this.summary = ''

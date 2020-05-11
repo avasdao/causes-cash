@@ -105,13 +105,27 @@ export default {
     created: function () {
         /* Set description. */
         this.description = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.extSlug}.description`)
+            this.campaign.ownerId, `${this.campaign.slug}.description`)
         // console.log('STORY (description):', this.description)
+
+        /* Wait for asset update. */
+        setTimeout(() => {
+            /* Set description. */
+            this.description = this.getAsset(
+                this.campaign.ownerId, `${this.campaign.slug}.description`)
+        }, 1000)
 
         /* Set summary. */
         this.summary = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.extSlug}.summary`)
+            this.campaign.ownerId, `${this.campaign.slug}.summary`)
         // console.log('STORY (summary):', this.summary)
+
+        /* Wait for asset update. */
+        setTimeout(() => {
+            /* Set summary. */
+            this.summary = this.getAsset(
+                this.campaign.ownerId, `${this.campaign.slug}.summary`)
+        }, 1000)
 
     },
 }

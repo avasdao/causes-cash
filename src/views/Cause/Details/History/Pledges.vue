@@ -75,6 +75,7 @@ export default {
          * Load Pledges
          */
         loadPledges() {
+            console.log('LOADING PLEDGES...')
             /* Set pledges. */
             const pledges = this.campaign.pledges
             // console.log('PLEDGE (pledges):', pledges)
@@ -94,13 +95,15 @@ export default {
                     this.campaign.ownerId,
                     `${this.campaign.slug}.pledge.${pledge.id}.summary`
                 )
-                // console.log('PLEDGE (asset):', asset)
 
-                /* Set asset summary. */
-                pledge.summary = this.getMarkdown(asset)
+                /* Validate asset. */
+                if (asset) {
+                    /* Set asset summary. */
+                    pledge.summary = this.getMarkdown(asset)
 
-                /* Add pledge. */
-                this.pledges.push(pledge)
+                    /* Add pledge. */
+                    this.pledges.push(pledge)
+                }
             })
         },
 
@@ -108,6 +111,7 @@ export default {
          * Update Pledges
          */
         updatePledges() {
+            console.log('UPDATING PLEDGES...')
             /* Set pledges. */
             const pledges = this.campaign.pledges
             // console.log('PLEDGE (pledges):', pledges)
@@ -149,11 +153,19 @@ export default {
 
     },
     created: function () {
-        /* Update pledges. */
-        // this.updatePledges()
-
         /* Load pledges. */
         this.loadPledges()
+
+        if (this.pledges.length === 0) {
+            /* Update pledges. */
+            this.updatePledges()
+
+            /* Wait for asset update. */
+            setTimeout(() => {
+                /* Load pledges. */
+                this.loadPledges()
+            }, 1000)
+        }
     },
 }
 </script>

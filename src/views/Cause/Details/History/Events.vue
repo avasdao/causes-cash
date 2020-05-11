@@ -76,7 +76,7 @@ export default {
 
         /* Add sample event. */
         this.events.push({
-            id: '256bf2bf-b4fe-42b9-9731-7ec9fe3856d3',
+            id: '535bab1e-4dda-46d4-907e-2d12958e31e1',
             title: 'First Developer Preview',
             description: `Nito Cash has released its first developer preview.`,
             createdAt: 1580531400,

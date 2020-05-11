@@ -220,7 +220,7 @@ export default {
 
         /* Set summary. */
         this.summary = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.extSlug}.summary`)
+            this.campaign.ownerId, `${this.campaign.slug}.summary`)
 
         /* Set user. */
         // const user = this.$route.params.pathMatch

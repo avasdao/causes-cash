@@ -1,7 +1,23 @@
 <template>
     <div id="story" class="tabs active markdown">
-        <h1>Summary</h1>
-        <p v-html="summaryDisplay" />
+        <h1>Nito Cash Development</h1>
+
+        <div class="row">
+            <div class="col-8">
+                <p v-html="summaryDisplay" />
+
+                <hr />
+
+                <p>
+                    Please <i class="fa fa-heart text-danger"></i> and support our cause:
+                    <br /><a :href="'https://explorer.bitcoin.com/bch/address/' + pledgeAddress" target="_blank"><strong>{{pledgeAddress}}</strong></a>
+                </p>
+            </div>
+
+            <div class="col-4">
+                <div class="qr-code" v-html="qr" />
+            </div>
+        </div>
 
         <hr />
 
@@ -11,12 +27,11 @@
 </template>
 
 <script>
+/* Import modules. */
+import QRCode from 'qrcode'
+
 /* Initialize vuex. */
 import { mapGetters } from 'vuex'
-
-/* Import modules. */
-import DOMPurify from 'dompurify'
-import showdown from 'showdown'
 
 export default {
     props: {
@@ -26,6 +41,7 @@ export default {
         return {
             description: null,
             summary: null,
+            pledgeAddress: 'bitcoincash:qr5d6whmzmdw3e4x0q3j3gtftc06gc9rp5vkscm653',
         }
     },
     computed: {
@@ -34,10 +50,14 @@ export default {
             'getSummary',
         ]),
 
+        ...mapGetters('utils', [
+            'getMarkdown',
+        ]),
+
         descriptionDisplay() {
             /* Validate description. */
             if (this.description) {
-                return this.markdown(this.description)
+                return this.getMarkdown(this.description)
             } else {
                 return ''
             }
@@ -46,64 +66,52 @@ export default {
         summaryDisplay() {
             /* Validate summary. */
             if (this.summary) {
-                return this.markdown(this.summary)
+                return this.getMarkdown(this.summary)
             } else {
                 return ''
             }
         },
+
+        qr() {
+            /* Initialize (string) value. */
+            let strValue = ''
+
+            /* Initialize scanner parameters. */
+            const params = {
+                type: 'svg',
+                width: 225,
+                height: 225,
+                color: {
+                    dark: '#000',
+                    light: '#fff'
+                }
+            }
+
+            QRCode.toString(this.pledgeAddress, params, (err, value) => {
+                if (err) {
+                    return console.error('QR Code ERROR:', err)
+                }
+
+                /* Set (string) value. */
+                strValue = value
+            })
+
+            /* Return (string) value. */
+            return strValue
+        },
     },
     methods: {
-        /**
-         * Cleaner
-         *
-         * Uses DOM Purify to sanitize HTML.
-         * (source: https://github.com/cure53/DOMPurify)
-         */
-        cleaner(_html) {
-            /* Return cleaned HTML. */
-            return DOMPurify.sanitize(_html)
-        },
-
-        /**
-         * Markdown Manager
-         *
-         * Generates HTML from markdown and vice-versa.
-         * (source: https://github.com/showdownjs/showdown)
-         */
-        markdown(_content) {
-            /* Initialize converter. */
-            const converter = new showdown.Converter()
-
-            /* Set converter to GitHub Flavored Markdown (GFM). */
-            converter.setFlavor('github')
-
-            /* Generate HTML content. */
-            const html = converter.makeHtml(_content)
-            // console.log('HTML', html)
-
-            /* Sanitize HTML content. */
-            // const sanitized = this.cleaner(html)
-
-            /* Format HTML. */
-            // NOTE: Display fixes, probably related to our CSS.
-            const sanitized = html
-                .replace(/<ol>/gi, `<ol class="markdown-ul">`)
-                .replace(/<ul>/gi, `<ul class="markdown-ul">`)
-
-            /* Return sanitized content (for display). */
-            // return sanitized
-            return sanitized
-        },
+        //
     },
     created: function () {
         /* Set description. */
-        this.description = this.getDescription(
-            this.campaign.ownerId, this.campaign.extSlug)
+        this.description = this.getAsset(
+            this.campaign.ownerId, `${this.campaign.extSlug}.description`)
         // console.log('STORY (description):', this.description)
 
         /* Set summary. */
-        this.summary = this.getSummary(
-            this.campaign.ownerId, this.campaign.extSlug)
+        this.summary = this.getAsset(
+            this.campaign.ownerId, `${this.campaign.extSlug}.summary`)
         // console.log('STORY (summary):', this.summary)
 
     },
@@ -114,5 +122,12 @@ export default {
 h1 {
     margin-bottom: 20px;
     color: rgba(30, 30, 30, 0.2);
+}
+
+.qr-code {
+    margin: 0;
+    padding: 0;
+    border: 1pt solid rgba(200, 200, 200, 0.2);
+    float: right;
 }
 </style>

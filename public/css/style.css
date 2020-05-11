@@ -2805,66 +2805,6 @@ form .create-account input[type="checkbox"]{
 .campaign-history .campaign-content p:last-child{
   margin-bottom: 0px;
 }
-.support-campaign{
-  background-color: initial;
-  padding: 0;
-}
-.support-campaign select{
-  height: initial;
-}
-.support-campaign h3{
-  border-bottom: 1px solid #ededed;
-  font-size: 16px;
-  font-weight: 500;
-  padding-bottom: 15px;
-  position: relative;
-  margin-bottom: 40px;
-}
-.support-campaign h3:after{
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 155px;
-  background-color: #00a6eb;
-  display: block;
-  height: 1px;
-}
-.support-campaign .plan{
-  border: 2px solid #ededed;
-  border-radius: 2px;
-  margin-bottom: 30px;
-}
-.support-campaign .plan a{
-  display: block;
-  background-color: #f5f6f6;
-  padding: 40px 25px;
-}
-.support-campaign .plan a:focus{
-  background-color: #00a6eb;
-  color: #fff;
-}
-.support-campaign .plan a:focus:hover{
-  color: #fff;
-}
-.support-campaign .plan a:focus h4{
-  color: #fff;
-}
-.support-campaign .plan a:hover{
-  color: #555555;
-}
-.support-campaign .plan h4{
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 22px;
-}
-.support-campaign .plan .plan-desc{
-  margin-bottom: 16px;
-}
-.support-campaign .plan .backer{
-  margin-top: 18px;
-  font-weight: 500;
-}
 #backer table{
   width: 100%;
 }

@@ -6,6 +6,7 @@ import getBytesFromIPFS from './utils/getters/getBytesFromIPFS'
 import getCompletedPct from './utils/getters/getCompletedPct'
 import getFormatFunded from './utils/getters/getFormatFunded'
 import getIPFSFromBytes from './utils/getters/getIPFSFromBytes'
+import getMarkdown from './utils/getters/getMarkdown'
 import getShuffledArray from './utils/getters/getShuffledArray'
 
 /* Import modules (actions). */
@@ -25,6 +26,7 @@ const getters = {
     getCompletedPct,
     getFormatFunded,
     getIPFSFromBytes,
+    getMarkdown,
     getShuffledArray,
 }
 

@@ -13,28 +13,32 @@
     "location": "Atlanta, Georgia",
     "imgUrl": "https://i.imgur.com/gRCJ6SU.jpg",
     "coverImgUrl": "https://i.imgur.com/K15XQoa.jpg",
-    "accounts": {
+    "pledges": {
         "main": {
             "title": "Nito Cash Development",
             "description": "Qmbzyxm1oxvEkDwCXmoB9mE97iReGXYiw2TXNJ9kAV5K4M",
             "address": "bitcoincash:qr5d6whmzmdw3e4x0q3j3gtftc06gc9rp5vkscm653",
+            "summary": "Qmbzyxm1oxvEkDwCXmoB9mE97iReGXYiw2TXNJ9kAV5K4M",
             "dueAt": "July 2020"
         },
         "nitojs": {
             "title": "NitoJS Library & SDK Development",
-            "description": "Anonymity library for Bitcoin Cash. Support for NodeJS and browser-based applications.",
+            "summary": "QmVEdRtSiapt1so7XzT577QZfxN9RpZ9DvixD2qmS1DbDv",
+            "description": "QmVEdRtSiapt1so7XzT577QZfxN9RpZ9DvixD2qmS1DbDv",
             "address": "bitcoincash:qq638hdce3q0pg370hfee7f7sgxkw6j46c9cw9sqer",
             "dueAt": "July 2020"
         },
         "cashshuffle": {
             "title": "CashShuffle Development",
-            "description": "Expanding the use of CashShuffle in the web browser. As well as improving the pool efficiency by expanding access to multiple simultaneous servers.",
+            "summary": "QmTUGAkoZ5SHr4odJqCDHTCMsp4perHPFei9CzPRqcT3mf",
+            "description": "QmTUGAkoZ5SHr4odJqCDHTCMsp4perHPFei9CzPRqcT3mf",
             "address": "bitcoincash:qrdpss9k53e6yctvynyucxjcld9yzalaeqdr36y99f",
             "dueAt": "July 2020"
         },
         "cashfusion": {
             "title": "CashFusion Development",
-            "description": "Making cash fusions quick and simple for anyone who wants to add privacy to their home and mobile BCH wallets.",
+            "summary": "QmToErEGrvGMbdzX3pwA2DXJkpCvTFvhg8af9ffu7S8ruv",
+            "description": "QmToErEGrvGMbdzX3pwA2DXJkpCvTFvhg8af9ffu7S8ruv",
             "address": "bitcoincash:qp3fy66e59y3sed09nfnjmdg0vaal2jqlql4s35l9g",
             "dueAt": "July 2020"
         }

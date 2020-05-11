@@ -13,20 +13,21 @@ const updateAsset = ({ commit }, _asset) => {
     const id = _asset.id
     // console.log('UPDATE ASSET (id):', id)
 
-    /* Set asset type. */
-    const type = _asset.type
-    // console.log('UPDATE ASSET (type):', type)
+    /* Set asset target. */
+    const target = _asset.target
+    // console.log('UPDATE ASSET (target):', target)
 
     /* Set asset path. */
     // FIXME: We should consider pulling this from an Eternal DB.
-    const path = 'QmRfhuMsXwJymiQ46rcryM3mdeXUKTG9PAjAyEQmAsdDSJ'
+    // const path = 'QmRfhuMsXwJymiQ46rcryM3mdeXUKTG9PAjAyEQmAsdDSJ'
     // console.log('UPDATE ASSET (path):', path)
 
     /* Initialize target URL. */
     let targetUrl = null
 
     /* Set target URL. */
-    targetUrl = `https://ipfs.io/ipfs/${path}/${id}.${type}.md`
+    // targetUrl = `https://ipfs.io/ipfs/${path}/${id}.${type}.md`
+    targetUrl = `https://ipfs.io/ipfs/${target}`
     // console.log('UPDATE ASSET (targetUrl):', targetUrl)
 
     /* Make request. */
@@ -45,7 +46,6 @@ const updateAsset = ({ commit }, _asset) => {
             const asset = {
                 owner,
                 id,
-                type,
                 body,
             }
 

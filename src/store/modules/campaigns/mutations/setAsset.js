@@ -7,19 +7,19 @@ const setAsset = (state, _asset) => {
     /* Set asset owner. */
     const owner = _asset.owner
 
+    // TODO: Validate owner.
+
     /* Set asset id. */
     const id = _asset.id
+    // console.log('SET ASSET (id):', id)
 
-    /* Set asset type. */
-    const type = _asset.type
-
-    /* Set asset id. */
-    const assetId = `${id}.${type}`
-    // console.log('SET ASSET (assetId):', assetId)
+    // TODO: Validate id.
 
     /* Set asset body. */
     const body = _asset.body
     // console.log('SET ASSET (body):', body)
+
+    // TODO: Validate body.
 
     /* Validate owner assets. */
     if (!state.assets[owner]) {
@@ -28,7 +28,7 @@ const setAsset = (state, _asset) => {
     }
 
     /* Update the asset resource. */
-    state.assets[owner][assetId] = body
+    state.assets[owner][id] = body
 }
 
 /* Export module. */

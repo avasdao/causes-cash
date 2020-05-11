@@ -108,8 +108,8 @@ export default {
             /* Set asset. */
             const asset = {
                 owner: this.campaign.ownerId,
-                id: this.campaign.extSlug,
-                type: 'description',
+                id: `${this.campaign.slug}.description`,
+                target: this.campaign.description,
             }
 
             /* Request asset update. */
@@ -129,8 +129,8 @@ export default {
             /* Set asset. */
             const asset = {
                 owner: this.campaign.ownerId,
-                id: this.campaign.extSlug,
-                type: 'summary',
+                id: `${this.campaign.slug}.summary`,
+                target: this.campaign.summary,
             }
 
             /* Request asset update. */

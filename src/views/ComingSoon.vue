@@ -48,9 +48,9 @@
                     <div class="follow">
                         <ul>
                             <!-- <li class="facebook"><a target="_blank" href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a></li> -->
-                            <li class="twitter"><a target="_blank" href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                            <li class="twitter"><a href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
                             <!-- <li class="instagram"><a target="_blank" href="javascript://"><i class="fa fa-instagram" aria-hidden="true"></i></a></li> -->
-                            <li class="google"><a target="_blank" href="https://gitlab.com/bchplease/causes.cash"><i class="fa fa-gitlab" aria-hidden="true"></i></a></li>
+                            <li class="google"><a href="https://gitlab.com/bchplease/causes.cash" target="_blank"><i class="fa fa-gitlab" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
                 </div>

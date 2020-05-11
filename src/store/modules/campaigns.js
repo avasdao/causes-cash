@@ -4,8 +4,6 @@
 /* Import modules (getters). */
 import getAsset from './campaigns/getters/getAsset'
 import getCampaign from './campaigns/getters/getCampaign'
-import getDescription from './campaigns/getters/getDescription'
-import getSummary from './campaigns/getters/getSummary'
 
 /* Import modules (actions). */
 import updateAsset from './campaigns/actions/updateAsset'
@@ -29,8 +27,6 @@ const state = {
 const getters = {
     getAsset,
     getCampaign,
-    getDescription,
-    getSummary,
 }
 
 /* Actions. */

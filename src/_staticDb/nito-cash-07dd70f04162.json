@@ -4,8 +4,8 @@
     "title": "Nito Cash",
     "category": "Privacy",
     "type": "direct",
-    "summary": "https://ipfs.io/ipfs/QmRJs1vCW3JQRJf3EV9HZM5n23TzPiBvpUWftJNXiX7KQB/nito-cash-07dd70f04162.summary.md",
-    "description": "https://ipfs.io/ipfs/QmRJs1vCW3JQRJf3EV9HZM5n23TzPiBvpUWftJNXiX7KQB/nito-cash-07dd70f04162.description.md",
+    "summary": "QmWyfaAWVcJLyJQkyBuSGqk8bryTCzLw5M1c4r5L8UMsCA",
+    "description": "QmcsT9Hd4dPbK79gfFz2y7f73BnkEuzW7qgs5dAHuJ3LuB",
     "ownerId": "BCHPlease",
     "ownerName": "Bitcoin Cash Please",
     "ownerAvatar": "https://i.imgur.com/lRmSY2a.png",
@@ -13,6 +13,32 @@
     "location": "Atlanta, Georgia",
     "imgUrl": "https://i.imgur.com/gRCJ6SU.jpg",
     "coverImgUrl": "https://i.imgur.com/K15XQoa.jpg",
+    "accounts": {
+        "main": {
+            "title": "Nito Cash Development",
+            "description": "Qmbzyxm1oxvEkDwCXmoB9mE97iReGXYiw2TXNJ9kAV5K4M",
+            "address": "bitcoincash:qr5d6whmzmdw3e4x0q3j3gtftc06gc9rp5vkscm653",
+            "dueAt": "July 2020"
+        },
+        "nitojs": {
+            "title": "NitoJS Library & SDK Development",
+            "description": "Anonymity library for Bitcoin Cash. Support for NodeJS and browser-based applications.",
+            "address": "bitcoincash:qq638hdce3q0pg370hfee7f7sgxkw6j46c9cw9sqer",
+            "dueAt": "July 2020"
+        },
+        "cashshuffle": {
+            "title": "CashShuffle Development",
+            "description": "Expanding the use of CashShuffle in the web browser. As well as improving the pool efficiency by expanding access to multiple simultaneous servers.",
+            "address": "bitcoincash:qrdpss9k53e6yctvynyucxjcld9yzalaeqdr36y99f",
+            "dueAt": "July 2020"
+        },
+        "cashfusion": {
+            "title": "CashFusion Development",
+            "description": "Making cash fusions quick and simple for anyone who wants to add privacy to their home and mobile BCH wallets.",
+            "address": "bitcoincash:qp3fy66e59y3sed09nfnjmdg0vaal2jqlql4s35l9g",
+            "dueAt": "July 2020"
+        }
+    },
     "currency": "BCH",
     "requested": 0,
     "pledged": 0,

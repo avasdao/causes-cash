@@ -225,64 +225,7 @@
                     </div>
                 </div><!-- .main-content -->
 
-                <div class="col-lg-4">
-                    <div class="support support-campaign">
-                        <h3 class="support-campaign-title">Back this Cause</h3>
-
-                        <p class="campaignTypeDesc">
-                            All pledges are placed into escrow to be withdrawn based on the preset terms of the DRIPP campaign.
-                        </p>
-
-                        <div class="plan">
-                            <a href="javascript://">
-                                <h4>Pledge $10 - $20</h4>
-
-                                <div class="plan-desc">
-                                    <p>
-                                        But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master builder of human happiness.
-                                    </p>
-                                </div>
-
-                                <div class="plan-date">
-                                    May, 2017
-                                </div>
-
-                                <div class="plan-author">
-                                    Estimated Delivery
-                                </div>
-
-                                <div class="backer">
-                                    2 backer
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="plan">
-                            <a href="javascript://">
-                                <h4>Pledge $200 - $300</h4>
-
-                                <div class="plan-desc">
-                                    <p>
-                                        No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful.
-                                        Nor again is there anyone who loves or pursues or desires to obtain pain of itself
-                                    </p>
-                                </div>
-
-                                <div class="plan-date">
-                                    May, 2017
-                                </div>
-
-                                <div class="plan-author">
-                                    Estimated Delivery
-                                </div>
-
-                                <div class="backer">
-                                    35 backer
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div><!-- .sidebar -->
+                <Pledge :campaign="campaign" />
             </div>
         </div>
     </div><!-- .campaign-history -->
@@ -290,6 +233,7 @@
 
 <script>
 /* Import components. */
+import Pledge from './History/Pledge'
 import Story from './History/Story'
 
 /* Import icons. */
@@ -304,6 +248,7 @@ export default {
         campaign: Object,
     },
     components: {
+        Pledge,
         Story,
     },
     data: () => {
@@ -360,9 +305,5 @@ export default {
 </script>
 
 <style scoped>
-.campaignTypeDesc {
-    text-align: center;
-    color: rgba(180, 30, 30, 0.5);
-    margin-bottom: 25px;
-}
+/*  */
 </style>

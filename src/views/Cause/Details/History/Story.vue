@@ -1,9 +1,11 @@
 <template>
     <div id="story" class="tabs active markdown">
+        <h1>Summary</h1>
         <p v-html="summaryDisplay" />
 
         <hr />
 
+        <h1>Readme</h1>
         <p v-html="descriptionDisplay" />
     </div>
 </template>
@@ -109,5 +111,8 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+h1 {
+    margin-bottom: 20px;
+    color: rgba(30, 30, 30, 0.2);
+}
 </style>

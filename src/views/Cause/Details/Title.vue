@@ -56,13 +56,14 @@ export default {
         this.title = 'Nito Cash'
 
         /* Set banner URL. */
-        setTimeout(() => {
-            this.bannerUrl = 'https://i.imgur.com/3UPJZT6.jpg'
-        }, 3000)
+        // this.bannerUrl = 'https://i.imgur.com/3UPJZT6.jpg' // sofa
+        // this.bannerUrl = 'https://i.imgur.com/2NuUJxd.jpg' // headphones
+        this.bannerUrl = 'https://i.imgur.com/JQbiIbD.jpg' // working @ desk
+        // this.bannerUrl = 'https://i.imgur.com/9vNfGgt.jpg' // organized desk
     }
 }
 </script>
-background-image: url('../images/campaign.jpg')
+
 <style scoped>
 /*  */
 </style>

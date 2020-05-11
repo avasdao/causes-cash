@@ -2,7 +2,12 @@
 * Get Campaign
 */
 const getCampaign = () => (_campaignOwner, _campaignId) => {
-    // console.log('Retrieving campaign...', _campaignId)
+    // console.log('Retrieving campaign...', _campaignOwner, _campaignId)
+
+    // FIXME: FOR DEVELOPMENT PURPOSES ONLY
+    if (typeof _campaignId === 'undefined') {
+        _campaignId = _campaignOwner
+    }
 
     /* Initialize campaign. */
     let campaign = null

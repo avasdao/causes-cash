@@ -726,14 +726,14 @@ ul.socials-top li:hover i{
 .site-main{
     padding-bottom: 120px;
 }
-.site-main .sideshow{
+/* .site-main .sideshow{
     position: relative;
     height: 674px;
     background-image: url('../images/slideshow-img.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-}
+} */
 .site-main .sideshow:before{
     content: '';
     position: absolute;
@@ -1389,18 +1389,18 @@ ul.menu-category li.active:after{
   background-size: cover;
   background-repeat: no-repeat;
 }
-.page-title.background-page{
+/* .page-title.background-page{
   background-image: url('../images/banner-img.jpg');
-}
-.page-title.background-blog{
+} */
+/* .page-title.background-blog{
   background-image: url('../images/blog-list.jpg');
-}
-.page-title.background-campaign{
+} */
+/* .page-title.background-campaign{
   background-image: url('../images/campaign.jpg');
-}
-.page-title.background-cart{
+} */
+/* .page-title.background-cart{
   background-image: url('../images/cart.jpg');
-}
+} */
 .page-title:before{
   content: '';
   position: absolute;
@@ -1846,13 +1846,13 @@ ul.menu-category li.active:after{
 /*------------------------------------------------------------------
 3.5. About us / #about-us
 -------------------------------------------------------------------*/
-.top-site{
+/* .top-site{
   background-image: url('../images/top-site-about.jpg');
   height: 860px;
   background-size: cover;
   background-position: center center;
   position: relative;
-}
+} */
 .top-site:before{
   content: '';
   position: absolute;

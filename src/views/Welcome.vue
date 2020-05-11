@@ -225,7 +225,18 @@ export default {
         // setTimeout(function(){
         // 	$('.preloading').fadeOut()
 		// }, 3000)
-        
+
     }
 }
 </script>
+
+<style scoped>
+.site-main .sideshow{
+    position: relative;
+    height: 674px;
+    background-image: url('https://i.imgur.com/MazyCcK.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+</style>

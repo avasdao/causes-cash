@@ -9,15 +9,15 @@
                     <div class="campaign-image">
 						<div id="owl-campaign" class="campaign-slider">
 							<div class="item">
-                                <img src="@/assets/img/campaign-recent-01.jpg" alt="">
+                                <img :src="images[0]" alt="">
                             </div>
 
                             <div class="item">
-                                <img src="@/assets/img/campaign-recent-02.jpg" alt="">
+                                <img :src="images[1]" alt="">
                             </div>
 
                             <div class="item">
-                                <img src="@/assets/img/campaign-recent-03.jpg" alt="">
+                                <img :src="images[2]" alt="">
                             </div>
 						</div>
 					</div>
@@ -158,6 +158,14 @@ export default {
             } else {
                 return ''
             }
+        },
+
+        images() {
+            return [
+                this.campaign.coverImgUrl,
+                'https://i.imgur.com/JEJcvg6.jpg',
+                'https://i.imgur.com/rend8ex.jpg',
+            ]
         },
     },
     methods: {

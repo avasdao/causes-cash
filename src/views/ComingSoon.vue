@@ -11,13 +11,13 @@
 
             <main id="main" class="site-main">
                 <div class="container">
-                    <h2>Bitcoin Cash Please Is BUIDLing</h2>
+                    <h2>Bitcoin Cash Please is BUIDLing a</h2>
 
-                    <h1>A New Website</h1>
+                    <h1>NEW Community Service</h1>
 
                     <div class="desc">
-                        Working hard for something you <strong>DON'T</strong> care about is called <strong>STRESS.</strong>
-                        <br />Working hard for something you <strong>LOVE</strong> is called <strong>PASSION.</strong>
+                        Working hard for something you <strong>DON'T</strong> care about is called <strong>STRESS</strong>
+                        <br />Working hard for something you <strong>LOVE</strong> is called <strong>PASSION</strong>
                     </div>
 
                     <div class="time">
@@ -30,7 +30,9 @@
                     </div>
 
                     <div class="button">
-                        <a href="/" class="btn-primary">Check Out the LIVE Preview</a>
+                        <router-link to="/welcome" class="btn-primary">
+                            Take a Sneak Peak Inside
+                        </router-link>
                     </div>
                 </div>
             </main>
@@ -39,14 +41,16 @@
                 <div class="footer-copyright clearfix">
                     <p class="copyright">
                         &copy; 2020 by <a href="https://bchplease.org" target="_blank">Bitcoin Cash Please.</a> All rights reserved.
+                        <br />Donate <i class="fa fa-heart text-danger mx-1"></i> <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6" target="_blank">
+                            bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6</a>
                     </p>
 
                     <div class="follow">
                         <ul>
-                            <li class="facebook"><a target="_blank" href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                            <!-- <li class="facebook"><a target="_blank" href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a></li> -->
                             <li class="twitter"><a target="_blank" href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li class="instagram"><a target="_blank" href="javascript://"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                            <li class="google"><a target="_blank" href="javascript://"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                            <!-- <li class="instagram"><a target="_blank" href="javascript://"><i class="fa fa-instagram" aria-hidden="true"></i></a></li> -->
+                            <li class="google"><a target="_blank" href="https://gitlab.com/bchplease/causes.cash"><i class="fa fa-gitlab" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -89,12 +93,15 @@ export default {
             return this.jQSeconds
         },
     },
+    methods: {
+        //
+    },
     mounted: function () {
         /* Initialize self. */
         const self = this
 
         /* Set launch date. */
-        const launchDate = 'May 15, 2020'
+        const launchDate = 'June 15, 2020'
 
         /* Initialize countdown (launch timer). */
         $('.time ul').countdown({

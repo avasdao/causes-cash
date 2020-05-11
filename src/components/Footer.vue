@@ -204,6 +204,8 @@
                         Bitcoin Cash Please.
                     </a>
                     All rights reserved.
+                    <br />Donate <i class="fa fa-heart text-danger mx-1"></i> <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6" target="_blank">
+                        bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6</a>
                 </p>
 
                 <a href="javascript:backToTop()" class="back-top">

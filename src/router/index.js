@@ -38,6 +38,9 @@ Vue.use(VueRouter)
 /* Initialize (navigation) routes. */
 const routes = [{
     path: '/',
+    component: ComingSoon
+}, {
+    path: '/welcome',
     component: Welcome
 }, {
 
@@ -77,11 +80,6 @@ const routes = [{
     // NOTE: Avoid other wildcard conflicts.
     path: '/@*/:cause', // Details
     component: CauseDetails
-}, {
-
-    /* Coming Soon */
-    path: '/coming-soon',
-    component: ComingSoon
 }, {
 
     /* Contact */

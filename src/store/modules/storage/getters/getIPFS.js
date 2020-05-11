@@ -42,7 +42,7 @@ const getIPFS = async () => {
         // })
         node = await IPFS.create() // eslint-disable-line require-atomic-updates
         // FIXME: https://eslint.org/docs/rules/require-atomic-updates
-        console.log('STATE (ipfs)', node)
+        console.log('GET IPFS (node)', node)
 
         return node
     }

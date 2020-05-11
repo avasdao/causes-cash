@@ -2805,13 +2805,6 @@ form .create-account input[type="checkbox"]{
 .campaign-history .campaign-content p:last-child{
   margin-bottom: 0px;
 }
-#backer table{
-  width: 100%;
-}
-#backer table tr th, #backer table tr td{
-  border: 1px solid #ededed;
-  padding: 15px;
-}
 #updates li{
   list-style: none;
   padding-bottom: 46px;

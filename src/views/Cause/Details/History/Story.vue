@@ -9,7 +9,7 @@
                 <hr />
 
                 <p>
-                    Please <i class="fa fa-heart text-danger"></i> and support our cause:
+                    Please <i class="fa fa-heart text-danger"></i> and support our cause <i class="fa fa-arrow-down"></i>
                     <br /><a :href="'https://explorer.bitcoin.com/bch/address/' + pledgeAddress" target="_blank"><strong>{{pledgeAddress}}</strong></a>
                 </p>
             </div>
@@ -46,8 +46,7 @@ export default {
     },
     computed: {
         ...mapGetters('campaigns', [
-            'getDescription',
-            'getSummary',
+            'getAsset',
         ]),
 
         ...mapGetters('utils', [

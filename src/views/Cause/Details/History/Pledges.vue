@@ -75,8 +75,6 @@ export default {
          * Load Pledges
          */
         loadPledges() {
-            console.log('STATE', this.$store.state)
-
             /* Set pledges. */
             const pledges = this.campaign.pledges
             // console.log('PLEDGE (pledges):', pledges)
@@ -89,14 +87,14 @@ export default {
                     ...pledges[pledgeId]
                 }
 
-                console.log('PLEDGE (pledge):', pledge)
+                // console.log('PLEDGE (pledge):', pledge)
 
                 /* Retrieve (stored) asset. */
                 const asset = this.getAsset(
                     this.campaign.ownerId,
                     `${this.campaign.slug}.pledge.${pledge.id}.summary`
                 )
-                console.log('PLEDGE (asset):', asset)
+                // console.log('PLEDGE (asset):', asset)
 
                 /* Set asset summary. */
                 pledge.summary = this.getMarkdown(asset)

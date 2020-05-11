@@ -38,7 +38,7 @@ const getMarkdown = () => (_content) => {
     const formatted = cleaned
         .replace(/<ol>/gi, `<ol class="markdown-ul">`)
         .replace(/<ul>/gi, `<ul class="markdown-ul">`)
-    console.log('FORMATTED', formatted)
+    // console.log('FORMATTED', formatted)
 
     /* Return formatted content (for display). */
     return formatted

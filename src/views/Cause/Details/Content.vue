@@ -138,8 +138,7 @@ export default {
     },
     computed: {
         ...mapGetters('campaigns', [
-            'getDescription',
-            'getSummary',
+            'getAsset',
         ]),
 
         descriptionDisplay() {
@@ -220,8 +219,8 @@ export default {
         // this.title = `[${causeId}] ... [${referrerId}]`
 
         /* Set summary. */
-        this.summary = this.getSummary(
-            this.campaign.ownerId, this.campaign.extSlug)
+        this.summary = this.getAsset(
+            this.campaign.ownerId, `${this.campaign.extSlug}.summary`)
 
         /* Set user. */
         // const user = this.$route.params.pathMatch

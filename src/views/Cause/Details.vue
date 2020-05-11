@@ -52,9 +52,8 @@ export default {
     },
     computed: {
         ...mapGetters('campaigns', [
+            'getAsset',
             'getCampaign',
-            'getDescription',
-            'getSummary',
         ]),
 
     },
@@ -96,8 +95,8 @@ export default {
         }
 
         /* Set description. */
-        const description = this.getDescription(
-            this.campaign.ownerId, this.campaign.extSlug)
+        const description = this.getAsset(
+            this.campaign.ownerId, `${this.campaign.extSlug}.description`)
         // console.log('STORY (description):', description)
 
         // FOR DEVELOPMENT PURPOSES ONLY
@@ -117,8 +116,8 @@ export default {
         }
 
         /* Set summary. */
-        const summary = this.getSummary(
-            this.campaign.ownerId, this.campaign.extSlug)
+        const summary = this.getAsset(
+            this.campaign.ownerId, `${this.campaign.extSlug}.summary`)
         // console.log('STORY (summary):', summary)
 
         // FOR DEVELOPMENT PURPOSES ONLY

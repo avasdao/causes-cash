@@ -9,9 +9,9 @@
 	<title>Causes Cash — Freedom to Wealth™</title>
 
 	<!-- Style CSS -->
-    <link rel="stylesheet" type="text/css" href="./css/style.css" />
-    <link rel="stylesheet" type="text/css" href="./css/responsive.css" />
-    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="<%= BASE_URL %>css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<%= BASE_URL %>css/responsive.css" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" type="image/x-icon"/>
     <style>
     .markdown-ul, .markdown-ol {
         margin: 20px 40px;
@@ -45,13 +45,13 @@
 <div id="app"></div>
 
 <!-- jQuery v2.2.4 (NOTE: v3.x is incompatible) -->
-<script src="./js/jquery.min.js"></script>
+<script src="<%= BASE_URL %>js/jquery.min.js"></script>
 
 <!-- @popperjs/core v2.3.3 -->
-<script src="./js/popper.min.js"></script>
+<script src="<%= BASE_URL %>js/popper.min.js"></script>
 
 <!-- Bootstrap v4.4.0 -->
-<script src="./js/bootstrap.min.js"></script>
+<script src="<%= BASE_URL %>js/bootstrap.min.js"></script>
 
 <script src="https://preview.thememusion.com/ideapress/libs/owl-carousel/owl.carousel.min.js"></script>
 <script src="https://preview.thememusion.com/ideapress/libs/owl-carousel/carousel.min.js"></script>
@@ -63,7 +63,7 @@
 <script src="https://preview.thememusion.com/ideapress/libs/isotope/isotope.pkgd.min.js"></script>
 
 <!-- bxSlider v4.2.1d -->
-<script src="./js/jquery.bxslider.min.js"></script>
+<script src="<%= BASE_URL %>js/jquery.bxslider.min.js"></script>
 
 <script src="https://preview.thememusion.com/ideapress/libs/magicsuggest/magicsuggest-min.js"></script>
 <script src="https://preview.thememusion.com/ideapress/libs/quilljs/js/quill.core.js"></script>
@@ -73,17 +73,17 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ionic/1.3.2/js/ionic.min.js" integrity="sha256-VqHzINjdZJyY6IlQGi24I8dWJYVKTwd5gTukdW5oUQM=" crossorigin="anonymous"></script> -->
 
 <!-- BITBOX for Bitcoin Cash (https://developer.bitcoin.com/bitbox) -->
-<script src="./js/bitbox.js"></script>
+<script src="<%= BASE_URL %>js/bitbox.js"></script>
 
 <!-- Main JS file (FIXME: Localize to individual components) -->
-<script src="./js/main.js"></script>
+<script src="<%= BASE_URL %>js/main.js"></script>
 
 <script>
 	// function validate(evt) {
 	//   var theEvent = evt || window.event;
 	//   var key = theEvent.keyCode || theEvent.which;
 	//   key = String.fromCharCode( key );
-	//   var regex = /[0-9]|\./;
+	//   var regex = /[0-9]|\<%= BASE_URL %>;
 	//   if( !regex.test(key) ) {
 	//     theEvent.returnValue = false;
 	//     if(theEvent.preventDefault) theEvent.preventDefault();

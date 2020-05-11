@@ -117,6 +117,7 @@ const router = new VueRouter({
             return { x: 0, y: 0 }
         }
     },
+    // TODO: Make this dynamic using `VUE_APP_BASE_URL`??
     mode: 'hash',
     // mode: 'history',
     base: process.env.BASE_URL,

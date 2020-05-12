@@ -2,7 +2,8 @@
     <main class="faq">
         <Header />
 
-        <div class="page-title background-page">
+        <!-- <div class="page-title background-page"> -->
+        <div class="page-title" :style="{ 'background-image': 'url(' + bannerImg + ')' }">
 			<div class="container">
 				<h1>Contact Us</h1>
 				<div class="breadcrumbs">
@@ -55,25 +56,25 @@
 
                                         <ul>
                                             <li>
-                                                <i class="fa fa-map-marker" aria-hidden="true"></i>Fulham Rd, Fulham, London SW6 1HS, UK
+                                                <i class="fa fa-map-marker" aria-hidden="true"></i>3423 Piedmont Rd NE, Atlanta, GA 30305
                                             </li>
 
                                             <li>
-                                                <i class="fa fa-phone" aria-hidden="true"></i>(+1) 123.456.789
+                                                <i class="fa fa-phone" aria-hidden="true"></i>+1 (678) 981-8818
                                             </li>
 
                                             <li>
-                                                <i class="fa fa-mobile" aria-hidden="true"></i>(+1) 987.654.321
+                                                <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:support@bchplease.org">support@bchplease.org</a>
                                             </li>
 
                                             <li>
-                                                <i class="fa fa-envelope-o" aria-hidden="true"></i><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0f7c6e76676a6363604f466b6a6e5f7d6a7c7c787f216c6062">[email&#160;protected]</a>
+                                                <i class="fa fa-slack" aria-hidden="true"></i><a href="https://join.slack.com/t/bchplease/shared_invite/zt-e7jj03j5-vJbe47kNrPBjTgTXwLNRkA" target="_blank">Join our Slack</a>
                                             </li>
                                         </ul>
 
                                         <div class="contact-desc">
                                             <p>
-                                                Lorem Ipsum is simply dummy text of the printing & typesetting industry. Lorem Ipsum has been scrambled it to make type specimen book.
+                                                Come visit us at the Atlanta Tech Village in the heart of Buckhead.
                                             </p>
                                         </div>
                                     </div>
@@ -98,6 +99,14 @@ export default {
     components: {
         Footer,
         Header,
+    },
+    computed: {
+        /**
+         * Banner Image
+         */
+        bannerImg() {
+            return 'https://i.imgur.com/9vNfGgt.jpg'
+        },
     },
     mounted: function () {
         //

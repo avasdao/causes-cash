@@ -60,7 +60,7 @@ export default {
         // this.bannerUrl = 'https://i.imgur.com/2NuUJxd.jpg' // headphones
         this.bannerUrl = 'https://i.imgur.com/JQbiIbD.jpg' // working @ desk
         // this.bannerUrl = 'https://i.imgur.com/9vNfGgt.jpg' // organized desk
-    }
+    },
 }
 </script>
 

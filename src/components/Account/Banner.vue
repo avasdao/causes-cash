@@ -1,5 +1,6 @@
 <template>
-    <div class="page-title background-page">
+    <!-- <div class="page-title background-page"> -->
+    <div class="page-title" :style="{ 'background-image': 'url(' + bannerImg + ')' }">
         <div class="container">
             <h1 class="text-capitalize">@{{this.user}} Wallet</h1>
             <div class="breadcrumbs">
@@ -62,6 +63,13 @@ export default {
 
         pageName() {
             return this.page
+        },
+
+        /**
+         * Banner Image
+         */
+        bannerImg() {
+            return 'https://i.imgur.com/9vNfGgt.jpg'
         },
     },
     methods: {

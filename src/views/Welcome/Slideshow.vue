@@ -88,16 +88,13 @@ export default {
     },
     data: () => {
         return {
-            featuredTitle: 'A Community IFP for the future of Bitcoin Cash',
-            // featuredTitle: 'A Community IFP for the\nfuture of Bitcoin Cash',
-            featuredSummary: `
-            NO more debating
-            NO more proposals
-            NO more forks
-            Let's take care of OUR Core Developers and #MakeBitcoinCashAgain
+            featuredTitle: `We're working towards a sustainable future for Bitcoin Cash BUIDLers`,
+            featuredSummary: `100% Transparency. 100% Open Source. 100% Decentralized.
+            Optimized for On-going Project / Campaign Management
+            Pay It Forward into our Community Funding Pool
             `,
-            pledged: 1.00,
-            goal: 6000000.00,
+            pledged: 10.00,
+            goal: 1000000.00,
             numBackers: 1,
             daysRemaining: 999,
         }

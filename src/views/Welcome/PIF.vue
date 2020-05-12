@@ -14,7 +14,8 @@
                     <ul class="project-love-slider">
                         <li v-for="cause of causes" :key="cause.id">
                             <div class="project-love-item clearfix">
-                                <router-link to="/details" class="project-love-image">
+                                <!-- <router-link to="/details" class="project-love-image"> -->
+                                <router-link to="/welcome" class="project-love-image">
                                     <img :src="cause.imgUrl" class="img-rounded" alt="">
                                 </router-link>
 
@@ -231,8 +232,8 @@ export default {
         this.causes.push(this.getCampaign('help-us-deliver-food-for-one-month-b6ce6ceb819f'))
 
         /* Infrastructure. */
-        // this.causes.push(this.getCampaign('bitcoin-cash-node-initiative-f837f2d17747'))
-        this.causes.push(this.getCampaign('bitcoin-verde-node-development-14214ea4cd41'))
+        this.causes.push(this.getCampaign('bitcoin-cash-node-initiative-f837f2d17747'))
+        // this.causes.push(this.getCampaign('bitcoin-verde-node-development-14214ea4cd41'))
 
         /* Privacy. */
         this.causes.push(this.getCampaign('nito-cash-07dd70f04162'))

@@ -163,10 +163,11 @@ export default {
             }
 
             /* Set extended slug. */
-            const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
+            // const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
 
             /* Load details. */
-            this.$router.push(`@${ownerId}/${extSlug}`)
+            // this.$router.push(`@${ownerId}/${extSlug}`)
+            alert('Oops! Not available in this preview.')
         },
 
         /**

@@ -2,7 +2,8 @@
     <main class="faq">
         <Header />
 
-        <div class="page-title background-page">
+        <!-- <div class="page-title background-page"> -->
+        <div class="page-title" :style="{ 'background-image': 'url(' + bannerImg + ')' }">
 			<div class="container">
 				<h1>Discover Causes</h1>
 
@@ -266,6 +267,12 @@ export default {
             'getShuffledArray',
         ]),
 
+        /**
+         * Banner Image
+         */
+        bannerImg() {
+            return 'https://i.imgur.com/3UPJZT6.jpg'
+        },
     },
     methods: {
         /**
@@ -333,10 +340,11 @@ export default {
             }
 
             /* Set extended slug. */
-            const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
+            // const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
 
             /* Load details. */
-            this.$router.push(`@${ownerId}/${extSlug}`)
+            // this.$router.push(`@${ownerId}/${extSlug}`)
+            alert('Oops! Not available in this preview.')
         },
 
         /**

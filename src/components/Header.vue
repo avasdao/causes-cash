@@ -65,13 +65,15 @@
 
                                 <ul class="sub-menu">
                                     <li>
-                                        <router-link to="/create">
+                                        <!-- <router-link to="/create"> -->
+                                        <router-link to="/">
                                             Create a cause
                                         </router-link>
                                     </li>
 
                                     <li>
-                                        <router-link to="/manage">
+                                        <!-- <router-link to="/manage"> -->
+                                        <router-link to="/">
                                             Manage a cause
                                         </router-link>
                                     </li>

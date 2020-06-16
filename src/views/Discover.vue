@@ -285,7 +285,7 @@ export default {
                 'bchd-node-development-8331b54814ea',
                 'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
                 'knuth-platform-development-158ef2f48aa0',
-                'nito-exchange-gateway-443db3869688',
+                'nito-exchange-443db3869688',
             ]
 
             /* Choose a "random" campaign id. */
@@ -444,7 +444,7 @@ export default {
             'memo-6ecee5eb74e2',
             'naomi-brockwell-tv-fcc6e720c27f',
             'nito-cash-07dd70f04162',
-            'nito-exchange-gateway-443db3869688',
+            'nito-exchange-443db3869688',
             'read-cash-fund-44c7d3cfe560',
             'veracrypt-4158c2f0eda0',
         ]

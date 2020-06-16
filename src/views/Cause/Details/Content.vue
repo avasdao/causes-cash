@@ -55,15 +55,15 @@
                                 </div>
 
                                 <div class="process-pledged">
-                                    <span>$8100</span>pledged
+                                    <span>$100</span>pledged
                                 </div>
 
                                 <div class="process-time">
-                                    <span>37</span>backers
+                                    <span>2</span>backers
                                 </div>
 
                                 <div class="process-time">
-                                    <span>23</span>days ago
+                                    <span>1</span>days ago
                                 </div>
 							</div>
 						</div>
@@ -162,8 +162,10 @@ export default {
         images() {
             return [
                 this.campaign.coverImgUrl,
-                'https://i.imgur.com/JEJcvg6.jpg',
-                'https://i.imgur.com/rend8ex.jpg',
+                this.campaign.coverImgUrl,
+                this.campaign.coverImgUrl,
+                // 'https://i.imgur.com/JEJcvg6.jpg',
+                // 'https://i.imgur.com/rend8ex.jpg',
             ]
         },
     },

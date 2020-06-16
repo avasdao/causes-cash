@@ -25,7 +25,8 @@
                                     </router-link>
 
                                     <h3>
-                                        <router-link to="/details">
+                                        <!-- <router-link to="/details"> -->
+                                        <router-link to="/welcome">
                                             {{cause.title}}
                                         </router-link>
                                     </h3>
@@ -245,7 +246,7 @@ export default {
         this.causes.push(this.getCampaign('veracrypt-4158c2f0eda0'))
 
         /* Software. */
-        this.causes.push(this.getCampaign('nito-exchange-gateway-443db3869688'))
+        this.causes.push(this.getCampaign('nito-exchange-443db3869688'))
 
         /* World View. */
         this.causes.push(this.getCampaign('coins-4-clothes-93e037309d77'))

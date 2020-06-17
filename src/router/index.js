@@ -20,9 +20,6 @@ import CauseCreate from '../views/Cause/Create.vue'
 import CauseDetails from '../views/Cause/Details.vue'
 import CauseManage from '../views/Cause/Manage.vue'
 
-/* Coming Soon */
-import ComingSoon from '../views/ComingSoon.vue'
-
 /* Contact. */
 import Contact from '../views/Contact.vue'
 
@@ -38,9 +35,6 @@ Vue.use(VueRouter)
 /* Initialize (navigation) routes. */
 const routes = [{
     path: '/',
-    component: ComingSoon
-}, {
-    path: '/welcome',
     component: Welcome
 }, {
 
@@ -121,7 +115,7 @@ const router = new VueRouter({
     // mode: 'hash',
     // mode: 'history',
     base: process.env.BASE_URL,
-    routes
+    routes,
 })
 
 /* Export module. */

@@ -3,22 +3,22 @@
         <div class="container">
             <div class="partners-slider owl-carousel">
                 <div>
-                    <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-01.png" alt=""></a>
+                    <a href="javascript://"><img src="~@/assets/partners/partner-01.png" alt=""></a>
                 </div>
                 <div>
-                    <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-02.png" alt=""></a>
+                    <a href="javascript://"><img src="~@/assets/partners/partner-02.png" alt=""></a>
                 </div>
                 <div>
-                    <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-03.png" alt=""></a>
+                    <a href="javascript://"><img src="~@/assets/partners/partner-03.png" alt=""></a>
                 </div>
                 <div>
-                    <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-04.png" alt=""></a>
+                    <a href="javascript://"><img src="~@/assets/partners/partner-04.png" alt=""></a>
                 </div>
                 <div>
-                    <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-05.png" alt=""></a>
+                    <a href="javascript://"><img src="~@/assets/partners/partner-05.png" alt=""></a>
                 </div>
                 <div>
-                    <a href="javascript://"><img src="https://preview.thememusion.com/ideapress/images/partner-06.png" alt=""></a>
+                    <a href="javascript://"><img src="~@/assets/partners/partner-06.png" alt=""></a>
                 </div>
             </div>
         </div>

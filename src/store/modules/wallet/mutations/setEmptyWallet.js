@@ -1,18 +1,14 @@
 /**
  * Destroy Wallet
  *
- * This will completely destory the user's wallet,
- * as well as ALL imported seeds.
+ * This will completely destory the user's wallet.
  */
 const destroyWallet = (state) => {
     /* Reset accounts. */
-    state.a = null
-
-    /* Reset imported seeds. */
-    state.is = null
+    state.accounts = null
 
     /* Reset metadata. */
-    state.m = null
+    state.meta = null
 }
 
 /* Export module. */

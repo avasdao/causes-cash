@@ -1,5 +1,5 @@
 /* Initialize BITBOX. */
-const bitbox = new window.BITBOX()
+const Nito = require('nitojs')
 
 /**
  * Initialize Wallet
@@ -24,7 +24,7 @@ const initProfile = async ({ state, commit }) => {
      * We MUST properly evaluate ANY and ALL weaknesses with
      * using randomBytes via a ("mobile") web browser.
      */
-    const masterSeed = bitbox.Crypto.randomBytes(32).toString('hex')
+    const masterSeed = Nito.Crypto.randomBytes(32).toString('hex')
 
     /* Set new master (private) key. */
     commit('setMasterSeed', masterSeed)

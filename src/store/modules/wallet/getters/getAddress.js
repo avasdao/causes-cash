@@ -1,45 +1,45 @@
-/* Initialize BITBOX. */
-const bitbox = new window.BITBOX()
+/* Import modules. */
+const Nito = require('nitojs')
 
 /**
- * Get (Wallet) Address
+ * Get Address
  *
- * Returns the next avaialble "receiving" (account) address,
- * for the specified wallet type.
- *
- * TODO: Add support for ALL wallet types: BAI, BCH, DAI, NITO
+ * Returns the next avaialble "receiving" address.
  */
-const getAddress = (state, getters) => (_wallet) => {
+const getAddress = (state, getters) => {
+    // console.log('GET ADDRESS BY SESSION (sessionid)', _sessionId)
     /* Validate accounts. */
-    if (!getters.getAccountsByWallet(_wallet)) {
+    if (!getters.getAccounts) {
         return null
     }
 
-    /* Initialize (wallet) accounts. */
-    const walletAccounts = getters.getAccountsByWallet(_wallet)
+    /* Initialize accounts. */
+    const accounts = getters.getAccounts
+    // console.log('GET ADDRESS BY SESSION (accounts):', accounts)
 
-    /* Initialize current (account) index. */
-    const currentIndex = Math.max(...Object.keys(walletAccounts))
+    /* Initialize current (coin) index. */
+    const currentIndex = accounts.deposit
+    // console.log('GET ADDRESS BY SESSION (currentIndex):', currentIndex)
 
-    // FIXME
-    const change = 0
+    /* Set chain. */
+    const chain = 0 // receiving account
 
     /* Set derivation path. */
-    const path = `${getters.getDerivationPath(_wallet)}/${change}/${currentIndex}`
-    // console.log('GET ADDRESS (path)', path)
+    const path = getters.getDerivationPath(_sessionId, chain, currentIndex)
+    // console.log('GET ADDRESS BY SESSION (path)', path)
 
     /* Initialize HD node. */
     const hdNode = getters.getHDNode
 
     /* Initialize child node. */
-    const childNode = hdNode.derivePath(path)
+    const childNode = hdNode.deriveChild(path)
 
-    /* Set (receiving) address. */
-    const address = bitbox.HDNode.toCashAddress(childNode)
-    // console.log('GET ADDRESS (receiving address)', address)
+    /* Set (receiving) addresss. */
+    const addresss = Nito.Address.toCashAddress(childNode)
+    // console.log('GET ADDRESS BY SESSION (receiving addresss)', addresss)
 
-    /* Return address. */
-    return address
+    /* Return addresss. */
+    return addresss
 }
 
 /* Export module. */

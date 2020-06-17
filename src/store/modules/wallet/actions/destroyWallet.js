@@ -2,7 +2,7 @@
  * Destroy Wallet
  */
 const destroyWallet = ({ commit }) => {
-    console.info('Destroying wallet...')
+    console.info('Destroying wallet...') // eslint-disable-line no-console
 
     /* Commit empty wallet. */
     commit('setEmptyWallet')

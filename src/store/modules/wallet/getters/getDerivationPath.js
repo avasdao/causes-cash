@@ -5,25 +5,12 @@
  * (m / purpose' / coin_type' / account' / change / address_index)
  * source: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
  *
- * Nito provides native support for both Bitcoin Cash (BCH) and Ethereum (ETH).
- * Bitcoin Legacy (BTC) will be supported using compatible exchange APIs
- * (eg. Telr.Exchange).
+ * The `address_index` allows for an unlimited number of addresses to be
+ * generated for each session.
  */
-const getDerivationPath = () => (_wallet) => {
-    /* Initialize derivation paths. */
-    const derivationPaths = {
-        /* Bitcoin Cash (BCH) */
-        BCH: `m/44'/145'/0'`,
-
-        /* Ethereum (ETH) */
-        ETH: `m/44'/60'/0'`,
-
-        /* Simple Ledger Protocol (SLP) */
-        SLP: `m/44'/245'/0'`,
-    }
-
-    /* Return derivation path. */
-    return derivationPaths[_wallet]
+const getDerivationPath = () => (_chainId, _acctIndex) => {
+    /* Return (hardened) derivation path. */
+    return `m/44'/145'/0'/${_chainId}/${_acctIndex}`
 }
 
 /* Export module. */

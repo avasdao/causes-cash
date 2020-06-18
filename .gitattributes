@@ -1,0 +1,2 @@
+*.cash linguist-language=Solidity # GitHub
+*.cash gitlab-language=solidity # GitLab

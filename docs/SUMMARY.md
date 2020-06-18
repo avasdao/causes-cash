@@ -16,11 +16,12 @@
     * [1.4. DRIPP](campaigns/DRIPP.md)
     * [1.5. Blind](campaigns/blind.md)
 
-* [2. Contributions]()
+* [2. Sponshorships]()
 
-    * [2.1. What happens to the $$$?](contributions/process.md)
-    * [2.2. Petty (Bitcoin) Cash](contributions/petty-cash.md)
-    * [2.3. FREE as in beer](contributions/free.md)
+    * [2.1. What happens to the $$$?](sponsors/process.md)
+    * [2.2. Petty (Bitcoin) Cash](sponsors/petty-cash.md)
+    * [2.3. FREE as in beer](sponsors/free.md)
+    * [2.4. Levels](sponsors/levels.md)
 
 * [3. Community Funding]()
 
@@ -28,15 +29,19 @@
     * [3.2. Pay It Forward](community/pay-it-forward.md)
     * [3.3. PIF Token](community/PIF.md)
 
-* [4. Legal]()
+* [4. Teams]()
 
-    * [4.1. Code of Conduct](legal/coc.md)
-    * [4.2. Terms of Use]()
-    * [4.3. Privacy Notice]()
-    * [4.4. Cookie Notice]()
+    * [4.1. Introduction](teams/intro.md)
 
-* [5. Appendices]()
+* [5. Legal]()
 
-    * [5.1. Liberal Radicalism](appendices/liberal-radicalism.md)
-    * [5.2. Mecenas](appendices/mecenas.md)
-    * [5.3. Signed Seed Private Key](appendices/sspk.md)
+    * [5.1. Code of Conduct](legal/coc.md)
+    * [5.2. Terms of Use]()
+    * [5.3. Privacy Notice]()
+    * [5.4. Cookie Notice]()
+
+* [6. Appendices]()
+
+    * [6.1. Liberal Radicalism](appendices/liberal-radicalism.md)
+    * [6.2. Mecenas](appendices/mecenas.md)
+    * [6.3. Signed Seed Private Key](appendices/sspk.md)

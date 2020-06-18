@@ -12,9 +12,9 @@ const createAccount = ({ commit, getters }) => {
      * Manages the indexes of account (addresses) and their respective
      * derivation paths.
      *
-     * Deposit  : m/44'/145'/0'/0/<index>
-     * Change   : m/44'/145'/0'/1/<index>
-     * Reserved : m/44'/145'/0'/2/<index>
+     * Deposit : m/44'/145'/0'/0/<index>
+     * Change  : m/44'/145'/0'/1/<index>
+     * Causes  : m/44'/145'/0'/6767/<index>
      *
      * NOTE: Reserved paths are used to "freeze" coins, for use with
      *       assurance contracts.
@@ -22,7 +22,7 @@ const createAccount = ({ commit, getters }) => {
     const accountModel = {
         deposit: 0,
         change: 0,
-        reserved: 0,
+        causes: 0,
     }
 
     /**

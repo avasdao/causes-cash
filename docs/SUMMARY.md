@@ -43,5 +43,5 @@
 * [6. Appendices]()
 
     * [6.1. Liberal Radicalism](appendices/liberal-radicalism.md)
-    * [6.2. Mecenas](appendices/mecenas.md)
+    * [6.2. Mecenas (Oracle)](appendices/mecenas.md)
     * [6.3. Signed Seed Private Key](appendices/sspk.md)

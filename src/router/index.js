@@ -7,7 +7,7 @@ import Welcome from '../views/Welcome.vue'
 
 /* Account */
 import AccountBacking from '../views/Account/Backing.vue'
-import AccountCauses from '../views/Account/Causes.vue'
+import AccountCampaigns from '../views/Account/Campaigns.vue'
 import AccountDashboard from '../views/Account/Dashboard.vue'
 import AccountPayments from '../views/Account/Payments.vue'
 import AccountProfile from '../views/Account/Profile.vue'
@@ -15,10 +15,10 @@ import AccountReceived from '../views/Account/Received.vue'
 import AccountRewards from '../views/Account/Rewards.vue'
 import AccountWallet from '../views/Account/Wallet.vue'
 
-/* Causes */
-import CauseCreate from '../views/Cause/Create.vue'
-import CauseDetails from '../views/Cause/Details.vue'
-import CauseManage from '../views/Cause/Manage.vue'
+/* Campaigns */
+import CampaignCreate from '../views/Campaign/Create.vue'
+import CampaignDetails from '../views/Campaign/Details.vue'
+import CampaignManage from '../views/Campaign/Manage.vue'
 
 /* Contact. */
 import Contact from '../views/Contact.vue'
@@ -42,8 +42,8 @@ const routes = [{
     path: '/@*/backing', // Backing
     component: AccountBacking
 }, {
-    path: '/@*/causes', // Causes
-    component: AccountCauses
+    path: '/@*/campaigns', // Campaigns
+    component: AccountCampaigns
 }, {
     path: '/@*/dashboard', // Dashboard
     component: AccountDashboard
@@ -61,19 +61,19 @@ const routes = [{
     component: AccountWallet
 }, {
 
-    /* Causes */
+    /* Campaigns */
     path: '/create', // Create
-    component: CauseCreate
+    component: CampaignCreate
 }, {
-    // eg. https://causes.cash/@bchplease/nito-cash-8680bb0e/manage
+    // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e/manage
     // NOTE: Avoid other wildcard conflicts.
-    path: '/@*/:cause/manage', // Manage
-    component: CauseManage
+    path: '/@*/:campaign/manage', // Manage
+    component: CampaignManage
 }, {
-    // eg. https://causes.cash/@bchplease/nito-cash-8680bb0e
+    // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e
     // NOTE: Avoid other wildcard conflicts.
-    path: '/@*/:cause', // Details
-    component: CauseDetails
+    path: '/@*/:campaign', // Details
+    component: CampaignDetails
 }, {
 
     /* Contact */

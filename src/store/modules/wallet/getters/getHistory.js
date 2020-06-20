@@ -1,5 +1,5 @@
-/* Initialize BITBOX. */
-const bitbox = new window.BITBOX()
+/* Import modules. */
+const Nito = require('nitojs')
 
 /**
  * Get (Wallet) History
@@ -37,7 +37,7 @@ const getHistory = async (state, getters) => {
         /* Initialize child node. */
         // const childNode = hdNode.derivePath(`${getters.getDerivationPath('BCH')}/${change}/0`)
 
-        // const address = bitbox.HDNode.toCashAddress(childNode)
+        // const address = Nito.Address.toCashAddress(childNode)
         // console.log('ADDRESS', address)
 
         // NOTE: Array with maximum of 20 legacy or cash addresses.
@@ -48,11 +48,11 @@ const getHistory = async (state, getters) => {
         // }
 
         /* Retrieve unspent transaction outputs. */
-        const utxo = await bitbox.Address.utxo(addresses)
+        const utxo = await Nito.Address.utxo(addresses)
         console.log('UTXOS', utxo)
 
         /* Retrieve transaction details. */
-        const addrDetails = await bitbox.Address.details(addresses)
+        const addrDetails = await Nito.Address.details(addresses)
         console.log('ADDRESS(ES) DETAILS', addrDetails)
 
         /* Loop through ALL uxtos. */
@@ -76,7 +76,7 @@ const getHistory = async (state, getters) => {
                 }
 
                 /* Retrieve transaction details. */
-                const details = await bitbox.Transaction.details(txHash)
+                const details = await Nito.Transaction.details(txHash)
                 console.log('TX DETAILS', details)
 
                 /* Set (transaction) hash. */

@@ -4,11 +4,11 @@
 
         <div class="page-title background-page">
 			<div class="container">
-				<h1>Manage Your Cause</h1>
+				<h1>Create a New Cause</h1>
 				<div class="breadcrumbs">
 					<ul>
 						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>Manage Your Cause</li>
+						<li>Create a New Cause</li>
 					</ul>
 				</div>
 			</div>

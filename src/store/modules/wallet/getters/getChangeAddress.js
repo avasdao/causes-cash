@@ -1,8 +1,6 @@
 /* Import modules. */
 const msgpack = require('msgpack-lite')
-
-/* Initialize BITBOX. */
-const bitbox = new window.BITBOX()
+const Nito = require('nitojs')
 
 /**
  * Get Change Address
@@ -13,12 +11,10 @@ const bitbox = new window.BITBOX()
  * NOTE: This function will increment the active pool of accounts; so it is
  *       presumed that the transaction WILL succeed at the point that this
  *       function is called.
- *
- * TODO: Add support for ALL wallet types: BAI, BCH, DAI, NITO
  */
 const getChangeAddress = (state, getters) => (_wallet) => {
     /* Validate state (of accounts). */
-    if (!state || !state.a) {
+    if (!state || !state.account) {
         return null
     }
 
@@ -58,7 +54,7 @@ const getChangeAddress = (state, getters) => (_wallet) => {
     /* Set accounts. */
     // FIXME: How can we handle this using the "traditional" dispatch??
     //        Caution against non-instant updates via dispatch.
-    state.a = msgpack.encode(accounts)
+    state.account = msgpack.encode(accounts)
 
     /* Initialize HD node. */
     const hdNode = getters.getHDNode
@@ -68,7 +64,7 @@ const getChangeAddress = (state, getters) => (_wallet) => {
     // console.log('CHILD NODE', childNode)
 
     /* Initialize address. */
-    const address = bitbox.HDNode.toCashAddress(childNode)
+    const address = Nito.Address.toCashAddress(childNode)
     // console.log('WALLET ADDRESS', address)
 
     /* Return address. */

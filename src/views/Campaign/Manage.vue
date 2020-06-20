@@ -2,13 +2,13 @@
     <main class="faq">
         <Header />
 
-        <div class="page-title background-page">
+        <div class="page-title" :style="{ 'background-image': 'url(' + bannerImg + ')' }">
 			<div class="container">
-				<h1>Create a New Cause</h1>
+				<h1>Manage Your Campaign</h1>
 				<div class="breadcrumbs">
 					<ul>
 						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>Create a New Cause</li>
+						<li>Manage Your Campaign</li>
 					</ul>
 				</div>
 			</div>
@@ -20,245 +20,52 @@
                     <ul class="nav nav-tabs process-model more-icon-preocess" role="tablist">
                         <li>
                             <a href="javascript://">
-                                <span><img src="images/assets/log-out.svg" alt=""></span>
-                                <p>Exit Editor</p>
+                                <span><img src="@/assets/img/log-out.svg" alt=""></span>
+                                <p>Cancel</p>
                             </a>
                         </li>
                         <li data-tab="basics" class="pm-option active">
                             <a href="javascript://">
-                                <span><img src="images/assets/single-folded.svg" alt=""></span>
+                                <span><img src="@/assets/img/single-folded.svg" alt=""></span>
                                 <p>Basics</p>
                             </a>
                         </li>
                         <li data-tab="rewards" class="pm-option">
                             <a href="javascript://">
-                                <span><img src="images/assets/award.svg" alt=""></span>
+                                <span><img src="@/assets/img/award.svg" alt=""></span>
                                 <p>Rewards</p>
                             </a>
                         </li>
                         <li data-tab="story" class="pm-option">
                             <a href="javascript://">
-                                <span><img src="images/assets/book-open.svg" alt=""></span>
+                                <span><img src="@/assets/img/book-open.svg" alt=""></span>
                                 <p>Story</p>
                             </a>
                         </li>
                         <li data-tab="about" class="pm-option">
                             <a href="javascript://">
-                                <span><img src="images/assets/alert-circle-i.svg" alt=""></span>
+                                <span><img src="@/assets/img/alert-circle-i.svg" alt=""></span>
                                 <p>About</p>
                             </a>
                         </li>
                         <li data-tab="account" class="pm-option">
                             <a href="javascript://">
-                                <span><img src="images/assets/single-02.svg" alt=""></span>
+                                <span><img src="@/assets/img/single-02.svg" alt=""></span>
                                 <p>Account</p>
                             </a>
                         </li>
                         <li>
                             <a href="javascript://">
-                                <span><img src="images/assets/eye-17.svg" alt=""></span>
+                                <span><img src="@/assets/img/eye-17.svg" alt=""></span>
                                 <p>Preview</p>
                             </a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="basics">
-                            <div class="start-form">
-                                <form action="javascript://">
-                                    <div class="field">
-                                        <label for="uploadfile">Project Image</label>
-                                        <span class="label-desc">This is the first thing that people will see when they come across your project. Choose an image that’s crisp and text-free. <a href="javascript://">Here are some tips.</a></span>
-                                        <div class="list-upload">
-                                            <div class="file-upload">
-                                                <div class="upload-bg">
-                                                    <div id="myfileupload">
-                                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" accept="image/*" />
-                                                    </div>
-                                                    <div id="thumbbox">
-                                                        <img src="images/assets/logo.png" height="695" width="460" alt="Thumb image" id="thumbimage" />
-                                                        <a class="removeimg" href="javascript:"></a>
-                                                    </div>
-                                                    <div id="boxchoice">
-                                                        <a href="javascript:" class="choicefile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                                        <p></p>
-                                                    </div>
-                                                    <label class="filename"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="projecttitle">Project Title</label>
-                                        <span class="label-desc">Our search looks through words from your project title and blurb, so make them clear and descriptive of what you’re making. Your profile name will be searchable, too.</span>
-                                        <input type="text" id="projecttitle" value="" maxlength="60">
-                                    </div>
-                                    <div class="field">
-                                        <label for="shortblurb">Short Blurb</label>
-                                        <span class="label-desc">Give people a sense of what you’re doing. Skip “Help me” and focus on what you’re making.</span>
-                                        <textarea id="shortblurb" cols="30" rows="4" maxlength="135"></textarea>
-                                    </div>
-                                    <div class="field">
-                                        <label for="field-cat">Category <span>*</span></label>
-                                        <span class="label-desc">To help backers find your campaign, select a category that best represents your project.</span>
-                                        <div class="field-select field-cat">
-                                            <select id="field-cat">
-                                                <option selected="selected">Select a category</option>
-                                                <option value="book">Book</option>
-                                                <option value="crafts">Crafts</option>
-                                                <option value="design-art">Design &amp; Art</option>
-                                                <option value="perfomances">Perfomances</option>
-                                                <option value="technology">Technology</option>
-                                            </select>
-                                        </div>
-                                        <div class="field-select">
-                                            <select name="s">
-                                                <option selected="selected">Subcategory (optional)</option>
-                                                <option value="book">Book</option>
-                                                <option value="crafts">Crafts</option>
-                                                <option value="design-art">Design &amp; Art</option>
-                                                <option value="perfomances">Perfomances</option>
-                                                <option value="technology">Technology</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label for="projectlocation">Project Location</label>
-                                        <input type="text" id="projectlocation">
-                                    </div>
-                                    <div class="field">
-                                        <label for="funding">Funding Duration</label>
-                                        <span class="label-desc">Projects with shorter durations have higher success rates. You won’t be able to adjust your duration after you launch.</span>
-                                        <input type="date" id="funding" value="">
-                                    </div>
-                                    <div class="field">
-                                        <label for="fundinggoal">Funding Goal</label>
-                                        <span class="label-desc">Funding on Ideapress is all-or-nothing. It’s okay to raise more than your goal, but if your goal isn’t met, no money will be collected. Your goal should reflect the minimum amount of funds you need to complete your project and send out rewards, and include a buffer for payments processing fees. If your project is successfully funded, the following fees will be collected from your funding total: Ideapress 5% fee, and payment processing fees (between 3% and 5%). If funding isn’t successful, there are no fees. <a href="javascript://" class="view-fees">View fees breakdown</a></span>
-                                        <div class="spopup-bg"></div>
-                                        <div class="fees-popup start-popup">
-                                            <div class="spopup-title">
-                                                <h3>Fees</h3>
-                                                <div class="spopup-close"><span class="ion-ios-close-empty"></span></div>
-                                            </div>
-                                            <div class="spopup-content">
-                                                <p>If your project is successfully funded, the following fees will be collected from your funding total: Ideapress 5% fee, and payment processing fees (between 3% and 5%). If funding isn’t successful, there are no fees.</p>
-                                                <ul>
-                                                    <li>
-                                                        <h4>Ideapress fee</h4>
-                                                        <div class="fee-desc">
-                                                            <p>5% of total funds raised </p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <h4>Payment processing fees</h4>
-                                                        <div class="fee-desc">
-                                                            <p>3% + €0.20 per pledge</p>
-                                                            <p>Pledges under €10 have a discounted micropledge fee of 5% + €0.05 per pledge</p>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <input type="text" value="" id="fundinggoal">
-                                    </div>
-                                    <div class="reminder">
-                                        <h4>Project Collaborators</h4>
-                                        <p>Grant your teammates access to help with your project.</p>
-                                        <a href="javascript://" class="btn-primary">Add collaborators</a>
-                                    </div>
-                                    <input type="submit" class="btn-primary" value="Save & Continue">
-                                </form>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="rewards">
-                            <form action="javascript://">
-                                <div id="itemform">
-                                    <div class="start-form">
-                                        <div class="reward-top">
-                                            <h2 class="reward-title">Reward #0</h2>
-                                            <a href="javascript://" class="reward-delete">Delete Reward</a>
-                                        </div>
-                                        <div class="field">
-                                            <label for="rewardtitle">Title</label>
-                                            <input type="text" id="rewardtitle" value="" required="">
-                                        </div>
-                                        <div class="field">
-                                            <label for="pledge">Pledge amount</label>
-                                            <input type="text" id="pledge" value="" required="">
-                                        </div>
-                                        <div class="field">
-                                            <label for="rewarddesc">Description</label>
-                                            <textarea id="rewarddesc" cols="30" rows="4" required=""></textarea>
-                                        </div>
-                                        <div class="field">
-                                            <label for="item">Item</label>
-                                            <table class="item-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Number</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>ABC</td>
-                                                        <td>
-                                                            <input type="number" id="item" min="1" value="1">
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <a href="javascript://" class="add-item btn-primary">Add an item</a>
-                                            <div class="spopup-bg"></div>
-                                            <div class="item-popup start-popup">
-                                                <div class="spopup-title">
-                                                    <h3>Add a reward item</h3>
-                                                    <div class="spopup-close"><span class="ion-ios-close-empty"></span></div>
-                                                </div>
-                                                <div class="spopup-desc">Backers will see the items listed when pledging. Questions about how this works? <a href="javascript://">Visit our FAQ.</a></div>
-                                                <div class="spopup-content">
-                                                    <div class="field">
-                                                        <label for="rewardname">Name (required)</label>
-                                                        <input type="text" id="rewardname" placeholder="Examples: Album download, Screenplay, etc.">
-                                                    </div>
-                                                    <div class="field field-checkbox">
-                                                        <input type="checkbox" id="citem">
-                                                        <label for="citem"><span></span><strong>This is a digital item.</strong>Think album downloads, e-books, videos, or anything that’s delivered online.</label>
-                                                    </div>
-                                                    <a href="javascript://" class="btn-primary">Create Item</a>
-                                                    <a href="javascript://" class="btn item-cancel">Cancel</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label for="estimated">Estimated delivery</label>
-                                            <input type="date" id="estimated" value="">
-                                        </div>
-                                        <div class="field">
-                                            <label for="shipping">Shipping details</label>
-                                            <div class="field-select">
-                                                <select name="s" id="shipping">
-                                                    <option value="">Select an option</option>
-                                                    <option value="no">No shipping involved</option>
-                                                    <option value="restricted">Only ships to certain countries</option>
-                                                    <option value="unrestricted">Ships anywhere in the world</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label for="limit-avai">Limit availability</label>
-                                            <div class="field-checkbox" id="limit">
-                                                <input type="checkbox" id="limit-avai">
-                                                <label for="limit-avai"><span></span>Enable reward limit </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="import"></div>
-                                <a href="javascript://" class="add-reward">Add a new reward</a>
-                                <input type="submit" class="btn-primary" value="Save & Continue">
-                            </form>
-                        </div>
+                        <Basics />
+                        <Rewards />
+
                         <div role="tabpanel" class="tab-pane" id="story">
                             <div class="start-form">
                                 <form action="javascript://">
@@ -698,10 +505,23 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
+import Basics from './Manage/Basics.vue'
+import Rewards from './Manage/Rewards.vue'
+
 export default {
     components: {
         Footer,
         Header,
+
+        Basics,
+        Rewards,
+    },
+    computed: {
+        /* Banner Image */
+        bannerImg() {
+            return 'https://i.imgur.com/9vNfGgt.jpg'
+        },
+
     },
     mounted: function () {
         //

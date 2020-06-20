@@ -4,11 +4,11 @@
 
         <div class="page-title background-page">
 			<div class="container">
-                <h1 class="text-capitalize">@{{this.user}} Causes</h1>
+                <h1 class="text-capitalize">@{{this.user}} Campaigns</h1>
 				<div class="breadcrumbs">
 					<ul>
 						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>Causes</li>
+						<li>Campaigns</li>
 					</ul>
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 
 					<div class="col-lg-9">
 						<div class="account-content my-campaigns account-table">
-							<h3 class="account-title">My Causes</h3>
+							<h3 class="account-title">My Campaigns</h3>
 
                             <div class="account-main">
 								<div class="campaign-item">
@@ -46,7 +46,7 @@
 									</div>
 								</div>
 
-								<a href="javascript://" class="btn-primary">Create a Cause</a>
+								<a href="javascript://" class="btn-primary">Create a Campaign</a>
 							</div>
 						</div>
 					</div>

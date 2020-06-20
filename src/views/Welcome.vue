@@ -45,9 +45,6 @@ import Header from '@/components/Header.vue'
 /* Initialize ethers. */
 import { ethers } from 'ethers'
 
-/* Initialize BITBOX. */
-// const bitbox = new window.BITBOX()
-
 export default {
     components: {
         Articles,

@@ -3132,7 +3132,7 @@ bip174@^1.0.1:
   resolved "https://registry.yarnpkg.com/bip174/-/bip174-1.0.1.tgz#858a587f9529e22ee9b0572fd884e5783696824d"
   integrity sha512-Mq2aFs1TdMfxBpYPg7uzjhsiXbAtoVq44TNjEWtvuZBiBgc3m7+n55orYMtTAxdg7jWbL4DtH0MKocJER4xERQ==
 
-"bip21@github:Bitcoin-com/bip21":
+bip21@Bitcoin-com/bip21:
   version "2.0.1"
   resolved "https://codeload.github.com/Bitcoin-com/bip21/tar.gz/28f8d03a3a16ed11eb5b963248ed1be8c46c6d6f"
   dependencies:
@@ -3143,7 +3143,7 @@ bip32-path@^0.4.2:
   resolved "https://registry.yarnpkg.com/bip32-path/-/bip32-path-0.4.2.tgz#5db0416ad6822712f077836e2557b8697c0c7c99"
   integrity sha1-XbBBataCJxLwd4NuJVe4aXwMfJk=
 
-"bip32-utils@github:Bitcoin-com/bip32-utils#0.13.1":
+bip32-utils@Bitcoin-com/bip32-utils#0.13.1:
   version "0.13.1"
   resolved "https://codeload.github.com/Bitcoin-com/bip32-utils/tar.gz/b8a33ebd0a0ac39de7cd987e5c3f77a8c5d84e58"
   dependencies:
@@ -3243,7 +3243,6 @@ bitcoin-ts@^1.12.0:
 
 bitcoincash-ops@Bitcoin-com/bitcoincash-ops#2.0.0, "bitcoincash-ops@github:Bitcoin-com/bitcoincash-ops#2.0.0":
   version "2.0.0"
-  uid "6ab82cc7326c67236f3b2d9d0457258ac2ef48e3"
   resolved "https://codeload.github.com/Bitcoin-com/bitcoincash-ops/tar.gz/6ab82cc7326c67236f3b2d9d0457258ac2ef48e3"
 
 bitcoincash-ops@christroutner/bitcoincash-ops, "bitcoincash-ops@github:christroutner/bitcoincash-ops":
@@ -3862,7 +3861,7 @@ cashc@^0.4.1:
     trout-bch "github:christroutner/bitcoincashjs-lib#34f23671b42f0ebcbeba9f1f9e7bcdba7c50d55b"
     yargs "^14.0.0"
 
-cashscript@^0.4.1:
+cashscript@0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/cashscript/-/cashscript-0.4.1.tgz#281c4e584ed9443a3025849f3dee878e50ab49f1"
   integrity sha512-9pYSa5ns3YPRT7OLKeqXAfz0CvKErFg8GYvsTTaYPpwdCFWFDem4XS2hDE8FYrlOCS06jlz2Fhl/bqkF2C6yFg==
@@ -4160,7 +4159,7 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-"coininfo@github:Bitcoin-com/coininfo":
+coininfo@Bitcoin-com/coininfo:
   version "4.0.0"
   resolved "https://codeload.github.com/Bitcoin-com/coininfo/tar.gz/eece2c6141d08c3e7783929f2a1e1e681aa1a82c"
   dependencies:
@@ -13569,7 +13568,6 @@ punycode@^2.1.0, punycode@^2.1.1:
 
 pushdata-bitcoin@Bitcoin-com/pushdata-bitcoin#1.2.1, "pushdata-bitcoin@github:Bitcoin-com/pushdata-bitcoin#1.2.1":
   version "1.2.1"
-  uid "9b75eebe597853c6eeaec3e6c44b6d9c9cd7ee86"
   resolved "https://codeload.github.com/Bitcoin-com/pushdata-bitcoin/tar.gz/9b75eebe597853c6eeaec3e6c44b6d9c9cd7ee86"
   dependencies:
     bitcoincash-ops Bitcoin-com/bitcoincash-ops#2.0.0

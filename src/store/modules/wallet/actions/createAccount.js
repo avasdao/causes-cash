@@ -43,32 +43,32 @@ const createAccount = ({ commit, getters }) => {
      *     - cashAddress
      *     - legacyAddress
      */
-    const walletModel = {
-        status: 'active',
-        accounts: accountModel,
-        coins: {},
-    }
+    // const walletModel = {
+    //     status: 'active',
+    //     accounts: accountModel,
+    //     coins: {},
+    // }
 
     try {
-        /* Initialize accounts. */
-        let accounts = getters.getAccounts
+        /* Initialize account. */
+        let account = getters.getAccount
 
-        /* Validate accounts. */
-        if (accounts) {
+        /* Validate account. */
+        if (account) {
             /* Set current (active index). */
-            const currentIndex = Math.max(...Object.keys(accounts))
+            const currentIndex = Math.max(...Object.keys(account))
 
             /* Set next coin index. */
             const nextIndex = currentIndex + 1
 
             /* Add new account to model. */
-            accounts[nextIndex] = accountModel
+            account[nextIndex] = accountModel
 
             /* Commit active account id. */
             commit('setActiveSessionId', nextIndex)
         } else {
             /* Initialize (first) account(s). */
-            accounts = {
+            account = {
                 0: accountModel,
             }
 
@@ -77,7 +77,7 @@ const createAccount = ({ commit, getters }) => {
         }
 
         /* Commit accounts. */
-        commit('setAccounts', accounts)
+        commit('setAccount', account)
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
 

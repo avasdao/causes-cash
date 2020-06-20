@@ -25,7 +25,7 @@ const getAddress = (state, getters) => {
     const chain = 0 // receiving account
 
     /* Set derivation path. */
-    const path = getters.getDerivationPath(_sessionId, chain, currentIndex)
+    const path = getters.getDerivationPath(chain, currentIndex)
     // console.log('GET ADDRESS BY SESSION (path)', path)
 
     /* Initialize HD node. */

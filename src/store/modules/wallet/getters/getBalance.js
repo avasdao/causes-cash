@@ -1,5 +1,5 @@
-/* Initialize BITBOX. */
-const bitbox = new window.BITBOX()
+/* Import modules. */
+const Nito = require('nitojs')
 
 /**
 * Get (Total Wallet) Balance
@@ -33,7 +33,7 @@ const getBalance = (state, getters, rootState, rootGetters) => async (_wallet, _
         /* Initialize child node. */
         const childNode = hdNode.derivePath(path)
 
-        const address = bitbox.HDNode.toCashAddress(childNode)
+        const address = Nito.Address.toCashAddress(childNode)
         // console.log('GET WALLET BALANCE (receiving address)', address)
 
         /* Add to all receiving (pool). */
@@ -46,7 +46,7 @@ const getBalance = (state, getters, rootState, rootGetters) => async (_wallet, _
         let balance = 0
 
         /* Retrieve (ALL) account(s) details. */
-        const details = await bitbox.Address.details(addresses)
+        const details = await Nito.Address.details(addresses)
         // console.log('ALL ACCOUNTS DETAILS', JSON.stringify(details, null, 4))
 
         /* Validate (use of) unconfirmed transactions. */

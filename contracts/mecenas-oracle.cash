@@ -33,7 +33,7 @@ contract MecenasOracle(
      * pk        : public key of the transaction's originator
      * s         : signature of the transaction
      * oracleSig : (data / message) signature of the oracle
-     * oracleMsg : price authorization message from the oracle
+     * oracleMsg : payout authorization message from the oracle
      */
     function payout(pubkey pk, sig s, datasig oracleSig, bytes oracleMsg) {
         /* Validate signature of transaction's originator. */
@@ -79,8 +79,10 @@ contract MecenasOracle(
         /* Create an Output that sends the pledge amount to the recipient. */
         bytes34 payeeOutput = new OutputP2PKH(bytes8(oraclePayoutAmt), recipient);
 
-        /* Create an Output that sends the remainder back to the contract. */
+        /* Calculate the coin remainder. */
         bytes8 remainder = bytes8(coinValue - oraclePayoutAmt - minerFee);
+
+        /* Create an Output that sends the remainder back to the contract. */
         bytes32 contractOutput = new OutputP2SH(remainder, hash160(tx.bytecode));
 
         /* Enforce that these are the only outputs for the current transaction. */
@@ -90,7 +92,7 @@ contract MecenasOracle(
     /**
      * Oracle Payout
      *
-     * Identical to the `payout` function above, however, we remove the
+     * Identical to the `payout` method above, however, we remove the
      * retriction on `tx.age` to permit front-running by the Oracle.
      *
      * Due to the current restrictions of CashScript, we are unable to expire
@@ -101,7 +103,7 @@ contract MecenasOracle(
      * pk        : public key of the oracle
      * s         : (transaction) signature of the oracle
      * oracleSig : (data / message) signature of the oracle
-     * oracleMsg : price authorization message from the oracle
+     * oracleMsg : payout authorization message from the oracle
      */
     function oraclePayout(pubkey pk, sig s, datasig oracleSig, bytes oracleMsg) {
         /* Validate oracle's public key. */
@@ -145,8 +147,10 @@ contract MecenasOracle(
         /* Create an Output that sends the pledge amount to the recipient. */
         bytes34 payeeOutput = new OutputP2PKH(bytes8(oraclePayoutAmt), recipient);
 
-        /* Create an Output that sends the remainder back to the contract. */
+        /* Calculate the coin remainder. */
         bytes8 remainder = bytes8(coinValue - oraclePayoutAmt - minerFee);
+
+        /* Create an Output that sends the remainder back to the contract. */
         bytes32 contractOutput = new OutputP2SH(remainder, hash160(tx.bytecode));
 
         /* Enforce that these are the only outputs for the current transaction. */
@@ -156,7 +160,9 @@ contract MecenasOracle(
     /**
      * Reclaim
      *
-     * Allows the funder to reclaim their remaining pledge(s).
+     * Allows the funder to AT ANYTIME reclaim their remaining pledge(s).
+     *
+     * NOTE: This method is NOT dependent on the operation of the Oracle.
      */
     function reclaim(pubkey pk, sig s) {
         /* Validate funder's public key. */

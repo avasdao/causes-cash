@@ -62,7 +62,7 @@ const routes = [{
 }, {
 
     /* Campaigns */
-    path: '/create', // Create
+    path: '/@*/create', // Create
     component: CampaignCreate
 }, {
     // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e/manage

@@ -1,5 +1,5 @@
 <template>
-    <div role="tabpanel" class="tab-pane active" id="basics">
+    <div role="tabpanel" class="tab-pane active" id="general">
         <div class="start-form">
             <form action="javascript://">
                 <div class="field">
@@ -11,40 +11,6 @@
                     </span>
 
                     <input type="text" id="projecttitle" value="" maxlength="60">
-                </div>
-
-                <div class="field">
-                    <label for="uploadfile">
-                        Project Image
-                    </label>
-
-                    <span class="label-desc">
-                        This is the first thing that people will see when they come across your project.
-                        Choose an image that’s crisp and text-free.
-                        <a href="javascript://">Here are some tips.</a>
-                    </span>
-
-                    <div class="list-upload">
-                        <div class="file-upload">
-                            <div class="upload-bg">
-                                <div id="myfileupload">
-                                    <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" accept="image/*" />
-                                </div>
-
-                                <div id="thumbbox">
-                                    <img src="images/assets/logo.png" height="695" width="460" alt="Thumb image" id="thumbimage" />
-                                    <a class="removeimg" href="javascript:"></a>
-                                </div>
-
-                                <div id="boxchoice">
-                                    <a href="javascript:" class="choicefile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                    <p></p>
-                                </div>
-
-                                <label class="filename"></label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="field">

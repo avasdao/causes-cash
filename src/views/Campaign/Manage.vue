@@ -24,36 +24,42 @@
                                 <p>Cancel</p>
                             </a>
                         </li>
-                        <li data-tab="basics" class="pm-option active">
+
+                        <li data-tab="general" class="pm-option active">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/single-folded.svg" alt=""></span>
-                                <p>Basics</p>
+                                <p>General</p>
                             </a>
                         </li>
-                        <li data-tab="rewards" class="pm-option">
-                            <a href="javascript://">
-                                <span><img src="@/assets/img/award.svg" alt=""></span>
-                                <p>Rewards</p>
-                            </a>
-                        </li>
+
                         <li data-tab="story" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/book-open.svg" alt=""></span>
                                 <p>Story</p>
                             </a>
                         </li>
-                        <li data-tab="about" class="pm-option">
+
+                        <li data-tab="funds" class="pm-option">
+                            <a href="javascript://">
+                                <span><img src="@/assets/img/award.svg" alt=""></span>
+                                <p>Funds</p>
+                            </a>
+                        </li>
+
+                        <li data-tab="social" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/alert-circle-i.svg" alt=""></span>
-                                <p>About</p>
+                                <p>Social</p>
                             </a>
                         </li>
-                        <li data-tab="account" class="pm-option">
+
+                        <li data-tab="messages" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/single-02.svg" alt=""></span>
-                                <p>Account</p>
+                                <p>Messages</p>
                             </a>
                         </li>
+
                         <li>
                             <a href="javascript://">
                                 <span><img src="@/assets/img/eye-17.svg" alt=""></span>
@@ -63,11 +69,11 @@
                     </ul>
 
                     <div class="tab-content">
-                        <Basics />
-                        <Rewards />
+                        <General />
+                        <Funds />
                         <Story />
-                        <About />
-                        <Account />
+                        <Social />
+                        <Messages />
                     </div>
                 </div>
             </div>
@@ -82,10 +88,10 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
-import About from './Manage/About.vue'
-import Account from './Manage/Account.vue'
-import Basics from './Manage/Basics.vue'
-import Rewards from './Manage/Rewards.vue'
+import Funds from './Manage/Funds.vue'
+import General from './Manage/General.vue'
+import Messages from './Manage/Messages.vue'
+import Social from './Manage/Social.vue'
 import Story from './Manage/Story.vue'
 
 export default {
@@ -93,10 +99,10 @@ export default {
         Footer,
         Header,
 
-        About,
-        Account,
-        Basics,
-        Rewards,
+        Funds,
+        General,
+        Messages,
+        Social,
         Story,
     },
     computed: {

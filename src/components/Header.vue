@@ -24,8 +24,7 @@
 
                 <div class="slogan">
                     <em class="text-muted">
-                        Raising <strong>Bitcoin Cash</strong> and the
-                        <strong>Freedom to Wealth™</strong>
+                        <strong>Uncensorable</strong> Funding For <strong>Radical</strong> Creators
                     </em>
                 </div>
             </div>

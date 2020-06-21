@@ -407,4 +407,10 @@ section .container {
 .fa-question-circle-o {
     cursor: pointer;
 }
+
+.input-error {
+    color: rgba(255, 0, 0, 1.0);
+    margin: 5px 0 0 20px
+}
+
 </style>

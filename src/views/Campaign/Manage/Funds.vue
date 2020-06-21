@@ -140,6 +140,27 @@
 
             <a href="javascript://" class="add-reward">Add a new reward</a>
 
+            <div class="field">
+                <label for="ccat">Campaign Type *</label>
+
+                <span class="label-desc">To help backers find your campaign, select a category that best represents your project.</span>
+
+                <div class="field-select">
+                    <select name="s" id="ccat">
+                        <option value="">Select a Type</option>
+                        <option value="">Adoption</option>
+                        <option value="">Community</option>
+                        <option value="">DApps</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="cduration">Campaign Duration *</label>
+                <span class="label-desc">You can run a campaign for any number of days, with a 60 day duration maximum.</span>
+                <input type="text" id="cduration" value="" name="title" placeholder="60 days" />
+            </div>
+
             <input type="submit" class="btn-primary" value="Save & Continue">
         </form>
     </div>

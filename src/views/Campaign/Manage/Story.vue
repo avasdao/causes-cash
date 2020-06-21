@@ -3,6 +3,12 @@
         <div class="start-form">
             <form action="javascript://">
                 <div class="field">
+                    <label for="capaignstory">Campaign Story *</label>
+                    <span class="label-desc">Introduce yourself,  your campaign and why it’s important to you.</span>
+                    <textarea rows="4" id="capaignstory" placeholder="Enter a few tagline"></textarea>
+                </div>
+
+                <div class="field">
                     <label for="uploadfile1">
                         Project Video
                     </label>

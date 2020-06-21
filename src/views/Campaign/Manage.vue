@@ -112,6 +112,14 @@ export default {
         },
 
     },
+    created: function () {
+        /* Set campaign. */
+        const campaign = this.$route.params.campaign
+
+        console.log('CAMPAIGN', campaign);
+        console.log('PARAMS', this.$route.params);
+
+    },
     mounted: function () {
         //
     },

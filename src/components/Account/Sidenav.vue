@@ -60,7 +60,7 @@ export default {
     },
     data: () => {
         return {
-            user: null,
+            ownerSlug: null,
         }
     },
     computed: {
@@ -106,12 +106,8 @@ export default {
 
     },
     created: function () {
-        /* Set user. */
-        const user = this.$route.params.pathMatch
-
-        /* Validate user. */
-        // FIXME: What should we do if validation fails??
-        this.user = user
+        /* Set owner slug. */
+        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
 
     },
 }

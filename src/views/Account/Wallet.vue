@@ -75,14 +75,12 @@ export default {
     },
     data: () => {
         return {
-            //
+            ownerSlug: null,
         }
     },
-    computed: {
-        //
-    },
     created: function () {
-        // 
+        /* Set owner slug. */
+        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
     },
 }
 </script>

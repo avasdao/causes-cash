@@ -224,8 +224,8 @@ export default {
         this.summary = this.getAsset(
             this.campaign.ownerId, `${this.campaign.slug}.summary`)
 
-        /* Set user. */
-        // const user = this.$route.params.pathMatch
+        /* Set owner slug. */
+        // this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
 
         // TODO: Validate the user.
 

@@ -465,8 +465,6 @@ export default {
          * Create New
          */
         async createNew() {
-            const target = 'http://localhost:6767/v1/campaigns'
-
             /* Validate title. */
             if (!this.title || !this.slug) {
                 return alert('Enter a title')
@@ -493,8 +491,14 @@ export default {
                 title: this.title,
                 category: this.category,
                 summary: this.summary,
+                owner: {
+                    slug: this.ownerSlug,
+                },
                 location: this.location,
             }
+
+            /* Set api target. */
+            const target = 'https://api.causes.cash/v1/campaigns'
 
             const result = await superagent
                 .post(target)
@@ -532,6 +536,12 @@ export default {
                this.title = this.title.slice(0, this.MAXIMUM_TITLE)
             }
         }
+    },
+    created: function () {
+        /* Set owner slug. */
+        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
+        console.log('OWNER SLUG', this.ownerSlug)
+
     },
     mounted: function () {
         $('.view-residence').on('click', function (e) {

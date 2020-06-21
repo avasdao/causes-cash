@@ -4,6 +4,8 @@
 
 ### https://causes.cash
 
+Platform Tour — __https://tour.causes.cash__
+
 Documentation — __https://docs.causes.cash__
 
 Open Source — __https://gitlab.com/bchplease/causes.cash__

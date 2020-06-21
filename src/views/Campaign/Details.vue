@@ -64,17 +64,17 @@ export default {
 
     },
     created: function () {
-        /* Set cause. */
-        const cause = this.$route.params.cause
+        /* Set campaign. */
+        const campaign = this.$route.params.campaign
 
-        /* Validate cause. */
-        if (cause && cause.lastIndexOf('-') !== -1) {
+        /* Validate campaign. */
+        if (campaign && campaign.lastIndexOf('-') !== -1) {
             /* Set campaign id. */
-            this.campaignId = cause.slice(0, cause.lastIndexOf('-'))
+            this.campaignId = campaign.slice(0, campaign.lastIndexOf('-'))
             // console.log('this.campaignId', this.campaignId)
 
             /* Set referrer id. */
-            const referrerId = cause.slice(cause.lastIndexOf('-') + 1)
+            const referrerId = campaign.slice(campaign.lastIndexOf('-') + 1)
             // console.log('referrerId', referrerId)
 
             /* Set extended slug. */

@@ -2,7 +2,7 @@
     <!-- <div class="page-title background-page"> -->
     <div class="page-title" :style="{ 'background-image': 'url(' + bannerImg + ')' }">
         <div class="container">
-            <h1 class="text-capitalize">@{{this.user}} Wallet</h1>
+            <h1 class="text-capitalize">@{{this.ownerSlug}} Wallet</h1>
             <div class="breadcrumbs">
                 <ul>
                     <li>
@@ -49,7 +49,7 @@ export default {
     },
     data: () => {
         return {
-            user: null,
+            ownerSlug: null,
         }
     },
     computed: {
@@ -84,12 +84,8 @@ export default {
 
     },
     created: function () {
-        /* Set user. */
-        const user = this.$route.params.pathMatch
-
-        /* Validate user. */
-        // FIXME: What should we do if validation fails??
-        this.user = user
+        /* Set owner slug. */
+        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
     },
     mounted: function () {
         //

@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         ...mapActions('campaigns', [
-            'updateAsset',
+            // 'updateAsset',
         ]),
 
     },
@@ -100,50 +100,6 @@ export default {
 
             console.log('CAMPAIGN', this.campaign)
         }
-
-        console.log('REQUESTING ASSET DESCRIPTION')
-        /* Set description. */
-        const description = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.slug}.description`)
-        // console.log('DETAILS (description):', description)
-
-        // FOR DEVELOPMENT PURPOSES ONLY
-        // this.description = null
-
-        /* Validate description. */
-        if (!description) {
-            /* Set asset. */
-            const asset = {
-                owner: this.campaign.ownerId,
-                id: `${this.campaign.slug}.description`,
-                target: this.campaign.description,
-            }
-
-            /* Request asset update. */
-            this.updateAsset(asset)
-        }
-
-        /* Set summary. */
-        const summary = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.slug}.summary`)
-        // console.log('DETAILS (summary):', summary)
-
-        // FOR DEVELOPMENT PURPOSES ONLY
-        // this.summary = ''
-
-        /* Validate summary. */
-        if (!summary) {
-            /* Set asset. */
-            const asset = {
-                owner: this.campaign.ownerId,
-                id: `${this.campaign.slug}.summary`,
-                target: this.campaign.summary,
-            }
-
-            /* Request asset update. */
-            this.updateAsset(asset)
-        }
-
     },
     mounted: function () {
         /*  [ Project Love Slider ]

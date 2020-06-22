@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-8">
-                <p v-html="summaryDisplay" />
+                <p v-html="summary" />
 
                 <hr />
 
@@ -22,16 +22,16 @@
         <hr />
 
         <h1>Readme</h1>
-        <p v-html="descriptionDisplay" />
+        <p v-html="description" />
     </div>
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapActions, mapGetters } from 'vuex'
+
 /* Import modules. */
 import QRCode from 'qrcode'
-
-/* Initialize vuex. */
-import { mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -39,10 +39,19 @@ export default {
     },
     data: () => {
         return {
-            description: null,
-            summary: null,
+            // FOR DEVELOPMENT PURPOSES ONLY
             pledgeAddress: 'bitcoincash:qr5d6whmzmdw3e4x0q3j3gtftc06gc9rp5vkscm653',
         }
+    },
+    watch: {
+        campaign: function (_campaign) {
+            if (_campaign && _campaign.funds) {
+                console.log('CAMPAIGN HAS CHANGED, UPDATE STORY!!', _campaign)
+
+                /* Update story. */
+                this.updateStory()
+            }
+        },
     },
     computed: {
         ...mapGetters('campaigns', [
@@ -53,21 +62,43 @@ export default {
             'getMarkdown',
         ]),
 
-        descriptionDisplay() {
+        description() {
+            /* Validate campaign. */
+            if (!this.campaign) {
+                return null
+            }
+
+            /* Retrieve description. */
+            const description = this.getAsset(
+                this.campaign.owner.slug, `${this.campaign.slug}.description`)
+            // console.log('STORY (description):', description)
+
             /* Validate description. */
-            if (this.description) {
-                return this.getMarkdown(this.description)
+            if (description) {
+                /* Return description (in markdown). */
+                return this.getMarkdown(description)
             } else {
-                return ''
+                return null
             }
         },
 
-        summaryDisplay() {
+        summary() {
+            /* Validate campaign. */
+            if (!this.campaign) {
+                return null
+            }
+
+            /* Retrieve summary. */
+            const summary = this.getAsset(
+                this.campaign.owner.slug, `${this.campaign.slug}.summary`)
+            // console.log('STORY (summary):', summary)
+
             /* Validate summary. */
-            if (this.summary) {
-                return this.getMarkdown(this.summary)
+            if (summary) {
+                /* Return summary (in markdown). */
+                return this.getMarkdown(summary)
             } else {
-                return ''
+                return null
             }
         },
 
@@ -100,33 +131,37 @@ export default {
         },
     },
     methods: {
-        //
+        ...mapActions('campaigns', [
+            'updateAsset',
+        ]),
+
+        /**
+         * Update Story
+         */
+        updateStory() {
+            /* Set description. */
+            const description = {
+                ownerSlug: this.campaign.owner.slug,
+                id: `${this.campaign.slug}.description`,
+                target: this.campaign.description,
+            }
+
+            /* Request description update. */
+            this.updateAsset(description)
+
+            /* Set summary. */
+            const summary = {
+                ownerSlug: this.campaign.owner.slug,
+                id: `${this.campaign.slug}.summary`,
+                target: this.campaign.summary,
+            }
+
+            /* Request summary update. */
+            this.updateAsset(summary)
+        },
     },
     created: function () {
-        /* Set description. */
-        this.description = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.slug}.description`)
-        // console.log('STORY (description):', this.description)
-
-        /* Wait for asset update. */
-        setTimeout(() => {
-            /* Set description. */
-            this.description = this.getAsset(
-                this.campaign.ownerId, `${this.campaign.slug}.description`)
-        }, 1000)
-
-        /* Set summary. */
-        this.summary = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.slug}.summary`)
-        // console.log('STORY (summary):', this.summary)
-
-        /* Wait for asset update. */
-        setTimeout(() => {
-            /* Set summary. */
-            this.summary = this.getAsset(
-                this.campaign.ownerId, `${this.campaign.slug}.summary`)
-        }, 1000)
-
+        //
     },
 }
 </script>

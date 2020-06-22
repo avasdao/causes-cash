@@ -5,9 +5,9 @@ import superagent from 'superagent'
  * Update Asset
  */
 const updateAsset = ({ commit }, _asset) => {
-    /* Set asset owner. */
-    const owner = _asset.owner
-    // console.log('UPDATE ASSET (owner):', owner)
+    /* Set asset owner slug. */
+    const ownerSlug = _asset.ownerSlug
+    // console.log('UPDATE ASSET (ownerSlug):', ownerSlug)
 
     /* Set asset id. */
     const id = _asset.id
@@ -44,7 +44,7 @@ const updateAsset = ({ commit }, _asset) => {
 
             /* Set asset. */
             const asset = {
-                owner,
+                ownerSlug,
                 id,
                 body,
             }

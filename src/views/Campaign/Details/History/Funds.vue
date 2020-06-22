@@ -4,23 +4,23 @@
             <h3 class="support-campaign-title">Back this Cause</h3>
 
             <p class="campaignTypeDesc">
-                All pledges are placed into escrow to be withdrawn based on the preset terms of the DRIPP campaign.
+                All funds are placed into escrow to be withdrawn based on the preset terms of the DRIPP campaign.
             </p>
 
-            <div class="plan" v-for="pledge of pledges" :key="pledge.id">
+            <div class="plan" v-for="fund of funds" :key="fund.id">
                 <button>
-                    <h3 class="text-uppercase">{{pledge.title}}</h3>
+                    <h3 class="text-uppercase">{{fund.title}}</h3>
 
                     <h2>Official Account Address</h2>
                     <h4>
-                        {{addressDisplay(pledge.address)}}
+                        {{addressDisplay(fund.address)}}
                         <i class="fa fa-qrcode ml-2" aria-hidden="true"></i>
                     </h4>
 
-                    <div class="plan-desc" v-html="pledge.summary" />
+                    <div class="plan-desc" v-html="fund.summary" />
 
                     <div class="plan-date">
-                        {{pledge.dueAt}}
+                        {{fund.dueAt}}
                     </div>
 
                     <div class="plan-author">
@@ -46,8 +46,18 @@ export default {
     },
     data: () => {
         return {
-            pledges: [],
+            // 
         }
+    },
+    watch: {
+        campaign: function (_campaign) {
+            if (_campaign && _campaign.funds) {
+                // console.log('CAMPAIGN HAS CHANGED, UPDATE FUNDS!!', _campaign.funds)
+
+                /* Update funds. */
+                this.updateFunds()
+            }
+        },
     },
     computed: {
         ...mapGetters('campaigns', [
@@ -57,6 +67,49 @@ export default {
         ...mapGetters('utils', [
             'getMarkdown',
         ]),
+
+        funds() {
+            /* Initialize all funds. */
+            const allFunds = []
+
+            if (this.campaign && this.campaign.funds) {
+                /* Set funds. */
+                const funds = this.campaign.funds
+                // console.log('FUND (funds):', funds)
+
+                /* Load funds. */
+                Object.keys(funds).forEach(fundId => {
+                    /* Set fund. */
+                    const fund = {
+                        id: fundId,
+                        ...funds[fundId]
+                    }
+                    // console.log('FUND (fund):', fund)
+
+                    /* Retrieve (stored) asset. */
+                    const asset = this.getAsset(
+                        this.campaign.owner.slug,
+                        `${this.campaign.slug}.fund.${fund.id}.summary`
+                    )
+                    // console.log('FUND (asset):', asset)
+
+                    /* Validate asset. */
+                    if (asset) {
+                        /* Set asset summary. */
+                        fund.summary = this.getMarkdown(asset)
+
+                        /* Add fund. */
+                        allFunds.push(fund)
+                    }
+                })
+                // console.log('FUNDS (allFunds):', allFunds)
+
+                /* Return all funds. */
+                return allFunds
+            } else {
+                return null
+            }
+        }
 
     },
     methods: {
@@ -72,68 +125,30 @@ export default {
         },
 
         /**
-         * Load Pledges
+         * Update Funds
          */
-        loadPledges() {
-            console.log('LOADING PLEDGES...')
-            /* Set pledges. */
-            const pledges = this.campaign.pledges
-            // console.log('PLEDGE (pledges):', pledges)
+        updateFunds() {
+            /* Set funds. */
+            const funds = this.campaign.funds
+            // console.log('FUND (funds):', funds)
 
-            /* Load pledges. */
-            Object.keys(pledges).forEach(pledgeId => {
-                /* Set pledge. */
-                const pledge = {
-                    id: pledgeId,
-                    ...pledges[pledgeId]
+            /* Load funds. */
+            Object.keys(funds).forEach(fundId => {
+                /* Set fund. */
+                const fund = {
+                    id: fundId,
+                    ...funds[fundId]
                 }
-
-                // console.log('PLEDGE (pledge):', pledge)
-
-                /* Retrieve (stored) asset. */
-                const asset = this.getAsset(
-                    this.campaign.ownerId,
-                    `${this.campaign.slug}.pledge.${pledge.id}.summary`
-                )
-
-                /* Validate asset. */
-                if (asset) {
-                    /* Set asset summary. */
-                    pledge.summary = this.getMarkdown(asset)
-
-                    /* Add pledge. */
-                    this.pledges.push(pledge)
-                }
-            })
-        },
-
-        /**
-         * Update Pledges
-         */
-        updatePledges() {
-            console.log('UPDATING PLEDGES...')
-            /* Set pledges. */
-            const pledges = this.campaign.pledges
-            // console.log('PLEDGE (pledges):', pledges)
-
-            /* Load pledges. */
-            Object.keys(pledges).forEach(pledgeId => {
-                /* Set pledge. */
-                const pledge = {
-                    id: pledgeId,
-                    ...pledges[pledgeId]
-                }
-
-                // console.log('PLEDGE (pledge):', pledge)
+                // console.log('FUND (fund):', fund)
 
                 /* Initialize asset. */
                 let asset = null
 
                 /* Set asset. */
                 asset = {
-                    owner: this.campaign.ownerId,
-                    id: `${this.campaign.slug}.pledge.${pledge.id}.summary`,
-                    target: pledge.summary,
+                    ownerSlug: this.campaign.owner.slug,
+                    id: `${this.campaign.slug}.fund.${fund.id}.summary`,
+                    target: fund.summary,
                 }
 
                 /* Request asset update. */
@@ -141,9 +156,9 @@ export default {
 
                 /* Set asset. */
                 asset = {
-                    owner: this.campaign.ownerId,
-                    id: `${this.campaign.slug}.pledge.${pledge.id}.description`,
-                    target: pledge.description,
+                    ownerSlug: this.campaign.owner.slug,
+                    id: `${this.campaign.slug}.fund.${fund.id}.description`,
+                    target: fund.description,
                 }
 
                 /* Request asset update. */
@@ -153,19 +168,7 @@ export default {
 
     },
     created: function () {
-        /* Load pledges. */
-        this.loadPledges()
-
-        if (this.pledges.length === 0) {
-            /* Update pledges. */
-            this.updatePledges()
-
-            /* Wait for asset update. */
-            setTimeout(() => {
-                /* Load pledges. */
-                this.loadPledges()
-            }, 1000)
-        }
+        //
     },
 }
 </script>

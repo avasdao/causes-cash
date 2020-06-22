@@ -12,11 +12,11 @@ const getCampaign = () => async (_ownerSlug, _campaignSlug) => {
 
     /* Set target. */
     const target = `https://api.causes.cash/v1/campaigns/${_ownerSlug}/${_campaignSlug}`
-    console.log('TARGET', target)
+    // console.log('TARGET', target)
 
     /* Request campaign. */
     const result = await superagent.get(target)
-    console.log('RESULT', result)
+    // console.log('RESULT', result)
 
     /* Validate result. */
     if (!result || !result.body) {

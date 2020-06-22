@@ -4,10 +4,10 @@
  * Allows us to update a stored asset resource.
  */
 const setAsset = (state, _asset) => {
-    /* Set asset owner. */
-    const owner = _asset.owner
+    /* Set asset owner slug. */
+    const ownerSlug = _asset.ownerSlug
 
-    // TODO: Validate owner.
+    // TODO: Validate owner slug.
 
     /* Set asset id. */
     const id = _asset.id
@@ -22,13 +22,13 @@ const setAsset = (state, _asset) => {
     // TODO: Validate body.
 
     /* Validate owner assets. */
-    if (!state.assets[owner]) {
+    if (!state.assets[ownerSlug]) {
         /* Initialize owner assets. */
-        state.assets[owner] = {}
+        state.assets[ownerSlug] = {}
     }
 
     /* Update the asset resource. */
-    state.assets[owner][id] = body
+    state.assets[ownerSlug][id] = body
 }
 
 /* Export module. */

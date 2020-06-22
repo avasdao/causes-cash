@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                <Pledges :campaign="campaign" />
+                <Funds :campaign="campaign" />
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@ import Articles from './History/Articles'
 import Backers from './History/Backers'
 import Events from './History/Events'
 import FAQ from './History/FAQ'
-import Pledges from './History/Pledges'
+import Funds from './History/Funds'
 import Story from './History/Story'
 
 /* Import icons. */
@@ -68,7 +68,7 @@ export default {
         Backers,
         Events,
         FAQ,
-        Pledges,
+        Funds,
         Story,
     },
     data: () => {

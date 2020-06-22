@@ -7,7 +7,7 @@
 				<div class="campaign-item clearfix">
 
                     <div v-if="images" class="campaign-image">
-						<div id="owl-campaign" class="campaign-slider">
+						<div id="campaign-gallery" class="campaign-slider">
 							<div class="item">
                                 <img :src="images[0]" alt="">
                             </div>
@@ -121,6 +121,20 @@ import { mapGetters } from 'vuex'
 import DOMPurify from 'dompurify'
 import showdown from 'showdown'
 
+/* Import jQuery. */
+// FIXME: Remove ALL jQuery dependencies.
+const $ = window.jQuery
+
+function makePages() {
+    $.each(this.owl.userItems, function (i) {
+        $('.owl-controls .owl-page').eq(i)
+        .css({
+            'background': 'url(' + $(this).find('img').attr('src') + ')',
+            'background-size': 'cover',
+        })
+    })
+}
+
 export default {
     props: {
         campaign: Object,
@@ -227,17 +241,32 @@ export default {
         },
 
         images() {
-            if (this.campaign && this.campaign.coverImgUrl) {
-                return [
-                    this.campaign.coverImgUrl,
-                    this.campaign.coverImgUrl,
-                    this.campaign.coverImgUrl,
-                    // 'https://i.imgur.com/JEJcvg6.jpg',
-                    // 'https://i.imgur.com/rend8ex.jpg',
-                ]
-            } else {
+            /* Validate campaign. */
+            if (!this.campaign) {
                 return null
             }
+
+            /* Initialize images. */
+            const images = []
+
+            /* Validate main image. */
+            if (this.campaign.images.main) {
+                images.push(this.campaign.images.main)
+            }
+
+            // /* Validate gallery images. */
+            if (this.campaign.images.gallery) {
+                let max = 2
+                for (let i = 0; i < this.campaign.images.gallery.length; i++) {
+                    images.push(this.campaign.images.gallery[i])
+
+                    // FIXME: Increase the maximum gallery size.
+                    if (i + 1 === max) break
+                }
+            }
+
+            /* Return images. */
+            return images
         },
     },
     methods: {
@@ -286,6 +315,23 @@ export default {
     created: function () {
         //
     },
+    mounted: function () {
+        $("#campaign-gallery").owlCarousel({
+            navigation: true,
+            navigationText: [
+                '<span class="ion-ios-arrow-back"></span>',
+                '<span class="ion-ios-arrow-forward"></span>'
+            ],
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            singleItem: true,
+            afterInit: makePages,
+            afterUpdate: makePages
+        })
+
+    }
 }
 </script>
 

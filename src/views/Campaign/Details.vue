@@ -22,17 +22,7 @@ import Title from './Details/Title.vue'
 
 /* Import jQuery. */
 // FIXME: Remove ALL jQuery dependencies.
-const $ = window.jQuery
-
-function makePages() {
-    $.each(this.owl.userItems, function(i) {
-        $('.owl-controls .owl-page').eq(i)
-        .css({
-            'background': 'url(' + $(this).find('img').attr('src') + ')',
-            'background-size': 'cover',
-        })
-    })
-}
+// const $ = window.jQuery
 
 export default {
     components: {
@@ -102,28 +92,7 @@ export default {
         }
     },
     mounted: function () {
-        /*  [ Project Love Slider ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.project-love-slider').bxSlider({
-            pagerCustom: '#bx-pager',
-            mode: 'vertical',
-            controls: false,
-        })
-
-        /*  [ Owl Campaign ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $("#owl-campaign").owlCarousel({
-            navigation: true,
-            navigationText: ['<span class="ion-ios-arrow-back"></span>', '<span class="ion-ios-arrow-forward"></span>'],
-            loop:true,
-            autoplay:true,
-            autoplayTimeout:3000,
-            autoplayHoverPause:true,
-            singleItem: true,
-            afterInit: makePages,
-            afterUpdate: makePages
-        })
-
+        // 
     },
 }
 </script>

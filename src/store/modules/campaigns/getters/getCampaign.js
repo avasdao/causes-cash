@@ -1,22 +1,30 @@
+/* Import modules. */
+import superagent from 'superagent'
+
 /**
 * Get Campaign
 */
-const getCampaign = () => (_campaignOwner, _campaignId) => {
-    // console.log('Retrieving campaign...', _campaignOwner, _campaignId)
-
-    // FIXME: FOR DEVELOPMENT PURPOSES ONLY
-    if (typeof _campaignId === 'undefined') {
-        _campaignId = _campaignOwner
-    }
+const getCampaign = () => async (_ownerSlug, _campaignSlug) => {
+    // console.log('Retrieving campaign...', _ownerSlug, _campaignId)
 
     /* Initialize campaign. */
-    let campaign = null
+    // let campaign = null
 
-    /* Retrieve campaign. */
-    // FIXME: We MUST account for the owner, since slugs can be duplicated.
-    campaign = require(`@/_staticDb/${_campaignId}.json`)
+    /* Set target. */
+    const target = `https://api.causes.cash/v1/campaigns/${_ownerSlug}/${_campaignSlug}`
+    console.log('TARGET', target)
 
-    return campaign
+    /* Request campaign. */
+    const result = await superagent.get(target)
+    console.log('RESULT', result)
+
+    /* Validate result. */
+    if (!result || !result.body) {
+        return null
+    }
+
+    /* Return campaign. */
+    return result.body
 }
 
 /* Export module. */

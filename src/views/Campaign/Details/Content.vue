@@ -6,7 +6,7 @@
 
 				<div class="campaign-item clearfix">
 
-                    <div class="campaign-image">
+                    <div v-if="images" class="campaign-image">
 						<div id="owl-campaign" class="campaign-slider">
 							<div class="item">
                                 <img :src="images[0]" alt="">
@@ -130,16 +130,83 @@ export default {
     },
     data: () => {
         return {
-            category: null,
-            title: null,
-            description: null,
-            summary: null,
+            //
         }
     },
     computed: {
         ...mapGetters('campaigns', [
             'getAsset',
         ]),
+
+        category() {
+            if (this.campaign && this.campaign.category) {
+                return this.campaign.category
+            } else {
+                return null
+            }
+        },
+
+        campaignType() {
+            if (this.campaign && this.campaign.type) {
+                /* Handle campaign type. */
+                switch(this.campaign.type) {
+                case 'direct':
+                    return 'Direct Cash'
+                case 'assurance':
+                    return 'Community Pledge'
+                case 'payouts':
+                    return 'Daily Payouts'
+                default:
+                    return 'Unknown campaign type'
+                }
+            } else {
+                return null
+            }
+        },
+
+        title() {
+            if (this.campaign && this.campaign.title) {
+                return this.campaign.title
+            } else {
+                return null
+            }
+        },
+
+        summary() {
+            if (this.campaign && this.campaign.summary) {
+                /* Request summary. */
+                const summary = this.getAsset(
+                    this.campaign.ownerId, `${this.campaign.slug}.summary`)
+
+                return summary
+            } else {
+                return null
+            }
+        },
+
+        description() {
+            if (this.campaign && this.campaign.description) {
+                return this.campaign.description
+            } else {
+                return null
+            }
+        },
+
+        ownerName() {
+            if (this.campaign && this.campaign.ownerName) {
+                return this.campaign.ownerName
+            } else {
+                return null
+            }
+        },
+
+        ownerAvatar() {
+            if (this.campaign && this.campaign.ownerAvatar) {
+                return this.campaign.ownerAvatar
+            } else {
+                return null
+            }
+        },
 
         descriptionDisplay() {
             /* Validate description. */
@@ -160,13 +227,17 @@ export default {
         },
 
         images() {
-            return [
-                this.campaign.coverImgUrl,
-                this.campaign.coverImgUrl,
-                this.campaign.coverImgUrl,
-                // 'https://i.imgur.com/JEJcvg6.jpg',
-                // 'https://i.imgur.com/rend8ex.jpg',
-            ]
+            if (this.campaign && this.campaign.coverImgUrl) {
+                return [
+                    this.campaign.coverImgUrl,
+                    this.campaign.coverImgUrl,
+                    this.campaign.coverImgUrl,
+                    // 'https://i.imgur.com/JEJcvg6.jpg',
+                    // 'https://i.imgur.com/rend8ex.jpg',
+                ]
+            } else {
+                return null
+            }
         },
     },
     methods: {
@@ -213,43 +284,7 @@ export default {
         },
     },
     created: function () {
-        /* Set category. */
-        this.category = this.campaign.category
-
-        /* Set title. */
-        this.title = this.campaign.title
-        // this.title = `[${causeId}] ... [${referrerId}]`
-
-        /* Set summary. */
-        this.summary = this.getAsset(
-            this.campaign.ownerId, `${this.campaign.slug}.summary`)
-
-        /* Set owner slug. */
-        // this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
-
-        // TODO: Validate the user.
-
-        /* Set author name. */
-        this.ownerName = this.campaign.ownerName
-
-        /* Set campaign type. */
-        switch(this.campaign.type) {
-        case 'assurance':
-            this.campaignType = 'Assurance campaign'
-            break
-        case 'direct':
-            this.campaignType = 'Direct campaign'
-            break
-        case 'dripp':
-            this.campaignType = 'DRIPP campaign'
-            break
-        default:
-            this.campaignType = 'Unknown campaign'
-            break
-        }
-
-        /* Set author image url. */
-        this.ownerAvatar = this.campaign.ownerAvatar
+        //
     },
 }
 </script>

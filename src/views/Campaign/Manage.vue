@@ -105,6 +105,11 @@ export default {
         Social,
         Story,
     },
+    data: () => {
+        return {
+            extSlug: null,
+        }
+    },
     computed: {
         /* Banner Image */
         bannerImg() {
@@ -113,11 +118,9 @@ export default {
 
     },
     created: function () {
-        /* Set campaign. */
-        const campaign = this.$route.params.campaign
-
-        console.log('CAMPAIGN', campaign);
-        console.log('PARAMS', this.$route.params);
+        /* Set campaign extended slug. */
+        this.extSlug = this.$route.params.extSlug
+        console.log('EXTENDED SLUG', this.extSlug)
 
     },
     mounted: function () {

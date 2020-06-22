@@ -67,12 +67,12 @@ const routes = [{
 }, {
     // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e/manage
     // NOTE: Avoid other wildcard conflicts.
-    path: '/@*/:campaign/manage', // Manage
+    path: '/@*/:extSlug/manage', // Manage
     component: CampaignManage
 }, {
     // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e
     // NOTE: Avoid other wildcard conflicts.
-    path: '/@*/:campaign', // Details
+    path: '/@*/:extSlug', // Details
     component: CampaignDetails
 }, {
 

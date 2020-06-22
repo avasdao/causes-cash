@@ -45,6 +45,10 @@ export default {
     },
     data: () => {
         return {
+            ownerSlug: null,
+            slug: null,
+            extSlug: null,
+
             campaign: null,
             campaignId: null,
             // referrerId: null,
@@ -63,37 +67,41 @@ export default {
         ]),
 
     },
-    created: function () {
-        /* Set campaign. */
-        const campaign = this.$route.params.campaign
+    created: async function () {
+        /* Set owner slug. */
+        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
+        console.log('OWNER SLUG', this.ownerSlug)
 
-        /* Validate campaign. */
-        if (campaign && campaign.lastIndexOf('-') !== -1) {
+        /* Set extended slug. */
+        this.extSlug = this.$route.params.extSlug
+        console.log('EXTENDED SLUG', this.extSlug)
+
+        /* Validate extended slug. */
+        if (this.extSlug && this.extSlug.lastIndexOf('-') !== -1) {
             /* Set campaign id. */
-            this.campaignId = campaign.slice(0, campaign.lastIndexOf('-'))
+            this.campaignId = this.extSlug.slice(0, this.extSlug.lastIndexOf('-'))
             // console.log('this.campaignId', this.campaignId)
 
+            /* Set campaign slug. */
+            this.slug = this.extSlug.slice(0, this.extSlug.lastIndexOf('-'))
+            console.log('CAMPAIGN SLUG', this.slug)
+
             /* Set referrer id. */
-            const referrerId = campaign.slice(campaign.lastIndexOf('-') + 1)
-            // console.log('referrerId', referrerId)
-
-            /* Set extended slug. */
-            const extSlug = `${this.campaignId}-${referrerId}`
-
-            /* Set owner id. */
-            // FIXME: Pull this dynamicaly.
-            const ownerId = 'BCHPlease'
+            this.referrerId = this.extSlug.slice(this.extSlug.lastIndexOf('-') + 1)
+            console.log('REFERRER ID', this.referrerId)
 
             /* Set campaign. */
-            this.campaign = this.getCampaign(ownerId, extSlug)
-
-            /* Set extended slug (to campaign). */
-            this.campaign.extSlug = extSlug
+            console.log('REQUESTING CAMPAIGN');
+            this.campaign = await this.getCampaign(this.ownerSlug, this.slug)
+            console.log('CAMPAIGN RESULTS', this.campaign);
 
             /* Set referrer id (to campaign). */
-            this.campaign.referrerId = referrerId
+            this.campaign.referrerId = this.referrerId
+
+            console.log('CAMPAIGN', this.campaign)
         }
 
+        console.log('REQUESTING ASSET DESCRIPTION')
         /* Set description. */
         const description = this.getAsset(
             this.campaign.ownerId, `${this.campaign.slug}.description`)

@@ -27,15 +27,15 @@
 
                         <h3>{{title}}</h3>
 
-                        <div class="campaign-description">
-                            <p v-html="summaryDisplay" />
+                        <div class="campaign-description clearfix">
+                            <p v-html="summary" />
                         </div>
 
-                        <div class="campaign-author clearfix">
+                        <div class="campaign-author">
 							<div class="author-profile">
 								<a class="author-icon" href="javascript://">
                                     <img :src="ownerAvatar" alt=""></a>
-                                    by <a class="author-name" href="javascript://">{{ownerName}}</a>
+                                    by <a class="author-name" href="javascript://">{{ownerLabel}}</a>
 							</div>
 
                             <div class="author-address">
@@ -68,44 +68,84 @@
 							</div>
 						</div>
 
-                        <div class="button">
-							<form action="javascript://" id="priceForm" class="campaign-price quantity">
-								<input type="number" value="1" min="0" name="s" placeholder="" />
-								<button class="btn-primary" type="submit">Back this Cause</button>
-							</form>
-
-                            <a href="javascript://" class="btn-secondary">
-                                <i class="fa fa-heart" aria-hidden="true"></i>
-                                Remind me</a>
-						</div>
-
                         <div class="share">
-							<p>
+                            <!-- <p>
                                 Share this project <em class="text-muted">(auto affiliate links)</em>
-                            </p>
+                            </p> -->
 
                             <ul>
-								<li class="share-facebook">
-                                    <a href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                </li>
-
                                 <li class="share-twitter">
                                     <a href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a>
                                 </li>
 
                                 <li class="share-google-plus">
-                                    <a href="javascript://"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                                    <a href="javascript://"><i class="fa fa-reddit" aria-hidden="true"></i></a>
                                 </li>
 
-                                <li class="share-linkedin">
+                                <!-- <li class="share-facebook">
+                                    <a href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                </li> -->
+
+                                <!-- <li class="share-linkedin">
                                     <a href="javascript://"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                </li>
+                                </li> -->
 
                                 <li class="share-code">
                                     <a href="javascript://"><i class="fa fa-code" aria-hidden="true"></i></a>
                                 </li>
-							</ul>
+                            </ul>
+                        </div>
+
+                        <div class="button">
+                            <a href="javascript://" class="btn-primary view-pledge">
+                                Back this Campaign
+                            </a>
+
+                            <a href="javascript://" class="btn-secondary">
+                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                Remind me
+                            </a>
+
+                            <div class="spopup-bg"></div>
+
+                            <div class="pledge-popup start-popup">
+                                <div class="spopup-title">
+                                    <h3>{{title}}</h3>
+
+                                    <div class="spopup-close">
+                                        <span class="ion-ios-close-empty"></span>
+                                    </div>
+                                </div>
+
+                                <div class="spopup-content">
+                                    <div class="qr-code text-center" v-html="qr" />
+
+                                    <ul>
+                                        <li>
+                                            <h4>Please <i class="fa fa-heart text-danger"></i> and support our cause <i class="fa fa-arrow-down"></i></h4>
+                                            <a :href="'https://explorer.bitcoin.com/bch/address/' + pledgeAddress" target="_blank"><strong>{{pledgeAddress}}</strong></a>
+                                        </li>
+
+                                        <hr />
+
+                                        <li>
+                                            <h4>Payment processing fees</h4>
+
+                                            <div class="fee-desc">
+                                                <p>
+                                                    3% + €0.20 per pledge
+                                                </p>
+
+                                                <p>
+                                                    Pledges under €10 have a discounted micropledge fee of 5% + €0.05 per pledge
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -119,6 +159,7 @@ import { mapGetters } from 'vuex'
 
 /* Import modules. */
 import DOMPurify from 'dompurify'
+import QRCode from 'qrcode'
 import showdown from 'showdown'
 
 /* Import jQuery. */
@@ -138,6 +179,7 @@ function makePages() {
 export default {
     props: {
         campaign: Object,
+        fundId: String,
     },
     components: {
         // Summary,
@@ -147,9 +189,36 @@ export default {
             //
         }
     },
+    watch: {
+        campaign: function (_campaign) {
+            if (_campaign && _campaign.images) {
+                /* Wait a tick. */
+                setTimeout(() => {
+                    $("#campaign-gallery").owlCarousel({
+                        navigation: true,
+                        navigationText: [
+                            '<span class="ion-ios-arrow-back"></span>',
+                            '<span class="ion-ios-arrow-forward"></span>'
+                        ],
+                        loop: true,
+                        autoplay: true,
+                        autoplayTimeout: 3000,
+                        autoplayHoverPause: true,
+                        singleItem: true,
+                        afterInit: makePages,
+                        afterUpdate: makePages
+                    })
+                }, 0)
+            }
+        },
+    },
     computed: {
         ...mapGetters('campaigns', [
             'getAsset',
+        ]),
+
+        ...mapGetters('utils', [
+            'getMarkdown',
         ]),
 
         category() {
@@ -161,9 +230,29 @@ export default {
         },
 
         campaignType() {
-            if (this.campaign && this.campaign.type) {
+            /* Validate campaign funds. */
+            if (!this.campaign || !this.campaign.funds) {
+                return null
+            }
+
+            /* Initialize type. */
+            let type = null
+
+            /* Set pledge type. */
+            if (this.fundId) {
+                type = this.campaign.funds[this.fundId].type
+            } else {
+                const defaultId = Object.keys(this.campaign.funds).find(fundId => {
+                    return this.campaign.funds[fundId].isDefault === true
+                })
+
+                /* Set default fund type. */
+                type = this.campaign.funds[defaultId].type
+            }
+
+            if (type) {
                 /* Handle campaign type. */
-                switch(this.campaign.type) {
+                switch(type) {
                 case 'direct':
                     return 'Direct Cash'
                 case 'assurance':
@@ -179,64 +268,121 @@ export default {
         },
 
         title() {
-            if (this.campaign && this.campaign.title) {
-                return this.campaign.title
-            } else {
+            /* Validate campaign funds. */
+            if (!this.campaign || !this.campaign.funds) {
                 return null
+            }
+
+            /* Return pledge title. */
+            if (this.fundId) {
+                return this.campaign.funds[this.fundId].title
+            } else {
+                const defaultId = Object.keys(this.campaign.funds).find(fundId => {
+                    return this.campaign.funds[fundId].isDefault === true
+                })
+
+                /* Return default fund title. */
+                return this.campaign.funds[defaultId].title
             }
         },
 
         summary() {
-            if (this.campaign && this.campaign.summary) {
-                /* Request summary. */
-                const summary = this.getAsset(
-                    this.campaign.ownerId, `${this.campaign.slug}.summary`)
+            /* Validate campaign. */
+            if (!this.campaign) {
+                return null
+            }
 
-                return summary
+            /* Initialize summary. */
+            let summary = null
+
+            /* Retrieve summary. */
+            summary = this.getAsset(
+                this.campaign.owner.slug,
+                `${this.campaign.slug}.fund.${this.fundId}.summary`
+            )
+
+            /* Validate summary. */
+            if (!summary) {
+                summary = this.getAsset(
+                    this.campaign.owner.slug,
+                    `${this.campaign.slug}.summary`
+                )
+            }
+            // console.log('STORY (summary):', summary)
+
+            /* Validate summary. */
+            if (summary) {
+                /* Return summary (in markdown). */
+                return this.getMarkdown(summary)
             } else {
                 return null
             }
         },
 
-        description() {
-            if (this.campaign && this.campaign.description) {
-                return this.campaign.description
-            } else {
+        pledgeAddress() {
+            /* Validate campaign funds. */
+            if (!this.campaign || !this.campaign.funds) {
                 return null
+            }
+
+            /* Return pledge address. */
+            if (this.fundId) {
+                return this.campaign.funds[this.fundId].address
+            } else {
+                const defaultId = Object.keys(this.campaign.funds).find(fundId => {
+                    return this.campaign.funds[fundId].isDefault === true
+                })
+
+                /* Return default fund address. */
+                return this.campaign.funds[defaultId].address
             }
         },
 
-        ownerName() {
-            if (this.campaign && this.campaign.ownerName) {
-                return this.campaign.ownerName
+        qr() {
+            if (!this.pledgeAddress) {
+                return null
+            }
+
+            /* Initialize (string) value. */
+            let strValue = ''
+
+            /* Initialize scanner parameters. */
+            const params = {
+                type: 'svg',
+                width: 225,
+                height: 225,
+                color: {
+                    dark: '#000',
+                    light: '#fff'
+                }
+            }
+
+            QRCode.toString(this.pledgeAddress, params, (err, value) => {
+                if (err) {
+                    return console.error('QR Code ERROR:', err)
+                }
+
+                /* Set (string) value. */
+                strValue = value
+            })
+
+            /* Return (string) value. */
+            return strValue
+        },
+
+        ownerLabel() {
+            if (this.campaign && this.campaign.owner.label) {
+                return this.campaign.owner.label
             } else {
                 return null
             }
         },
 
         ownerAvatar() {
-            if (this.campaign && this.campaign.ownerAvatar) {
-                return this.campaign.ownerAvatar
+            if (this.campaign && this.campaign.owner.avatar) {
+                return this.campaign.owner.avatar
             } else {
                 return null
-            }
-        },
-
-        descriptionDisplay() {
-            /* Validate description. */
-            if (this.description) {
-                return this.markdown(this.description)
-            } else {
-                return ''
-            }
-        },
-
-        summaryDisplay() {
-            /* Validate summary. */
-            if (this.summary) {
-                return this.markdown(this.summary)
-            } else {
-                return ''
             }
         },
 
@@ -316,25 +462,38 @@ export default {
         //
     },
     mounted: function () {
-        $("#campaign-gallery").owlCarousel({
-            navigation: true,
-            navigationText: [
-                '<span class="ion-ios-arrow-back"></span>',
-                '<span class="ion-ios-arrow-forward"></span>'
-            ],
-            loop: true,
-            autoplay: true,
-            autoplayTimeout: 3000,
-            autoplayHoverPause: true,
-            singleItem: true,
-            afterInit: makePages,
-            afterUpdate: makePages
-        })
-
+        $('.view-pledge').on('click', function (e) {
+			e.preventDefault()
+			$(this).parent().parent().find('.spopup-bg').fadeIn()
+			$(this).parent().parent().find('.pledge-popup').fadeIn()
+		})
+		$('.spopup-bg').on('click', function (e) {
+			e.preventDefault()
+			$(this).fadeOut()
+			$(this).parent().find('.pledge-popup').fadeOut()
+			$(this).parent().find('.item-popup').fadeOut()
+		})
+		$('.spopup-close').on('click', function (e) {
+			e.preventDefault()
+			$(this).parent().parent().fadeOut()
+			$(this).parent().parent().parent().find('.spopup-bg').fadeOut()
+		})
     }
 }
 </script>
 
 <style scoped>
-/*  */
+.qr-code {
+    /* margin: 0 0 10px 10px; */
+    /* margin: 20px auto; */
+    padding: 0;
+    /* border: 1pt solid rgba(200, 200, 200, 0.2); */
+    /* float: right; */
+}
+
+.share {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
 </style>

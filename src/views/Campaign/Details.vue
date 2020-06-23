@@ -2,8 +2,8 @@
     <main class="campaign-detail">
         <Header :campaign="campaign" />
         <Title :campaign="campaign" />
-        <Content :campaign="campaign" />
-        <History :campaign="campaign" />
+        <Content :campaign="campaign" :fundId="fundId" />
+        <History :campaign="campaign" v-on:loadFund="loadFund" />
         <Footer />
     </main>
 </template>
@@ -41,6 +41,7 @@ export default {
 
             campaign: null,
             campaignId: null,
+            fundId: null,
             // referrerId: null,
         }
     },
@@ -56,6 +57,13 @@ export default {
             // 'updateAsset',
         ]),
 
+        /**
+         * Load Fund
+         */
+        loadFund(_fundId) {
+            /* Set fund id. */
+            this.fundId = _fundId
+        }
     },
     created: async function () {
         /* Set owner slug. */
@@ -92,7 +100,7 @@ export default {
         }
     },
     mounted: function () {
-        // 
+        //
     },
 }
 </script>

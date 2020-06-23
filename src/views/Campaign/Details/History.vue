@@ -27,17 +27,18 @@
                             </li>
                         </ul>
 
+                        <a name="history"></a>
                         <div class="campaign-content">
-                            <Story :campaign="campaign" />
-                            <Events :campaign="campaign" />
-                            <Backers :campaign="campaign" />
-                            <FAQ :campaign="campaign" />
-                            <Articles :campaign="campaign" />
+                            <Story :campaign="campaign" :fundId="fundId" />
+                            <Events :campaign="campaign" :fundId="fundId" />
+                            <Backers :campaign="campaign" :fundId="fundId" />
+                            <FAQ :campaign="campaign" :fundId="fundId" />
+                            <Articles :campaign="campaign" :fundId="fundId" />
                         </div>
                     </div>
                 </div>
 
-                <Funds :campaign="campaign" />
+                <Funds :campaign="campaign" v-on:loadFund="loadFund" />
             </div>
         </div>
     </div>
@@ -73,11 +74,24 @@ export default {
     },
     data: () => {
         return {
-            //
+            fundId: null,
         }
     },
     methods: {
-        //
+        /**
+         * Load Fund
+         */
+        loadFund(_fundId) {
+            /* Set fund id. */
+            this.fundId = _fundId
+
+            /* Emit fund id. */
+            this.$emit('loadFund', _fundId)
+
+            // TODO: Adjust for mobile
+            // window.scrollTo({ top: 1050, behavior: 'smooth' })
+            window.scrollTo({ top: 425, behavior: 'smooth' })
+        }
     },
     mounted: function () {
         // change is-checked class on buttons

@@ -15,6 +15,7 @@
 export default {
     props: {
         campaign: Object,
+        fundId: String,
     }
 }
 </script>

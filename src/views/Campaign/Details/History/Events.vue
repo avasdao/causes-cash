@@ -45,6 +45,7 @@ import moment from 'moment'
 export default {
     props: {
         campaign: Object,
+        fundId: String,
     },
     data: () => {
         return {

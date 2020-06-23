@@ -1,14 +1,14 @@
 <template>
     <div class="col-lg-4">
         <div class="support support-campaign">
-            <h3 class="support-campaign-title">Back this Cause</h3>
+            <h3 class="support-campaign-title">Campaign Funding Options</h3>
 
-            <p class="campaignTypeDesc">
+            <!-- <p class="campaignTypeDesc">
                 All funds are placed into escrow to be withdrawn based on the preset terms of the DRIPP campaign.
-            </p>
+            </p> -->
 
             <div class="plan" v-for="fund of funds" :key="fund.id">
-                <button>
+                <button @click="$emit('loadFund', fund.id)">
                     <h3 class="text-uppercase">{{fund.title}}</h3>
 
                     <h2>Official Account Address</h2>
@@ -43,10 +43,11 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     props: {
         campaign: Object,
+        fundId: String,
     },
     data: () => {
         return {
-            // 
+            //
         }
     },
     watch: {
@@ -86,17 +87,17 @@ export default {
                     }
                     // console.log('FUND (fund):', fund)
 
-                    /* Retrieve (stored) asset. */
-                    const asset = this.getAsset(
+                    /* Retrieve summary. */
+                    const summary = this.getAsset(
                         this.campaign.owner.slug,
                         `${this.campaign.slug}.fund.${fund.id}.summary`
                     )
-                    // console.log('FUND (asset):', asset)
+                    // console.log('FUND (summary):', summary)
 
-                    /* Validate asset. */
-                    if (asset) {
-                        /* Set asset summary. */
-                        fund.summary = this.getMarkdown(asset)
+                    /* Validate summary. */
+                    if (summary) {
+                        /* Set summary summary. */
+                        fund.summary = this.getMarkdown(summary)
 
                         /* Add fund. */
                         allFunds.push(fund)
@@ -141,28 +142,53 @@ export default {
                 }
                 // console.log('FUND (fund):', fund)
 
-                /* Initialize asset. */
-                let asset = null
+                /* Initialize body. */
+                let body = null
 
-                /* Set asset. */
-                asset = {
+                /* Initialize target. */
+                let target = null
+
+                /* Validate summary. */
+                if (fund.summary.slice(0, 2) === 'Qm' && fund.summary.length === 46) {
+                    target = fund.summary
+                } else {
+                    body = fund.summary
+                }
+
+                /* Set summary. */
+                const summary = {
                     ownerSlug: this.campaign.owner.slug,
                     id: `${this.campaign.slug}.fund.${fund.id}.summary`,
-                    target: fund.summary,
+                    body,
+                    target,
                 }
 
-                /* Request asset update. */
-                this.updateAsset(asset)
+                /* Request summary update. */
+                this.updateAsset(summary)
 
-                /* Set asset. */
-                asset = {
+                /* Initialize body. */
+                body = null
+
+                /* Initialize target. */
+                target = null
+
+                /* Validate description. */
+                if (fund.description.slice(0, 2) === 'Qm' && fund.description.length === 46) {
+                    target = fund.description
+                } else {
+                    body = fund.description
+                }
+
+                /* Set description. */
+                const description = {
                     ownerSlug: this.campaign.owner.slug,
                     id: `${this.campaign.slug}.fund.${fund.id}.description`,
-                    target: fund.description,
+                    body,
+                    target,
                 }
 
-                /* Request asset update. */
-                this.updateAsset(asset)
+                /* Request description update. */
+                this.updateAsset(description)
             })
         },
 

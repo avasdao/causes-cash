@@ -85,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <label for="campaigndesc">
                             Summary
                         </label>
@@ -95,7 +95,7 @@
                         </span>
 
                         <textarea rows="4" v-model="summary" placeholder="Enter a brief summary of your campaign"></textarea>
-                    </div>
+                    </div> -->
 
                     <div class="field clearfix">
                         <label for="clocation">
@@ -431,7 +431,7 @@ export default {
 
             title: null,
             category: null,
-            summary: null,
+            // summary: null,
             location: null,
         }
     },
@@ -475,10 +475,10 @@ export default {
                 return alert('Enter a category')
             }
 
-            /* Validate summary. */
-            if (!this.summary) {
-                return alert('Enter a summary')
-            }
+            // /* Validate summary. */
+            // if (!this.summary) {
+            //     return alert('Enter a summary')
+            // }
 
             /* Validate location. */
             if (!this.location) {
@@ -490,7 +490,7 @@ export default {
                 slug: this.slug,
                 title: this.title,
                 category: this.category,
-                summary: this.summary,
+                // summary: this.summary,
                 owner: {
                     slug: this.ownerSlug,
                 },
@@ -508,7 +508,7 @@ export default {
             if (result.ok && !result.error) {
                 this.title = null
                 this.category = null
-                this.summary = null
+                // this.summary = null
                 this.location = null
 
                 alert('New Campaign Created Successfully!')

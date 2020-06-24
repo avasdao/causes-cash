@@ -124,6 +124,40 @@ export default {
 }
 </script>
 
+<style>
+div.instructions {
+    padding: 0 50px 15px;
+}
+div.instructions .warning {
+    color: red;
+    font-weight: 600;
+}
+
+.coming-soon {
+    width: 100%;
+    text-align: center;
+    /* padding: 20px 0 40px; */
+    padding: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    line-height: 32px;
+    color: rgba(30, 30, 30, 0.5);
+}
+@media screen and (min-width: 767px) {
+    div.instructions {
+        padding: 0 50px 15px;
+        line-height: 25px;
+    }
+
+    .coming-soon {
+        padding: 20px 0 40px;
+        font-size: 1.6em;
+        font-weight: 600;
+        line-height: 45px;
+    }
+}
+</style>
+
 <style scoped>
 .form-signin {
     position: fixed;

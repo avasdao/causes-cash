@@ -48,48 +48,33 @@ export default {
             'getMarkdown',
         ]),
 
-        // title() {
-        //     /* Validate campaign funds. */
-        //     if (!this.campaign || !this.campaign.funds) {
-        //         return null
-        //     }
-        //
-        //     /* Return pledge title. */
-        //     if (this.fundId) {
-        //         return this.campaign.funds[this.fundId].title
-        //     } else {
-        //         const defaultId = Object.keys(this.campaign.funds).find(fundId => {
-        //             return this.campaign.funds[fundId].isDefault === true
-        //         })
-        //
-        //         /* Return default fund title. */
-        //         return this.campaign.funds[defaultId].title
-        //     }
-        // },
-
         description() {
             /* Validate campaign. */
             if (!this.campaign) {
                 return null
             }
 
+            /* Initialize fund id. */
+            let fundId = null
+
+            if (this.fundId) {
+                fundId = this.fundId
+            } else {
+                /* Find default id. */
+                fundId = Object.keys(this.campaign.funds).find(fundId => {
+                    return this.campaign.funds[fundId].isDefault === true
+                })
+            }
+
             /* Initialize description. */
             let description = null
+
 
             /* Retrieve description. */
             description = this.getAsset(
                 this.campaign.owner.slug,
-                `${this.campaign.slug}.fund.${this.fundId}.description`
+                `${this.campaign.slug}.fund.${fundId}.description`
             )
-
-            /* Validate description. */
-            if (!description) {
-                description = this.getAsset(
-                    this.campaign.owner.slug,
-                    `${this.campaign.slug}.description`
-                )
-            }
-            // console.log('STORY (description):', description)
 
             /* Validate description. */
             if (description) {
@@ -99,39 +84,6 @@ export default {
                 return null
             }
         },
-
-        // summary() {
-        //     /* Validate campaign. */
-        //     if (!this.campaign) {
-        //         return null
-        //     }
-        //
-        //     /* Initialize summary. */
-        //     let summary = null
-        //
-        //     /* Retrieve summary. */
-        //     summary = this.getAsset(
-        //         this.campaign.owner.slug,
-        //         `${this.campaign.slug}.fund.${this.fundId}.summary`
-        //     )
-        //
-        //     /* Validate summary. */
-        //     if (!summary) {
-        //         summary = this.getAsset(
-        //             this.campaign.owner.slug,
-        //             `${this.campaign.slug}.summary`
-        //         )
-        //     }
-        //     // console.log('STORY (summary):', summary)
-        //
-        //     /* Validate summary. */
-        //     if (summary) {
-        //         /* Return summary (in markdown). */
-        //         return this.getMarkdown(summary)
-        //     } else {
-        //         return null
-        //     }
-        // },
 
     },
     methods: {
@@ -149,23 +101,37 @@ export default {
             /* Initialize target. */
             let target = null
 
-            /* Validate summary. */
-            if (this.campaign.summary.slice(0, 2) === 'Qm' && this.campaign.summary.length === 46) {
-                target = this.campaign.summary
-            } else {
-                body = this.campaign.summary
-            }
+            /* Initialize default id. */
+            let defaultId = null
+
+            /* Initialize update package. */
+            let pkg = null
+
+            /* Find default id. */
+            defaultId = Object.keys(this.campaign.funds).find(fundId => {
+                return this.campaign.funds[fundId].isDefault === true
+            })
 
             /* Set summary. */
-            const summary = {
+            const summary = this.campaign.funds[defaultId].summary
+
+            /* Validate summary. */
+            if (summary.slice(0, 2) === 'Qm' && summary.length === 46) {
+                target = summary
+            } else {
+                body = summary
+            }
+
+            /* Build (summary) package. */
+            pkg = {
                 ownerSlug: this.campaign.owner.slug,
                 id: `${this.campaign.slug}.summary`,
                 body,
                 target,
             }
 
-            /* Request summary update. */
-            this.updateAsset(summary)
+            /* Request (summary) update. */
+            this.updateAsset(pkg)
 
             /* Initialize body. */
             body = null
@@ -173,24 +139,31 @@ export default {
             /* Initialize target. */
             target = null
 
-            /* Validate description. */
-            if (this.campaign.description.slice(0, 2) === 'Qm' && this.campaign.description.length === 46) {
-                target = this.campaign.description
-            } else {
-                body = this.campaign.description
-            }
+            /* Find default id. */
+            defaultId = Object.keys(this.campaign.funds).find(fundId => {
+                return this.campaign.funds[fundId].isDefault === true
+            })
 
             /* Set description. */
-            const description = {
+            const description = this.campaign.funds[defaultId].summary
+
+            /* Validate description. */
+            if (description.slice(0, 2) === 'Qm' && description.length === 46) {
+                target = description
+            } else {
+                body = description
+            }
+
+            /* Build (description) package. */
+            pkg = {
                 ownerSlug: this.campaign.owner.slug,
                 id: `${this.campaign.slug}.description`,
                 body,
                 target,
             }
 
-            /* Request description update. */
-            this.updateAsset(description)
-
+            /* Request (description) update. */
+            this.updateAsset(pkg)
         },
     },
     created: function () {

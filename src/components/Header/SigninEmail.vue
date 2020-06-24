@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="instructions">
+        <div class="instructions d-none d-md-block">
             <h3>INSTRUCTIONS</h3>
 
             <ol>
@@ -31,16 +31,23 @@
         </div>
 
         <div class="form-group row">
-            <div class="col-sm-2">
-                &nbsp;
+            <div class="col-1 col-sm-2">
                 <!-- offset fix -->
             </div>
 
-            <label for="validEmail" class="col-sm-2 col-form-label">
+            <label for="validEmail" class="col-10 col-sm-2 col-form-label">
                 Email
             </label>
 
-            <div class="col-sm-6">
+            <div class="col-1 d-sm-none">
+                <!-- offset fix -->
+            </div>
+
+            <div class="col-1 d-sm-none">
+                <!-- offset fix -->
+            </div>
+
+            <div class="col-10 col-sm-6">
                 <input
                     type="email"
                     class="form-control"
@@ -52,16 +59,23 @@
         </div>
 
         <div class="form-group row">
-            <div class="col-sm-2">
-                &nbsp;
+            <div class="col-1 col-sm-2">
                 <!-- offset fix -->
             </div>
 
-            <label for="strongPassword" class="col-sm-2 col-form-label">
+            <label for="strongPassword" class="col-10 col-sm-2 col-form-label">
                 Password
             </label>
 
-            <div class="col-sm-6">
+            <div class="col-1 d-sm-none">
+                <!-- offset fix -->
+            </div>
+
+            <div class="col-1 d-sm-none">
+                <!-- offset fix -->
+            </div>
+
+            <div class="col-10 col-sm-6">
                 <input
                 type="password"
                 class="form-control"
@@ -70,7 +84,7 @@
                 v-model="password"
             >
 
-                <label class="form-group-label" for="strongPassword">
+                <label class="form-group-label d-none d-md-block" for="strongPassword">
                     * we highly recommend the use of a password manager
                     (eg. <a href="https://www.lastpass.com/" target="_blank">Lastpass</a>, <a href="https://keepass.info/" target="_blank">KeePass</a>, etc.)
                 </label>
@@ -78,15 +92,14 @@
         </div>
 
         <div class="form-group row">
-            <div class="col-sm-2">
-                &nbsp;
-                <!-- offset fix -->
-            </div>
-
-            <div class="col-sm-8 text-right">
+            <div class="col-10 text-right">
                 <button type="button" class="btn btn-primary" @click="signIn">
                     Sign In
                 </button>
+            </div>
+
+            <div class="col-2">
+                <!-- offset fix -->
             </div>
         </div>
     </main>

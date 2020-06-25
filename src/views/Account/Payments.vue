@@ -3,18 +3,6 @@
         <Header />
         <Banner page="payments" />
 
-        <div class="page-title background-page">
-			<div class="container">
-                <h1 class="text-capitalize">@{{this.ownerSlug}} Payments</h1>
-				<div class="breadcrumbs">
-					<ul>
-						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>Payments</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
         <section>
 			<div class="container">
 				<div class="row">

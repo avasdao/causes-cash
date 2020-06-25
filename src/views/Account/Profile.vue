@@ -1,18 +1,7 @@
 <template>
     <main class="faq">
         <Header />
-
-        <div class="page-title background-page">
-			<div class="container">
-				<h1 class="text-capitalize">@{{getNickname}} Profile</h1>
-				<div class="breadcrumbs">
-					<ul>
-						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>Profile</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+        <Banner page="profile" />
 
         <section>
 			<div class="container">
@@ -24,151 +13,211 @@
 						<div class="account-content profile">
 							<h3 class="account-title">My Profile</h3>
 
-							<div class="account-main">
+							<div class="author clearfix">
+								<a class="author-avatar" href="javascript://">
+                                    <img src="@/assets/img/dashboard-avatar.png" alt="">
+                                </a>
 
-								<div class="author clearfix">
-									<a class="author-avatar" href="javascript://">
-                                        <img src="@/assets/img/dashboard-avatar.png" alt="">
-                                    </a>
+								<div class="author-content">
+									<div class="author-title">
+                                        <h3>
+                                            <a href="javascript://">
+                                                {{getNickname}}
+                                            </a>
+                                        </h3>
+                                    </div>
 
-									<div class="author-content">
-										<div class="author-title">
-                                            <h3>
-                                                <a href="javascript://">
-                                                    {{getNickname}}
-                                                </a>
-                                            </h3>
-                                        </div>
-
-										<div class="author-info">
-											<p>
-                                                <a href="javascript://" class="">
-                                                    {{getEmail}}
-                                                </a>
-                                            </p>
-											<p>
-                                                Causes Cash member since June 2020
-                                            </p>
-										</div>
+									<div class="author-info">
+										<p>
+                                            <a href="javascript://" class="">
+                                                {{getEmail}}
+                                            </a>
+                                        </p>
+										<p>
+                                            Causes Cash member since June 2020
+                                        </p>
 									</div>
 								</div>
-
-								<div class="profile-box">
-									<ul>
-                                        <li>
-											<strong>First Name</strong>
-											<div class="profile-text">
-                                                <p>Martinez</p>
-                                            </div>
-										</li>
-
-										<li>
-											<strong>Last Name:</strong>
-											<div class="profile-text">
-                                                <p>Melvin</p>
-                                            </div>
-										</li>
-
-										<li>
-											<strong>About Me:</strong>
-											<div class="profile-text">
-                                                <p>I feel the presence of the Almighty, who formed us in his own image, and the breath of that universal love which bears and sustains us, as it floats around us in an eternity of bliss; and then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing</p>
-                                            </div>
-										</li>
-
-										<li>
-											<strong>Bio:</strong>
-											<div class="profile-text">
-                                                <p>Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the mirror of my soul, as my soul is the mirror of the infinite God!</p>
-                                            </div>
-										</li>
-									</ul>
-								</div>
-
-								<div class="profile-box">
-									<h3>Payment Infomation</h3>
-									<ul>
-										<li>
-											<strong>First Name</strong>
-											<div class="profile-text"><p>Martinez</p></div>
-										</li>
-										<li>
-											<strong>Last Name:</strong>
-											<div class="profile-text"><p>Melvin</p></div>
-										</li>
-										<li>
-											<strong>Payment Email:</strong>
-											<div class="profile-text"><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3b565a574d52557b4f535e565e5c545a574815585456">[email&#160;protected]</a></p></div>
-										</li>
-									</ul>
-								</div>
 							</div>
+
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>First Name</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    Martinez
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>Last Name</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    Melvin
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>About Me</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    <p>
+                                        I feel the presence of the Almighty, who formed us in his own image, and the breath of that universal love which bears and sustains us, as it floats around us in an eternity of bliss; and then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing
+                                    </p>
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>Bio</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    <p>
+                                        Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the mirror of my soul, as my soul is the mirror of the infinite God!
+                                    </p>
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
 						</div>
 
 						<div class="account-content profile mt-3">
 							<h3 class="account-title">My Wallet</h3>
 
-							<div class="account-main">
-								<div class="profile-box">
-									<ul>
-										<li>
-											<strong>Mnemonic</strong>
-											<div class="profile-text">
-                                                <p>
-                                                    {{getMnemonic}}
-                                                </p>
-                                            </div>
-										</li>
-										<li>
-											<strong>Bio:</strong>
-											<div class="profile-text"><p>Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the mirror of my soul, as my soul is the mirror of the infinite God!</p></div>
-										</li>
-										<li>
-											<strong>First Name</strong>
-											<div class="profile-text"><p>Martinez</p></div>
-										</li>
-										<li>
-											<strong>Last Name:</strong>
-											<div class="profile-text"><p>Melvin</p></div>
-										</li>
-										<li>
-											<strong>Mobile:</strong>
-											<div class="profile-text"><p>(+1) 123 456 789</p></div>
-										</li>
-										<li>
-											<strong>Fax:</strong>
-											<div class="profile-text"><p>(+1) 987 654 321</p></div>
-										</li>
-									</ul>
-								</div>
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
 
-							</div>
+                                <div class="col-2">
+                                    <strong>Address</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    <a :href="'https://explorer.bitcoin.com/bch/address/' + getAddress" target="_blank">{{getAddress}}</a>
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>Balance</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    $0.00
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
 						</div>
 
                         <div class="account-content profile mt-3">
 							<h3 class="account-title">My Security</h3>
 
-							<div class="account-main">
-								<div class="profile-box">
-									<ul>
-										<li>
-											<strong>First Name</strong>
-											<div class="profile-text"><p>Martinez</p></div>
-										</li>
-										<li>
-											<strong>Last Name:</strong>
-											<div class="profile-text"><p>Melvin</p></div>
-										</li>
-										<li>
-											<strong>Payment Email:</strong>
-											<div class="profile-text"><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3b565a574d52557b4f535e565e5c545a574815585456">[email&#160;protected]</a></p></div>
-										</li>
-									</ul>
-								</div>
-							</div>
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>First Name</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    Martinez
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>Last Name</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    Melvin
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-2">
+                                    <strong>Payment Email</strong>
+                                </div>
+
+                                <div class="col-8">
+                                    [email&#160;protected]
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
 						</div>
 
-                        <a href="javascript://" class="btn-primary mt-3">Edit Profiles</a>
+                        <a href="javascript://" class="btn-primary mt-3">Save My Profile</a>
 
 					</div>
 				</div>
@@ -188,6 +237,7 @@ import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
 /* Import (account) components. */
+import Banner from '@/components/Account/Banner.vue'
 import Sidenav from '@/components/Account/Sidenav.vue'
 
 export default {
@@ -195,6 +245,7 @@ export default {
         Footer,
         Header,
 
+        Banner,
         Sidenav,
     },
     data: () => {
@@ -213,7 +264,7 @@ export default {
         ]),
 
         ...mapGetters('wallet', [
-            'getMnemonic',
+            'getAddress',
         ]),
     },
     methods: {
@@ -235,5 +286,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.author {
+    margin: 20px 40px 10px;
+}
 </style>

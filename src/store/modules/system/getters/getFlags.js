@@ -5,7 +5,7 @@ const msgpack = require('msgpack-lite')
  * Get Flags
  */
 const getFlags = (state) => {
-    /* Validate state (of flags). */
+    /* Validate state. */
     if (!state || !state.flags) {
         return null
     }

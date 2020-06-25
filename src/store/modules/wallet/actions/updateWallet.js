@@ -1,8 +1,8 @@
 /**
- * Update Accounts
+ * Update Wallet
  */
-const updateAccounts = ({ commit, getters }, _params) => {
-    console.info('Updating accounts...', _params)
+const updateWallet = ({ commit, getters }, _params) => {
+    console.info('Updating wallet...', _params)
 
     /* Set wallet. */
     const wallet = _params.wallet
@@ -48,4 +48,4 @@ const updateAccounts = ({ commit, getters }, _params) => {
 }
 
 /* Export module. */
-export default updateAccounts
+export default updateWallet

@@ -11,8 +11,8 @@
                     <router-link :to="profile">Profile</router-link>
                 </li>
 
-                <li :class="{active: tab === 'causes'}">
-                    <router-link :to="causes">Causes</router-link>
+                <li :class="{active: tab === 'campaigns'}">
+                    <router-link :to="campaigns">Campaigns</router-link>
                 </li>
 
                 <li :class="{active: tab === 'payments'}">
@@ -35,7 +35,7 @@
                 </li>
 
                 <li :class="{active: tab === 'wallet'}">
-                    <router-link :to="wallet">Cash Wallet</router-link>
+                    <router-link :to="wallet">Bitcoin Cash Wallet</router-link>
                 </li>
 
                 <li :class="{active: tab === 'received'}">
@@ -64,44 +64,44 @@ export default {
         }
     },
     computed: {
-        /* Dashboard URL. */
+        /* Dashboard */
         dashboard() {
-            return `/@${this.user}/dashboard`
+            return `/@${this.ownerSlug}/dashboard`
         },
 
-        /* Profile URL. */
+        /* Profile */
         profile() {
-            return `/@${this.user}`
+            return `/@${this.ownerSlug}`
         },
 
-        /* Causes URL. */
+        /* Wallet */
         wallet() {
-            return `/@${this.user}/wallet`
+            return `/@${this.ownerSlug}/wallet`
         },
 
-        /* Causes URL. */
-        causes() {
-            return `/@${this.user}/causes`
+        /* Campaigns */
+        campaigns() {
+            return `/@${this.ownerSlug}/campaigns`
         },
 
-        /* Backed Causes URL. */
+        /* Backing */
         backing() {
-            return `/@${this.user}/backing`
+            return `/@${this.ownerSlug}/backing`
         },
 
-        /* Pledges Received URL. */
+        /* Received */
         received() {
-            return `/@${this.user}/received`
+            return `/@${this.ownerSlug}/received`
         },
 
-        /* Rewards URL. */
+        /* Rewards */
         rewards() {
-            return `/@${this.user}/rewards`
+            return `/@${this.ownerSlug}/rewards`
         },
 
-        /* Payments URL. */
+        /* Payments */
         payments() {
-            return `/@${this.user}/payments`
+            return `/@${this.ownerSlug}/payments`
         },
 
     },

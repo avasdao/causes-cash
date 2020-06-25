@@ -3233,9 +3233,9 @@ form .create-account input[type="checkbox"]{
   background-color: #ededed;
   font-size: 14px;
 }
-.account-content .account-main{
+/* .account-content .account-main{
   padding: 40px 30px;
-}
+} */
 .my-campaigns .campaign-item:after{
   content: '';
   clear: both;

@@ -7,26 +7,33 @@ const Nito = require('nitojs')
  * Returns the next avaialble "receiving" address.
  */
 const getAddress = (state, getters) => {
-    // console.log('GET ADDRESS BY SESSION (sessionid)', _sessionId)
-    /* Validate accounts. */
-    if (!getters.getAccounts) {
+    /* Validate wallet. */
+    if (!getters.getWallet) {
         return null
     }
 
-    /* Initialize accounts. */
-    const accounts = getters.getAccounts
-    // console.log('GET ADDRESS BY SESSION (accounts):', accounts)
+    /* Initialize wallet. */
+    const wallet = getters.getWallet
+    // console.log('GET ADDRESS (wallet):', wallet)
+
+    /* Set accounts. */
+    const accounts = wallet.accounts
+
+    /* Validate accounts. */
+    if (!accounts) {
+        return null
+    }
 
     /* Initialize current (coin) index. */
     const currentIndex = accounts.deposit
-    // console.log('GET ADDRESS BY SESSION (currentIndex):', currentIndex)
+    // console.log('GET ADDRESS (currentIndex):', currentIndex)
 
     /* Set chain. */
     const chain = 0 // receiving account
 
     /* Set derivation path. */
     const path = getters.getDerivationPath(chain, currentIndex)
-    // console.log('GET ADDRESS BY SESSION (path)', path)
+    // console.log('GET ADDRESS (path)', path)
 
     /* Initialize HD node. */
     const hdNode = getters.getHDNode
@@ -36,7 +43,7 @@ const getAddress = (state, getters) => {
 
     /* Set (receiving) addresss. */
     const addresss = Nito.Address.toCashAddress(childNode)
-    // console.log('GET ADDRESS BY SESSION (receiving addresss)', addresss)
+    // console.log('GET ADDRESS (receiving addresss)', addresss)
 
     /* Return addresss. */
     return addresss

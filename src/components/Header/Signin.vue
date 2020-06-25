@@ -109,6 +109,9 @@ export default {
          * TODO: Show a notification of confirmation.
          */
         signOut() {
+            /* Load home. */
+            this.$router.replace('/')
+
             /* Reset profile. */
             this.destroyProfile()
 

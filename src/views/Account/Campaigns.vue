@@ -1,23 +1,12 @@
 <template>
     <main class="faq">
         <Header />
-
-        <div class="page-title background-page">
-			<div class="container">
-                <h1 class="text-capitalize">@{{this.ownerSlug}} Campaigns</h1>
-				<div class="breadcrumbs">
-					<ul>
-						<li><router-link to="/">Home</router-link><span>/</span></li>
-						<li>Campaigns</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+        <Banner page="campaigns" />
 
         <section>
 			<div class="container">
 				<div class="row">
-                    <Sidenav tab="causes" />
+                    <Sidenav tab="campaigns" />
 
 					<div class="col-lg-9">
 						<div class="account-content my-campaigns account-table">
@@ -64,6 +53,7 @@ import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
 /* Import (account) components. */
+import Banner from '@/components/Account/Banner.vue'
 import Sidenav from '@/components/Account/Sidenav.vue'
 
 export default {
@@ -71,6 +61,7 @@ export default {
         Footer,
         Header,
 
+        Banner,
         Sidenav,
     },
     data: () => {

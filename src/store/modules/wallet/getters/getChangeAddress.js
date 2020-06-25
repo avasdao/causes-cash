@@ -13,7 +13,7 @@ const Nito = require('nitojs')
  *       function is called.
  */
 const getChangeAddress = (state, getters) => (_wallet) => {
-    /* Validate state (of accounts). */
+    /* Validate state. */
     if (!state || !state.account) {
         return null
     }

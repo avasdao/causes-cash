@@ -149,6 +149,10 @@ export default {
             'toast',
         ]),
 
+        ...mapActions('wallet', [
+            'initWallet',
+        ]),
+
         /**
          * Is Email (Address) Valid
          */
@@ -224,6 +228,9 @@ export default {
 
                 /* Update nickname. */
                 this.updateNickname(nickname)
+
+                /* Initialize wallet. */
+                this.initWallet()
 
                 /* Enable sign in button. */
                 this.canSignIn = true

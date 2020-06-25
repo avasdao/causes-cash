@@ -39,40 +39,40 @@ const routes = [{
 }, {
 
     /* Account. */
-    path: '/@*/backing', // Backing
+    path: '/@*/backing',
     component: AccountBacking
 }, {
-    path: '/@*/campaigns', // Campaigns
+    path: '/@*/campaigns',
     component: AccountCampaigns
 }, {
-    path: '/@*/dashboard', // Dashboard
+    path: '/@*/dashboard',
     component: AccountDashboard
 }, {
-    path: '/@*/payments', // Payments
+    path: '/@*/payments',
     component: AccountPayments
 }, {
-    path: '/@*/received', // Received
+    path: '/@*/received',
     component: AccountReceived
 }, {
-    path: '/@*/rewards', // Rewards
+    path: '/@*/rewards',
     component: AccountRewards
 }, {
-    path: '/@*/wallet', // Wallet
+    path: '/@*/wallet',
     component: AccountWallet
 }, {
 
     /* Campaigns */
-    path: '/@*/create', // Create
+    path: '/@*/create',
     component: CampaignCreate
 }, {
     // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e/manage
     // NOTE: Avoid other wildcard conflicts.
-    path: '/@*/:extSlug/manage', // Manage
+    path: '/@*/:extSlug/manage',
     component: CampaignManage
 }, {
     // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e
     // NOTE: Avoid other wildcard conflicts.
-    path: '/@*/:extSlug', // Details
+    path: '/@*/:extSlug',
     component: CampaignDetails
 }, {
 

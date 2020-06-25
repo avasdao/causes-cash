@@ -3,7 +3,7 @@
         <Header :campaign="campaign" />
         <Title :campaign="campaign" />
         <Content :campaign="campaign" :fundId="fundId" />
-        <History :campaign="campaign" v-on:loadFund="loadFund" />
+        <History :campaign="campaign" />
         <Footer />
     </main>
 </template>
@@ -33,6 +33,23 @@ export default {
         History,
         Title,
     },
+    watch: {
+        $route(_to, _from) {
+            // console.log('WATCHING ROUTE (to):', _to)
+            // console.log('WATCHING ROUTE (from):', _from)
+
+            /* Validate query change. */
+            if (_to.query !== _from.query) {
+                /* Set extended slug. */
+                this.fundId = Object.keys(_to.query)[0]
+                console.log('FUND ID (from query)', this.fundId)
+
+                // TODO: Adjust for mobile
+                // window.scrollTo({ top: 1050, behavior: 'smooth' })
+                window.scrollTo({ top: 425, behavior: 'smooth' })
+            }
+        }
+    },
     data: () => {
         return {
             ownerSlug: null,
@@ -57,15 +74,11 @@ export default {
             // 'updateAsset',
         ]),
 
-        /**
-         * Load Fund
-         */
-        loadFund(_fundId) {
-            /* Set fund id. */
-            this.fundId = _fundId
-        }
     },
     created: async function () {
+        console.log('PARAMS', this.$route.params);
+        console.log('QUERY', this.$route.query);
+        console.log('HASH', this.$route.hash);
         /* Set owner slug. */
         this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
         console.log('OWNER SLUG', this.ownerSlug)
@@ -73,6 +86,20 @@ export default {
         /* Set extended slug. */
         this.extSlug = this.$route.params.extSlug
         console.log('EXTENDED SLUG', this.extSlug)
+
+        /* Validate hash. */
+        // if (this.$route.hash) {
+        //     /* Set extended slug. */
+        //     this.fundId = this.$route.hash.slice(1)
+        //     console.log('FUND ID (from hash)', this.fundId)
+        // }
+
+        /* Validate query. */
+        if (this.$route.query && Object.keys(this.$route.query)[0]) {
+            /* Set extended slug. */
+            this.fundId = Object.keys(this.$route.query)[0]
+            console.log('FUND ID (from query)', this.fundId)
+        }
 
         /* Validate extended slug. */
         if (this.extSlug && this.extSlug.lastIndexOf('-') !== -1) {

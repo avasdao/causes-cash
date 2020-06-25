@@ -8,7 +8,7 @@
             </p> -->
 
             <div class="plan" v-for="fund of funds" :key="fund.id">
-                <button @click="$emit('loadFund', fund.id)">
+                <button @click="loadFund(fund.id)">
                     <h3 class="text-uppercase">{{fund.title}}</h3>
 
                     <h2>Official Account Address</h2>
@@ -123,6 +123,31 @@ export default {
          */
         addressDisplay(_address) {
             return `${_address.slice(12, 24)} ... ${_address.slice(-12)}`
+        },
+
+        /**
+         * Load Fund
+         */
+        loadFund(_fundId) {
+            /* Set location. */
+            const location = window.location
+            // console.log('LOCATION', location.href)
+
+            /* Initialize new location. */
+            let newLocation = null
+
+            /* Set query. */
+            if (location.href.indexOf('?') !== -1) {
+                /* Set position. */
+                const pos = location.href.indexOf('?')
+
+                newLocation = location.href.slice(0, pos) + '?' + _fundId
+            } else {
+                newLocation = location.href + '?' + _fundId
+            }
+
+            /* Navigate to new window location. */
+            window.location.href = newLocation
         },
 
         /**

@@ -93,7 +93,12 @@
 
         <div class="form-group row">
             <div class="col-10 text-right">
-                <button type="button" class="btn btn-primary" @click="signIn">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="signIn"
+                    :disabled="!canSignIn"
+                >
                     Sign In
                 </button>
             </div>
@@ -124,6 +129,8 @@ export default {
         return {
             email: '',
             password: '',
+
+            canSignIn: null,
         }
     },
     computed: {
@@ -133,6 +140,7 @@ export default {
     },
     methods: {
         ...mapActions('profile', [
+            'updateEmail',
             'updateMasterSeed',
             'updateNickname',
         ]),
@@ -142,12 +150,22 @@ export default {
         ]),
 
         /**
+         * Is Email (Address) Valid
+         */
+        isValidEmail() {
+            /* Set regular express. */
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+            /* Return test result. */
+            return re.test(this.email)
+        },
+
+        /**
          * Sign In
          */
         signIn() {
             /* Validate email. */
-            // TODO: Improve email validation.
-            if (!this.email) {
+            if (!this.isValidEmail()) {
                 return this.toast(['Oops!', 'Invalid email. Please try again.', 'error'])
             }
 
@@ -156,6 +174,9 @@ export default {
             if (!this.password) {
                 return this.toast(['Oops!', 'Invalid password. Please try again.', 'error'])
             }
+
+            /* Disable sign in button. */
+            this.canSignIn = false
 
             // FIXME: We MUST check and update system.authHashes, if necessary.
 
@@ -195,8 +216,14 @@ export default {
                 /* Update master seed. */
                 this.updateMasterSeed(key)
 
-                // FOR DEVELPMENT PURPOSES ONLY
-                this.updateNickname(this.email)
+                /* Update email address. */
+                this.updateEmail(this.email)
+
+                /* Set nickname. */
+                const nickname = this.email.slice(0, this.email.indexOf('@'))
+
+                /* Update nickname. */
+                this.updateNickname(nickname)
 
                 /* Close modal. */
                 $('.form-signin').fadeToggle()
@@ -205,6 +232,10 @@ export default {
 
         },
     },
+    created: function () {
+        /* Enable sign in button. */
+        this.canSignIn = true
+    }
 }
 </script>
 

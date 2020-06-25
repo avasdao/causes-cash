@@ -2,22 +2,32 @@
 // import telr from '../../api/telr'
 
 /* Import modules (getters). */
+import getEmail from './profile/getters/getEmail'
 import getMasterSeed from './profile/getters/getMasterSeed'
 import getNickname from './profile/getters/getNickname'
 
 /* Import modules (actions). */
 import destroyProfile from './profile/actions/destroyProfile'
 import initProfile from './profile/actions/initProfile'
+import updateEmail from './profile/actions/updateEmail'
 import updateMasterSeed from './profile/actions/updateMasterSeed'
 import updateNickname from './profile/actions/updateNickname'
 
 /* Import modules (mutations). */
+import setEmail from './profile/mutations/setEmail'
 import setEmptyProfile from './profile/mutations/setEmptyProfile'
 import setMasterSeed from './profile/mutations/setMasterSeed'
 import setNickname from './profile/mutations/setNickname'
 
 /* Initialize state. */
 const state = {
+    /**
+     * Email
+     *
+     * This is a valid email address.
+     */
+    email: null,
+
     /**
      * Master Seed
      *
@@ -39,6 +49,7 @@ const state = {
 
 /* Getters. */
 const getters = {
+    getEmail,
     getMasterSeed,
     getNickname,
 }
@@ -47,12 +58,14 @@ const getters = {
 const actions = {
     destroyProfile,
     initProfile,
+    updateEmail,
     updateMasterSeed,
     updateNickname,
 }
 
 /* Mutations. */
 const mutations = {
+    setEmail,
     setEmptyProfile,
     setMasterSeed, // WARNING: This is the highest risk attack vector.
     setNickname,

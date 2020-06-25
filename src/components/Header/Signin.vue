@@ -88,7 +88,11 @@ export default {
     },
     methods: {
         ...mapActions('profile', [
-            'updateNickname',
+            'destroyProfile',
+        ]),
+
+        ...mapActions('utils', [
+            'toast',
         ]),
 
         /**
@@ -105,9 +109,11 @@ export default {
          * TODO: Show a notification of confirmation.
          */
         signOut() {
-            this.updateNickname(null)
+            /* Reset profile. */
+            this.destroyProfile()
 
-            alert(`You've been signed out successfully.`)
+            /* Show notification. */
+            this.toast(['Success!', `You've been signed out successfully.`, 'success'])
         },
     },
     created: function () {

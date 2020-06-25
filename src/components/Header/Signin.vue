@@ -166,8 +166,11 @@ div.instructions .warning {
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.8);
-    z-index: 99;
+    z-index: 10;
     display: none;
+}
+#signinForm {
+    z-index: 10;
 }
 .auth-btn form {
     position: fixed;

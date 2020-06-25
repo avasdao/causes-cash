@@ -112,12 +112,6 @@ import { mapActions, mapGetters } from 'vuex'
 /* Import modules. */
 import scrypt from 'scrypt-js'
 
-/* Import components. */
-// import Name from '@/components/Name.vue'
-
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
-
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
@@ -143,6 +137,10 @@ export default {
             'updateNickname',
         ]),
 
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         /**
          * Sign In
          */
@@ -150,13 +148,13 @@ export default {
             /* Validate email. */
             // TODO: Improve email validation.
             if (!this.email) {
-                return alert('Invalid email address. Please try again.')
+                return this.toast(['Oops!', 'Invalid email. Please try again.', 'error'])
             }
 
             /* Validate password. */
             // TODO: Improve "strong" password validation.
             if (!this.password) {
-                return alert('Invalid password. Please try again.')
+                return this.toast(['Oops!', 'Invalid password. Please try again.', 'error'])
             }
 
             // FIXME: We MUST check and update system.authHashes, if necessary.

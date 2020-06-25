@@ -225,6 +225,9 @@ export default {
                 /* Update nickname. */
                 this.updateNickname(nickname)
 
+                /* Enable sign in button. */
+                this.canSignIn = true
+
                 /* Close modal. */
                 $('.form-signin').fadeToggle()
                 $('#signinForm').fadeToggle()

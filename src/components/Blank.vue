@@ -28,13 +28,13 @@ export default {
         }
     },
     computed: {
-        // ...mapGetters('campaigns', [
-        //     'getCampaign',
-        // ]),
-
         ...mapGetters([
             'getHelp',
         ]),
+
+        // ...mapGetters('campaigns', [
+        //     'getCampaign',
+        // ]),
     },
     methods: {
         ...mapActions([

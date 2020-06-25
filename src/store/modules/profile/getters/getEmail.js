@@ -5,7 +5,7 @@ const msgpack = require('msgpack-lite')
  * Get Email Address
  */
 const getEmail = (state) => {
-    /* Validate state (of flags). */
+    /* Validate state. */
     if (!state || !state.email) {
         return null
     }

@@ -1,3 +1,6 @@
+/* Import modules. */
+const msgpack = require('msgpack-lite')
+
 /**
  * Set Master Seed
  *
@@ -5,7 +8,7 @@
  */
 const setMasterSeed = (state, _seed) => {
     /* Set master seed. */
-    state.masterSeed = _seed
+    state.masterSeed = msgpack.encode(_seed)
 }
 
 /* Export module. */

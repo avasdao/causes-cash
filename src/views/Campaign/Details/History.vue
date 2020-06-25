@@ -10,12 +10,16 @@
                                 <a href="javascript://">Story</a>
                             </li>
 
-                            <li data-tab="events">
-                                <a href="javascript://">Events</a>
-                            </li>
-
                             <li data-tab="backers">
                                 <a href="javascript://">Backers</a>
+                            </li>
+
+                            <li data-tab="budget">
+                                <a href="javascript://">Budget</a>
+                            </li>
+
+                            <li data-tab="events">
+                                <a href="javascript://">Events</a>
                             </li>
 
                             <li data-tab="faq">
@@ -30,8 +34,9 @@
                         <a name="history"></a>
                         <div class="campaign-content">
                             <Story :campaign="campaign" :fundId="fundId" />
-                            <Events :campaign="campaign" :fundId="fundId" />
                             <Backers :campaign="campaign" :fundId="fundId" />
+                            <Budget :campaign="campaign" :fundId="fundId" />
+                            <Events :campaign="campaign" :fundId="fundId" />
                             <FAQ :campaign="campaign" :fundId="fundId" />
                             <Articles :campaign="campaign" :fundId="fundId" />
                         </div>
@@ -48,6 +53,7 @@
 /* Import components. */
 import Articles from './History/Articles'
 import Backers from './History/Backers'
+import Budget from './History/Budget'
 import Events from './History/Events'
 import FAQ from './History/FAQ'
 import Funds from './History/Funds'
@@ -68,6 +74,7 @@ export default {
     components: {
         Articles,
         Backers,
+        Budget,
         Events,
         FAQ,
         Funds,

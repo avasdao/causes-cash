@@ -116,6 +116,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import scrypt from 'scrypt-js'
+import superagent from 'superagent'
 
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
@@ -136,6 +137,10 @@ export default {
     computed: {
         ...mapGetters([
             'getHelp',
+        ]),
+
+        ...mapGetters('profile', [
+            'getSignedMessage',
         ]),
     },
     methods: {
@@ -232,12 +237,38 @@ export default {
                 /* Initialize wallet. */
                 this.initWallet()
 
+                /* Set (current receiving) address. */
+                // const address = this.getAddress
+                // console.log('ADDRESS', address)
+
                 /* Enable sign in button. */
                 this.canSignIn = true
 
                 /* Close modal. */
                 $('.form-signin').fadeToggle()
                 $('#signinForm').fadeToggle()
+
+                /* Set target. */
+                const target = 'https://api.causes.cash/v1/profiles'
+
+                const msg = {
+                    action: 'SIGNIN_EMAIL',
+                    email: this.email,
+                }
+
+                /* Calculate auth signature. */
+                const signedMessage = this.getSignedMessage(JSON.stringify(msg))
+                console.log('SIGNED MESSAGE', signedMessage)
+
+                superagent
+                    .post(target)
+                    .send(signedMessage)
+                    .end((err, res) => {
+                        if (err) return console.error(err) // eslint-disable-line no-console
+
+                        console.log('SIGN IN (response):', res)
+                    })
+
             })
 
         },

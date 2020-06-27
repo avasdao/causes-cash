@@ -5,6 +5,7 @@
 import getEmail from './profile/getters/getEmail'
 import getMasterSeed from './profile/getters/getMasterSeed'
 import getNickname from './profile/getters/getNickname'
+import getSignedMessage from './profile/getters/getSignedMessage'
 
 /* Import modules (actions). */
 import destroyProfile from './profile/actions/destroyProfile'
@@ -52,6 +53,7 @@ const getters = {
     getEmail,
     getMasterSeed,
     getNickname,
+    getSignedMessage,
 }
 
 /* Actions. */

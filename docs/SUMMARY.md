@@ -11,10 +11,9 @@
 * [1. Campaigns]()
 
     * [1.1. Introduction](campaigns/intro.md)
-    * [1.2. Direct](campaigns/direct.md)
-    * [1.3. Assurance](campaigns/assurance.md)
-    * [1.4. DRIPP](campaigns/DRIPP.md)
-    * [1.5. Blind](campaigns/blind.md)
+    * [1.2. Direct Cash](campaigns/direct.md)
+    * [1.3. Community Pledge](campaigns/community.md)
+    * [1.4. Daily Payouts](campaigns/payouts.md)
 
 * [2. Sponshorships]()
 

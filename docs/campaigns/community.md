@@ -1,4 +1,4 @@
-# Assurance
+# Community Pledge
 
 Funds are collected until a goal is reach. Then the total of all funds collected are sent to receiver.
 

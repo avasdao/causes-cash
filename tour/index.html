@@ -69,10 +69,10 @@
 		</section>
 
         <section>
-            <h3>Our Mission</h3>
+            <h3>Mission Statement</h3>
 
             <p>
-                To leverage the <strong><em>fast, cheap, unstoppable</em></strong> Bitcoin blockchain to foster a sustainable future for <strong><em>creators of value</em></strong> all across the globe.
+                To leverage the <strong><em>fast, cheap, unstoppable</em></strong> Bitcoin blockchain to foster a sustainable future for <strong><em>creators of value</em></strong> all over the world.
 
             </p>
         </section>
@@ -92,14 +92,14 @@
                 <h2>Donate</h2>
 
                 <p>
-                    Contributors of <strong><em>the commons need your support</em></strong> for their work.
-                    Building <strong><em>FREE software</em></strong> and spreading <strong><em>FREE knowledge</em></strong> take time and cost money, not only for the initial work, but also to maintain it over time.
+                    Contributors to the <strong><em>commons need your support</em></strong> for their work.
+                    Building <strong><em>FREE software</em></strong> and spreading <strong><em>FREE knowledge</em></strong> takes time and costs money, not only for the initial work, but also to maintain it over time.
                 </p>
 
                 <hr />
 
                 <p>
-                    Causes Cash helps ensure a <strong><em>stable income for creators</em></strong>, enabling them to keep doing great work.
+                    Causes Cash helps ensure a <strong><em>stable income for creators</em></strong>, allowing them to keep doing great work.
                 </p>
 
                 <p><small>
@@ -159,19 +159,21 @@
             <section>
                 <h2>Create a New Account</h2>
 
-                ...
+                An email and password is all it takes to get started.
+                We don't even require verification, ALL details are stored in your web browser.
             </section>
 
             <section>
-                <h2>Complete Your Profile</h2>
+                <h2>Complete a Campaign</h2>
 
-                ...
+                Let you audience know a little more about who you are and what you need.
+                Connecting and building trust with the community will benefit greatly throughout your campaign.
             </section>
 
             <section>
                 <h2>Invite Your Audience</h2>
 
-                ...
+                Share your campaign links across ALL of your social media platforms.
             </section>
         </section>
 
@@ -179,7 +181,7 @@
             <h2>Choose Your Campaign</h2>
 
             <p>
-                No matter what your current or future needs may be, Causes Cash has you covered with <strong><em>3 funding options</em></strong>:
+                Regardless of your current or future needs, Causes Cash allows you maximum flexibility with <strong><em>3 distinct funding options</em></strong>:
             </p>
 
             <ul class="checked">
@@ -193,8 +195,7 @@
             <h2>Direct Cash</h2>
 
             <p>
-                Supporters can <strong><em>safely send donations</em></strong> directly to your <strong><em>publicly registered</em></strong> campaign address(es).
-
+                Supporters can <strong><em>safely send donations</em></strong> directly to your <strong><em>publicly registered</em></strong> campaign addresses.
             </p>
 
             <table>
@@ -202,21 +203,21 @@
                     <tr>
                         <td align="center" width="33%">
                             <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6" target="_blank" class="donation-address">
-                                Research &amp; Dev
+                                General Fund
                             </a>
-<img class="donation-qrcode" src="./img/donation-qrcode.png" />
-                        </td>
-                        <td align="center" width="33%">
-                            <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6" target="_blank" class="donation-address">
-                                Operations
-                            </a>
-<img class="donation-qrcode" src="./img/donation-qrcode.png" />
+                            <img class="donation-qrcode" src="./img/donation-qrcode.png" />
                         </td>
                         <td align="center" width="33%">
                             <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6" target="_blank" class="donation-address">
                                 Social Events
                             </a>
-<img class="donation-qrcode" src="./img/donation-qrcode.png" />
+                            <img class="donation-qrcode" src="./img/donation-qrcode.png" />
+                        </td>
+                        <td align="center" width="33%">
+                            <a href="https://explorer.bitcoin.com/bch/address/bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6" target="_blank" class="donation-address">
+                                Content Creation
+                            </a>
+                            <img class="donation-qrcode" src="./img/donation-qrcode.png" />
                         </td>
                     </tr>
                 </tbody>
@@ -234,90 +235,35 @@
         </section>
 
         <section>
-            <section>
-                <h2>Daily Payouts</h2>
+            <h2>Daily Payouts</h2>
 
-                <p>
-                    Finally.. a Patreon-styled funding option for the blockchain community is here!
-                </p>
+            <p>
+                Finally! Creators have <strong><em>Patreon-style funding</em></strong> running on an uncensorable blockchain platform.
+            </p>
 
-                <hr />
+            <hr />
 
-                <p>
-                    Set a <strong><em>monthly budget</em></strong> for each of your favorite causes, and we'll manage each of the <strong><em>daily payouts</em></strong> for you.
-                </p>
+            <p>
+                Sponsors always stay 100% in control!
+                Set individual <strong><em>monthly budgets</em></strong> for your favorite campaigns, then let Causes Cash manage the <strong><em>daily payouts</em></strong> for you.
+            </p>
 
-                <p><small>
-                    view the Mecenas-Oracle contract below...
-                </small></p>
-            </section>
-
-            <section>
-                <h2>Mecenas Oracle Contract</h2>
-                <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers>
-                    pragma cashscript ^0.4.0;
-
-                    contract Mecenas(bytes20 recipient, bytes20 funder, int pledge) {
-                        // Allow the receiver to claim their monthly pledge amount
-                        function receive(pubkey pk, sig s) {
-                            // The transaction can be signed by anyone, because the money can only
-                            // be sent to the correct address
-                            require(checkSig(s, pk));
-
-                            // Check that the UTXO is at least 30 days old
-                            require(tx.age >= 30 days);
-
-                            // Use a hardcoded miner fee
-                            int minerFee = 1000;
-
-                            // Retrieve the UTXO's value and cast it to an integer
-                            int intValue = int(bytes(tx.value));
-
-                            // Check if the UTXO's value is higher than the pledge amount + fee
-                            if (intValue <= pledge + fee) {
-                                // Create an Output that sends the remaining balance to the recipient
-                                bytes34 out1 = new OutputP2PKH(bytes8(intValue - fee), recipient);
-
-                                // Enforce that this is the only output for the current transaction
-                                require(hash256(out1) == tx.hashOutputs);
-                            } else {
-                                // Create an Output that sends the pledge amount to the recipient
-                                bytes34 out1 = new OutputP2PKH(bytes8(pledge), recipient);
-
-                                // Create an Output that sends the remainder back to the contract
-                                bytes8 remainder = bytes8(intValue - pledge - fee);
-                                bytes32 out2 = new OutputP2SH(remainder, hash160(tx.bytecode));
-
-                                // Enforce that these are the only outputs for the current transaction
-                                require(hash256(out1 + out2) == tx.hashOutputs);
-                            }
-                        }
-
-                        // Allow the funder to reclaim their remaining pledges
-                        function reclaim(pubkey pk, sig s) {
-                            require(hash160(pk) == funder);
-                            require(checkSig(s, pk));
-                        }
-                    }
-                </code></pre>
-
-                <p><small>
-                    Learn more about <a href="https://cashscript.org/docs/language/examples#lichos-mecenas" target="_blank">Licho's Mecenas</a> contract at <a href="https://cashscript.org/" target="_blank">CashScript</a>.
-                </small></p>
-            </section>
+            <p><small>
+                Learn more about the innovative <a href="https://docs.causes.cash/payouts.html#mecenas-oracle" target="_blank"><strong>Mecenas Oracle</strong></a> contract.
+            </small></p>
         </section>
 
         <section>
             <h2>Teams</h2>
 
             <p>
-                Campaign managers have the option to <strong><em>automatically split donations</em></strong> amongst team members in a fully transparent and trustless manner.
+                Campaign managers have the ability to <strong><em>automatically split payouts</em></strong> across team members in a fully transparent and trustless manner.
             </p>
 
             <hr />
 
             <p>
-                Sponsors also have the option to <strong><em>donate to individual team members</em></strong> any amount they see fit.
+                Sponsors have the freedom to <strong><em>donate to individual team members</em></strong> any amount they wish.
             </p>
         </section>
 
@@ -325,14 +271,14 @@
             <h2>Pay It Forward</h2>
 
             <p>
-                Show your support for the greater community by contributing to the <strong><em>Causes Cash DAO</em></strong>.
+                Show your support for our great community by contributing to the <strong><em>Causes Cash DAO</em></strong>.
             </p>
 
             <hr />
 
             <p>
-                You will earn <a href="https://pif.cash" target="_blank"><strong>PIF SLP tokens</strong></a> for every dollar you contribute to the platform.
-                Then <strong><em>burn PIF</em></strong> to vote in favor or your favorite campaigns.
+                You'll earn <a href="https://pif.cash" target="_blank"><strong>PIF SLP tokens</strong></a> for every dollar you contribute to the DAO.
+                Then <strong><em>Burn PIF</em></strong> to vote in favor or your favorite campaigns.
             </p>
         </section>
 
@@ -378,7 +324,7 @@
                 </table>
 
                 <small><em>
-                    * BCH values are currently based on a $250 market rate
+                    * BCH values are estimates, based on a $250 market rate
                 </em></small>
 
                 <p><small>
@@ -387,7 +333,7 @@
             </section>
 
             <section>
-                <h2>More Sponsorship Levels</h2>
+                <h2>Sponsorship Levels</h2>
 
                 <table>
                     <thead>
@@ -421,7 +367,7 @@
                     </tbody>
                 </table>
 
-                <small><em>* BCH values are currently based on a $250 market rate</em></small>
+                <small><em>* BCH values are estimates, based on a $250 market rate</em></small>
             </section>
         </section>
 
@@ -433,7 +379,7 @@
             <h3>See How Your ❤️ Causes Cash<br />Start discovering today!</h3>
 
             <p>
-				<small>visit us at <a href="https://causes.cash/discover" target="_blank">causes.cash/discover</a> to begin your journey...</small>
+				<small>please visit <a href="https://causes.cash/discover" target="_blank"><strong>causes.cash/discover</strong></a> to begin your journey</small>
 			</p>
 		</section>
 	</div>

@@ -6,4 +6,4 @@ In the case of Causes, we utilized Ethereum wallets for use with their DAI stabl
 
 We will then utilize this "secure" private key (seed) to create an Ethereum wallet, that can ONLY be created from the "deterministic" signature of their wallet.
 
-> __NOTE:__ The most practical way for this to work would be through the Badger browser extension. However, Badger DOES NOT currentl support message signatures (outside of the use with CashID). This feature should also be possible with a Ledger hardware wallet.
+> __NOTE:__ The most practical way for this to work would be through the Badger browser extension. However, Badger DOES NOT currently support message signatures (outside of the use with CashID). This feature should also be possible with a Ledger hardware wallet.

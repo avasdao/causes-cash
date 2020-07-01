@@ -1,6 +1,6 @@
 # Contributing to Causes Cash
 
-Thanks for checking out the Causes Cash! We're excited to hear and learn from you. Your experiences will benefit others who read and use these services.
+Thank you for taking an interest in contributing to Causes Cash! We're excited to hear and learn from you. The experience(s) you share with us will benefit others who read and use these services.
 
 We've put together the following guidelines to help you figure out where you can best be helpful.
 

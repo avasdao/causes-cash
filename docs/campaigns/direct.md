@@ -1,4 +1,4 @@
-# Direct
+# Direct Cash
 
 This is the __simplest__ of the 4 donation options. You can simply __send BCH directly__ to the __"registered"__ address of your favorite cause(s).
 

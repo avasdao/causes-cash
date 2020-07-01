@@ -31,6 +31,9 @@
 // const $ = window.jQuery
 
 export default {
+    props: {
+        campaign: Object,
+    },
     components: {
         //
     },
@@ -39,6 +42,16 @@ export default {
             title: null,
             bannerUrl: null,
         }
+    },
+    watch: {
+        campaign: function (_campaign) {
+            if (_campaign && _campaign.title) {
+                console.log('CAMPAIGN HAS CHANGED, UPDATE TITLE!!', _campaign)
+
+                /* Update title. */
+                this.updateTitle()
+            }
+        },
     },
     computed: {
         /**
@@ -49,17 +62,34 @@ export default {
         },
     },
     methods: {
-        //
+        /**
+         * Update Banner
+         */
+        updateBanner() {
+            /* Set banner URL. */
+            // this.bannerUrl = 'https://i.imgur.com/3UPJZT6.jpg' // sofa
+            // this.bannerUrl = 'https://i.imgur.com/2NuUJxd.jpg' // headphones
+            this.bannerUrl = 'https://i.imgur.com/JQbiIbD.jpg' // working @ desk
+            // this.bannerUrl = 'https://i.imgur.com/9vNfGgt.jpg' // organized desk
+        },
+
+        /**
+         * Update Title
+         */
+        updateTitle() {
+            if (this.campaign && this.campaign.title) {
+                /* Set title. */
+                this.title = this.campaign.title
+            }
+        }
     },
     created: function () {
-        /* Set title. */
-        this.title = 'Nito Cash'
+        /* Update banner. */
+        this.updateBanner()
 
-        /* Set banner URL. */
-        // this.bannerUrl = 'https://i.imgur.com/3UPJZT6.jpg' // sofa
-        // this.bannerUrl = 'https://i.imgur.com/2NuUJxd.jpg' // headphones
-        this.bannerUrl = 'https://i.imgur.com/JQbiIbD.jpg' // working @ desk
-        // this.bannerUrl = 'https://i.imgur.com/9vNfGgt.jpg' // organized desk
+        /* Update title. */
+        this.updateTitle()
+
     },
 }
 </script>

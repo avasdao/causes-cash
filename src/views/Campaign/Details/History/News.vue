@@ -1,6 +1,6 @@
 <template>
-    <div id="comment" class="tabs comment-area">
-        <h3 class="comments-title">1 Article</h3>
+    <div id="news" class="tabs comment-area">
+        <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
 
         <ol class="comments-list">
 
@@ -43,7 +43,6 @@ import moment from 'moment'
 export default {
     props: {
         campaign: Object,
-        fundId: String,
     },
     data: () => {
         return {

@@ -2,7 +2,7 @@
     <main class="campaign-detail">
         <Header :campaign="campaign" />
         <Title :campaign="campaign" />
-        <Content :campaign="campaign" :fundId="fundId" />
+        <Content :campaign="campaign" />
         <History :campaign="campaign" />
         <Footer />
     </main>
@@ -34,21 +34,21 @@ export default {
         Title,
     },
     watch: {
-        $route(_to, _from) {
-            // console.log('WATCHING ROUTE (to):', _to)
-            // console.log('WATCHING ROUTE (from):', _from)
-
-            /* Validate query change. */
-            if (_to.query !== _from.query) {
-                /* Set extended slug. */
-                this.fundId = Object.keys(_to.query)[0]
-                console.log('FUND ID (from query)', this.fundId)
-
-                // TODO: Adjust for mobile
-                // window.scrollTo({ top: 1050, behavior: 'smooth' })
-                window.scrollTo({ top: 425, behavior: 'smooth' })
-            }
-        }
+        // $route(_to, _from) {
+        //     // console.log('WATCHING ROUTE (to):', _to)
+        //     // console.log('WATCHING ROUTE (from):', _from)
+        //
+        //     /* Validate query change. */
+        //     if (_to.query !== _from.query) {
+        //         /* Set extended slug. */
+        //         this.fundId = Object.keys(_to.query)[0]
+        //         console.log('FUND ID (from query)', this.fundId)
+        //
+        //         // TODO: Adjust for mobile
+        //         // window.scrollTo({ top: 1050, behavior: 'smooth' })
+        //         window.scrollTo({ top: 425, behavior: 'smooth' })
+        //     }
+        // }
     },
     data: () => {
         return {
@@ -58,7 +58,7 @@ export default {
 
             campaign: null,
             campaignId: null,
-            fundId: null,
+            // fundId: null,
             // referrerId: null,
         }
     },
@@ -71,14 +71,79 @@ export default {
     },
     methods: {
         ...mapActions('campaigns', [
-            // 'updateAsset',
+            'updateAsset',
         ]),
+
+        /**
+         * Update Assets
+         */
+        updateAssets() {
+            /* Initialize body. */
+            let body = null
+
+            /* Initialize target. */
+            let target = null
+
+            /* Initialize update package. */
+            let pkg = null
+
+            /* Set summary. */
+            const summary = this.campaign.summary
+
+            /* Validate summary. */
+            if (summary.slice(0, 2) === 'Qm' && summary.length === 46) {
+                target = summary
+            } else {
+                body = summary
+            }
+
+            /* Build (summary) package. */
+            pkg = {
+                ownerSlug: this.campaign.owner.slug,
+                id: `${this.campaign.slug}.summary`,
+                body,
+                target,
+            }
+
+            /* Request (summary) update. */
+            this.updateAsset(pkg)
+
+            /* Initialize body. */
+            body = null
+
+            /* Initialize target. */
+            target = null
+
+            /* Set description. */
+            const description = this.campaign.description
+
+            /* Validate description. */
+            if (description.slice(0, 2) === 'Qm' && description.length === 46) {
+                target = description
+            } else {
+                body = description
+            }
+
+            /* Build (description) package. */
+            pkg = {
+                ownerSlug: this.campaign.owner.slug,
+                id: `${this.campaign.slug}.description`,
+                body,
+                target,
+            }
+
+            /* Request (description) update. */
+            this.updateAsset(pkg)
+
+            console.log();
+        },
 
     },
     created: async function () {
         console.log('PARAMS', this.$route.params);
         console.log('QUERY', this.$route.query);
         console.log('HASH', this.$route.hash);
+
         /* Set owner slug. */
         this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
         console.log('OWNER SLUG', this.ownerSlug)
@@ -95,11 +160,11 @@ export default {
         // }
 
         /* Validate query. */
-        if (this.$route.query && Object.keys(this.$route.query)[0]) {
-            /* Set extended slug. */
-            this.fundId = Object.keys(this.$route.query)[0]
-            console.log('FUND ID (from query)', this.fundId)
-        }
+        // if (this.$route.query && Object.keys(this.$route.query)[0]) {
+        //     /* Set extended slug. */
+        //     this.fundId = Object.keys(this.$route.query)[0]
+        //     console.log('FUND ID (from query)', this.fundId)
+        // }
 
         /* Validate extended slug. */
         if (this.extSlug && this.extSlug.lastIndexOf('-') !== -1) {
@@ -124,6 +189,9 @@ export default {
             this.campaign.referrerId = this.referrerId
 
             console.log('CAMPAIGN', this.campaign)
+
+            /* Update assets. */
+            this.updateAssets()
         }
     },
     mounted: function () {

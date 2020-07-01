@@ -11,7 +11,7 @@
         <!-- <hr /> -->
 
         <!-- <h1>Readme</h1> -->
-        <p v-html="description" />
+        <p v-html="story" />
     </div>
 </template>
 
@@ -22,22 +22,22 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
     props: {
         campaign: Object,
-        fundId: String,
     },
     data: () => {
         return {
-            //
+            description: null,
+            waitTime: null,
         }
     },
     watch: {
-        campaign: function (_campaign) {
-            if (_campaign && _campaign.funds) {
-                console.log('CAMPAIGN HAS CHANGED, UPDATE STORY!!', _campaign)
-
-                /* Update story. */
-                this.updateStory()
-            }
-        },
+        // campaign: function (_campaign) {
+        //     if (_campaign && _campaign.funds) {
+        //         console.log('CAMPAIGN HAS CHANGED, UPDATE STORY!!', _campaign)
+        //
+        //         /* Update story. */
+        //         this.updateStory()
+        //     }
+        // },
     },
     computed: {
         ...mapGetters('campaigns', [
@@ -48,42 +48,52 @@ export default {
             'getMarkdown',
         ]),
 
-        description() {
-            /* Validate campaign. */
-            if (!this.campaign) {
-                return null
-            }
-
-            /* Initialize fund id. */
-            let fundId = null
-
-            if (this.fundId) {
-                fundId = this.fundId
-            } else {
-                /* Find default id. */
-                fundId = Object.keys(this.campaign.funds).find(fundId => {
-                    return this.campaign.funds[fundId].isDefault === true
-                })
-            }
-
-            /* Initialize description. */
-            let description = null
-
-
-            /* Retrieve description. */
-            description = this.getAsset(
-                this.campaign.owner.slug,
-                `${this.campaign.slug}.fund.${fundId}.description`
-            )
-
+        story() {
             /* Validate description. */
-            if (description) {
+            if (this.description) {
                 /* Return description (in markdown). */
-                return this.getMarkdown(description)
+                return this.getMarkdown(this.description)
             } else {
                 return null
             }
-        },
+        }
+
+        // description() {
+        //     /* Validate campaign. */
+        //     if (!this.campaign) {
+        //         return null
+        //     }
+        //
+        //     /* Initialize fund id. */
+        //     let fundId = null
+        //
+        //     if (this.fundId) {
+        //         fundId = this.fundId
+        //     } else {
+        //         /* Find default id. */
+        //         fundId = Object.keys(this.campaign.funds).find(fundId => {
+        //             return this.campaign.funds[fundId].isDefault === true
+        //         })
+        //     }
+        //
+        //     /* Initialize description. */
+        //     let description = null
+        //
+        //
+        //     /* Retrieve description. */
+        //     description = this.getAsset(
+        //         this.campaign.owner.slug,
+        //         `${this.campaign.slug}.fund.${fundId}.description`
+        //     )
+        //
+        //     /* Validate description. */
+        //     if (description) {
+        //         /* Return description (in markdown). */
+        //         return this.getMarkdown(description)
+        //     } else {
+        //         return null
+        //     }
+        // },
 
     },
     methods: {
@@ -91,83 +101,44 @@ export default {
             'updateAsset',
         ]),
 
-        /**
-         * Update Story
-         */
-        updateStory() {
-            /* Initialize body. */
-            let body = null
-
-            /* Initialize target. */
-            let target = null
-
-            /* Initialize default id. */
-            let defaultId = null
-
-            /* Initialize update package. */
-            let pkg = null
-
-            /* Find default id. */
-            defaultId = Object.keys(this.campaign.funds).find(fundId => {
-                return this.campaign.funds[fundId].isDefault === true
-            })
-
-            /* Set summary. */
-            const summary = this.campaign.funds[defaultId].summary
-
-            /* Validate summary. */
-            if (summary.slice(0, 2) === 'Qm' && summary.length === 46) {
-                target = summary
-            } else {
-                body = summary
+        getDescription() {
+            /* Validate wait time. */
+            if (this.waitTime > 5000) {
+                return
             }
 
-            /* Build (summary) package. */
-            pkg = {
-                ownerSlug: this.campaign.owner.slug,
-                id: `${this.campaign.slug}.summary`,
-                body,
-                target,
+            console.log('GETTING DESCRIPTION')
+            /* Validate campaign. */
+            if (!this.campaign) {
+                /* Increase wait time. */
+                this.waitTime *= 2
+
+                /* Wait a tick. */
+                return setTimeout(this.getDescription, this.waitTime)
             }
 
-            /* Request (summary) update. */
-            this.updateAsset(pkg)
+            /* Retrieve description. */
+            this.description = this.getAsset(
+                this.campaign.owner.slug,
+                `${this.campaign.slug}.description`
+            )
+            // console.log('STORY (description):', this.description)
 
-            /* Initialize body. */
-            body = null
+            if (!this.description) {
+                /* Increase wait time. */
+                this.waitTime *= 2
 
-            /* Initialize target. */
-            target = null
-
-            /* Find default id. */
-            defaultId = Object.keys(this.campaign.funds).find(fundId => {
-                return this.campaign.funds[fundId].isDefault === true
-            })
-
-            /* Set description. */
-            const description = this.campaign.funds[defaultId].summary
-
-            /* Validate description. */
-            if (description.slice(0, 2) === 'Qm' && description.length === 46) {
-                target = description
-            } else {
-                body = description
+                /* Wait a tick. */
+                setTimeout(this.getDescription, this.waitTime)
             }
-
-            /* Build (description) package. */
-            pkg = {
-                ownerSlug: this.campaign.owner.slug,
-                id: `${this.campaign.slug}.description`,
-                body,
-                target,
-            }
-
-            /* Request (description) update. */
-            this.updateAsset(pkg)
-        },
+        }
     },
     created: function () {
-        //
+        /* Get description. */
+        this.getDescription()
+
+        /* Initialize wait time. */
+        this.waitTime = 10
     },
 }
 </script>

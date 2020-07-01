@@ -18,32 +18,32 @@
                                 <a href="javascript://">Budget</a>
                             </li>
 
-                            <li data-tab="events">
+                            <!-- <li data-tab="events">
                                 <a href="javascript://">Events</a>
-                            </li>
+                            </li> -->
 
                             <li data-tab="faq">
                                 <a href="javascript://">FAQ</a>
                             </li>
 
-                            <li data-tab="comment">
-                                <a href="javascript://">Articles</a>
+                            <li data-tab="news">
+                                <a href="javascript://">News</a>
                             </li>
                         </ul>
 
                         <a name="history"></a>
                         <div class="campaign-content">
-                            <Story :campaign="campaign" :fundId="fundId" />
-                            <Backers :campaign="campaign" :fundId="fundId" />
-                            <Budget :campaign="campaign" :fundId="fundId" />
-                            <Events :campaign="campaign" :fundId="fundId" />
-                            <FAQ :campaign="campaign" :fundId="fundId" />
-                            <Articles :campaign="campaign" :fundId="fundId" />
+                            <Story :campaign="campaign" />
+                            <Backers :campaign="campaign" />
+                            <Budget :campaign="campaign" />
+                            <!-- <Events :campaign="campaign" /> -->
+                            <FAQ :campaign="campaign" />
+                            <News :campaign="campaign" />
                         </div>
                     </div>
                 </div>
 
-                <Funds :campaign="campaign" :fundId="fundId" />
+                <Events :campaign="campaign" />
             </div>
         </div>
     </div>
@@ -51,12 +51,12 @@
 
 <script>
 /* Import components. */
-import Articles from './History/Articles'
 import Backers from './History/Backers'
 import Budget from './History/Budget'
 import Events from './History/Events'
 import FAQ from './History/FAQ'
-import Funds from './History/Funds'
+// import Funds from './History/Funds'
+import News from './History/News'
 import Story from './History/Story'
 
 /* Import icons. */
@@ -69,15 +69,14 @@ const $ = window.jQuery
 export default {
     props: {
         campaign: Object,
-        fundId: String,
     },
     components: {
-        Articles,
         Backers,
         Budget,
         Events,
         FAQ,
-        Funds,
+        // Funds,
+        News,
         Story,
     },
     data: () => {

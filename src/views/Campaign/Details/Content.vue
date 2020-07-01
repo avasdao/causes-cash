@@ -179,7 +179,6 @@ function makePages() {
 export default {
     props: {
         campaign: Object,
-        fundId: String,
     },
     components: {
         // Summary,
@@ -298,16 +297,8 @@ export default {
             /* Retrieve summary. */
             summary = this.getAsset(
                 this.campaign.owner.slug,
-                `${this.campaign.slug}.fund.${this.fundId}.summary`
+                `${this.campaign.slug}.summary`
             )
-
-            /* Validate summary. */
-            if (!summary) {
-                summary = this.getAsset(
-                    this.campaign.owner.slug,
-                    `${this.campaign.slug}.summary`
-                )
-            }
             // console.log('STORY (summary):', summary)
 
             /* Validate summary. */

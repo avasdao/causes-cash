@@ -1,0 +1,45 @@
+pragma cashscript ^0.4.0;
+
+/**
+ * Assurance
+ *
+ * This contract implements the simplest assurance contract functionality where
+ * coins on multiple instances of this contract can be paid forward only when
+ * the total of the coins reaches a required amount, otherwise each coin can
+ * be refunded after expiration.
+ *
+ * It pays out in one of two ways that guarantee eventual payout:
+ *   1. Before expiration, anyone can redeem a set of these contracts as long
+ *      as the total input value is sufficient.
+ *   2. At or after expiration, anyone can also refund the coins on these
+ *      contracts to each fixed refund destination.
+ */
+contract Assurance(
+    //     hashOutputs for the forward and refund payments
+    //     Note: These are fixed outputs amount + lock script and therefore any sum of inputs that is greater
+    //           than the fixed amount will go to mining fee.
+    bytes32 refundOutputsHash,  // 32 B
+    bytes32 forwardOutputsHash, // 32 B
+    int refundBlock             // 3~4 B, block height after which the pledge can only be refunded
+) {
+    function forwardOrRefund(
+        sig    preimageSig, // 65 B, verifies that provided preimage data matches the transaction
+        pubkey preimagePubk // 33 B, anyone can provide a key/signature to redeem this contract
+    ) {
+        // Redemption logic is simple so combine both types in this one function to save space and cost.
+        // If we are before the refund block, then only the forward outputs are allowed.
+        // If we are at or after refund block, then also refund outputs are allowed.
+        // Note: The redeemer can provide any locktime in the past so forward payment is still possible after expiration.
+        require(tx.time >= 1); // ensure nLockTime is 1) active and 2) checking blocks
+        if (int(tx.locktime) < refundBlock) {
+            // Before expiration: verify that this is a forward payment
+            require(tx.hashOutputs == forwardOutputsHash);
+        } else {
+            // At or after expiration: verify that this is a refund payment
+            require(tx.hashOutputs == refundOutputsHash);
+        }
+
+        // Verify covenant (automatically handled by CashScript)
+        require(checkSig(preimageSig, preimagePubk));
+    }
+}

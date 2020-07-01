@@ -1,7 +1,7 @@
 pragma cashscript ^0.4.0;
 
 /**
- * Mecenas Oracle
+ * Mecenas Oracle (Fixed Block)
  *
  * This contract enforces a specific market price for payouts to the
  * contract's receipient.
@@ -17,7 +17,7 @@ pragma cashscript ^0.4.0;
  *             (NOTE: budgets are monthly, however payouts are daily)
  * oraclePk  : the public key for the price oracle
  */
-contract MecenasOracle(
+contract MecenasOracleFixed(
     bytes20 recipient,
     bytes20 funder,
     bytes20 oracle,

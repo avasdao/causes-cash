@@ -11,7 +11,8 @@
 					<div class="col-lg-9">
 						<div class="account-content payments account-table">
 							<h3 class="account-title">Payments</h3>
-							<div class="account-main">
+
+							<div v-if="payments" class="payments">
 								<table>
 									<thead>
 										<tr>
@@ -54,6 +55,11 @@
 									</tbody>
 								</table>
 							</div>
+
+                            <div v-else class="payments">
+                                You haven't received any payments
+                            </div>
+
 						</div>
 					</div>
 				</div>
@@ -84,6 +90,7 @@ export default {
     data: () => {
         return {
             ownerSlug: null,
+            payments: null,
         }
     },
     created: function () {
@@ -94,5 +101,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.payments {
+    margin: 20px 40px;
+}
 </style>

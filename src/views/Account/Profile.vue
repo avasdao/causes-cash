@@ -117,107 +117,7 @@
                             </div>
 						</div>
 
-						<div class="account-content profile mt-3">
-							<h3 class="account-title">My Wallet</h3>
-
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-2">
-                                    <strong>Address</strong>
-                                </div>
-
-                                <div class="col-8">
-                                    <a :href="'https://explorer.bitcoin.com/bch/address/' + getAddress" target="_blank">{{getAddress}}</a>
-                                </div>
-
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-                            </div>
-
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-2">
-                                    <strong>Balance</strong>
-                                </div>
-
-                                <div class="col-8">
-                                    $0.00
-                                </div>
-
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-                            </div>
-
-						</div>
-
-                        <div class="account-content profile mt-3">
-							<h3 class="account-title">My Security</h3>
-
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-2">
-                                    <strong>First Name</strong>
-                                </div>
-
-                                <div class="col-8">
-                                    Martinez
-                                </div>
-
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-                            </div>
-
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-2">
-                                    <strong>Last Name</strong>
-                                </div>
-
-                                <div class="col-8">
-                                    Melvin
-                                </div>
-
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-                            </div>
-
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-2">
-                                    <strong>Payment Email</strong>
-                                </div>
-
-                                <div class="col-8">
-                                    [email&#160;protected]
-                                </div>
-
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-                            </div>
-
-						</div>
-
-                        <a href="javascript://" class="btn-primary mt-3">Save My Profile</a>
+                        <!-- <a href="javascript://" class="btn-primary mt-3">Save My Profile</a> -->
 
 					</div>
 				</div>
@@ -287,6 +187,6 @@ export default {
 
 <style scoped>
 .author {
-    margin: 20px 40px 10px;
+    margin: 20px 40px;
 }
 </style>

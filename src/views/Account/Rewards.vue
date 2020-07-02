@@ -11,7 +11,8 @@
 					<div class="col-lg-9">
 						<div class="account-content rewards account-table">
 							<h3 class="account-title">Rewards</h3>
-							<div class="account-main">
+
+							<div v-if="rewards" class="rewards">
 								<table>
 									<thead>
 										<tr>
@@ -54,6 +55,11 @@
 									</tbody>
 								</table>
 							</div>
+
+                            <div v-else class="rewards">
+                                You haven't received any rewards
+                            </div>
+
 						</div>
 					</div>
 				</div>
@@ -94,5 +100,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.rewards {
+    margin: 20px 40px;
+}
 </style>

@@ -11,7 +11,8 @@
 					<div class="col-lg-9">
 						<div class="account-content pledges-received account-table">
 							<h3 class="account-title">Pledges Received</h3>
-							<div class="account-main">
+
+							<div v-if="received" class="received">
 								<table>
 									<thead>
 										<tr>
@@ -54,6 +55,11 @@
 									</tbody>
 								</table>
 							</div>
+
+                            <div v-else class="received">
+                                You haven't received any pledges
+                            </div>
+
 						</div>
 					</div>
 				</div>
@@ -84,6 +90,7 @@ export default {
     data: () => {
         return {
             ownerSlug: null,
+            received: null,
         }
     },
     created: function () {
@@ -94,5 +101,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.received {
+    margin: 20px 40px;
+}
 </style>

@@ -10,9 +10,12 @@
 
 					<div class="col-lg-9">
 						<div class="account-content my-campaigns account-table">
-							<h3 class="account-title">My Campaigns</h3>
+							<h3 class="account-title">Campaigns</h3>
 
-                            <div class="account-main">
+                            <div v-if="campaigns" class="campaigns">
+
+                                <h2 class="campaign-title">My Campaigns</h2>
+
 								<div class="campaign-item">
 									<a class="campaign-image" href="javascript://">
                                         <img src="@/assets/img/my-campaigns-01.jpg" alt=""></a>
@@ -24,6 +27,10 @@
 									</div>
 								</div>
 
+								<a href="javascript://" class="btn-primary mb-3">Create a New Campaign</a>
+
+                                <h2 class="campaign-title">Saved Campaigns</h2>
+
 								<div class="campaign-item">
 									<a class="campaign-image" href="javascript://">
                                         <img src="@/assets/img/my-campaigns-02.jpg" alt=""></a>
@@ -34,9 +41,12 @@
 										<div class="campaign-desc">I throw myself down among the tall grass by the trickling stream; and, as I lie close to the earth, a thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects and flies.</div>
 									</div>
 								</div>
-
-								<a href="javascript://" class="btn-primary">Create a Campaign</a>
 							</div>
+
+                            <div v-else class="campaigns">
+                                You haven't saved any campaigns
+                            </div>
+
 						</div>
 					</div>
 				</div>
@@ -67,6 +77,7 @@ export default {
     data: () => {
         return {
             ownerSlug: null,
+            campaigns: null,
         }
     },
     created: function () {
@@ -77,5 +88,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.campaigns {
+    margin: 20px 40px;
+}
 </style>

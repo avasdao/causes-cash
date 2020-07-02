@@ -413,4 +413,7 @@ section .container {
     margin: 5px 0 0 20px
 }
 
+button {
+    cursor: pointer;
+}
 </style>

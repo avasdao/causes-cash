@@ -40,8 +40,12 @@
                                     <strong>Mnemonic</strong>
                                 </div>
 
-                                <div class="col-8">
-                                    {{getMnemonic}}
+                                <div v-if="showMnemonic" class="col-8 mnemonic" @click="toggleMnemonic">
+                                    <span class="text-danger">{{getMnemonic}}</span>
+                                </div>
+
+                                <div v-else class="col-8 mnemonic" @click="toggleMnemonic">
+                                    [ <span class="text-danger">show</span> ]
                                 </div>
 
                                 <div class="col-1">
@@ -101,6 +105,7 @@ export default {
     data: () => {
         return {
             ownerSlug: null,
+            showMnemonic: null,
         }
     },
     computed: {
@@ -123,14 +128,22 @@ export default {
         //     'addCampaign',
         // ]),
 
+        toggleMnemonic() {
+            this.showMnemonic = !this.showMnemonic
+        },
     },
     created: function () {
         /* Set owner slug. */
         this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
+
+        /* Initialize mnemonic flag. */
+        this.showMnemonic = false
     },
 }
 </script>
 
 <style scoped>
-/*  */
+.mnemonic {
+    cursor: pointer;
+}
 </style>

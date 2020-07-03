@@ -13,14 +13,16 @@ const initWallet = ({ commit }) => {
      * Manages the indexes of account (addresses) and their respective
      * derivation paths.
      *
-     * Deposit : m/44'/145'/0'/0/<index>
-     * Change  : m/44'/145'/0'/1/<index>
-     * Causes  : m/44'/145'/0'/6767/<index>
+     * Deposit     : m/44'/145'/0'/0/<index>
+     * Change      : m/44'/145'/0'/1/<index>
+     * Causes Cash : m/44'/145'/0'/6767/<index>
+     * Nito Cash   : m/44'/145'/0'/7867/<index>
      */
     const accountsModel = {
         deposit: 0,
         change: 0,
         causes: 0,
+        nito: 0,
     }
 
     /**

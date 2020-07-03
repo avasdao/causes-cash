@@ -100,7 +100,6 @@
                                             <table>
                                                 <thead>
                                                     <tr>
-                                                        <th>Order</th>
                                                         <th>Date</th>
                                                         <th>Status</th>
                                                         <th>Total</th>
@@ -109,28 +108,28 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>#1145</td>
                                                         <td>July 21, 2017</td>
                                                         <td>Pending</td>
                                                         <td>$250 for 1 item</td>
-                                                        <td><a href="javascript://">View</a></td>
+                                                        <td class="actions">
+                                                            <a href="javascript://">View</a> |
+                                                            <a href="javascript://">Send</a> |
+                                                            <a href="javascript://">Shuffle</a>
+                                                        </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>#1146</td>
                                                         <td>July 22, 2017</td>
                                                         <td>Completed</td>
                                                         <td>$5150 for 3 item</td>
                                                         <td><a href="javascript://">View</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>#1147</td>
                                                         <td>July 23, 2017</td>
                                                         <td>Cancel</td>
                                                         <td>$180 for 1 item</td>
                                                         <td><a href="javascript://">View</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>#1148</td>
                                                         <td>July 24, 2017</td>
                                                         <td>Completed</td>
                                                         <td>$2700 for 1 item</td>
@@ -140,6 +139,8 @@
                                             </table>
                                         </div>
                                     </div>
+
+                                    <button class="btn btn-warning" @click="updateCoins">Update Coins</button>
 
                                 </div>
 
@@ -203,6 +204,7 @@ export default {
             'getAddress',
             'getBalance',
             'getMnemonic',
+            'getWallet',
         ]),
 
         balanceDisplay() {
@@ -260,7 +262,7 @@ export default {
         ]),
 
         ...mapActions('wallet', [
-            // 'updateCoins',
+            'updateCoins',
         ]),
 
         /**
@@ -362,6 +364,8 @@ export default {
 
     },
     created: function () {
+        console.log('WALLET', this.getWallet)
+
         /* Set owner slug. */
         this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
 
@@ -400,4 +404,7 @@ export default {
     /* float: right; */
 }
 
+.actions a {
+    display: inline-block;
+}
 </style>

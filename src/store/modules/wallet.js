@@ -1,4 +1,5 @@
 /* Import modules (getters). */
+import getAccounts from './wallet/getters/getAccounts'
 import getAddress from './wallet/getters/getAddress'
 import getBalance from './wallet/getters/getBalance'
 import getChangeAddress from './wallet/getters/getChangeAddress'
@@ -11,9 +12,13 @@ import getMnemonic from './wallet/getters/getMnemonic'
 import getWallet from './wallet/getters/getWallet'
 
 /* Import modules (actions). */
+import addCoin from './wallet/actions/addCoin'
 import destroyWallet from './wallet/actions/destroyWallet'
 import initWallet from './wallet/actions/initWallet'
-import updateWallet from './wallet/actions/updateWallet'
+import updateCoin from './wallet/actions/updateCoin'
+import updateCoins from './wallet/actions/updateCoins'
+import updateMeta from './wallet/actions/updateMeta'
+import updateOutbox from './wallet/actions/updateOutbox'
 
 /* Import modules (mutations). */
 import setEmptyWallet from './wallet/mutations/setEmptyWallet'
@@ -39,6 +44,11 @@ const state = {
     meta: null,
 
     /**
+     * Coins waiting to be sent out from the wallet.
+     */
+    outbox: null,
+
+    /**
      * Wallet Accounts
      *
      * Deposit / receiving accounts are distributed to the public; and can
@@ -55,6 +65,7 @@ const state = {
 
 /* Getters. */
 const getters = {
+    getAccounts,
     getAddress,
     getBalance,
     getChangeAddress,
@@ -69,9 +80,13 @@ const getters = {
 
 /* Actions. */
 const actions = {
+    addCoin,
     destroyWallet,
     initWallet,
-    updateWallet,
+    updateCoin,
+    updateCoins,
+    updateMeta,
+    updateOutbox,
 }
 
 /* Mutations. */

@@ -12,29 +12,20 @@ const Nito = require('nitojs')
 const getBalanceBySessionId = (
     state, getters, rootState, rootGetters
 ) => async (_currency) => {
-    /* Initialize (search) addresses. */
-    const addresses = []
+    /* Retrieve accounts. */
+    const accounts = getters.getAccounts
+    console.log('GET BALANCE (accounts)', accounts)
 
-    // const wallet = getters.getWallet
-    // console.log('GET BALANCE (wallet)', wallet)
+    /* Validate accounts. */
+    if (accounts === null) {
+        return
+    }
 
-    // FIXME: We currently ONLY retrieve balances for index 0.
-
-    /* Set deposit address. */
-    addresses.push(getters.getAddress('deposit'))
-
-    /* Set change address. */
-    addresses.push(getters.getAddress('change'))
-
-    /* Set Causes address. */
-    addresses.push(getters.getAddress('causes'))
-
-    /* Add all active receiving account (addresses) to pool. */
-    // Object.keys(coins).forEach(txid => {
-    //     /* Add to all receiving (pool). */
-    //     addresses.push(coins[txid].cashAddress)
-    // })
-    // console.log('GET BALANCE (all accounts)', addresses)
+    /* Build search array. */
+    const addresses = accounts.map(obj => {
+        return obj.address
+    })
+    console.log('GET BALANCE (all accounts)', addresses)
 
     /* Validate search accounts. */
     if (!addresses && addresses.length) {
@@ -52,6 +43,11 @@ const getBalanceBySessionId = (
 
         /* Retrieve (address) balances. */
         const balances = await Nito.Address.balance(address)
+
+        /* Validate balances. */
+        if (!balances) {
+            continue
+        }
 
         /* Check unconfirmed flag. */
         if (rootGetters['getFlags'].unconfirmed) {

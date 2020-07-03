@@ -42,6 +42,9 @@ const getAddress = (state, getters) => (_account) => {
     case 'causes':
         chain = 6767
         break
+    case 'nito':
+        chain = 7867
+        break
     }
 
     /* Validate chain. */

@@ -6,7 +6,7 @@ const Nito = require('nitojs')
  *
  * Returns the next avaialble "receiving" address.
  */
-const getAddress = (state, getters) => {
+const getAddress = (state, getters) => (_account) => {
     /* Validate wallet. */
     if (!getters.getWallet) {
         return null
@@ -25,11 +25,29 @@ const getAddress = (state, getters) => {
     }
 
     /* Initialize current (coin) index. */
-    const currentIndex = accounts.deposit
+    const currentIndex = accounts[_account]
     // console.log('GET ADDRESS (currentIndex):', currentIndex)
 
-    /* Set chain. */
-    const chain = 0 // receiving account
+    /* Initialize chain. */
+    let chain = null
+
+    /* Select chain. */
+    switch(_account) {
+    case 'deposit':
+        chain = 0
+        break
+    case 'change':
+        chain = 1
+        break
+    case 'causes':
+        chain = 6767
+        break
+    }
+
+    /* Validate chain. */
+    if (chain === null) {
+        return null
+    }
 
     /* Set derivation path. */
     const path = getters.getDerivationPath(chain, currentIndex)

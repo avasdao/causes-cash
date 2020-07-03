@@ -20,7 +20,7 @@ const state = {
      *
      * NOTE: They are regularly updated, based on timestamps.
      */
-    assets: {},
+    assets: null,
 }
 
 /* Getters. */

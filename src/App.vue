@@ -20,7 +20,7 @@ export default {
             'getOrbitDB',
         ]),
 
-        ...mapGetters('system', [
+        ...mapGetters([
             'getFlags',
             'getLocale',
         ]),
@@ -30,7 +30,7 @@ export default {
             'updateAssetSource',
         ]),
 
-        ...mapActions('system', [
+        ...mapActions([
             'updateFlags',
             'updateLocale',
         ]),

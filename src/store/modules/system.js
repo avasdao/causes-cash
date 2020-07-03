@@ -41,7 +41,7 @@ const state = {
      * An object, used to retrieve the address / location of
      * our latest assets from our IPFS storage.
      */
-    assets: {},
+    assets: null,
 
     /**
      * Authorization Hashes
@@ -50,7 +50,7 @@ const state = {
      * In the case of a first-time use of supplied credentials, we will notify
      * the user and request confirmation.
      */
-    authHashes: [],
+    authHashes: null,
 
     /**
      * Error Message
@@ -83,7 +83,7 @@ const state = {
      * NOTE: Unique 1-byte (hex) codes (up to 255) are used to reduce the size
      *       of this storage field.
      */
-    notices: {},
+    notices: null,
 
     /**
      * Notification Message

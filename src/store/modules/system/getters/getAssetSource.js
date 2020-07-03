@@ -1,11 +1,30 @@
+/* Import modules. */
+const msgpack = require('msgpack-lite')
+
 /**
  * Get Asset Source
  *
  * Retrieves the latest source of data from our Eternal Db.
  */
 const getAssetSource = (state, _assetType) => {
+    /* Validate state. */
+    if (!state || !state.assets) {
+        return null
+    }
+
+    /* Initialize assets. */
+    let assets = null
+
+    /* Set assets. */
+    try {
+        assets = msgpack.decode(Buffer.from(state.assets))
+    } catch (err) {
+        console.error(err) // eslint-disable-line no-console
+        assets = state.assets // DEPRECATED in June '20
+    }
+
     /* Return source. */
-    return state.assets[_assetType]
+    return assets[_assetType]
 }
 
 /* Export module. */

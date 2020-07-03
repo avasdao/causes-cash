@@ -1,3 +1,6 @@
+/* Import modules. */
+const msgpack = require('msgpack-lite')
+
 /**
  * Set Assets
  *
@@ -15,7 +18,7 @@ const setAssets = (state, _source) => {
     console.log('SYSTEM ASSETS (updated):', updated)
 
     /* Set updated (merged) assets. */
-    state.assets = updated
+    state.assets = msgpack.encode(updated)
 }
 
 /* Export module. */

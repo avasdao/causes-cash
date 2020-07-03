@@ -29,28 +29,28 @@
 											<td>July 21, 2017</td>
 											<td>Pending</td>
 											<td>$250 for 1 item</td>
-											<td><a href="#">View</a></td>
+											<td><a href="javascript://">View</a></td>
 										</tr>
 										<tr>
 											<td>#1146</td>
 											<td>July 22, 2017</td>
 											<td>Completed</td>
 											<td>$5150 for 3 item</td>
-											<td><a href="#">View</a></td>
+											<td><a href="javascript://">View</a></td>
 										</tr>
 										<tr>
 											<td>#1147</td>
 											<td>July 23, 2017</td>
 											<td>Cancel</td>
 											<td>$180 for 1 item</td>
-											<td><a href="#">View</a></td>
+											<td><a href="javascript://">View</a></td>
 										</tr>
 										<tr>
 											<td>#1148</td>
 											<td>July 24, 2017</td>
 											<td>Completed</td>
 											<td>$2700 for 1 item</td>
-											<td><a href="#">View</a></td>
+											<td><a href="javascript://">View</a></td>
 										</tr>
 									</tbody>
 								</table>

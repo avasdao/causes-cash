@@ -1,3 +1,6 @@
+/* Import modules. */
+const msgpack = require('msgpack-lite')
+
 /**
 * Get Asset
 */
@@ -6,8 +9,13 @@ const getAsset = (state) => (_ownerSlug, _assetId) => {
     // console.log('GET ASSET (_ownerSlug):', _ownerSlug)
     // console.log('GET ASSET (_assetId):', _assetId)
 
+    /* Validate state. */
+    if (!state || !state.assets) {
+        return null
+    }
+
     /* Set owner. */
-    const owner = state.assets[_ownerSlug]
+    const owner = msgpack.decode(Buffer.from(state.assets[_ownerSlug]))
     // console.log('GET ASSET (owner):', owner)
 
     /* Validate owner. */

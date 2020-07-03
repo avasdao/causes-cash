@@ -87,6 +87,67 @@
                                 </div>
                             </div>
 
+                            <div class="row my-3">
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+
+                                <div class="col-10">
+                                    <div class="account-content account-table">
+                                        <h3>My Available Coins</h3>
+
+                                        <div v-if="utxos" class="utxos">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order</th>
+                                                        <th>Date</th>
+                                                        <th>Status</th>
+                                                        <th>Total</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>#1145</td>
+                                                        <td>July 21, 2017</td>
+                                                        <td>Pending</td>
+                                                        <td>$250 for 1 item</td>
+                                                        <td><a href="javascript://">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>#1146</td>
+                                                        <td>July 22, 2017</td>
+                                                        <td>Completed</td>
+                                                        <td>$5150 for 3 item</td>
+                                                        <td><a href="javascript://">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>#1147</td>
+                                                        <td>July 23, 2017</td>
+                                                        <td>Cancel</td>
+                                                        <td>$180 for 1 item</td>
+                                                        <td><a href="javascript://">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>#1148</td>
+                                                        <td>July 24, 2017</td>
+                                                        <td>Completed</td>
+                                                        <td>$2700 for 1 item</td>
+                                                        <td><a href="javascript://">View</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-1">
+                                    <!-- offset fix -->
+                                </div>
+                            </div>
+
 						</div>
 
 					</div>
@@ -129,6 +190,8 @@ export default {
             blockchain: null,
             balance: null,
             showMnemonic: null,
+
+            utxos: null,
         }
     },
     computed: {
@@ -147,8 +210,13 @@ export default {
                 return 'loading...'
             }
 
-            const balance = `${this.balance.rounded} ${this.balance.unit} | ${this.balance.fiat}`
+            /* Set balance. */
+            const balance = `
+                ${this.balance.value} ${this.balance.unit} |
+                ${this.balance.fiat}
+            `
 
+            /* Return balance. */
             return balance
         },
 
@@ -195,10 +263,6 @@ export default {
             // 'updateCoins',
         ]),
 
-        toggleMnemonic() {
-            this.showMnemonic = !this.showMnemonic
-        },
-
         /**
          * Initialize Blockchain
          */
@@ -233,6 +297,20 @@ export default {
                 .getBalance('USD')
                 .catch(err => console.error(err))
             console.log('DEPOSIT (balance):', this.balance)
+        },
+
+        /**
+         * Update Transactions
+         */
+        async updateTxs() {
+            this.utxos = true
+        },
+
+        /**
+         * Toggle Mnemonic
+         */
+        toggleMnemonic() {
+            this.showMnemonic = !this.showMnemonic
         },
 
         /**
@@ -295,6 +373,9 @@ export default {
 
         /* Update balance. */
         this.updateBalance()
+
+        /* Update transactions. */
+        this.updateTxs()
     },
     beforeDestroy() {
         /* Validate blockchain. */

@@ -1,3 +1,6 @@
+/* Import modules. */
+const msgpack = require('msgpack-lite')
+
 /**
  * Set Asset
  *
@@ -21,6 +24,12 @@ const setAsset = (state, _asset) => {
 
     // TODO: Validate body.
 
+    /* Validate assets. */
+    if (!state.assets) {
+        /* Initialize assets. */
+        state.assets = {}
+    }
+
     /* Validate owner assets. */
     if (!state.assets[ownerSlug]) {
         /* Initialize owner assets. */
@@ -28,7 +37,7 @@ const setAsset = (state, _asset) => {
     }
 
     /* Update the asset resource. */
-    state.assets[ownerSlug][id] = body
+    state.assets[ownerSlug][id] = msgpack.encode(body)
 }
 
 /* Export module. */

@@ -9,8 +9,8 @@
                     <Sidenav tab="rewards" />
 
 					<div class="col-lg-9">
-						<div class="account-content rewards account-table">
-							<h3 class="account-title">Rewards</h3>
+						<div class="account-content account-table">
+							<h3 class="account-title">Rewards Received</h3>
 
 							<div v-if="rewards" class="rewards">
 								<table>

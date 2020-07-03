@@ -11,7 +11,7 @@
 					<div class="col-lg-9">
 
 						<div class="account-content profile">
-							<h3 class="account-title">My Profile</h3>
+							<h3 class="account-title">Profile</h3>
 
 							<div class="author clearfix">
 								<a class="author-avatar" href="javascript://">

@@ -13,7 +13,7 @@
                     </li>
 
                     <li>
-                        <router-link :to="'/@' + this.user">
+                        <router-link :to="'/@' + this.ownerSlug">
                             Account
                         </router-link>
                         <span>/</span>

@@ -9,7 +9,7 @@
                     <Sidenav tab="backing" />
 
 					<div class="col-lg-9">
-						<div class="account-content backed-campaigns account-table">
+						<div class="account-content account-table">
 							<h3 class="account-title">Backed Causes</h3>
 
 							<div v-if="backing" class="backing">
@@ -159,13 +159,13 @@ export default {
         /**
          * Pledge Authorization
          */
-        pledgeAuth() {
-            if (this.pledgeAuth) {
-                return this.pledgeAuth
-            } else {
-                return null
-            }
-        },
+        // pledgeAuth() {
+        //     if (this.pledgeAuth) {
+        //         return this.pledgeAuth
+        //     } else {
+        //         return null
+        //     }
+        // },
 
         /**
          * Parsed Details

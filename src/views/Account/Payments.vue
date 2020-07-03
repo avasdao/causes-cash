@@ -9,8 +9,8 @@
                     <Sidenav tab="payments" />
 
 					<div class="col-lg-9">
-						<div class="account-content payments account-table">
-							<h3 class="account-title">Payments</h3>
+						<div class="account-content account-table">
+							<h3 class="account-title">Payments Received</h3>
 
 							<div v-if="payments" class="payments">
 								<table>

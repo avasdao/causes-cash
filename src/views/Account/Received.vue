@@ -9,7 +9,7 @@
                     <Sidenav tab="received" />
 
 					<div class="col-lg-9">
-						<div class="account-content pledges-received account-table">
+						<div class="account-content account-table">
 							<h3 class="account-title">Pledges Received</h3>
 
 							<div v-if="received" class="received">

@@ -12,6 +12,8 @@ import getLocale from './system/getters/getLocale'
 import displayError from './system/actions/displayError'
 import displayNotification from './system/actions/displayNotification'
 import updateAssetSource from './system/actions/updateAssetSource'
+import updateFlags from './system/actions/updateFlags'
+import updateLocale from './system/actions/updateLocale'
 
 /* Import modules (mutations). */
 import setAppStarts from './system/mutations/setAppStarts'
@@ -61,10 +63,7 @@ const state = {
      * 1. Dark mode
      * 2. Unconfirmed transactions
      */
-    flags: {
-        darkMode: false,
-        unconfirmed: true,
-    },
+    flags: null,
 
     /**
      * Locale
@@ -72,7 +71,7 @@ const state = {
      * Controls the localization language.
      * (default is english)
      */
-    locale: 'en-US',
+    locale: null,
 
     /**
      * Notices
@@ -113,6 +112,8 @@ const actions = {
     displayError,
     displayNotification,
     updateAssetSource,
+    updateFlags,
+    updateLocale,
 }
 
 /* Mutations. */

@@ -19,11 +19,39 @@ export default {
             'getIPFS',
             'getOrbitDB',
         ]),
+
+        ...mapGetters('system', [
+            'getFlags',
+            'getLocale',
+        ]),
     },
     methods: {
         ...mapActions([
             'updateAssetSource',
         ]),
+
+        ...mapActions('system', [
+            'updateFlags',
+            'updateLocale',
+        ]),
+
+        /**
+         * Initialize Application
+         */
+        initApp() {
+            /* Initialize flags. */
+            if (!this.getFlags) {
+                this.updateFlags({
+                    darkMode: false,
+                    unconfirmed: true,
+                })
+            }
+
+            /* Initialize locale. */
+            if (!this.getLocale) {
+                this.updateLocale('en-US')
+            }
+        },
 
         /**
          * Test IPFS Connection
@@ -110,17 +138,20 @@ export default {
     created: async function () {
         console.log('Initializing application...')
 
+        /* Initialize application. */
+        this.initApp()
+
+        /* Initialize asset source. */
+        this.updateAssetSource()
+
         /* Initialize IPFS connection. */
-        const node = await this.getIPFS
+        // const node = await this.getIPFS
 
         /* Test IPFS connection. */
-        await this.testIPFS(node)
+        // await this.testIPFS(node)
 
         /* Initialize OrbitDB connection. */
-        await this.getOrbitDB
-
-        /* Initialize assets. */
-        this.updateAssetSource()
+        // await this.getOrbitDB
 
     },
     mounted: async function () {

@@ -10,8 +10,16 @@ const getFlags = (state) => {
         return null
     }
 
+    /* Initialize flags. */
+    let flags = null
+
     /* Initialize accounts. */
-    const flags = msgpack.decode(Buffer.from(state.flags))
+    try {
+        flags = msgpack.decode(Buffer.from(state.flags))
+    } catch (err) {
+        console.error(err) // eslint-disable-line no-console
+        flags = state.flags // DEPRECATED in June '20
+    }
 
     /* Return flags. */
     return flags

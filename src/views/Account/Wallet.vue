@@ -96,44 +96,26 @@
                                     <div class="account-content account-table">
                                         <h3>My Available Coins</h3>
 
-                                        <div v-if="utxos" class="utxos">
+                                        <div v-if="coinsTable" class="utxos">
                                             <table>
                                                 <thead>
                                                     <tr>
-                                                        <th>Date</th>
-                                                        <th>Status</th>
-                                                        <th>Total</th>
+                                                        <th></th>
+                                                        <th>Label</th>
+                                                        <th>Value</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>July 21, 2017</td>
-                                                        <td>Pending</td>
-                                                        <td>$250 for 1 item</td>
+                                                    <tr v-for="coin of coinsTable" :key="coin.id">
+                                                        <td>{{coin.status}}</td>
+                                                        <td>{{coin.label}}</td>
+                                                        <td>{{coin.satoshis}}</td>
                                                         <td class="actions">
                                                             <a href="javascript://">View</a> |
-                                                            <a href="javascript://">Send</a> |
+                                                            <a href="javascript://" @click="send(coin.details)">Send</a> |
                                                             <a href="javascript://">Shuffle</a>
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>July 22, 2017</td>
-                                                        <td>Completed</td>
-                                                        <td>$5150 for 3 item</td>
-                                                        <td><a href="javascript://">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>July 23, 2017</td>
-                                                        <td>Cancel</td>
-                                                        <td>$180 for 1 item</td>
-                                                        <td><a href="javascript://">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>July 24, 2017</td>
-                                                        <td>Completed</td>
-                                                        <td>$2700 for 1 item</td>
-                                                        <td><a href="javascript://">View</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -141,7 +123,11 @@
                                     </div>
 
                                     <button class="btn btn-warning" @click="updateCoins">Update Coins</button>
-
+                                    <input
+                                        type="text"
+                                        placeholder="Enter your destination address"
+                                        v-model="output.address"
+                                    >
                                 </div>
 
                                 <div class="col-1">
@@ -192,7 +178,11 @@ export default {
             balance: null,
             showMnemonic: null,
 
-            utxos: null,
+            output: {
+                address: null,
+                satoshis: null,
+                notes: null,
+            },
         }
     },
     computed: {
@@ -220,6 +210,59 @@ export default {
 
             /* Return balance. */
             return balance
+        },
+
+        /**
+         * Coins Table
+         */
+        coinsTable() {
+            /* Set table data. */
+            const tableData = []
+
+            /* Validate wallet. */
+            if (this.getWallet) {
+                /* Initialize coins. */
+                const coins = this.getWallet.coins
+                console.log('COINS TABLE (coins):', coins)
+
+                Object.keys(coins).forEach(async coinId => {
+                    /* Initialize coin. */
+                    const coin = coins[coinId]
+                    // console.log('COINS (coin):', coin)
+
+                    /* Set id. */
+                    const id = `${coin.txid}:${coin.vout}`
+
+                    /* Set label. */
+                    const label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
+
+                    /* Set status. */
+                    // TODO: Will probably develop a rating scale??
+                    const status = coin.status === 'active' ? '✓' : 'ⅹ'
+
+                    /* Set satoshis. */
+                    const satoshis = coin.satoshis
+
+                    /* Build coin data. */
+                    const coinData = {
+                        id,
+                        label,
+                        status,
+                        satoshis,
+                        details: coin, // FIXME: Write this to outbox for multi-coin sending.
+                    }
+
+                    // TODO: Allow display of spent coins.
+                    if (status === '✓') {
+                        tableData.push(coinData)
+                    }
+
+                })
+
+            }
+
+            console.log('TABLE DATA:', tableData)
+            return tableData
         },
 
         qr() {
@@ -301,11 +344,74 @@ export default {
             console.log('DEPOSIT (balance):', this.balance)
         },
 
-        /**
-         * Update Transactions
-         */
-        async updateTxs() {
-            this.utxos = true
+        async send(_coin) {
+            console.log('SENDING COIN', _coin)
+            if (!this.output.address) {
+                return console.error('NO output address!')
+            }
+
+            /* Build receivers. */
+            const receivers = [
+                {
+                    address: this.output.address,
+                    satoshis: _coin.satoshis,
+                }
+            ]
+
+            /* Set auto fee (flag). */
+            const autoFee = true
+
+            const results = await Nito.Transaction
+                .sendCoin(_coin, receivers, autoFee)
+                .catch(err => console.error(err))
+            console.log('OUTBOX SEND COIN (results):', results)
+
+            if (results) {
+                /* Update outbox. */
+                // this.updateOutbox(null)
+
+                /* Clear output address. */
+                this.output.address = null
+
+                /* Set message. */
+                const message = `Your coins have been sent successfully!`
+                console.log('MESSAGE', message)
+
+                /* Display notification. */
+                // this.$notify({
+                //     message,
+                //     icon: 'ti-info-alt', // ti-info-alt | ti-alert
+                //     verticalAlign: 'top',
+                //     horizontalAlign: 'right',
+                //     type: 'info', // info | danger
+                //     // timeout: 0, // 0: persistent | 5000: default
+                // })
+
+                /* Wait a bit then update coins. */
+                // FIXME: How long should we wait?
+                //        Probably better to update coins w/out on-chain query?
+                setTimeout(() => {
+                    /* Update coins. */
+                    // FIXME: Why is this blocking the entire initial UI setup??
+                    this.updateCoins()
+                }, 2000)
+
+            } else {
+                /* Set message. */
+                const message = `Oops! Something went wrong and your coin(s) were NOT sent.`
+                console.error('MESSAGE', message)
+
+                /* Display notification. */
+                // this.$notify({
+                //     message,
+                //     icon: 'ti-alert', // ti-info-alt | ti-alert
+                //     verticalAlign: 'top',
+                //     horizontalAlign: 'right',
+                //     type: 'danger', // info | danger
+                //     // timeout: 0, // 0: persistent | 5000: default
+                // })
+            }
+
         },
 
         /**
@@ -377,9 +483,6 @@ export default {
 
         /* Update balance. */
         this.updateBalance()
-
-        /* Update transactions. */
-        this.updateTxs()
     },
     beforeDestroy() {
         /* Validate blockchain. */

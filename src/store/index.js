@@ -32,7 +32,18 @@ const modules = {
 // NOTE: For security reasons, cookies are NOT used in the
 //       default (for-all) deployment. (default is local storage)
 const plugins = [
-    createPersistedState()
+    // createPersistedState()
+    createPersistedState({
+        paths: [
+            'profile',
+            'system.appStarts',
+            'system.authHashes',
+            'system.flags',
+            'system.locale',
+            'system.notices',
+            'wallet',
+        ]
+    })
 ]
 
 /* Set strict. */

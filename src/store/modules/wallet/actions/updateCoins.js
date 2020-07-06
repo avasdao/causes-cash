@@ -8,15 +8,15 @@ const updateStatus = (_coins, dispatch) => {
     Object.keys(_coins).forEach(async coinId => {
         /* Set txid. */
         const txid = coinId.split(':')[0]
-        // console.log('UPDATE STATUS (txid)', txid)
+        console.log('UPDATE STATUS (txid)', txid)
 
         /* Set vout. */
         const vout = coinId.split(':')[1]
-        // console.log('UPDATE STATUS (vout)', vout)
+        console.log('UPDATE STATUS (vout)', vout)
 
         /* Query spent status. */
         const isSpent = await Nito.Blockchain.Query.isSpent(txid, vout)
-        // console.log('UPDATE STATUS (isSpent)', isSpent, txid, vout)
+        console.log('UPDATE STATUS (isSpent)', isSpent, txid, vout)
 
         /* Validate spent. */
         if (isSpent) {

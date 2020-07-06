@@ -3,31 +3,23 @@
  *
  * Updates the status of a coin in its respective session.
  */
-const updateCoin = ({ commit, getters }, _pkg) => {
-    console.info('Updating coin...', _pkg) // eslint-disable-line no-console
+const updateCoin = ({ commit, getters }, _coin) => {
+    console.info('Updating coin...', _coin) // eslint-disable-line no-console
 
-    /* Set session id. */
-    const sessionId = _pkg.sessionId
-    console.log('UPDATE COIN (sessionid):', sessionId)
+    /* Set wallet. */
+    const wallet = getters.getWallet
+    // console.log('UPDATE COIN (wallet):', wallet)
 
-    /* Set coin. */
-    const coin = _pkg.coin
-    console.log('UPDATE COIN (coin):', coin)
-
-    /* Set sessions. */
-    const sessions = getters.getSessions
-    console.log('UPDATE COIN (sessions):', sessions)
-
-    /* Validate session id. */
-    if (!sessions[sessionId]) {
+    /* Validate wallet. */
+    if (!wallet) {
         return
     }
 
     /* Add coin to session. */
-    sessions[sessionId].coins[`${coin.txid}:${coin.vout}`] = coin
+    wallet.coins[`${_coin.txid}:${_coin.vout}`] = _coin
 
-    /* Commit updated sessions. */
-    commit('setSessions', sessions)
+    /* Commit updated wallet. */
+    commit('setWallet', wallet)
 }
 
 /* Export module. */

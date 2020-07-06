@@ -18,7 +18,7 @@ const setAssets = (state, _source) => {
     console.log('SYSTEM ASSETS (updated):', updated)
 
     /* Set updated (merged) assets. */
-    state.assets = msgpack.encode(updated)
+    state.assets = msgpack.encode(updated).toString('hex')
 }
 
 /* Export module. */

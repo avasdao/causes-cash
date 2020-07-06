@@ -11,7 +11,7 @@ const getNickname = (state) => {
     }
 
     /* Return nickname. */
-    return msgpack.decode(Buffer.from(state.nickname))
+    return msgpack.decode(Buffer.from(state.nickname, 'hex'))
 }
 
 /* Export module. */

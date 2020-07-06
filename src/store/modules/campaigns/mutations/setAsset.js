@@ -37,7 +37,7 @@ const setAsset = (state, _asset) => {
     }
 
     /* Update the asset resource. */
-    state.assets[ownerSlug][id] = msgpack.encode(body)
+    state.assets[ownerSlug][id] = msgpack.encode(body).toString('hex')
 }
 
 /* Export module. */

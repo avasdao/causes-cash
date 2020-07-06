@@ -8,7 +8,7 @@ const msgpack = require('msgpack-lite')
  */
 const setNickname = (state, _nickname) => {
     /* Set nickname. */
-    state.nickname = msgpack.encode(_nickname)
+    state.nickname = msgpack.encode(_nickname).toString('hex')
 }
 
 /* Export module. */

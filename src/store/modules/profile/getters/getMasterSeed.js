@@ -11,7 +11,11 @@ const getMasterSeed = (state) => {
     }
 
     /* Return master seed. */
-    return msgpack.decode(Buffer.from(state.masterSeed))
+    try {
+        return Buffer.from(state.masterSeed, 'hex')
+    } catch (err) {
+        return msgpack.decode(Buffer.from(state.masterSeed)) // DEPRECATED on 2020.7.6
+    }
 }
 
 /* Export module. */

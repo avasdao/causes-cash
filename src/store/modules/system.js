@@ -9,8 +9,6 @@ import getHelp from './system/getters/getHelp'
 import getLocale from './system/getters/getLocale'
 
 /* Import modules (actions). */
-import displayError from './system/actions/displayError'
-import displayNotification from './system/actions/displayNotification'
 import updateAssetSource from './system/actions/updateAssetSource'
 import updateFlags from './system/actions/updateFlags'
 import updateLocale from './system/actions/updateLocale'
@@ -18,10 +16,8 @@ import updateLocale from './system/actions/updateLocale'
 /* Import modules (mutations). */
 import setAppStarts from './system/mutations/setAppStarts'
 import setAssetSource from './system/mutations/setAssetSource'
-import setError from './system/mutations/setError'
 import setFlags from './system/mutations/setFlags'
 import setLocale from './system/mutations/setLocale'
-import setNotification from './system/mutations/setNotification'
 
 /* Initialize state. */
 const state = {
@@ -53,11 +49,6 @@ const state = {
     authHashes: null,
 
     /**
-     * Error Message
-     */
-    errorMsg: null,
-
-    /**
      * Flags
      *
      * 1. Dark mode
@@ -86,11 +77,6 @@ const state = {
     notices: null,
 
     /**
-     * Notification Message
-     */
-    notifMsg: null,
-
-    /**
      * Schema Version
      *
      * v1: Alpha (Preview) Edition
@@ -109,8 +95,6 @@ const getters = {
 
 /* Actions. */
 const actions = {
-    displayError,
-    displayNotification,
     updateAssetSource,
     updateFlags,
     updateLocale,
@@ -120,10 +104,8 @@ const actions = {
 const mutations = {
     setAppStarts,
     setAssetSource,
-    setError,
     setFlags,
     setLocale,
-    setNotification,
 }
 
 /* Export. */

@@ -8,7 +8,7 @@ const msgpack = require('msgpack-lite')
  */
 const setEmail = (state, _email) => {
     /* Set email. */
-    state.email = msgpack.encode(_email)
+    state.email = msgpack.encode(_email).toString('hex')
 }
 
 /* Export module. */

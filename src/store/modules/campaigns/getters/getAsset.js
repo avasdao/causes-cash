@@ -15,7 +15,7 @@ const getAsset = (state) => (_ownerSlug, _assetId) => {
     }
 
     /* Set owner. */
-    const owner = msgpack.decode(Buffer.from(state.assets[_ownerSlug]))
+    const owner = msgpack.decode(Buffer.from(state.assets[_ownerSlug], 'hex'))
     // console.log('GET ASSET (owner):', owner)
 
     /* Validate owner. */

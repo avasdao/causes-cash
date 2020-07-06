@@ -11,7 +11,7 @@ const getOutbox = (state) => {
     }
 
     /* Initialize outbox. */
-    const outbox = msgpack.decode(Buffer.from(state.outbox))
+    const outbox = msgpack.decode(Buffer.from(state.outbox, 'hex'))
 
     /* Return outbox. */
     return outbox

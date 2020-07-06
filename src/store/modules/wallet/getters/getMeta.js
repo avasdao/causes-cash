@@ -11,7 +11,7 @@ const getMeta = (state) => {
     }
 
     /* Initialize metadata. */
-    const meta = msgpack.decode(Buffer.from(state.meta))
+    const meta = msgpack.decode(Buffer.from(state.meta, 'hex'))
 
     /* Return metadata. */
     return meta

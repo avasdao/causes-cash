@@ -8,7 +8,7 @@ const msgpack = require('msgpack-lite')
  */
 const setOutbox = (state, _outbox) => {
     /* Set outbox. */
-    state.outbox = msgpack.encode(_outbox)
+    state.outbox = msgpack.encode(_outbox).toString('hex')
 }
 
 /* Export module. */

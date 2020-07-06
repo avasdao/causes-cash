@@ -11,7 +11,7 @@ const getEmail = (state) => {
     }
 
     /* Return email. */
-    return msgpack.decode(Buffer.from(state.email))
+    return msgpack.decode(Buffer.from(state.email, 'hex'))
 }
 
 /* Export module. */

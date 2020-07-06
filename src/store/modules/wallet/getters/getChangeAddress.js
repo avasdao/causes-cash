@@ -19,7 +19,7 @@ const getChangeAddress = (state, getters) => (_wallet) => {
     }
 
     /* Initialize accounts. */
-    const accounts = msgpack.decode(Buffer.from(state.a))
+    const accounts = msgpack.decode(Buffer.from(state.account, 'hex'))
 
     /* Validate (wallet) accounts. */
     if (!getters.getAccountsByWallet(_wallet)) {

@@ -13,7 +13,7 @@ const getWallet = (state) => {
     }
 
     /* Initialize wallet. */
-    const wallet = msgpack.decode(Buffer.from(state.wallet))
+    const wallet = msgpack.decode(Buffer.from(state.wallet, 'hex'))
 
     /* Return wallet. */
     return wallet

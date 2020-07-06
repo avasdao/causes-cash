@@ -6,7 +6,7 @@ const msgpack = require('msgpack-lite')
  */
 const setFlags = (state, _flags) => {
     /* Set flags. */
-    state.flags = msgpack.encode(_flags)
+    state.flags = msgpack.encode(_flags).toString('hex')
 }
 
 /* Export module. */

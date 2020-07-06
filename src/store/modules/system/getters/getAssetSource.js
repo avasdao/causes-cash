@@ -17,7 +17,7 @@ const getAssetSource = (state, _assetType) => {
 
     /* Set assets. */
     try {
-        assets = msgpack.decode(Buffer.from(state.assets))
+        assets = msgpack.decode(Buffer.from(state.assets, 'hex'))
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
         assets = state.assets // DEPRECATED in June '20

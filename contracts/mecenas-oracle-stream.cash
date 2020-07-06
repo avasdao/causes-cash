@@ -6,7 +6,11 @@ pragma cashscript ^0.4.0;
  * This contract enforces a specific market price for payouts to the
  * contract's receipient.
  *
- * A minimum block is provided to ensure that the oracle price
+ * A minimum block height is encoded, to ensure that the oracle price is
+ * current, ie. signed within the last 3 hours.
+ *
+ * A maximum block is calculated, to ensure that the oracle price is still
+ * valid and hasn't passed expiration.
  *
  * A message with a block number and price from after the
  * current block `tx.time` is required.
@@ -14,15 +18,16 @@ pragma cashscript ^0.4.0;
  * recipient : party whom will will receive the payouts
  * funder    : party whom is pledging the funding for payouts
  * pledgeAmt : value of each payout (in USD cents) eg. 1,337 = $13.37
- *             (NOTE: budgets are monthly, however payouts are daily)
+ *             (NOTE: budgets are monthly -- payouts are daily)
  * oraclePk  : the public key for the price oracle
+ * creation  : the creation block height of this contract
  */
 contract MecenasOracleStream(
     bytes20 recipient,
     bytes20 funder,
+    int pledgeAmt,
     pubkey oraclePk,
-    int pledgePerBlock,
-    bytes4 initialBlock
+    bytes4 creation
 ) {
     /**
      * Payout
@@ -43,11 +48,11 @@ contract MecenasOracleStream(
         /* Validate oracle's (data) signature. */
         require(checkDataSig(oracleSig, oracleMsg, oraclePk));
 
-        /* Set initial (block height). */
-        int initial = int(initialBlock);
+        /* Set created at (block height). */
+        int createdAt = int(initialBlock);
 
-        /* Validate initial (block height). */
-        require(tx.time >= initial);
+        /* Validate creation (block height). */
+        require(tx.time >= createdAt);
 
         /* Set oracle-defined block height. */
         int oracleBlockHeight = int(oracleMsg.split(4)[0]);

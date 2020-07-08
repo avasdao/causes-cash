@@ -299,11 +299,6 @@ export default {
 
     },
     methods: {
-        ...mapActions([
-            'displayError',
-            'displayNotification',
-        ]),
-
         ...mapActions('wallet', [
             'updateCoins',
         ]),
@@ -316,10 +311,10 @@ export default {
             this.blockchain = new Nito.Blockchain()
             console.log('NITO BLOCKCHAIN', this.blockchain)
 
-            if (this.depositAddress) {
+            if (this.getAddress('deposit')) {
                 /* Subscribe to address updates. */
                 const watching = this.blockchain
-                    .subscribe('address', this.depositAddress)
+                    .subscribe('address', this.getAddress('deposit'))
                 console.log('DEPOSIT (watching):', watching)
             }
 
@@ -330,6 +325,9 @@ export default {
                 /* Update coins. */
                 // FIXME: Why is this blocking the entire initial UI setup??
                 this.updateCoins()
+
+                /* Update balance. */
+                this.updateBalance()
             })
         },
 
@@ -427,7 +425,7 @@ export default {
         setClipboard() {
             try {
                 const textArea = document.createElement('textarea')
-                textArea.value = this.depositAddress
+                textArea.value = this.getAddress('deposit')
                 document.body.appendChild(textArea)
 
                 if (navigator.userAgent.match(/ipad|iphone/i)) {

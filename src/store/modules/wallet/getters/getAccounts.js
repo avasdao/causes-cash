@@ -60,13 +60,13 @@ const getAccounts = (state, getters) => {
         loadPath(getters, accounts, 1, i)
     }
 
-    /* Loop through ALL (change) indexes (inclusive). */
-    for (let i = 0; i <= wallet.accounts.change; i++) {
+    /* Loop through ALL (causes) indexes (inclusive). */
+    for (let i = 0; i <= wallet.accounts.causes; i++) {
         loadPath(getters, accounts, 6767, i)
     }
 
-    /* Loop through ALL (change) indexes (inclusive). */
-    for (let i = 0; i <= wallet.accounts.change; i++) {
+    /* Loop through ALL (nito) indexes (inclusive). */
+    for (let i = 0; i <= wallet.accounts.nito; i++) {
         loadPath(getters, accounts, 7867, i)
     }
     // console.log('GET ACCOUNTS (accounts):', accounts)

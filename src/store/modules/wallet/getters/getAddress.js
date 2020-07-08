@@ -62,12 +62,12 @@ const getAddress = (state, getters) => (_account) => {
     /* Initialize child node. */
     const childNode = hdNode.deriveChild(path)
 
-    /* Set (receiving) addresss. */
-    const addresss = Nito.Address.toCashAddress(childNode)
-    // console.log('GET ADDRESS (receiving addresss)', addresss)
+    /* Set (receiving) address. */
+    const address = Nito.Address.toCashAddress(childNode)
+    // console.log('GET ADDRESS (receiving address)', address)
 
-    /* Return addresss. */
-    return addresss
+    /* Return address. */
+    return address
 }
 
 /* Export module. */

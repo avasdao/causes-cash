@@ -168,14 +168,9 @@ export default {
         ]),
     },
     methods: {
-        ...mapActions([
-            'displayError',
-            'displayNotification',
+        ...mapActions('campaigns', [
+            'addCampaign',
         ]),
-
-        // ...mapActions('campaigns', [
-        //     'addCampaign',
-        // ]),
 
     },
     created: function () {

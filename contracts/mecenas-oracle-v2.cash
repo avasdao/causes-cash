@@ -1,7 +1,7 @@
 pragma cashscript ^0.4.0;
 
 /**
- * Mecenas Oracle (Streaming Blocks)
+ * Mecenas Oracle (v2 - Streaming Blocks)
  *
  * This contract enforces a specific market price for payouts to the
  * contract's receipient.
@@ -22,7 +22,7 @@ pragma cashscript ^0.4.0;
  * oraclePk  : the public key for the price oracle
  * creation  : the creation block height of this contract
  */
-contract MecenasOracleStream(
+contract MecenasOracle(
     bytes20 recipient,
     bytes20 funder,
     int pledgeAmt,

@@ -239,62 +239,6 @@ export default {
         },
 
         /**
-         * Encode Output Value
-         *
-         * Encodes a number of satoshis to be used as part of an output
-         * structure in a raw transaction.
-         */
-        encodeOutputValue(_satoshis) {
-            // Check if the provided satoshis is of the correct type.
-            if (isNaN(_satoshis)) {
-                throw `Cannot encode output value, provided satoshis '${_satoshis}' is not a number.`
-            }
-
-            // Check if the provided satoshis is an integer.
-            if (!Number.isInteger(_satoshis)) {
-                throw `Cannot encode output value, provided satoshis '${_satoshis}' is not an integer.`
-            }
-
-            // Check if the provided satoshis is a positive number.
-            if (_satoshis < 0) {
-                throw `Cannot encode output value, provided satoshis '${_satoshis}' is negative.`
-            }
-
-            // Check if the provided satoshis is within our accepted number range.
-            if (_satoshis > Math.pow(2, 53)) {
-                throw `Cannot encode output value, provided satoshis '${_satoshis}' is larger than javacripts 53bit limit.`
-            }
-
-            /* Allocate 8 bytes. */
-            const value = Buffer.alloc(8)
-
-            /* Split the number into high and low bits. */
-            const highValue = Math.floor(_satoshis / Math.pow(2, 32))
-            const lowValue = _satoshis % Math.pow(2, 32)
-
-            /* Write the satoshi number to the buffer in 64bit. */
-            value.writeUInt32LE(highValue, 4)
-            value.writeUInt32LE(lowValue, 0)
-
-            // Return the encoded value.
-            return value
-        },
-
-        /**
-         * Decode Output Value
-         */
-        decodeOutputValue(_value) {
-            // TODO: Properly validate and error check.
-
-            // Parhse the high and low value sets.
-            const highValue = _value.readUInt32LE(4);
-            const lowValue = _value.readUInt32LE(0);
-
-            // Return the decoded value.
-            return highValue * Math.pow(2, 32) + lowValue;
-        },
-
-        /**
          * Assemble Signature Hash Digest
          */
         assembleSighashDigest(
@@ -314,7 +258,7 @@ export default {
             console.log('Campaign value:', campaignValue)
 
             /* Set value. */
-            value = this.encodeOutputValue(campaignValue)
+            value = Nito.Utils.encodeNumber(campaignValue)
             console.log('Encoded value:', value)
 
             /* Set campaign address. */
@@ -605,7 +549,7 @@ export default {
             }
 
             const previousTransactionHash = _coin.txid
-            const previousTransactionOutputValue = this.encodeOutputValue(_coin.satoshis)
+            const previousTransactionOutputValue = Nito.Utils.encodeNumber(_coin.satoshis)
             const previousTransactionOutputIndex = '00000000'
             const inputLockScript = Nito.Address.toPubKeyHash(cashAddress)
 

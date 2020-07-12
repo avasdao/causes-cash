@@ -222,7 +222,44 @@ export default {
 
         category() {
             if (this.campaign && this.campaign.category) {
-                return this.campaign.category
+                switch(this.campaign.category) {
+                case 'adoption':
+                    return 'Adoption'
+                case 'community':
+                    return 'Community'
+                case 'dapp':
+                    return 'Decentralized App'
+                case 'design-art':
+                    return 'Design & Art'
+                case 'education':
+                    return 'Education'
+                case 'film-video':
+                    return 'Film & Video'
+                case 'fun-games':
+                    return 'Fun & Games'
+                case 'hardware':
+                    return 'Hardware'
+                case 'health-wellness':
+                    return 'Health & Wellness'
+                case 'infrastructure':
+                    return 'Infrastructure'
+                case 'music':
+                    return 'Music'
+                case 'privacy':
+                    return 'Privacy'
+                case 'publishing':
+                    return 'Publishing'
+                case 'security':
+                    return 'Security'
+                case 'software':
+                    return 'Software'
+                case 'world-view':
+                    return 'World View'
+                case 'youth':
+                    return 'Youth'
+                default:
+                    return 'Unknown Category'
+                }
             } else {
                 return null
             }
@@ -387,12 +424,12 @@ export default {
             const images = []
 
             /* Validate main image. */
-            if (this.campaign.images.main) {
+            if (this.campaign.images && this.campaign.images.main) {
                 images.push(this.campaign.images.main)
             }
 
             // /* Validate gallery images. */
-            if (this.campaign.images.gallery) {
+            if (this.campaign.images && this.campaign.images.gallery) {
                 let max = 2
                 for (let i = 0; i < this.campaign.images.gallery.length; i++) {
                     images.push(this.campaign.images.gallery[i])

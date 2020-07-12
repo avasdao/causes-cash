@@ -91,10 +91,12 @@ export default {
             const summary = this.campaign.summary
 
             /* Validate summary. */
-            if (summary.slice(0, 2) === 'Qm' && summary.length === 46) {
+            if (summary && summary.slice(0, 2) === 'Qm' && summary.length === 46) {
                 target = summary
-            } else {
+            } else if (summary) {
                 body = summary
+            } else {
+                body = 'no campaign summary found'
             }
 
             /* Build (summary) package. */
@@ -118,10 +120,12 @@ export default {
             const description = this.campaign.description
 
             /* Validate description. */
-            if (description.slice(0, 2) === 'Qm' && description.length === 46) {
+            if (description && description.slice(0, 2) === 'Qm' && description.length === 46) {
                 target = description
-            } else {
+            } else if (description) {
                 body = description
+            } else {
+                body = 'no campaign description found'
             }
 
             /* Build (description) package. */
@@ -134,8 +138,6 @@ export default {
 
             /* Request (description) update. */
             this.updateAsset(pkg)
-
-            console.log();
         },
 
     },

@@ -31,16 +31,18 @@
 
                     <div class="field">
                         <label for="title">
-                            Title
+                            Campaign Title
                         </label>
 
-                        <span class="label-desc">What is the title of your campaign?</span>
+                        <span class="label-desc">
+                            What is the title of your campaign?
+                        </span>
 
                         <input
                             type="text"
                             id="title"
                             name="title"
-                            placeholder="The Unstoppable Campaign"
+                            placeholder="Bitcoin Killer App"
                             v-model="title"
                             @keyup="titleValidation($event)"
                          />
@@ -55,18 +57,40 @@
                     </div>
 
                     <div class="field">
-                        <label for="ccat">
-                            Category
+                        <label for="model">
+                            Funding Model
                         </label>
 
-                        <span class="label-desc">To help backers find your campaign, select a category that best represents your campaign.</span>
+                        <span class="label-desc">
+                            Please choose from 1 of 3 funding models.
+                            How do you want to receive your donations?
+                        </span>
 
                         <div class="field-select">
-                            <select v-model="category">
+                            <select id="model" v-model="model">
+                                <option value="">Select a Campaign Type</option>
+                                <option value="direct">Direct Payment</option>
+                                <option value="assurance">Community Pledge</option>
+                                <option value="payouts">Daily Payouts</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="category">
+                            Campaign Category
+                        </label>
+
+                        <span class="label-desc">
+                            To help backers find your campaign, select a category that best represents your campaign.
+                        </span>
+
+                        <div class="field-select">
+                            <select id="category" v-model="category">
                                 <option value="">Select a Category</option>
                                 <option value="adoption">Adoption</option>
                                 <option value="community">Community</option>
-                                <option value="dapps">DApps</option>
+                                <option value="dapp">Decentralized Apps</option>
                                 <option value="design-art">Design & Art</option>
                                 <option value="education">Education</option>
                                 <option value="film-video">Film & Video</option>
@@ -85,21 +109,9 @@
                         </div>
                     </div>
 
-                    <!-- <div class="field">
-                        <label for="campaigndesc">
-                            Summary
-                        </label>
-
-                        <span class="label-desc">
-                            Provide a short summary (500 characters or less) that best describes your campaign to your audience.
-                        </span>
-
-                        <textarea rows="4" v-model="summary" placeholder="Enter a brief summary of your campaign"></textarea>
-                    </div> -->
-
                     <div class="field clearfix">
-                        <label for="clocation">
-                            Primary Residence
+                        <label for="location">
+                            Primary Location
                             <a href="javascript://" class="view-residence">(why do we ask for this?)</a>
                         </label>
 
@@ -107,7 +119,7 @@
 
                         <div class="field">
                             <div class="field-select">
-                                <select v-model="location">
+                                <select id="location" v-model="location">
                                     <option value="">Select Your Campaign's Residence</option>
                                     <option value="Worldwide">Worldwide</option>
                                     <option value="">------------------------------</option>
@@ -399,7 +411,9 @@
                         </div>
                     </div>
 
-                    <button @click="createNew" class="btn-primary">Save &amp; Launch</button>
+                    <button @click="createNew" class="btn-primary">
+                        Create My New Campaign
+                    </button>
                 </form>
             </div>
         </section>
@@ -431,7 +445,7 @@ export default {
 
             title: null,
             category: null,
-            // summary: null,
+            model: null,
             location: null,
         }
     },
@@ -470,15 +484,15 @@ export default {
                 return alert('Enter a title')
             }
 
+            // /* Validate model. */
+            if (!this.model) {
+                return alert('Enter a model')
+            }
+
             /* Validate category. */
             if (!this.category) {
                 return alert('Enter a category')
             }
-
-            // /* Validate summary. */
-            // if (!this.summary) {
-            //     return alert('Enter a summary')
-            // }
 
             /* Validate location. */
             if (!this.location) {
@@ -489,8 +503,8 @@ export default {
                 campaignId: 'NEW',
                 slug: this.slug,
                 title: this.title,
+                model: this.model,
                 category: this.category,
-                // summary: this.summary,
                 owner: {
                     slug: this.ownerSlug,
                 },

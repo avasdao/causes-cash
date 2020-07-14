@@ -41,7 +41,6 @@
                         <input
                             type="text"
                             id="title"
-                            name="title"
                             placeholder="Bitcoin Killer App"
                             v-model="title"
                             @keyup="titleValidation($event)"

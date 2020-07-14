@@ -18,10 +18,6 @@
                                 <a href="javascript://">Budget</a>
                             </li>
 
-                            <!-- <li data-tab="events">
-                                <a href="javascript://">Events</a>
-                            </li> -->
-
                             <li data-tab="faq">
                                 <a href="javascript://">FAQ</a>
                             </li>
@@ -36,7 +32,6 @@
                             <Story :campaign="campaign" />
                             <Backers :campaign="campaign" />
                             <Budget :campaign="campaign" />
-                            <!-- <Events :campaign="campaign" /> -->
                             <FAQ :campaign="campaign" />
                             <News :campaign="campaign" />
                         </div>
@@ -55,12 +50,8 @@ import Backers from './History/Backers'
 import Budget from './History/Budget'
 import Events from './History/Events'
 import FAQ from './History/FAQ'
-// import Funds from './History/Funds'
 import News from './History/News'
 import Story from './History/Story'
-
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
 
 /* Import jQuery. */
 // FIXME: Remove ALL jQuery dependencies.
@@ -75,7 +66,6 @@ export default {
         Budget,
         Events,
         FAQ,
-        // Funds,
         News,
         Story,
     },

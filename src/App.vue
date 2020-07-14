@@ -447,4 +447,20 @@ section .container {
 button {
     cursor: pointer;
 }
+
+.btn-danger {
+    background-color: #dc3545;
+    padding: 0 20px;
+    border-radius: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    height: 46px;
+    line-height: 46px;
+    border: none;
+    display: inline-block;
+}
+/* .btn-danger:hover{
+    background: #08aded;
+    background-color: #0094d2;
+} */
 </style>

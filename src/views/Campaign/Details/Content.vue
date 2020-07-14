@@ -23,7 +23,31 @@
 					</div>
 
                     <div class="campaign-box">
-						<a href="javascript://" class="category">{{category}}</a>
+                        <div class="share">
+                            <ul>
+                                <li class="share-twitter">
+                                    <a href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                </li>
+
+                                <li class="share-google-plus">
+                                    <a href="javascript://"><i class="fa fa-reddit" aria-hidden="true"></i></a>
+                                </li>
+
+                                <!-- <li class="share-facebook">
+                                    <a href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                </li> -->
+
+                                <!-- <li class="share-linkedin">
+                                    <a href="javascript://"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                                </li> -->
+
+                                <li class="share-code">
+                                    <a href="javascript://"><i class="fa fa-code" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <a href="javascript://" class="category">{{category}}</a>
 
                         <h3>{{title}}</h3>
 
@@ -39,8 +63,9 @@
 							</div>
 
                             <div class="author-address">
-                                <span class="ion-location"></span>
-                                {{campaignType}}
+                                <i v-if="campaignModel == 'Community Pledge'" class="fa fa-users" aria-hidden="true"></i>
+                                <i v-if="campaignModel == 'Unknown campaign type'" class="fa fa-question" aria-hidden="true"></i>
+                                {{campaignModel}}
                             </div>
 						</div>
 
@@ -68,83 +93,21 @@
 							</div>
 						</div>
 
-                        <div class="share">
-                            <!-- <p>
-                                Share this project <em class="text-muted">(auto affiliate links)</em>
-                            </p> -->
-
-                            <ul>
-                                <li class="share-twitter">
-                                    <a href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                </li>
-
-                                <li class="share-google-plus">
-                                    <a href="javascript://"><i class="fa fa-reddit" aria-hidden="true"></i></a>
-                                </li>
-
-                                <!-- <li class="share-facebook">
-                                    <a href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                </li> -->
-
-                                <!-- <li class="share-linkedin">
-                                    <a href="javascript://"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                </li> -->
-
-                                <li class="share-code">
-                                    <a href="javascript://"><i class="fa fa-code" aria-hidden="true"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="button">
-                            <a href="javascript://" class="btn-primary view-pledge">
+                        <div v-if="showActions" class="button">
+                            <a href="javascript://" class="btn-primary" @click="showBacking">
                                 Back this Campaign
                             </a>
 
-                            <a href="javascript://" class="btn-secondary">
+                            <a href="javascript://" class="btn-secondary" @click="showActions = false; showReminder = true">
                                 <i class="fa fa-heart" aria-hidden="true"></i>
                                 Remind me
                             </a>
-
-                            <div class="spopup-bg"></div>
-
-                            <div class="pledge-popup start-popup">
-                                <div class="spopup-title">
-                                    <h3>{{title}}</h3>
-
-                                    <div class="spopup-close">
-                                        <span class="ion-ios-close-empty"></span>
-                                    </div>
-                                </div>
-
-                                <div class="spopup-content">
-                                    <div class="qr-code text-center" v-html="qr" />
-
-                                    <ul>
-                                        <li>
-                                            <h4>Please <i class="fa fa-heart text-danger"></i> and support our cause <i class="fa fa-arrow-down"></i></h4>
-                                            <a :href="'https://explorer.bitcoin.com/bch/address/' + pledgeAddress" target="_blank"><strong>{{pledgeAddress}}</strong></a>
-                                        </li>
-
-                                        <hr />
-
-                                        <li>
-                                            <h4>Payment processing fees</h4>
-
-                                            <div class="fee-desc">
-                                                <p>
-                                                    3% + €0.20 per pledge
-                                                </p>
-
-                                                <p>
-                                                    Pledges under €10 have a discounted micropledge fee of 5% + €0.05 per pledge
-                                                </p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
 						</div>
+
+                        <Reminder v-if="showReminder" @cancel="showReminder = false; showActions = true" />
+                        <Direct v-if="showDirect" @cancel="showDirect = false; showActions = true" />
+                        <Assurance v-if="showAssurance" @cancel="showAssurance = false; showActions = true" />
+                        <Payouts v-if="showPayouts" @cancel="showPayouts = false; showActions = true" />
 
 					</div>
 				</div>
@@ -162,16 +125,33 @@ import DOMPurify from 'dompurify'
 import QRCode from 'qrcode'
 import showdown from 'showdown'
 
+/* Import components. */
+import Assurance from './Content/Assurance'
+import Direct from './Content/Direct'
+import Payouts from './Content/Payouts'
+import Reminder from './Content/Reminder'
+
 /* Import jQuery. */
 // FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
 
+/**
+ * Make Pages
+ *
+ * Creates thumbnail images under the main photo.
+ */
 function makePages() {
     $.each(this.owl.userItems, function (i) {
         $('.owl-controls .owl-page').eq(i)
         .css({
             'background': 'url(' + $(this).find('img').attr('src') + ')',
             'background-size': 'cover',
+            // 'padding': '5px',
+            'margin': '5px',
+            'width': '180px',
+            'border': '1pt solid rgba(90, 90, 90, 0.2)',
+            '-moz-border-radius': '10px',
+            '-webkit-border-radius': '10px',
         })
     })
 }
@@ -181,11 +161,22 @@ export default {
         campaign: Object,
     },
     components: {
-        // Summary,
+        Assurance,
+        Direct,
+        Payouts,
+        Reminder,
     },
     data: () => {
         return {
-            //
+            pledgeAmount: null,
+            name: null,
+            comment: null,
+
+            showActions: null,
+            showReminder: null,
+            showDirect: null,
+            showAssurance: null,
+            ShowPayouts: null,
         }
     },
     watch: {
@@ -194,7 +185,7 @@ export default {
                 /* Wait a tick. */
                 setTimeout(() => {
                     $("#campaign-gallery").owlCarousel({
-                        navigation: true,
+                        // navigation: true,
                         navigationText: [
                             '<span class="ion-ios-arrow-back"></span>',
                             '<span class="ion-ios-arrow-forward"></span>'
@@ -220,6 +211,9 @@ export default {
             'getMarkdown',
         ]),
 
+        /**
+         * Category
+         */
         category() {
             if (this.campaign && this.campaign.category) {
                 switch(this.campaign.category) {
@@ -265,30 +259,22 @@ export default {
             }
         },
 
-        campaignType() {
-            /* Validate campaign funds. */
-            if (!this.campaign || !this.campaign.funds) {
+        /**
+         * Campaign Model
+         */
+        campaignModel() {
+            /* Validate campaign model. */
+            if (!this.campaign || !this.campaign.model) {
                 return null
             }
 
-            /* Initialize type. */
-            let type = null
+            /* Set model. */
+            const model = this.campaign.model
 
-            /* Set pledge type. */
-            if (this.fundId) {
-                type = this.campaign.funds[this.fundId].type
-            } else {
-                const defaultId = Object.keys(this.campaign.funds).find(fundId => {
-                    return this.campaign.funds[fundId].isDefault === true
-                })
-
-                /* Set default fund type. */
-                type = this.campaign.funds[defaultId].type
-            }
-
-            if (type) {
+            /* Validate model. */
+            if (model) {
                 /* Handle campaign type. */
-                switch(type) {
+                switch(model) {
                 case 'direct':
                     return 'Direct Cash'
                 case 'assurance':
@@ -303,25 +289,22 @@ export default {
             }
         },
 
+        /**
+         * Title
+         */
         title() {
             /* Validate campaign funds. */
-            if (!this.campaign || !this.campaign.funds) {
+            if (!this.campaign || !this.campaign.title) {
                 return null
             }
 
-            /* Return pledge title. */
-            if (this.fundId) {
-                return this.campaign.funds[this.fundId].title
-            } else {
-                const defaultId = Object.keys(this.campaign.funds).find(fundId => {
-                    return this.campaign.funds[fundId].isDefault === true
-                })
-
-                /* Return default fund title. */
-                return this.campaign.funds[defaultId].title
-            }
+            /* Return campaign title. */
+            return this.campaign.title
         },
 
+        /**
+         * Summary
+         */
         summary() {
             /* Validate campaign. */
             if (!this.campaign) {
@@ -347,6 +330,11 @@ export default {
             }
         },
 
+        /**
+         * Pledge Address
+         *
+         * For direct donations from funders.
+         */
         pledgeAddress() {
             /* Validate campaign funds. */
             if (!this.campaign || !this.campaign.funds) {
@@ -366,6 +354,11 @@ export default {
             }
         },
 
+        /**
+         * QR Code
+         *
+         * Used with direct donations.
+         */
         qr() {
             if (!this.pledgeAddress) {
                 return null
@@ -398,6 +391,9 @@ export default {
             return strValue
         },
 
+        /**
+         * Owner Label
+         */
         ownerLabel() {
             if (this.campaign && this.campaign.owner.label) {
                 return this.campaign.owner.label
@@ -406,6 +402,9 @@ export default {
             }
         },
 
+        /**
+         * Owner Avatar
+         */
         ownerAvatar() {
             if (this.campaign && this.campaign.owner.avatar) {
                 return this.campaign.owner.avatar
@@ -414,6 +413,9 @@ export default {
             }
         },
 
+        /**
+         * Images
+         */
         images() {
             /* Validate campaign. */
             if (!this.campaign) {
@@ -442,6 +444,85 @@ export default {
             /* Return images. */
             return images
         },
+
+        /**
+         * Details
+         */
+        details() {
+            if (!this.campaign || !this.campaign.model) {
+                return null
+            }
+
+            /* Set model. */
+            const model = this.campaign.model
+
+            if (model === 'assurance') {
+                return JSON.stringify(this.campaign.assurance, null, 2)
+            }
+
+            return null
+        },
+
+        /**
+         * Satoshis
+         */
+        satoshis() {
+            if (!this.campaign || !this.campaign.model) {
+                return 0
+            }
+
+            /* Set model. */
+            const model = this.campaign.model
+
+            if (model === 'assurance') {
+                return this.campaign.assurance.recipients[0].satoshis
+            }
+
+            return 0
+        },
+
+        /**
+         * Address
+         */
+        address() {
+            if (!this.campaign || !this.campaign.model) {
+                return 0
+            }
+
+            /* Set model. */
+            const model = this.campaign.model
+
+            if (model === 'assurance') {
+                return this.campaign.assurance.recipients[0].address
+            }
+
+            return 0
+        },
+
+        /**
+         * Pledge
+         *
+         * Used by community pledges.
+         */
+        pledge() {
+            const json = {
+                outputs: [{
+                    value: this.satoshis,
+                    address: this.address
+                }],
+                data: {
+                    alias: this.name,
+                    comment: this.comment
+                },
+                donation: {
+                    amount: this.pledgeAmount
+                },
+                expires: 1596168000
+            }
+
+            return Buffer.from(JSON.stringify(json)).toString('base64')
+        },
+
     },
     methods: {
         /**
@@ -485,32 +566,41 @@ export default {
             // return sanitized
             return sanitized
         },
+
+        /**
+         * Show Backing
+         */
+        showBacking() {
+            /* Hide actions. */
+            this.showActions = false
+
+            this.showAssurance = true
+        },
+
     },
     created: function () {
-        //
+        /* Initialize flag. */
+        this.showActions = true
+
+        /* Initialize pledge amount. */
+        this.pledgeAmount = 0
     },
     mounted: function () {
-        $('.view-pledge').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().parent().find('.spopup-bg').fadeIn()
-			$(this).parent().parent().find('.pledge-popup').fadeIn()
-		})
-		$('.spopup-bg').on('click', function (e) {
-			e.preventDefault()
-			$(this).fadeOut()
-			$(this).parent().find('.pledge-popup').fadeOut()
-			$(this).parent().find('.item-popup').fadeOut()
-		})
-		$('.spopup-close').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().parent().fadeOut()
-			$(this).parent().parent().parent().find('.spopup-bg').fadeOut()
-		})
+        //
     }
 }
 </script>
 
 <style scoped>
+.campaign-slider .item img {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    border: 1pt solid rgba(90, 90, 90, 0.2);
+}
+
 .qr-code {
     /* margin: 0 0 10px 10px; */
     /* margin: 20px auto; */
@@ -523,5 +613,14 @@ export default {
     float: right;
     margin: 0;
     padding: 0;
+}
+
+.pledge {
+    width: 100%;
+    height: 100px;
+}
+
+.name, .comment {
+    width: 100%;
 }
 </style>

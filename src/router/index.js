@@ -65,9 +65,9 @@ const routes = [{
     path: '/@*/create',
     component: CampaignCreate
 }, {
-    // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e/manage
+    // eg. https://causes.cash/@BCHPlease/nito-cash/manage
     // NOTE: Avoid other wildcard conflicts.
-    path: '/@*/:extSlug/manage',
+    path: '/@*/:slug/manage',
     component: CampaignManage
 }, {
     // eg. https://causes.cash/@BCHPlease/nito-cash-8680bb0e

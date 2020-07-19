@@ -68,7 +68,7 @@ const getSignedMessage = (state, getters, rootState, rootGetters) => (_message) 
         signature,
         nonce,
     }
-    console.log('GET SIGNED MESSAGE (pkg):', pkg)
+    // console.log('GET SIGNED MESSAGE (pkg):', pkg)
 
     /* Return signature package. */
     return pkg

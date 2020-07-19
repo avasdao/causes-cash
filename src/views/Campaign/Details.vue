@@ -142,9 +142,9 @@ export default {
 
     },
     created: async function () {
-        console.log('PARAMS', this.$route.params);
-        console.log('QUERY', this.$route.query);
-        console.log('HASH', this.$route.hash);
+        console.log('PARAMS', this.$route.params)
+        console.log('QUERY', this.$route.query)
+        console.log('HASH', this.$route.hash)
 
         /* Set owner slug. */
         this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
@@ -183,14 +183,11 @@ export default {
             console.log('REFERRER ID', this.referrerId)
 
             /* Set campaign. */
-            console.log('REQUESTING CAMPAIGN');
             this.campaign = await this.getCampaign(this.ownerSlug, this.slug)
-            console.log('CAMPAIGN RESULTS', this.campaign);
+            console.log('CAMPAIGN', this.campaign)
 
             /* Set referrer id (to campaign). */
             this.campaign.referrerId = this.referrerId
-
-            console.log('CAMPAIGN', this.campaign)
 
             /* Update assets. */
             this.updateAssets()

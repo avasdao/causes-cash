@@ -323,30 +323,6 @@ export default {
 			$(this).addClass('active')
 			$("#"+tab_id).addClass('active')
 		})
-		var toolbarOptions = [
-            ['bold'],        // toggled buttons
-
-            [{ 'size': [false, 'large', 'huge'] }],  // custom dropdown
-            [ 'link' ],
-            [ 'image' ],
-            [ 'video' ],
-            ['clean'],
-        ]
-		// var quill = new window.Quill('#editor', {
-		new window.Quill('#editor', {
-            modules: {
-                toolbar: toolbarOptions,
-            },
-            formats: [
-                'bold',
-                'size',
-                'link',
-                'image',
-                'video',
-                'clean',
-            ],
-            theme: 'snow'
-		})
 		$('.create-perk').on('click', function (e) {
 			e.preventDefault()
 			$(this).parent().fadeOut(0)

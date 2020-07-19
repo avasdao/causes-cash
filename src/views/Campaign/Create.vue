@@ -524,7 +524,7 @@ export default {
                 // this.summary = null
                 this.location = null
 
-                alert('New Campaign Created Successfully!')
+                alert('New campaign created successfully!')
             }
         },
 

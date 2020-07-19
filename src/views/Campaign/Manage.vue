@@ -42,7 +42,7 @@
                         <li data-tab="funds" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/award.svg" alt=""></span>
-                                <p>Funds</p>
+                                <p>Finances</p>
                             </a>
                         </li>
 
@@ -61,16 +61,16 @@
                         </li>
 
                         <li>
-                            <a href="javascript://">
+                            <a href="http://localhost:8080/#/@bchplease/mecenas-oracle-audit-66477a47" target="_blank">
                                 <span><img src="@/assets/img/eye-17.svg" alt=""></span>
-                                <p>Preview</p>
+                                <p>Live View</p>
                             </a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
                         <General />
-                        <Funds />
+                        <Finances />
                         <Story />
                         <Social />
                         <Messages />
@@ -88,7 +88,7 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
-import Funds from './Manage/Funds.vue'
+import Finances from './Manage/Finances.vue'
 import General from './Manage/General.vue'
 import Messages from './Manage/Messages.vue'
 import Social from './Manage/Social.vue'
@@ -99,7 +99,7 @@ export default {
         Footer,
         Header,
 
-        Funds,
+        Finances,
         General,
         Messages,
         Social,
@@ -107,7 +107,7 @@ export default {
     },
     data: () => {
         return {
-            extSlug: null,
+            slug: null,
         }
     },
     computed: {
@@ -118,9 +118,9 @@ export default {
 
     },
     created: function () {
-        /* Set campaign extended slug. */
-        this.extSlug = this.$route.params.extSlug
-        console.log('EXTENDED SLUG', this.extSlug)
+        /* Set campaign slug. */
+        this.slug = this.$route.params.slug
+        console.log('SLUG', this.slug)
 
     },
     mounted: function () {

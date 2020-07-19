@@ -176,7 +176,7 @@ export default {
             showReminder: null,
             showDirect: null,
             showAssurance: null,
-            ShowPayouts: null,
+            showPayouts: null,
         }
     },
     watch: {

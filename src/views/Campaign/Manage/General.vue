@@ -12,7 +12,7 @@
                             Your profile name will be searchable, too.
                         </span>
 
-                        <input type="text" id="projecttitle" value="" maxlength="60">
+                        <input type="text" id="projecttitle" v-model="title" maxlength="60" disabled>
                     </div>
 
                     <div class="field">
@@ -65,7 +65,7 @@
                             Project Location
                         </label>
 
-                        <input type="text" id="projectlocation">
+                        <input type="text" id="projectlocation" v-model="location">
                     </div>
 
                     <div class="field">
@@ -130,74 +130,6 @@
                     </div>
 
                     <div class="field">
-                        <label for="uploadfile">Campaign Image *</label>
-
-                        <span class="label-desc">Upload a square image that represents your campaign. 570 x 350 recommended resolution.</span>
-
-                        <div class="list-upload">
-                            <div class="file-upload">
-                                <div class="upload-bg">
-                                    <div id="myfileupload">
-                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
-                                    </div>
-
-                                    <div id="thumbbox">
-                                        <img src="images/assets/logo.png" height="100" width="100" alt="Thumb image" id="thumbimage" />
-                                        <a class="removeimg" href="javascript:"></a>
-                                    </div>
-
-                                    <div id="boxchoice">
-                                        <a href="javascript:" class="choicefile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                        <p></p>
-                                    </div>
-
-                                    <label class="filename"></label>
-                                </div>
-                            </div>
-
-                            <div class="file-upload">
-                                <div class="upload-bg">
-                                    <div id="myfileupload1">
-                                        <input type="file" id="uploadfile1" name="ImageUpload" onchange="readURL1(this);" />
-                                    </div>
-
-                                    <div id="thumbbox1">
-                                        <img src="images/assets/logo.png" height="100" width="100" alt="Thumb image" id="thumbimage1" />
-                                        <a class="removeimg1" href="javascript:"></a>
-                                    </div>
-
-                                    <div id="boxchoice1">
-                                        <a href="javascript:" class="choicefile1"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                        <p></p>
-                                    </div>
-
-                                    <label class="filename1"></label>
-                                </div>
-                            </div>
-
-                            <div class="file-upload">
-                                <div class="upload-bg">
-                                    <div id="myfileupload2">
-                                        <input type="file" id="uploadfile2" name="ImageUpload" onchange="readURL2(this);" />
-                                    </div>
-
-                                    <div id="thumbbox2">
-                                        <img src="images/assets/logo.png" height="100" width="100" alt="Thumb image" id="thumbimage2" />
-                                        <a class="removeimg2" href="javascript:"></a>
-                                    </div>
-
-                                    <div id="boxchoice2">
-                                        <a href="javascript:" class="choicefile2"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                        <p></p>
-                                    </div>
-
-                                    <label class="filename2"></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field">
                         <label for="tag">Tags *</label>
                         <span class="label-desc">Enter up to five keywords that best describe your campaign.</span>
                         <input type="text" id="tag" value="" name="title" placeholder="Enter a few tags for your campaign" />
@@ -221,6 +153,9 @@
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapActions, mapGetters } from 'vuex'
+
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
@@ -228,6 +163,81 @@ const $ = window.jQuery
 export default {
     components: {
         //
+    },
+    data: () => {
+        return {
+            ownerSlug: null,
+            slug: null,
+            extSlug: null,
+
+            campaign: null,
+            campaignId: null,
+            // fundId: null,
+            // referrerId: null,
+        }
+    },
+    computed: {
+        ...mapGetters('campaigns', [
+            'getAsset',
+            'getCampaign',
+        ]),
+
+        title() {
+            if (this.campaign && this.campaign.title) {
+                return this.campaign.title
+            } else {
+                return null
+            }
+        },
+
+        location() {
+            if (this.campaign && this.campaign.location) {
+                return this.campaign.location
+            } else {
+                return null
+            }
+        },
+
+    },
+    methods: {
+        ...mapActions('campaigns', [
+            'updateAsset',
+        ]),
+
+    },
+    created: async function () {
+        console.log('PARAMS', this.$route.params)
+        console.log('QUERY', this.$route.query)
+        console.log('HASH', this.$route.hash)
+
+        /* Set owner slug. */
+        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
+        console.log('OWNER SLUG', this.ownerSlug)
+
+        /* Set extended slug. */
+        this.slug = this.$route.params.slug
+        console.log('SLUG', this.slug)
+
+        /* Validate hash. */
+        // if (this.$route.hash) {
+        //     /* Set extended slug. */
+        //     this.fundId = this.$route.hash.slice(1)
+        //     console.log('FUND ID (from hash)', this.fundId)
+        // }
+
+        /* Validate query. */
+        // if (this.$route.query && Object.keys(this.$route.query)[0]) {
+        //     /* Set extended slug. */
+        //     this.fundId = Object.keys(this.$route.query)[0]
+        //     console.log('FUND ID (from query)', this.fundId)
+        // }
+
+        /* Validate slug. */
+        if (this.ownerSlug && this.slug) {
+            /* Set campaign. */
+            this.campaign = await this.getCampaign(this.ownerSlug, this.slug)
+            console.log('CAMPAIGN', this.campaign)
+        }
     },
     mounted: function () {
         $('.view-fees').on('click', function (e) {

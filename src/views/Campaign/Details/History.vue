@@ -18,6 +18,10 @@
                                 <a href="javascript://">Budget</a>
                             </li>
 
+                            <li data-tab="expenses">
+                                <a href="javascript://">Expenses</a>
+                            </li>
+
                             <li data-tab="faq">
                                 <a href="javascript://">FAQ</a>
                             </li>
@@ -32,6 +36,7 @@
                             <Story :campaign="campaign" />
                             <Backers :campaign="campaign" />
                             <Budget :campaign="campaign" />
+                            <Expenses :campaign="campaign" />
                             <FAQ :campaign="campaign" />
                             <News :campaign="campaign" />
                         </div>
@@ -49,6 +54,7 @@
 import Backers from './History/Backers'
 import Budget from './History/Budget'
 import Events from './History/Events'
+import Expenses from './History/Expenses'
 import FAQ from './History/FAQ'
 import News from './History/News'
 import Story from './History/Story'
@@ -65,6 +71,7 @@ export default {
         Backers,
         Budget,
         Events,
+        Expenses,
         FAQ,
         News,
         Story,

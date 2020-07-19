@@ -5,7 +5,7 @@
                 <div class="start-form">
                     <div class="reward-top">
                         <h2 class="reward-title">
-                            Default Fund
+                            Finances
                         </h2>
 
                         <a href="javascript://" class="reward-delete">

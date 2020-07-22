@@ -20,8 +20,8 @@
                     <ul class="nav nav-tabs process-model more-icon-preocess" role="tablist">
                         <li>
                             <a href="javascript://">
-                                <span><img src="@/assets/img/log-out.svg" alt=""></span>
-                                <p>Cancel</p>
+                                <span><img class="img-button" src="@/assets/img/magic.svg" alt=""></span>
+                                <p>Create New</p>
                             </a>
                         </li>
 
@@ -39,41 +39,41 @@
                             </a>
                         </li>
 
+                        <li data-tab="rewards" class="pm-option">
+                            <a href="javascript://">
+                                <span><img src="@/assets/img/alert-circle-i.svg" alt=""></span>
+                                <p>Rewards</p>
+                            </a>
+                        </li>
+
                         <li data-tab="funds" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/award.svg" alt=""></span>
-                                <p>Finances</p>
+                                <p>Financial</p>
                             </a>
                         </li>
 
                         <li data-tab="social" class="pm-option">
                             <a href="javascript://">
-                                <span><img src="@/assets/img/alert-circle-i.svg" alt=""></span>
+                                <span><img src="@/assets/img/single-02.svg" alt=""></span>
                                 <p>Social</p>
                             </a>
                         </li>
 
-                        <li data-tab="messages" class="pm-option">
-                            <a href="javascript://">
-                                <span><img src="@/assets/img/single-02.svg" alt=""></span>
-                                <p>Messages</p>
-                            </a>
-                        </li>
-
                         <li>
-                            <a href="http://localhost:8080/#/@bchplease/mecenas-oracle-audit-66477a47" target="_blank">
+                            <a :href="liveUrl" target="_blank">
                                 <span><img src="@/assets/img/eye-17.svg" alt=""></span>
-                                <p>Live View</p>
+                                <p>Open Live</p>
                             </a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
                         <General />
-                        <Finances />
+                        <Financial />
                         <Story />
                         <Social />
-                        <Messages />
+                        <Rewards />
                     </div>
                 </div>
             </div>
@@ -88,9 +88,9 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
-import Finances from './Manage/Finances.vue'
+import Financial from './Manage/Financial.vue'
 import General from './Manage/General.vue'
-import Messages from './Manage/Messages.vue'
+import Rewards from './Manage/Rewards.vue'
 import Social from './Manage/Social.vue'
 import Story from './Manage/Story.vue'
 
@@ -99,14 +99,15 @@ export default {
         Footer,
         Header,
 
-        Finances,
+        Financial,
         General,
-        Messages,
+        Rewards,
         Social,
         Story,
     },
     data: () => {
         return {
+            liveUrl: null,
             slug: null,
         }
     },
@@ -118,9 +119,17 @@ export default {
 
     },
     created: function () {
+        /* Set owner slug. */
+        this.ownerSlug = this.$route.params.pathMatch
+        // console.log('OWNER SLUG', this.ownerSlug)
+
         /* Set campaign slug. */
         this.slug = this.$route.params.slug
-        console.log('SLUG', this.slug)
+        // console.log('SLUG', this.slug)
+
+        /* Set live URL. */
+        // FOR DEVELOPMENT ONLY
+        this.liveUrl = `http://localhost:8080/#/@${this.ownerSlug}/${this.slug}-null`
 
     },
     mounted: function () {
@@ -130,5 +139,19 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.img-button {
+    width: 28px;
+    height: 28px;
+    color: white;
+}
+
+/* @media screen and (min-width: 576px) { */
+@media screen and (min-width: 767px) {
+    .img-button {
+        width: 48px;
+        height: 48px;
+        color: white;
+    }
+}
+
 </style>

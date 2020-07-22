@@ -504,9 +504,7 @@ export default {
                 title: this.title,
                 model: this.model,
                 category: this.category,
-                owner: {
-                    slug: this.ownerSlug,
-                },
+                owner: this.ownerSlug,
                 location: this.location,
             }
 
@@ -521,7 +519,6 @@ export default {
             if (result.ok && !result.error) {
                 this.title = null
                 this.category = null
-                // this.summary = null
                 this.location = null
 
                 alert('New campaign created successfully!')

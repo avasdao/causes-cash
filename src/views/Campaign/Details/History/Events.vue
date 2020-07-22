@@ -1,7 +1,9 @@
 <template>
     <div class="col-lg-4">
         <div class="support support-campaign">
-            <h3 class="support-campaign-title">Campaign Events</h3>
+            <h3 class="support-campaign-title">
+                <span class="text-danger">LIVE</span> Events Timeline
+            </h3>
 
             <!-- <p class="campaignTypeDesc">
                 All events are placed into escrow to be withdrawn based on the preset terms of the DRIPP campaign.

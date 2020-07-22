@@ -181,7 +181,7 @@ export default {
     },
     watch: {
         campaign: function (_campaign) {
-            if (_campaign && _campaign.images) {
+            if (_campaign && _campaign.media) {
                 /* Wait a tick. */
                 setTimeout(() => {
                     $("#campaign-gallery").owlCarousel({
@@ -426,15 +426,15 @@ export default {
             const images = []
 
             /* Validate main image. */
-            if (this.campaign.images && this.campaign.images.main) {
-                images.push(this.campaign.images.main)
+            if (this.campaign.media && this.campaign.media.main) {
+                images.push(this.campaign.media.main)
             }
 
             // /* Validate gallery images. */
-            if (this.campaign.images && this.campaign.images.gallery) {
+            if (this.campaign.media && this.campaign.media.gallery) {
                 let max = 2
-                for (let i = 0; i < this.campaign.images.gallery.length; i++) {
-                    images.push(this.campaign.images.gallery[i])
+                for (let i = 0; i < this.campaign.media.gallery.length; i++) {
+                    images.push(this.campaign.media.gallery[i])
 
                     // FIXME: Increase the maximum gallery size.
                     if (i + 1 === max) break

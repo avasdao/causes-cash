@@ -1,6 +1,6 @@
 <template>
-    <div id="faq" class="tabs">
-        <h2>Frequently Asked Questions</h2>
+    <div id="guide" class="tabs">
+        <h2>Campaign Guide</h2>
 
         <p>
             Looks like there aren't any frequently asked questions yet.

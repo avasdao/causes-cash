@@ -14,20 +14,16 @@
                                 <a href="javascript://">Backers</a>
                             </li>
 
-                            <li data-tab="budget">
-                                <a href="javascript://">Budget</a>
-                            </li>
-
-                            <li data-tab="expenses">
-                                <a href="javascript://">Expenses</a>
-                            </li>
-
-                            <li data-tab="faq">
-                                <a href="javascript://">FAQ</a>
+                            <li data-tab="financial">
+                                <a href="javascript://">Financial</a>
                             </li>
 
                             <li data-tab="news">
                                 <a href="javascript://">News</a>
+                            </li>
+
+                            <li data-tab="guide">
+                                <a href="javascript://">Guide</a>
                             </li>
                         </ul>
 
@@ -35,10 +31,9 @@
                         <div class="campaign-content">
                             <Story :campaign="campaign" />
                             <Backers :campaign="campaign" />
-                            <Budget :campaign="campaign" />
-                            <Expenses :campaign="campaign" />
-                            <FAQ :campaign="campaign" />
+                            <Financial :campaign="campaign" />
                             <News :campaign="campaign" />
+                            <Guide :campaign="campaign" />
                         </div>
                     </div>
                 </div>
@@ -52,10 +47,9 @@
 <script>
 /* Import components. */
 import Backers from './History/Backers'
-import Budget from './History/Budget'
 import Events from './History/Events'
-import Expenses from './History/Expenses'
-import FAQ from './History/FAQ'
+import Financial from './History/Financial'
+import Guide from './History/Guide'
 import News from './History/News'
 import Story from './History/Story'
 
@@ -69,10 +63,9 @@ export default {
     },
     components: {
         Backers,
-        Budget,
         Events,
-        Expenses,
-        FAQ,
+        Financial,
+        Guide,
         News,
         Story,
     },

@@ -1,5 +1,5 @@
 <template>
-    <div id="budget" class="tabs">
+    <div id="financial" class="tabs">
         <h1>Use of Funds</h1>
 
         <p>
@@ -25,6 +25,35 @@
                 </tr> -->
             </tbody>
         </table>
+
+        <hr />
+
+        <h1>Campaign Expenses</h1>
+
+        <p>
+            Every campaign has a fixed expenses that will be reported publicly.
+        </p>
+
+        <table>
+            <tbody>
+                <tr>
+                    <th>Label</th>
+                    <th>Amount</th>
+                    <th>Comments</th>
+                </tr>
+                <tr v-for="item of expenses" :key="item.txid">
+                    <td>{{item.label}}</td>
+                    <td>{{item.expensesAmount}}</td>
+                    <td>{{item.comments}}</td>
+                </tr>
+                <!-- <tr>
+                    <td>Andrew</td>
+                    <td>$80</td>
+                    <td>June 15, 2017</td>
+                </tr> -->
+            </tbody>
+        </table>
+
     </div>
 </template>
 
@@ -53,10 +82,10 @@ export default {
 </script>
 
 <style scoped>
-#budget table {
+#financial table {
   width: 100%;
 }
-#budget table tr th, #budget table tr td {
+#financial table tr th, #financial table tr td {
   border: 1px solid #ededed;
   padding: 15px;
 }

@@ -1,127 +1,132 @@
 <template>
     <div role="tabpanel" class="tab-pane" id="social">
-        <div class="start-form">
-            <form action="javascript://">
-                <div class="field">
-                    <label for="uploadfile">
-                        Project Image
-                    </label>
+        <section class="campaign-form form-update">
+            <div class="start-form">
+                <form action="javascript://">
+                    <div class="field">
+                        <label for="contactemail">News Article #1</label>
 
-                    <span class="label-desc">
-                        This is the first thing that people will see when they come across your project.
-                        Choose an image that’s crisp and text-free.
-                        <a href="javascript://">Here are some tips.</a>
-                    </span>
+                        <input type="email" id="contactemail" placeholder="Amazing Expose">
+                    </div>
 
-                    <div class="list-upload">
-                        <div class="file-upload">
-                            <div class="upload-bg">
-                                <div id="myfileupload">
-                                    <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" accept="image/*" />
+                    <div class="field">
+                        <span class="label-desc">
+                            Enter the account you’d like to use to receive funds if your project is successfully funded.
+                            The account should belong to the person or legal entity running this project.
+                            Once you launch, this information cannot be changed.
+                        </span>
+
+                        <div class="field-radio">
+                            <input type="radio" id="individual" name="fund">
+
+                            <label for="individual">Individual</label>
+                        </div>
+
+                        <div class="field-radio">
+                            <input type="radio" id="legal" name="fund">
+
+                            <label for="legal">Legal entity (company or organization)</label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="uploadfile">
+                            Project Image
+                        </label>
+
+                        <span class="label-desc">
+                            This is the first thing that people will see when they come across your project.
+                            Choose an image that’s crisp and text-free.
+                            <a href="javascript://">Here are some tips.</a>
+                        </span>
+
+                        <div class="list-upload">
+                            <div class="file-upload">
+                                <div class="upload-bg">
+                                    <div id="myfileupload">
+                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" accept="image/*" />
+                                    </div>
+
+                                    <div id="thumbbox">
+                                        <img src="images/assets/logo.png" height="695" width="460" alt="Thumb image" id="thumbimage" />
+                                        <a class="removeimg" href="javascript:"></a>
+                                    </div>
+
+                                    <div id="boxchoice">
+                                        <a href="javascript:" class="choicefile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
+                                        <p></p>
+                                    </div>
+
+                                    <label class="filename"></label>
                                 </div>
-
-                                <div id="thumbbox">
-                                    <img src="images/assets/logo.png" height="695" width="460" alt="Thumb image" id="thumbimage" />
-                                    <a class="removeimg" href="javascript:"></a>
-                                </div>
-
-                                <div id="boxchoice">
-                                    <a href="javascript:" class="choicefile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                    <p></p>
-                                </div>
-
-                                <label class="filename"></label>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- <div class="field">
-                    <label for="uploadfile2">Profile photo</label>
+                    <hr />
 
-                    <span class="label-desc">JPEG, PNG, GIF, or BMP • 50MB file limit</span>
+                    <div class="field">
+                        <label for="profilename">Facebook</label>
 
-                    <div class="list-upload">
-                        <div class="file-upload">
-                            <div class="upload-bg">
-                                <div id="myfileupload2">
-                                    <input type="file" id="uploadfile2" name="ImageUpload" onchange="readURL2(this);" accept="image/*" />
-                                </div>
+                        <span class="label-desc">
+                            Heads up: Once you launch a project, you cannot make changes to your name on Ideapress.
+                        </span>
 
-                                <div id="thumbbox2">
-                                    <img src="images/assets/logo.png" height="695" width="460" alt="Thumb image" id="thumbimage2" />
-                                    <a class="removeimg2" href="javascript:"></a>
-                                </div>
+                        <input type="text" id="profilename">
+                    </div>
 
-                                <div id="boxchoice2">
-                                    <a href="javascript:" class="choicefile2"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                    <p></p>
-                                </div>
+                    <div class="field">
+                        <label for="biography">Frequently Asked Questions (FAQ)</label>
 
-                                <label class="filename2"></label>
-                            </div>
+                        <textarea id="biography" cols="30" rows="4"></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>Websites</label>
+
+                        <span class="label-desc">
+                            Some suggestions: Link to your blog, portfolio, Twitter, Instagram, etc.
+                        </span>
+
+                        <input type="text">
+                    </div>
+
+                    <div class="start-box">
+                        <h4>Request help from the community</h4>
+
+                        <p>
+                            List the skills, resources, or expertise from others that could help enhance your project.
+                            If someone can contribute, they can start a dialogue directly from your project page.
+                        </p>
+
+                        <div class="field">
+                            <label for="projectneed">
+                                Project need (optional)
+                            </label>
+
+                            <textarea id="projectneed" cols="30" rows="3" placeholder="Painting the Sistine Chapel will require extravagant but cost-effective colors. Are you a color mixologist who'd like to help?"></textarea>
+                        </div>
+
+                        <div class="field">
+                            <label for="projectneed1">
+                                Project need (optional)
+                            </label>
+
+                            <textarea id="projectneed1" cols="30" rows="3" placeholder="Looking for an advanced belayer to hoist us up 68 feet. Otherwise, we’ll have to resort to rickety scaffolding and painting on our backs!"></textarea>
+                        </div>
+
+                        <div class="field">
+                            <label for="projectneed2">
+                                Project need (optional)
+                            </label>
+
+                            <textarea id="projectneed2" cols="30" rows="3" placeholder="Do you have experience with image projection onto rounded, uneven surfaces? Please get in touch!"></textarea>
                         </div>
                     </div>
-                </div> -->
 
-                <div class="field">
-                    <label for="profilename">Name</label>
-
-                    <span class="label-desc">
-                        Heads up: Once you launch a project, you cannot make changes to your name on Ideapress.
-                    </span>
-
-                    <input type="text" id="profilename">
-                </div>
-
-                <div class="field field-a">
-                    <label>Facebook Connect</label>
-
-                    <a href="javascript://" class="connect-fb">Connect to Facebook</a>
-
-                    <div class="fb-content">
-                        Connected to Facebook - <a href="javascript://">Disconnect</a>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label for="biography">Biography</label>
-
-                    <textarea id="biography" cols="30" rows="4"></textarea>
-                </div>
-
-                <div class="field">
-                    <label for="location">Your location</label>
-
-                    <input type="text" id="location">
-                </div>
-
-                <div class="field">
-                    <label>Websites</label>
-
-                    <span class="label-desc">
-                        Some suggestions: Link to your blog, portfolio, Twitter, Instagram, etc.
-                    </span>
-
-                    <input type="text">
-                </div>
-
-                <div class="field">
-                    <label for="google">
-                        Google Analytics
-                    </label>
-
-                    <span class="label-desc">
-                        Enter your tracking ID to enable Google Analytics for your project.
-                        <a href="javascript://">Check out our FAQ for more info.</a>
-                    </span>
-
-                    <input type="text" id="google" placeholder="UA-XXXXXXXX-X">
-                </div>
-
-                <input type="submit" class="btn-primary" value="Save & Continue">
-            </form>
-        </div>
+                </form>
+            </div>
+        </section>
     </div>
 </template>
 

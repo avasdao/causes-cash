@@ -85,42 +85,24 @@ export default {
         ]),
 
     },
-    created: async function () {
-        /* Set owner slug. */
-        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
-        // console.log('OWNER SLUG', this.ownerSlug)
+    created: function () {
+        /* Validate news. */
+        if (this.campaign && this.campaign.premium) {
+            /* Set summary. */
+            this.premium = this.campaign.premium
+            console.log('NEWS', this.premium)
 
-        /* Set extended slug. */
-        this.extSlug = this.$route.params.extSlug
-        // console.log('EXT SLUG', this.extSlug)
-
-        /* Validate slug. */
-        if (this.ownerSlug && this.extSlug) {
-            /* Set slug. */
-            const slug = this.extSlug.slice(0, this.extSlug.lastIndexOf('-'))
-
-            /* Set campaign. */
-            this.campaign = await this.getCampaign(this.ownerSlug, slug)
-            // console.log('NEWS (campaign):', this.campaign)
-
-            /* Validate premium. */
-            if (this.campaign && this.campaign.premium) {
-                /* Set summary. */
-                this.premium = this.campaign.premium
-                // console.log('NEWS', this.premium)
-
-                /* Add each premium item. */
-                this.premium.forEach(item => {
-                    this.items.push({
-                        id: item.id,
-                        title: item.title,
-                        summary: item.summary,
-                        avatar: item.avatar,
-                        url: item.url,
-                        createdAt: item.createdAt,
-                    })
+            /* Add each premium article. */
+            this.premium.forEach(premium => {
+                this.articles.push({
+                    id: premium.id,
+                    title: premium.title,
+                    summary: premium.summary,
+                    avatar: premium.avatar,
+                    url: premium.url,
+                    createdAt: premium.createdAt,
                 })
-            }
+            })
         }
 
     },

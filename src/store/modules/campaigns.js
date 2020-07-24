@@ -8,6 +8,7 @@ import getCampaigns from './campaigns/getters/getCampaigns'
 
 /* Import modules (actions). */
 import updateAsset from './campaigns/actions/updateAsset'
+import updateCampaign from './campaigns/actions/updateCampaign'
 
 /* Import modules (mutations). */
 import setAsset from './campaigns/mutations/setAsset'
@@ -34,6 +35,7 @@ const getters = {
 /* Actions. */
 const actions = {
     updateAsset,
+    updateCampaign,
 }
 
 /* Mutations. */

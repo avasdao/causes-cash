@@ -26,13 +26,6 @@
                         </p>
                     </div> -->
 
-                    <input
-                        type="submit"
-                        class="btn-primary"
-                        value="Save & Continue"
-                        @click="save"
-                    >
-
                     <div class="field">
                         <label for="projecttitle">Project Title</label>
 

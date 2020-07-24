@@ -41,12 +41,18 @@
                         <label>Project guide</label>
 
                         <span class="label-desc">
-                            Use your project guide to help users when navigating through your camapaign.
+                            Use your project guide to help users when navigating through your campaign.
                         </span>
 
                         <div id="guide-editor" class="editor"></div>
                     </div>
 
+                    <input
+                        type="submit"
+                        class="btn-primary"
+                        value="Save & Continue"
+                        @click="save"
+                    >
                 </form>
             </div>
         </section>
@@ -56,9 +62,6 @@
 <script>
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
-
-/* Import modules. */
-import superagent from 'superagent'
 
 export default {
     components: {
@@ -74,17 +77,6 @@ export default {
             campaignId: null,
 
             summary: null,
-
-            videoCaption: null,
-            videoDescription: null,
-
-            photo1Caption: null,
-            photo2Caption: null,
-            photo3Caption: null,
-
-            photo1Url: null,
-            photo2Url: null,
-            photo3Url: null,
 
             quillDesc: null,
             quillGuide: null,
@@ -103,7 +95,7 @@ export default {
     },
     methods: {
         ...mapActions('campaigns', [
-            'updateAsset',
+            'updateCampaign',
         ]),
 
         /**
@@ -119,6 +111,9 @@ export default {
             /* Set description. */
             const description = this.quillDesc.getText()
 
+            /* Set guide. */
+            const guide = this.quillGuide.getText()
+
             /* Set images. */
             const images = {
                main: this.photo1Url || null,
@@ -129,26 +124,20 @@ export default {
                ]
            }
 
-            const pkg = {
+            const campaign = {
                 campaignId,
                 summary,
                 description,
+                guide,
                 images,
             }
-            console.log('PACKAGE', pkg)
+            console.log('WRITE (campaign):', campaign)
 
-            const signedPkg = this.getSignedMessage(JSON.stringify(pkg))
-            console.log('SIGNED PACKAGE', signedPkg)
+            /* Request update. */
+            const result = await this.updateCampaign(campaign)
+            console.log('WRITE UPDATE (result):')
 
-            /* Set api target. */
-            // const target = 'https://api.causes.cash/v1/campaigns'
-            const target = 'http://localhost:6767/v1/campaigns'
-
-            const result = await superagent
-                .put(target)
-                .send(signedPkg)
-            console.log('RESULT', result)
-
+            /* Handle result. */
             if (result.ok && !result.error) {
                 alert('Campaign updated successfully!')
             }
@@ -194,6 +183,12 @@ export default {
             if (this.campaign && this.campaign.description) {
                 /* Add description to editor. */
                 this.quillDesc.insertText(0, this.campaign.description)
+            }
+
+            /* Validate guide. */
+            if (this.campaign && this.campaign.guide) {
+                /* Add guide to editor. */
+                this.quillGuide.insertText(0, this.campaign.guide)
             }
 
             /* Validate media. */

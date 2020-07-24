@@ -318,6 +318,12 @@
                         </div>
                     </div>
 
+                    <input
+                        type="submit"
+                        class="btn-primary"
+                        value="Save & Continue"
+                        @click="save"
+                    >
                 </form>
             </div>
         </section>
@@ -342,6 +348,17 @@ export default {
             campaignId: null,
             // fundId: null,
             // referrerId: null,
+
+            videoCaption: null,
+            videoDescription: null,
+
+            photo1Caption: null,
+            photo2Caption: null,
+            photo3Caption: null,
+
+            photo1Url: null,
+            photo2Url: null,
+            photo3Url: null,
 
             news: [{
                 id: null,
@@ -378,8 +395,58 @@ export default {
     },
     methods: {
         ...mapActions('campaigns', [
-            'updateAsset',
+            'updateCampaign',
         ]),
+
+        /**
+         * Save
+         */
+        async save() {
+            /* Set campaign id. */
+            const campaignId = this.campaign.id
+
+            /* Set description. */
+            const summary = this.summary
+
+            /* Set description. */
+            const description = this.quillDesc.getText()
+
+            /* Set images. */
+            const images = {
+               main: this.photo1Url || null,
+               cover: this.photo1Url || null,
+               gallery: [
+                   this.photo2Url || null,
+                   this.photo3Url || null,
+               ]
+           }
+
+            const pkg = {
+                campaignId,
+                summary,
+                description,
+                images,
+            }
+            console.log('PACKAGE', pkg)
+
+            const signedPkg = this.getSignedMessage(JSON.stringify(pkg))
+            console.log('SIGNED PACKAGE', signedPkg)
+
+            // this.updateCampaign
+
+            /* Set api target. */
+            // const target = 'https://api.causes.cash/v1/campaigns'
+            // const target = 'http://localhost:6767/v1/campaigns'
+
+            // const result = await superagent
+            //     .put(target)
+            //     .send(signedPkg)
+            // console.log('RESULT', result)
+
+            // if (result.ok && !result.error) {
+            //     alert('Campaign updated successfully!')
+            // }
+        },
 
     },
     mounted: function () {
@@ -404,8 +471,10 @@ export default {
             this.campaign = await this.getCampaign(this.ownerSlug, this.slug)
             console.log('SOCIAL (campaign):', this.campaign)
 
-            // FOR DEV ONLY
-            this.news[0].title = this.campaign.news[0].title
+            if (this.campaign.news) {
+                // FOR DEV ONLY
+                this.news[0].title = this.campaign.news[0].title
+            }
         }
     },
 }

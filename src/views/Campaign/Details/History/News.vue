@@ -2,8 +2,7 @@
     <div id="news" class="tabs comment-area">
         <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
 
-        <ol class="comments-list">
-
+        <ol v-if="articleList" class="comments-list">
             <li v-for="article of articleList" :key="article.id" class="comment clearfix">
                 <div class="comment-body">
                     <div class="comment-avatar">
@@ -31,8 +30,11 @@
                     </div>
                 </div>
             </li>
-
         </ol>
+
+        <div v-else class="campaigns">
+            There is no news available
+        </div>
     </div>
 </template>
 
@@ -66,6 +68,10 @@ export default {
         ]),
 
         articleList() {
+            if (!this.articles || this.articles.length === 0) {
+                return null
+            }
+
             const articles = this.articles.map(article => {
                 /* Format data. */
                 article.timeAgo = moment.unix(article.createdAt).format('ll')
@@ -85,42 +91,24 @@ export default {
         ]),
 
     },
-    created: async function () {
-        /* Set owner slug. */
-        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
-        // console.log('OWNER SLUG', this.ownerSlug)
+    created: function () {
+        /* Validate news. */
+        if (this.campaign && this.campaign.news) {
+            /* Set summary. */
+            this.news = this.campaign.news
+            console.log('NEWS', this.news)
 
-        /* Set extended slug. */
-        this.extSlug = this.$route.params.extSlug
-        // console.log('EXT SLUG', this.extSlug)
-
-        /* Validate slug. */
-        if (this.ownerSlug && this.extSlug) {
-            /* Set slug. */
-            const slug = this.extSlug.slice(0, this.extSlug.lastIndexOf('-'))
-
-            /* Set campaign. */
-            this.campaign = await this.getCampaign(this.ownerSlug, slug)
-            // console.log('NEWS (campaign):', this.campaign)
-
-            /* Validate news. */
-            if (this.campaign && this.campaign.news) {
-                /* Set summary. */
-                this.news = this.campaign.news
-                // console.log('NEWS', this.news)
-
-                /* Add each news article. */
-                this.news.forEach(news => {
-                    this.articles.push({
-                        id: news.id,
-                        title: news.title,
-                        summary: news.summary,
-                        avatar: news.avatar,
-                        url: news.url,
-                        createdAt: news.createdAt,
-                    })
+            /* Add each news article. */
+            this.news.forEach(news => {
+                this.articles.push({
+                    id: news.id,
+                    title: news.title,
+                    summary: news.summary,
+                    avatar: news.avatar,
+                    url: news.url,
+                    createdAt: news.createdAt,
                 })
-            }
+            })
         }
 
     },

@@ -2,20 +2,76 @@
     <div id="guide" class="tabs">
         <h2>Campaign Guide</h2>
 
-        <p>
-            Looks like there aren't any frequently asked questions yet.
-            Ask the project creator directly.
-        </p>
+        <div class="mt-3" v-html="guideDisplay" />
 
-        <a href="javascript://" class="btn-primary">Ask a question</a>
+        <!-- <a href="javascript://" class="btn-primary">Ask a question</a> -->
     </div>
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
     props: {
         campaign: Object,
-    }
+    },
+    data: () => {
+        return {
+            ownerSlug: null,
+            extSlug: null,
+
+            guide: null,
+        }
+    },
+    watch: {
+        campaign: function (_campaign) {
+            if (_campaign && _campaign.guide) {
+                console.log('CAMPAIGN HAS CHANGED, UPDATE GUIDE!!', _campaign)
+
+                if (_campaign && _campaign.guide) {
+                    /* Set summary. */
+                    this.guide = _campaign.guide
+                    console.log('GUIDE', this.guide)
+                }
+            }
+        },
+    },
+    computed: {
+        ...mapGetters('utils', [
+            'getMarkdown',
+        ]),
+
+        /**
+         * Guide Display
+         */
+        guideDisplay() {
+            /* Validate guide. */
+            if (!this.guide) {
+                return null
+            }
+
+            /* Return summary (in markdown). */
+            return this.getMarkdown(this.guide)
+        },
+
+
+    },
+    methods: {
+        ...mapActions('campaigns', [
+            'updateAsset',
+        ]),
+
+    },
+    created: async function () {
+        /* Validate guide. */
+        if (this.campaign && this.campaign.guide) {
+            /* Set summary. */
+            this.guide = this.campaign.guide
+            console.log('GUIDE', this.guide)
+        }
+
+    },
 }
 </script>
 

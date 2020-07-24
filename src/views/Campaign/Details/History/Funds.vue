@@ -15,7 +15,7 @@
                 </tr>
                 <tr v-for="item of budget" :key="item.txid">
                     <td>{{item.label}}</td>
-                    <td>{{item.budgetAmount}}</td>
+                    <td>{{item.amount}}</td>
                     <td>{{item.comments}}</td>
                 </tr>
                 <!-- <tr>
@@ -43,7 +43,7 @@
                 </tr>
                 <tr v-for="item of expenses" :key="item.txid">
                     <td>{{item.label}}</td>
-                    <td>{{item.expensesAmount}}</td>
+                    <td>{{item.amount}}</td>
                     <td>{{item.comments}}</td>
                 </tr>
                 <!-- <tr>
@@ -65,6 +65,7 @@ export default {
     data: () => {
         return {
             budget: [],
+            expenses: [],
         }
     },
     created: function () {
@@ -72,11 +73,21 @@ export default {
         const budget = {
             txid: 'some-random-transaction-id',
             label: 'Development',
-            budgetAmount: '100%',
+            amount: '100%',
             comments: 'To be determined',
         }
 
         this.budget.push(budget)
+
+        /* Sample expenses. */
+        const expense = {
+            txid: 'some-random-transaction-id',
+            label: 'Food',
+            amount: '$10',
+            comments: 'To be determined',
+        }
+
+        this.expenses.push(expense)
     },
 }
 </script>

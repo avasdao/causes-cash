@@ -1,9 +1,38 @@
 <template>
-    <div role="tabpanel" class="tab-pane active" id="general">
+    <div role="tabpanel" class="tab-pane active" id="dashboard">
         <section class="campaign-form form-update">
             <!-- <div class="container"> -->
             <div class="start-form">
                 <form action="javascript://">
+                    <h1>Dashboard</h1>
+                    <hr />
+
+<!-- Risks & Challenges -->
+                    <div class="field">
+                        <label for="risks">Risks and challenges</label>
+
+                        <span class="label-desc">
+                            What are the risks and challenges that come with completing your project, and how are you qualified to overcome them?
+                        </span>
+
+                    </div>
+
+                    <!-- <div class="start-box">
+                        <h4>Project FAQs</h4>
+
+                        <p>
+                            You can add frequently asked questions to the FAQ tab on your project page once it goes live.
+                            <a href="javascript://">Learn more</a>
+                        </p>
+                    </div> -->
+
+                    <input
+                        type="submit"
+                        class="btn-primary"
+                        value="Save & Continue"
+                        @click="save"
+                    >
+
                     <div class="field">
                         <label for="projecttitle">Project Title</label>
 

@@ -1,31 +1,31 @@
 <template>
-    <div id="news" class="tabs comment-area">
+    <div id="premium" class="tabs comment-area">
         <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
 
         <ol class="comments-list">
 
-            <li v-for="article of articleList" :key="article.id" class="comment clearfix">
+            <li v-for="item of itemList" :key="item.id" class="comment clearfix">
                 <div class="comment-body">
                     <div class="comment-avatar">
-                        <img class="avatar" :src="article.avatar" alt="">
+                        <img class="avatar" :src="item.avatar" alt="">
                     </div>
 
                     <div class="comment-info">
                         <header class="comment-meta"></header>
 
                         <cite class="comment-author">
-                            <a :href="article.url" target="_blank">
-                            {{article.title}}</a>
+                            <a :href="item.url" target="_blank">
+                            {{item.title}}</a>
                         </cite>
 
                         <div class="comment-inline">
-                            <span class="comment-date">{{article.timeAgo}}</span>
+                            <span class="comment-date">{{item.timeAgo}}</span>
                             <!-- <a href="javascript://" class="comment-reply">Reply</a> -->
                         </div>
 
                         <div class="comment-content">
                             <p>
-                                {{article.summary}}
+                                {{item.summary}}
                             </p>
                         </div>
                     </div>
@@ -52,7 +52,7 @@ export default {
             ownerSlug: null,
             extSlug: null,
 
-            articles: [],
+            items: [],
         }
     },
     computed: {
@@ -65,17 +65,17 @@ export default {
             'getSignedMessage',
         ]),
 
-        articleList() {
-            const articles = this.articles.map(article => {
+        itemList() {
+            const items = this.items.map(item => {
                 /* Format data. */
-                article.timeAgo = moment.unix(article.createdAt).format('ll')
+                item.timeAgo = moment.unix(item.createdAt).format('ll')
 
-                /* Return (formatted) article. */
-                return article
+                /* Return (formatted) item. */
+                return item
             })
 
             /* Return (reversed) array. */
-            return articles.reverse()
+            return items.reverse()
         },
 
     },
@@ -103,21 +103,21 @@ export default {
             this.campaign = await this.getCampaign(this.ownerSlug, slug)
             // console.log('NEWS (campaign):', this.campaign)
 
-            /* Validate news. */
-            if (this.campaign && this.campaign.news) {
+            /* Validate premium. */
+            if (this.campaign && this.campaign.premium) {
                 /* Set summary. */
-                this.news = this.campaign.news
-                // console.log('NEWS', this.news)
+                this.premium = this.campaign.premium
+                // console.log('NEWS', this.premium)
 
-                /* Add each news article. */
-                this.news.forEach(news => {
-                    this.articles.push({
-                        id: news.id,
-                        title: news.title,
-                        summary: news.summary,
-                        avatar: news.avatar,
-                        url: news.url,
-                        createdAt: news.createdAt,
+                /* Add each premium item. */
+                this.premium.forEach(item => {
+                    this.items.push({
+                        id: item.id,
+                        title: item.title,
+                        summary: item.summary,
+                        avatar: item.avatar,
+                        url: item.url,
+                        createdAt: item.createdAt,
                     })
                 })
             }

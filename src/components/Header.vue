@@ -105,8 +105,8 @@
                                     </li>
 
                                     <li>
-                                        <router-link :to="'/@' + getNickname + '/causes'">
-                                            Causes
+                                        <router-link :to="'/@' + getNickname + '/campaigns'">
+                                            Campaigns
                                         </router-link>
                                     </li>
 

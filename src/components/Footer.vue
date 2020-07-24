@@ -7,56 +7,44 @@
                     <!-- About -->
                     <div class="col-lg-3 col-sm-4 col-4">
                         <div class="footer-menu-item">
-                            <h3>About Cash Causes</h3>
+                            <h3>About Causes Cash</h3>
 
                             <ul>
-                                <li>
-                                    <a href="javascript://">What is Startup Idea</a>
-                                </li>
-
                                 <li>
                                     <a href="javascript://">About us</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">How It Works</a>
+                                    <a href="javascript://">Getting started</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">What Is This</a>
+                                    <a href="javascript://">How it works?</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Jobs</a>
+                                    <a href="javascript://">Who can participate?</a>
+                                </li>
+
+                                <li>
+                                    <a href="javascript://">How to contribute?</a>
                                 </li>
 
                                 <li>
                                     <a href="javascript://">Press</a>
                                 </li>
-
-                                <li>
-                                    <a href="javascript://">Starts</a>
-                                </li>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- Causes -->
+                    <!-- Campaigns -->
                     <div class="col-lg-3 col-sm-4 col-4">
                         <div class="footer-menu-item">
-                            <h3>Causes</h3>
+                            <h3>Campaigns</h3>
 
                             <ul>
                                 <li>
-                                    <a href="javascript://">Start Your Cause</a>
-                                </li>
-
-                                <li>
-                                    <a href="javascript://">Pricing Cause</a>
-                                </li>
-
-                                <li>
-                                    <a href="javascript://">Cause Support</a>
+                                    <a href="javascript://">Create a campaign</a>
                                 </li>
 
                                 <li>
@@ -65,16 +53,16 @@
 
                                 <li>
                                     <a href="https://docs.causes.cash/legal/coc.html" target="_blank">
-                                        Code of Conduct
+                                        Code of conduct
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Terms of Use</a>
+                                    <a href="javascript://">Terms of use</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Privacy Policy</a>
+                                    <a href="javascript://">Privacy policy</a>
                                 </li>
                             </ul>
                         </div>
@@ -87,31 +75,27 @@
 
                             <ul>
                                 <li>
-                                    <a href="javascript://">Design &amp; Art</a>
+                                    <a href="javascript://">Adoption</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Crafts</a>
+                                    <a href="javascript://">Community</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Film &amp; Video</a>
+                                    <a href="javascript://">DApp</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Food</a>
+                                    <a href="javascript://">Privacy</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Book</a>
+                                    <a href="javascript://">Security</a>
                                 </li>
 
                                 <li>
-                                    <a href="javascript://">Games</a>
-                                </li>
-
-                                <li>
-                                    <a href="javascript://">Technology</a>
+                                    <a href="javascript://">Youth</a>
                                 </li>
                             </ul>
                         </div>

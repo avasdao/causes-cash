@@ -49,14 +49,14 @@
 
 									<ul>
 										<li>
-											<a href="javascript://"><img src="@/assets/img/my-campaigns-01.jpg" alt=""></a>
+											<a href="javascript://"><img src="@/assets/img/campaign-tabs.jpg" alt=""></a>
 											<div class="dashboard-latest-box">
 												<div class="category"><a href="javascript://">Film & Video</a></div>
 												<h4><a href="javascript://">Space Odyssey - The Video Game</a></h4>
 											</div>
 										</li>
 										<li>
-											<a href="javascript://"><img src="@/assets/img/my-campaigns-02.jpg" alt=""></a>
+											<a href="javascript://"><img src="@/assets/img/campaign-tabs.jpg" alt=""></a>
 											<div class="dashboard-latest-box">
 												<div class="category"><a href="javascript://">Box</a></div>
 												<h4><a href="javascript://">Unbuonded: A Feature Documentary</a></h4>

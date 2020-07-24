@@ -25,38 +25,39 @@
                             </a>
                         </li>
 
-                        <li data-tab="general" class="pm-option active">
+                        <li data-tab="dashboard" class="pm-option active">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/single-folded.svg" alt=""></span>
-                                <p>General</p>
+                                <p class="d-md-none">Dash</p>
+                                <p class="d-none d-md-block">Dashboard</p>
                             </a>
                         </li>
 
-                        <li data-tab="story" class="pm-option">
+                        <li data-tab="write" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/book-open.svg" alt=""></span>
-                                <p>Story</p>
+                                <p>Write</p>
                             </a>
                         </li>
 
-                        <li data-tab="rewards" class="pm-option">
-                            <a href="javascript://">
-                                <span><img src="@/assets/img/alert-circle-i.svg" alt=""></span>
-                                <p>Rewards</p>
-                            </a>
-                        </li>
-
-                        <li data-tab="funds" class="pm-option">
+                        <li data-tab="calc" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/award.svg" alt=""></span>
-                                <p>Financial</p>
+                                <p>Calc</p>
                             </a>
                         </li>
 
-                        <li data-tab="social" class="pm-option">
+                        <li data-tab="media" class="pm-option">
                             <a href="javascript://">
                                 <span><img src="@/assets/img/single-02.svg" alt=""></span>
-                                <p>Social</p>
+                                <p>Media</p>
+                            </a>
+                        </li>
+
+                        <li data-tab="team" class="pm-option">
+                            <a href="javascript://">
+                                <span><img src="@/assets/img/alert-circle-i.svg" alt=""></span>
+                                <p>Team</p>
                             </a>
                         </li>
 
@@ -69,11 +70,11 @@
                     </ul>
 
                     <div class="tab-content">
-                        <General />
-                        <Financial />
-                        <Story />
-                        <Social />
-                        <Rewards />
+                        <Dashboard />
+                        <Write />
+                        <Calc />
+                        <Media />
+                        <Team />
                     </div>
                 </div>
             </div>
@@ -88,22 +89,22 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
-import Financial from './Manage/Financial.vue'
-import General from './Manage/General.vue'
-import Rewards from './Manage/Rewards.vue'
-import Social from './Manage/Social.vue'
-import Story from './Manage/Story.vue'
+import Calc from './Manage/Calc.vue'
+import Dashboard from './Manage/Dashboard.vue'
+import Media from './Manage/Media.vue'
+import Team from './Manage/Team.vue'
+import Write from './Manage/Write.vue'
 
 export default {
     components: {
         Footer,
         Header,
 
-        Financial,
-        General,
-        Rewards,
-        Social,
-        Story,
+        Calc,
+        Dashboard,
+        Media,
+        Team,
+        Write,
     },
     data: () => {
         return {

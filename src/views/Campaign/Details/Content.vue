@@ -84,7 +84,7 @@
                                 </div>
 
                                 <div class="process-time">
-                                    <span>2</span>backers
+                                    <span>2</span>supporters
                                 </div>
 
                                 <div class="process-time">
@@ -95,7 +95,7 @@
 
                         <div v-if="showActions" class="button">
                             <a href="javascript://" class="btn-primary" @click="showBacking">
-                                Back this Campaign
+                                Support this Campaign
                             </a>
 
                             <a href="javascript://" class="btn-secondary" @click="showActions = false; showReminder = true">

@@ -1,19 +1,12 @@
 <template>
-    <div role="tabpanel" class="tab-pane" id="funds">
+    <div role="tabpanel" class="tab-pane" id="calc">
         <section class="campaign-form form-update">
             <form action="javascript://">
+                <h1>Accounting Center</h1>
+                <hr />
+
                 <div id="itemform">
                     <div class="start-form">
-                        <div class="reward-top">
-                            <h2 class="reward-title">
-                                Financial
-                            </h2>
-
-                            <a href="javascript://" class="reward-delete">
-                                Delete Reward
-                            </a>
-                        </div>
-
                         <div class="field">
                             <label for="rewardtitle">
                                 Title

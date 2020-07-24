@@ -1,10 +1,13 @@
 <template>
-    <div role="tabpanel" class="tab-pane" id="rewards">
+    <div role="tabpanel" class="tab-pane" id="team">
         <section class="campaign-form form-update">
             <div class="start-form">
                 <form action="javascript://">
+                    <h1>Team Workspace</h1>
+                    <hr />
+
                     <div class="field">
-                        <label for="contactemail">Reward #1</label>
+                        <label for="contactemail">Team Member #1</label>
 
                         <input type="email" id="contactemail">
                     </div>

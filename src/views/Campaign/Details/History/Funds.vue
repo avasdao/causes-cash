@@ -1,5 +1,5 @@
 <template>
-    <div id="financial" class="tabs">
+    <div id="funds" class="tabs">
         <h1>Use of Funds</h1>
 
         <p>
@@ -82,10 +82,10 @@ export default {
 </script>
 
 <style scoped>
-#financial table {
+#accounting table {
   width: 100%;
 }
-#financial table tr th, #financial table tr td {
+#accounting table tr th, #accounting table tr td {
   border: 1px solid #ededed;
   padding: 15px;
 }

@@ -10,12 +10,12 @@
                                 <a href="javascript://">Story</a>
                             </li>
 
-                            <li data-tab="backers">
-                                <a href="javascript://">Backers</a>
+                            <li data-tab="supporters">
+                                <a href="javascript://">Supporters</a>
                             </li>
 
-                            <li data-tab="financial">
-                                <a href="javascript://">Financial</a>
+                            <li data-tab="funds">
+                                <a href="javascript://">Funds</a>
                             </li>
 
                             <li data-tab="news">
@@ -25,15 +25,22 @@
                             <li data-tab="guide">
                                 <a href="javascript://">Guide</a>
                             </li>
+
+                            <li data-tab="premium">
+                                <a href="javascript://">
+                                    <span class="text-danger">Premium</span>
+                                </a>
+                            </li>
                         </ul>
 
                         <a name="history"></a>
                         <div class="campaign-content">
                             <Story :campaign="campaign" />
-                            <Backers :campaign="campaign" />
-                            <Financial :campaign="campaign" />
+                            <Supporters :campaign="campaign" />
+                            <Funds :campaign="campaign" />
                             <News :campaign="campaign" />
                             <Guide :campaign="campaign" />
+                            <Premium :campaign="campaign" />
                         </div>
                     </div>
                 </div>
@@ -46,12 +53,13 @@
 
 <script>
 /* Import components. */
-import Backers from './History/Backers'
 import Events from './History/Events'
-import Financial from './History/Financial'
+import Funds from './History/Funds'
 import Guide from './History/Guide'
 import News from './History/News'
+import Premium from './History/Premium'
 import Story from './History/Story'
+import Supporters from './History/Supporters'
 
 /* Import jQuery. */
 // FIXME: Remove ALL jQuery dependencies.
@@ -62,12 +70,13 @@ export default {
         campaign: Object,
     },
     components: {
-        Backers,
         Events,
-        Financial,
+        Funds,
         Guide,
         News,
+        Premium,
         Story,
+        Supporters,
     },
     data: () => {
         return {

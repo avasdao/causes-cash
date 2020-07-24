@@ -57,12 +57,12 @@
 
                     <div class="field">
                         <label for="model">
-                            Funding Model
+                            Primary Funding Model
                         </label>
 
                         <span class="label-desc">
-                            Please choose from 1 of 3 funding models.
-                            How do you want to receive your donations?
+                            Please choose from 1 of 3 funding models listed below.
+                            You can can always add additional funding models at any time.
                         </span>
 
                         <div class="field-select">

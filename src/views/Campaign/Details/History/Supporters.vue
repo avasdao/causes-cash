@@ -1,5 +1,5 @@
 <template>
-    <div id="backers" class="tabs">
+    <div id="supporters" class="tabs">
         <table>
             <tbody>
                 <tr>
@@ -7,10 +7,10 @@
                     <th>Donate Amount</th>
                     <th>Date</th>
                 </tr>
-                <tr v-for="backer of backers" :key="backer.txid">
-                    <td>{{backer.name}}</td>
-                    <td>{{backer.pledgeAmount}}</td>
-                    <td>{{backer.pledgedAt}}</td>
+                <tr v-for="supporter of supporters" :key="supporter.txid">
+                    <td>{{supporter.name}}</td>
+                    <td>{{supporter.pledgeAmount}}</td>
+                    <td>{{supporter.pledgedAt}}</td>
                 </tr>
                 <!-- <tr>
                     <td>Andrew</td>
@@ -32,28 +32,28 @@ export default {
     },
     data: () => {
         return {
-            backers: [],
+            supporters: [],
         }
     },
     created: function () {
-        /* Sample backer. */
-        const backer = {
+        /* Sample supporter. */
+        const supporter = {
             txid: 'some-random-transaction-id',
             name: 'Satoshi N.',
             pledgeAmount: '$13.37',
             pledgedAt: moment().subtract(3, 'hours').format('lll'),
         }
 
-        this.backers.push(backer)
+        this.supporters.push(supporter)
     },
 }
 </script>
 
 <style scoped>
-#backers table {
+#supporters table {
   width: 100%;
 }
-#backers table tr th, #backers table tr td {
+#supporters table tr th, #supporters table tr td {
   border: 1px solid #ededed;
   padding: 15px;
 }

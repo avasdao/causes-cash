@@ -3,7 +3,7 @@
         <section class="campaign-form form-update">
             <div class="start-form">
                 <form action="javascript://">
-                    <h1>Content Creation</h1>
+                    <h1>Content Editor</h1>
                     <hr />
 
                     <div class="field">
@@ -34,8 +34,6 @@
                         <div id="desc-editor" class="editor"></div>
                     </div>
 
-                    <hr />
-
 <!-- Risks & Challenges -->
                     <div class="field">
                         <label>Project guide</label>
@@ -45,6 +43,16 @@
                         </span>
 
                         <div id="guide-editor" class="editor"></div>
+                    </div>
+
+                    <div class="field">
+                        <label for="tag">Tags</label>
+
+                        <span class="label-desc">
+                            Enter up to five keywords that best describe your campaign.
+                        </span>
+
+                        <input type="text" id="tags" v-model="tags" placeholder="Enter a few tags for your campaign" />
                     </div>
 
                     <input
@@ -77,6 +85,7 @@ export default {
             campaignId: null,
 
             summary: null,
+            tags: null,
 
             quillDesc: null,
             quillGuide: null,

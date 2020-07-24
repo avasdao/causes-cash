@@ -151,23 +151,6 @@
                         <input type="text" value="" id="fundinggoal">
                     </div>
 
-                    <div class="field">
-                        <label for="tag">Tags *</label>
-                        <span class="label-desc">Enter up to five keywords that best describe your campaign.</span>
-                        <input type="text" id="tag" value="" name="title" placeholder="Enter a few tags for your campaign" />
-                    </div>
-
-                    <div class="reminder">
-                        <h4>Project Collaborators</h4>
-
-                        <p>
-                            Grant your teammates access to help with your project.
-                        </p>
-
-                        <a href="javascript://" class="btn-primary">Add collaborators</a>
-                    </div>
-
-                    <input type="submit" class="btn-primary" value="Save & Continue">
                 </form>
             </div>
         </section>

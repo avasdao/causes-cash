@@ -12,6 +12,18 @@
                         <input type="email" id="contactemail">
                     </div>
 
+                    <div class="reminder">
+                        <h4>Project Collaborators</h4>
+
+                        <p>
+                            Grant your teammates access to help with your project.
+                        </p>
+
+                        <a href="javascript://" class="btn-primary">Add collaborators</a>
+                    </div>
+
+                    <input type="submit" class="btn-primary" value="Save & Continue">
+
                     <div class="field">
                         <label for="individual">Funds recipient</label>
 

@@ -405,14 +405,8 @@ export default {
             /* Set campaign id. */
             const campaignId = this.campaign.id
 
-            /* Set description. */
-            const summary = this.summary
-
-            /* Set description. */
-            const description = this.quillDesc.getText()
-
-            /* Set images. */
-            const images = {
+            /* Set media. */
+            const media = {
                main: this.photo1Url || null,
                cover: this.photo1Url || null,
                gallery: [
@@ -421,31 +415,20 @@ export default {
                ]
            }
 
-            const pkg = {
+            const campaign = {
                 campaignId,
-                summary,
-                description,
-                images,
+                media,
             }
-            console.log('PACKAGE', pkg)
+            console.log('PACKAGE', campaign)
 
-            const signedPkg = this.getSignedMessage(JSON.stringify(pkg))
-            console.log('SIGNED PACKAGE', signedPkg)
+            /* Request update. */
+            const result = await this.updateCampaign(campaign)
+            console.log('WRITE UPDATE (result):')
 
-            // this.updateCampaign
-
-            /* Set api target. */
-            // const target = 'https://api.causes.cash/v1/campaigns'
-            // const target = 'http://localhost:6767/v1/campaigns'
-
-            // const result = await superagent
-            //     .put(target)
-            //     .send(signedPkg)
-            // console.log('RESULT', result)
-
-            // if (result.ok && !result.error) {
-            //     alert('Campaign updated successfully!')
-            // }
+            /* Handle result. */
+            if (result.ok && !result.error) {
+                alert('Campaign updated successfully!')
+            }
         },
 
     },

@@ -1,9 +1,8 @@
 <template>
-    <div id="premium" class="tabs comment-area">
+    <div id="premium" class="tabs">
         <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
 
-        <ol class="comments-list">
-
+        <ol v-if="itemList" class="comments-list">
             <li v-for="item of itemList" :key="item.id" class="comment clearfix">
                 <div class="comment-body">
                     <div class="comment-avatar">
@@ -31,8 +30,15 @@
                     </div>
                 </div>
             </li>
-
         </ol>
+
+        <div v-else>
+            <h1>Premium Content</h1>
+
+            <p class="m-3">
+                There is no premium content available
+            </p>
+        </div>
     </div>
 </template>
 
@@ -66,6 +72,10 @@ export default {
         ]),
 
         itemList() {
+            if (!this.items || this.items.length === 0) {
+                return null
+            }
+
             const items = this.items.map(item => {
                 /* Format data. */
                 item.timeAgo = moment.unix(item.createdAt).format('ll')

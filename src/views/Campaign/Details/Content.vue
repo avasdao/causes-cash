@@ -1,118 +1,114 @@
 <template>
-    <div class="campaign-content">
-		<div class="container">
-			<div class="">
-			<!-- <div class="campaign"> -->
+    <div class="container campaign-content">
+		<div class="campaign-item clearfix">
 
-				<div class="campaign-item clearfix">
+            <div v-if="images" class="campaign-image">
+				<div id="campaign-gallery" class="campaign-slider">
+					<div class="item">
+                        <img :src="images[0]" alt="">
+                    </div>
 
-                    <div v-if="images" class="campaign-image">
-						<div id="campaign-gallery" class="campaign-slider">
-							<div class="item">
-                                <img :src="images[0]" alt="">
-                            </div>
+                    <div class="item">
+                        <img :src="images[1]" alt="">
+                    </div>
 
-                            <div class="item">
-                                <img :src="images[1]" alt="">
-                            </div>
-
-                            <div class="item">
-                                <img :src="images[2]" alt="">
-                            </div>
-						</div>
-					</div>
-
-                    <div class="campaign-box">
-                        <div class="share">
-                            <ul>
-                                <li class="share-twitter">
-                                    <a href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                                </li>
-
-                                <li class="share-google-plus">
-                                    <a href="javascript://"><i class="fa fa-reddit" aria-hidden="true"></i></a>
-                                </li>
-
-                                <!-- <li class="share-facebook">
-                                    <a href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                </li> -->
-
-                                <!-- <li class="share-linkedin">
-                                    <a href="javascript://"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                </li> -->
-
-                                <li class="share-code">
-                                    <a href="javascript://"><i class="fa fa-code" aria-hidden="true"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <a href="javascript://" class="category">{{category}}</a>
-
-                        <h3>{{title}}</h3>
-
-                        <div class="campaign-description clearfix">
-                            <p v-html="summary" />
-                        </div>
-
-                        <div class="campaign-author">
-							<div class="author-profile">
-								<a class="author-icon" href="javascript://">
-                                    <img :src="ownerAvatar" alt=""></a>
-                                    by <a class="author-name" href="javascript://">{{ownerLabel}}</a>
-							</div>
-
-                            <div class="author-address">
-                                <i v-if="campaignModel == 'Community Pledge'" class="fa fa-users" aria-hidden="true"></i>
-                                <i v-if="campaignModel == 'Unknown campaign type'" class="fa fa-question" aria-hidden="true"></i>
-                                {{campaignModel}}
-                            </div>
-						</div>
-
-                        <div class="process">
-							<div class="raised">
-                                <span></span>
-                            </div>
-
-                            <div class="process-info">
-								<div class="process-funded">
-                                    <span>$10000</span>funding goal
-                                </div>
-
-                                <div class="process-pledged">
-                                    <span>$100</span>pledged
-                                </div>
-
-                                <div class="process-time">
-                                    <span>2</span>supporters
-                                </div>
-
-                                <div class="process-time">
-                                    <span>1</span>days ago
-                                </div>
-							</div>
-						</div>
-
-                        <div v-if="showActions" class="button">
-                            <a href="javascript://" class="btn-primary" @click="showBacking">
-                                Support this Campaign
-                            </a>
-
-                            <a href="javascript://" class="btn-secondary" @click="showActions = false; showReminder = true">
-                                <i class="fa fa-heart" aria-hidden="true"></i>
-                                Remind me
-                            </a>
-						</div>
-
-                        <Reminder v-if="showReminder" @cancel="showReminder = false; showActions = true" />
-                        <Direct v-if="showDirect" @cancel="showDirect = false; showActions = true" />
-                        <Assurance v-if="showAssurance" @cancel="showAssurance = false; showActions = true" />
-                        <Payouts v-if="showPayouts" @cancel="showPayouts = false; showActions = true" />
-
-					</div>
+                    <div class="item">
+                        <img :src="images[2]" alt="">
+                    </div>
 				</div>
 			</div>
+
+            <div class="campaign-box">
+                <div class="share">
+                    <ul>
+                        <li class="share-twitter">
+                            <a href="javascript://"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        </li>
+
+                        <li class="share-google-plus">
+                            <a href="javascript://"><i class="fa fa-reddit" aria-hidden="true"></i></a>
+                        </li>
+
+                        <!-- <li class="share-facebook">
+                            <a href="javascript://"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        </li> -->
+
+                        <!-- <li class="share-linkedin">
+                            <a href="javascript://"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                        </li> -->
+
+                        <li class="share-code">
+                            <a href="javascript://"><i class="fa fa-code" aria-hidden="true"></i></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="javascript://" class="category">{{category}}</a>
+
+                <h3>{{title}}</h3>
+
+                <div class="campaign-description clearfix">
+                    <p v-html="summary" />
+                </div>
+
+                <div class="campaign-author">
+					<div class="author-profile">
+						<a class="author-icon" href="javascript://">
+                            <img :src="ownerAvatar" alt=""></a>
+                            by <a class="author-name" href="javascript://">{{ownerLabel}}</a>
+					</div>
+
+                    <div class="author-address">
+                        <i v-if="campaignModel == 'Community Pledge'" class="fa fa-users" aria-hidden="true"></i>
+                        <i v-if="campaignModel == 'Unknown campaign type'" class="fa fa-question" aria-hidden="true"></i>
+                        {{campaignModel}}
+                    </div>
+				</div>
+
+                <div class="process">
+					<div class="raised">
+                        <span></span>
+                    </div>
+
+                    <div class="process-info">
+						<div class="process-funded">
+                            <span>$10000</span>funding goal
+                        </div>
+
+                        <div class="process-pledged">
+                            <span>$100</span>pledged
+                        </div>
+
+                        <div class="process-time">
+                            <span>2</span>supporters
+                        </div>
+
+                        <div class="process-time">
+                            <span>1</span>days ago
+                        </div>
+					</div>
+				</div>
+
+                <div v-if="showActions" class="button">
+                    <a href="javascript://" class="btn-primary" @click="showBacking">
+                        Support this Campaign
+                    </a>
+
+                    <a href="javascript://" class="btn-secondary" @click="showActions = false; showReminder = true">
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                        Remind me
+                    </a>
+				</div>
+
+			</div>
 		</div>
+
+        <div class="campaign-item clearfix">
+            <Reminder v-if="showReminder" @cancel="showReminder = false; showActions = true" />
+            <Direct v-if="showDirect" @cancel="showDirect = false; showActions = true" />
+            <Assurance v-if="showAssurance" @cancel="showAssurance = false; showActions = true" />
+            <Payouts v-if="showPayouts" @cancel="showPayouts = false; showActions = true" />
+        </div>
 	</div>
 </template>
 

@@ -1,6 +1,8 @@
 <template>
     <div id="supporters" class="tabs">
-        <table>
+        <h1>Featured Supporters</h1>
+
+        <table class="mt-3">
             <tbody>
                 <tr>
                     <th>Name</th>

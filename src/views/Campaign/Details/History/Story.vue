@@ -1,17 +1,14 @@
 <template>
     <div id="story" class="tabs active markdown">
-        <!-- <h1>{{title}}</h1> -->
+        <div v-if="story" v-html="story" />
 
-        <!-- <div class="row">
-            <div class="col-8">
-                <p v-html="summary" />
-            </div>
-        </div> -->
+        <div v-else>
+            <h1>Campaign Story</h1>
 
-        <!-- <hr /> -->
-
-        <!-- <h1>Readme</h1> -->
-        <p v-html="story" />
+            <p class="m-3">
+                There is no story available
+            </p>
+        </div>
     </div>
 </template>
 

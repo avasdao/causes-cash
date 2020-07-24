@@ -15,15 +15,18 @@
                             <div v-if="myCampaigns" class="campaigns">
 								<div
                                     class="campaign-item"
-                                    v-for="campaign of myCampaigns"
+                                    v-for="(campaign, index) of myCampaigns"
                                     :key="campaign.id"
                                 >
-									<a class="campaign-image" href="javascript://">
-                                        <img :src="campaign.media ? campaign.media.main : null" alt=""></a>
+                                    <hr v-if="index !== 0" />
 
 									<div class="campaign-box">
+                                        <router-link :to="campaign.slug + '-null'" class="campaign-image">
+                                            <img :src="campaign.media ? campaign.media.main : null" :alt="campaign.title">
+                                        </router-link>
+
 										<div class="campaign-category">
-                                            <a href="javascript://">{{campaign.category}}</a>
+                                            {{campaign.category}}
                                         </div>
 
                                         <div class="campaign-title">
@@ -32,9 +35,7 @@
                                             </router-link>
                                         </div>
 
-                                        <div class="campaign-desc">
-                                            {{campaign.summary}}
-                                        </div>
+                                        <div class="campaign-desc" v-html="formatSummary(campaign.summary)" />
 									</div>
 								</div>
 							</div>
@@ -54,22 +55,25 @@
                                     v-for="campaign of supportedCampaigns"
                                     :key="campaign.id"
                                 >
-									<a class="campaign-image" href="javascript://">
-                                        <img :src="campaign.media ? campaign.media.main : null" alt=""></a>
+                                <hr v-if="index !== 0" />
 
-									<div class="campaign-box">
-										<div class="campaign-category">
-                                            <a href="javascript://">{{campaign.category}}</a>
-                                        </div>
+                                <div class="campaign-box">
+                                    <router-link :to="campaign.slug + '-null'" class="campaign-image">
+                                        <img :src="campaign.media ? campaign.media.main : null" :alt="campaign.title">
+                                    </router-link>
 
-                                        <div class="campaign-title">
-                                            <a href="javascript://">{{campaign.title}}</a>
-                                        </div>
+                                    <div class="campaign-category">
+                                        {{campaign.category}}
+                                    </div>
 
-                                        <div class="campaign-desc">
-                                            {{campaign.summary}}
-                                        </div>
-									</div>
+                                    <div class="campaign-title">
+                                        <router-link :to="campaign.slug + '-null'">
+                                            {{campaign.title}}
+                                        </router-link>
+                                    </div>
+
+                                    <div class="campaign-desc" v-html="formatSummary(campaign.summary)" />
+                                </div>
 								</div>
 							</div>
 
@@ -125,6 +129,10 @@ export default {
             'getSignedMessage',
         ]),
 
+        ...mapGetters('utils', [
+            'getMarkdown',
+        ]),
+
         myCampaigns() {
             if (this.campaigns) {
                 /* Set campaigns. */
@@ -149,6 +157,15 @@ export default {
         ...mapActions('campaigns', [
             'updateAsset',
         ]),
+
+        formatSummary(_summary) {
+            if (_summary) {
+                return this.getMarkdown(_summary)
+            } else {
+                return null
+            }
+        },
+
     },
     created: async function () {
         /* Set owner slug. */
@@ -167,7 +184,27 @@ export default {
 }
 
 .campaign-item img {
-    width: 100px;
+    float: right;
+
+    width: 140px;
     height: 100px;
+
+    border: 1pt solid rgba(180, 180, 180, 0.5);
+    padding: 1px;
+    margin: 0 0 10px 10px;
+
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.campaign-category {
+    color: rgba(90, 90, 90, 0.5);
+    cursor: default;
+}
+
+.campaign-title {
+    font-size: 1.6em;
+    font-weight: bold;
 }
 </style>

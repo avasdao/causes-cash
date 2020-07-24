@@ -439,4 +439,8 @@ button {
     background: #08aded;
     background-color: #0094d2;
 } */
+
+.markdown a {
+    display: inline-block;
+}
 </style>

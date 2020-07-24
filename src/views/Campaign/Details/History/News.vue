@@ -1,5 +1,5 @@
 <template>
-    <div id="news" class="tabs comment-area">
+    <div id="news" class="tabs">
         <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
 
         <ol v-if="articleList" class="comments-list">
@@ -33,7 +33,11 @@
         </ol>
 
         <div v-else class="campaigns">
-            There is no news available
+            <h1>Latest News</h1>
+
+            <p class="m-3">
+                There is no news available
+            </p>
         </div>
     </div>
 </template>

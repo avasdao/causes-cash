@@ -1,7 +1,5 @@
 <template>
     <main>
-        <hr />
-
         <h3>Campaign Reminder</h3>
 
         <p>

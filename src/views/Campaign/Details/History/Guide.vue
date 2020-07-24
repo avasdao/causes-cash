@@ -1,10 +1,14 @@
 <template>
     <div id="guide" class="tabs">
-        <h2>Campaign Guide</h2>
+        <div v-if="guideDisplay" class="mt-3" v-html="guideDisplay" />
 
-        <div class="mt-3" v-html="guideDisplay" />
+        <div v-else>
+            <h1>Campaign Guide</h1>
 
-        <!-- <a href="javascript://" class="btn-primary">Ask a question</a> -->
+            <p class="m-3">
+                There is no guide available
+            </p>
+        </div>
     </div>
 </template>
 

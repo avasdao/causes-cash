@@ -4,6 +4,7 @@
 /* Import modules (getters). */
 import getBytesFromIPFS from './utils/getters/getBytesFromIPFS'
 import getCompletedPct from './utils/getters/getCompletedPct'
+import getCategoryDisplay from './utils/getters/getCategoryDisplay'
 import getFormatFunded from './utils/getters/getFormatFunded'
 import getFormattedValue from './utils/getters/getFormattedValue'
 import getIPFSFromBytes from './utils/getters/getIPFSFromBytes'
@@ -24,6 +25,7 @@ const state = {
 /* Getters. */
 const getters = {
     getBytesFromIPFS,
+    getCategoryDisplay,
     getCompletedPct,
     getFormatFunded,
     getFormattedValue,

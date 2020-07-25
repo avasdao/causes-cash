@@ -440,7 +440,7 @@ button {
     background-color: #0094d2;
 } */
 
-.markdown a {
+.markdown a, .campaigns a {
     display: inline-block;
 }
 </style>

@@ -21,12 +21,24 @@
                                     <hr v-if="index !== 0" />
 
 									<div class="campaign-box">
-                                        <router-link :to="campaign.slug + '-null'" class="campaign-image">
-                                            <img :src="campaign.media ? campaign.media.main : null" :alt="campaign.title">
-                                        </router-link>
+                                        <div class="ml-3 mb-5 float-right">
+                                            <router-link :to="campaign.slug + '-null'" class="campaign-image">
+                                                <img :src="campaign.media ? campaign.media.main : null" :alt="campaign.title">
+                                            </router-link>
+
+                                            <div class="text-center">
+                                                <router-link :to="campaign.slug + '-null'">
+                                                    open live
+                                                </router-link>
+                                                |
+                                                <router-link :to="campaign.slug + '/manage'">
+                                                    manage
+                                                </router-link>
+                                            </div>
+                                        </div>
 
 										<div class="campaign-category">
-                                            {{campaign.category}}
+                                            {{formatCategory(campaign.category)}}
                                         </div>
 
                                         <div class="campaign-title">
@@ -130,6 +142,7 @@ export default {
         ]),
 
         ...mapGetters('utils', [
+            'getCategoryDisplay',
             'getMarkdown',
         ]),
 
@@ -161,6 +174,17 @@ export default {
         formatSummary(_summary) {
             if (_summary) {
                 return this.getMarkdown(_summary)
+            } else {
+                return null
+            }
+        },
+
+        /**
+         * Format Category
+         */
+        formatCategory(_category) {
+            if (_category) {
+                return this.getCategoryDisplay(_category)
             } else {
                 return null
             }
@@ -207,4 +231,5 @@ export default {
     font-size: 1.6em;
     font-weight: bold;
 }
+
 </style>

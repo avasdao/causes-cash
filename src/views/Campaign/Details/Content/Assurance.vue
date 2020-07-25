@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-12 col-md-7">
-                <form>
+                <form action="javascript://">
                     <div class="text-center mb-3">
                         <a :href="'https://explorer.bitcoin.com/bch/address/' + pledgeAddress" target="_blank"><strong>{{pledgeAddress}}</strong></a>
                         <h4>Your <i class="fa fa-heart text-danger"></i> and support causes cash for this campaign <i class="fa fa-arrow-down text-danger"></i></h4>
@@ -123,6 +123,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
+import numeral from 'numeral'
 import QRCode from 'qrcode'
 
 /* Import JQuery. */
@@ -153,7 +154,10 @@ export default {
         ]),
 
         pledgeAmount() {
-            return this.pledgeRange * 2
+            const goal = 6250.00 // FOR DEV ONLY
+            const remaining = goal / 2 // FOR DEV ONLY
+
+            return numeral((this.pledgeRange / 100.0) * remaining).format('$0,0.00')
         },
 
         pledgeAddress() {
@@ -252,6 +256,7 @@ form {
 
 .pledge-output {
     width: 90%;
-    /* margin: 15px; */
+    height: 100px;
 }
+
 </style>

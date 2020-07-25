@@ -70,23 +70,27 @@
                         <span></span>
                     </div>
 
-                    <div class="process-info">
-						<div class="process-funded">
-                            <span>$10000</span>funding goal
+                    <div class="row process-info">
+                        <div class="col">
+                            <span>{{fundingGoal}}</span>
+                            funding goal
                         </div>
 
-                        <div class="process-pledged">
-                            <span>$100</span>pledged
+                        <div class="col">
+                            <span>{{fundingPledged}}</span>
+                            pledged
                         </div>
 
-                        <div class="process-time">
-                            <span>2</span>supporters
+                        <div class="col">
+                            <span>{{numSupporters}}</span>
+                            supporters
                         </div>
 
-                        <div class="process-time">
-                            <span>1</span>days ago
+                        <div class="col">
+                            <span>{{lastUpdate}}</span>
+                            {{lastUpdateSuffix}}
                         </div>
-					</div>
+                    </div>
 				</div>
 
                 <div v-if="showActions" class="button">
@@ -117,9 +121,8 @@
 import { mapGetters } from 'vuex'
 
 /* Import modules. */
-import DOMPurify from 'dompurify'
-import QRCode from 'qrcode'
-import showdown from 'showdown'
+import Nito from 'nitojs'
+import numeral from 'numeral'
 
 /* Import components. */
 import Assurance from './Content/Assurance'
@@ -164,6 +167,8 @@ export default {
     },
     data: () => {
         return {
+            usd: null,
+
             pledgeAmount: null,
             name: null,
             comment: null,
@@ -315,43 +320,6 @@ export default {
         },
 
         /**
-         * QR Code
-         *
-         * Used with direct donations.
-         */
-        qr() {
-            if (!this.pledgeAddress) {
-                return null
-            }
-
-            /* Initialize (string) value. */
-            let strValue = ''
-
-            /* Initialize scanner parameters. */
-            const params = {
-                type: 'svg',
-                width: 225,
-                height: 225,
-                color: {
-                    dark: '#000',
-                    light: '#fff'
-                }
-            }
-
-            QRCode.toString(this.pledgeAddress, params, (err, value) => {
-                if (err) {
-                    return console.error('QR Code ERROR:', err)
-                }
-
-                /* Set (string) value. */
-                strValue = value
-            })
-
-            /* Return (string) value. */
-            return strValue
-        },
-
-        /**
          * Owner Label
          */
         ownerLabel() {
@@ -483,50 +451,63 @@ export default {
             return Buffer.from(JSON.stringify(json)).toString('base64')
         },
 
+        /**
+         * Funding Goal
+         */
+        fundingGoal() {
+            if (this.campaign && this.campaign.assurance) {
+                /* Set recipients. */
+                const recipients = this.campaign.assurance.recipients
+
+                /* Validate recipients. */
+                if (!recipients) {
+                    return '$0.00'
+                }
+
+                const calc = (recipients[0].satoshis / 100000000 * this.usd)
+
+                return numeral(calc).format('$0,0[.]00')
+            }
+
+            return 'n/a'
+        },
+
+        /**
+         * Funding Pledged
+         */
+        fundingPledged() {
+            if (this.campaign && this.campaign.assurance) {
+                /* Set recipients. */
+                const recipients = this.campaign.assurance.recipients
+
+                /* Validate recipients. */
+                if (!recipients) {
+                    return '$0.00'
+                }
+
+                // FOR DEV ONLY
+                const calc = (recipients[0].satoshis / 100000000 * this.usd) / 2.5
+
+                return numeral(calc).format('$0,0[.]00')
+            }
+
+            return 'n/a'
+        },
+
+        numSupporters() {
+            return 50
+        },
+
+        lastUpdate() {
+            return 12
+        },
+
+        lastUpdateSuffix() {
+            return 'days ago'
+        }
+
     },
     methods: {
-        /**
-         * Cleaner
-         *
-         * Uses DOM Purify to sanitize HTML.
-         * (source: https://github.com/cure53/DOMPurify)
-         */
-        cleaner(_html) {
-            /* Return cleaned HTML. */
-            return DOMPurify.sanitize(_html)
-        },
-
-        /**
-         * Markdown Manager
-         *
-         * Generates HTML from markdown and vice-versa.
-         * (source: https://github.com/showdownjs/showdown)
-         */
-        markdown(_content) {
-            /* Initialize converter. */
-            const converter = new showdown.Converter()
-
-            /* Set converter to GitHub Flavored Markdown (GFM). */
-            converter.setFlavor('github')
-
-            /* Generate HTML content. */
-            const html = converter.makeHtml(_content)
-            // console.log('HTML', html)
-
-            /* Sanitize HTML content. */
-            // const sanitized = this.cleaner(html)
-
-            /* Format HTML. */
-            // NOTE: Display fixes, probably related to our CSS.
-            const sanitized = html
-                .replace(/<ol>/gi, `<ol class="markdown-ul">`)
-                .replace(/<ul>/gi, `<ul class="markdown-ul">`)
-
-            /* Return sanitized content (for display). */
-            // return sanitized
-            return sanitized
-        },
-
         /**
          * Show Backing
          */
@@ -538,12 +519,15 @@ export default {
         },
 
     },
-    created: function () {
+    created: async function () {
         /* Initialize flag. */
         this.showActions = true
 
         /* Initialize pledge amount. */
         this.pledgeAmount = 0
+
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        console.info(`Market price (USD)`, this.usd)
     },
     mounted: function () {
         //
@@ -561,26 +545,9 @@ export default {
     border: 1pt solid rgba(90, 90, 90, 0.2);
 }
 
-.qr-code {
-    /* margin: 0 0 10px 10px; */
-    /* margin: 20px auto; */
-    padding: 0;
-    /* border: 1pt solid rgba(200, 200, 200, 0.2); */
-    /* float: right; */
-}
-
 .share {
     float: right;
     margin: 0;
     padding: 0;
-}
-
-.pledge {
-    width: 100%;
-    height: 100px;
-}
-
-.name, .comment {
-    width: 100%;
 }
 </style>

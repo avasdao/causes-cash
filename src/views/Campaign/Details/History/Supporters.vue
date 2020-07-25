@@ -9,16 +9,11 @@
                     <th>Donate Amount</th>
                     <th>Date</th>
                 </tr>
-                <tr v-for="supporter of supporters" :key="supporter.txid">
-                    <td>{{supporter.name}}</td>
-                    <td>{{supporter.pledgeAmount}}</td>
-                    <td>{{supporter.pledgedAt}}</td>
+                <tr v-for="pledge of pledges" :key="pledge.previousTransactionHash">
+                    <td>{{pledge.alias}}</td>
+                    <td>{{pledge.satoshis}}</td>
+                    <td>{{formatDate(pledge.createdAt)}}</td>
                 </tr>
-                <!-- <tr>
-                    <td>Andrew</td>
-                    <td>$80</td>
-                    <td>June 15, 2017</td>
-                </tr> -->
             </tbody>
         </table>
     </div>
@@ -27,6 +22,7 @@
 <script>
 /* Import modules. */
 import moment from 'moment'
+import numeral from 'numeral'
 
 export default {
     props: {
@@ -34,19 +30,44 @@ export default {
     },
     data: () => {
         return {
-            supporters: [],
+            pledges: [],
         }
     },
+    watch: {
+        campaign: function (_campaign) {
+            console.log('SUPPORTERS CAMPAIGN UPDATE', _campaign);
+            if (_campaign && _campaign.assurance) {
+                this.pledges = _campaign.assurance.pledges
+            }
+        },
+    },
+    methods: {
+        formatAmount(_value) {
+            if (_value) {
+                return numeral(_value).format('$0,0[.]00')
+            } else {
+                return '$0.00'
+            }
+        },
+
+        formatDate(_date) {
+            if (_date) {
+                return moment.unix(_date).format('lll')
+            } else {
+                return 'n/a'
+            }
+        },
+    },
     created: function () {
-        /* Sample supporter. */
-        const supporter = {
+        /* Sample pledge. */
+        const pledge = {
             txid: 'some-random-transaction-id',
             name: 'Satoshi N.',
             pledgeAmount: '$13.37',
             pledgedAt: moment().subtract(3, 'hours').format('lll'),
         }
 
-        this.supporters.push(supporter)
+        this.pledges.push(pledge)
     },
 }
 </script>

@@ -23,7 +23,7 @@
                     </h4> -->
 
                     <div class="plan-desc">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        A new campaign was just created and a new team has been born.
                     </div>
 
                     <div class="plan-date">

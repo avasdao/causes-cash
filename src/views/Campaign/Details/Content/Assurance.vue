@@ -32,6 +32,7 @@
                                     class="form-control-range"
                                     id="form-pledge-amount"
                                     v-model="pledgeRange"
+                                    @change="onRangeChange($event)"
                                 >
                             </div>
                         </div>
@@ -40,8 +41,10 @@
                             <input
                                 class="form-control"
                                 type="text"
-                                placeholder="pledge amount"
-                                v-model="pledgeAmount"
+                                placeholder="pledge amount (usd)"
+                                v-model="pledgeUSD"
+                                @blur="onPledgeUpdate"
+                                @keyup.enter="$refs.pledgeName.focus()"
                              />
                         </div>
                     </div>
@@ -53,11 +56,13 @@
 
                         <div class="col-md-8">
                             <input
+                                ref="pledgeName"
                                 class="form-control"
                                 type="text"
                                 id="input-name"
                                 placeholder="(optional)"
                                 v-model="pledgeName"
+                                @keyup.enter="$refs.pledgeComment.focus()"
                              />
                         </div>
                     </div>
@@ -69,11 +74,12 @@
 
                         <div class="col-md-8">
                             <input
+                                ref="pledgeComment"
                                 class="form-control"
                                 type="text"
                                 id="input-comment"
                                 placeholder="(optional)"
-                                v-model="comment"
+                                v-model="pledgeComment"
                              />
                         </div>
                     </div>
@@ -123,6 +129,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
+import Nito from 'nitojs'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
 
@@ -131,17 +138,23 @@ import QRCode from 'qrcode'
 // const $ = window.jQuery
 
 export default {
+    props: {
+        campaign: Object,
+    },
     components: {
         //
     },
     data: () => {
         return {
-            // pledgeAmount: null,
-            pledgeName: null,
+            usd: null,
             satoshis: null,
-            comment: null,
-            pledge: null,
+
+            pledgeUSD: null,
+            pledgeSatoshis: null,
+            pledgeName: null,
+            pledgeComment: null,
             pledgeRange: null,
+            pledgeGoal: null,
         }
     },
     computed: {
@@ -153,16 +166,35 @@ export default {
             'getAddress',
         ]),
 
-        pledgeAmount() {
-            const goal = 6250.00 // FOR DEV ONLY
-            const remaining = goal / 2 // FOR DEV ONLY
-
-            return numeral((this.pledgeRange / 100.0) * remaining).format('$0,0.00')
-        },
-
         pledgeAddress() {
             // FIXME
             return this.getAddress('deposit')
+        },
+
+        pledge() {
+            /* Build (pledge) package. */
+            const pkg = {
+                outputs: [
+                    {
+                        value: this.pledgeGoal,
+                        address: 'bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6' // FIXME
+                    }
+                ],
+                data: {
+                    alias: this.pledgeName || '',
+                    comment: this.pledgeComment || ''
+                },
+                donation: {
+                    amount: this.pledgeSatoshis
+                },
+                expires: 1596168000 // FIXME
+            }
+
+            /* Format to base-64. */
+            const formatted = Buffer.from(JSON.stringify(pkg, null, 2)).toString('base64')
+
+            /* Return formatted. */
+            return formatted
         },
 
         qr() {
@@ -203,10 +235,60 @@ export default {
             'addCampaign',
         ]),
 
+        _setPledgeUSD(_satoshis) {
+            /* Calculate USD. */
+            const usd = (_satoshis / 100000000) * this.usd
+
+            /* Set (formatted) value. */
+            this.pledgeUSD = numeral(usd).format('$0,0.00')
+        },
+
+        onRangeChange() {
+            /* Calculate remaining (satoshis). */
+            const remaining = this.pledgeGoal / 2 // FOR DEV ONLY
+
+            /* Calculate satoshis. */
+            const satoshis = parseInt(remaining * (this.pledgeRange / 100.0))
+
+            /* Update pledge amount (satoshis). */
+            this.pledgeSatoshis = satoshis
+
+            /* Set pledge (USD). */
+            this._setPledgeUSD(satoshis)
+        },
+
+        onPledgeUpdate() {
+            // console.log('UPDATE THE PLEDGE AMOUNT (USD)', this.pledgeUSD)
+
+            // TODO Perform a smart calculation of value units
+            //        1. satoshis (no comma, decimal)
+            //        2. USD (has comma or decimal)
+
+            /* Retrieve pledge amount (usd). */
+            const pledgeUSD = numeral(this.pledgeUSD).value()
+            console.log('PLEDGE AMOUNT (usd)', pledgeUSD)
+
+            /* Calculate satoshis. */
+            const satoshis = parseInt((pledgeUSD / this.usd) * 100000000)
+            console.log('SATOSHIS', satoshis)
+
+            /* Update pledge amount (satoshis). */
+            this.pledgeSatoshis = satoshis
+
+            /* Update pledge display. */
+            this._setPledgeUSD(satoshis)
+        },
     },
-    created: function () {
+    created: async function () {
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        console.info(`Market price (USD)`, this.usd)
+
         /* Initialize pledge range. */
         this.pledgeRange = 5
+
+        /* Set pledge goal. */
+        this.pledgeGoal = this.campaign.assurance.recipients[0].satoshis
+        console.log('PLEDGE GOAL', this.pledgeGoal)
     },
     mounted: function () {
         //

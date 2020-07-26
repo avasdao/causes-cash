@@ -108,10 +108,10 @@
 		</div>
 
         <div class="campaign-item clearfix">
-            <Reminder v-if="showReminder" @cancel="showReminder = false; showActions = true" />
-            <Direct v-if="showDirect" @cancel="showDirect = false; showActions = true" />
-            <Assurance v-if="showAssurance" @cancel="showAssurance = false; showActions = true" />
-            <Payouts v-if="showPayouts" @cancel="showPayouts = false; showActions = true" />
+            <Reminder v-if="showReminder" :campaign="campaign" @cancel="showReminder = false; showActions = true" />
+            <Direct v-if="showDirect" :campaign="campaign" @cancel="showDirect = false; showActions = true" />
+            <Assurance v-if="showAssurance" :campaign="campaign" @cancel="showAssurance = false; showActions = true" />
+            <Payouts v-if="showPayouts" :campaign="campaign" @cancel="showPayouts = false; showActions = true" />
         </div>
 	</div>
 </template>

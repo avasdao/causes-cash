@@ -57,6 +57,9 @@ import { mapActions, mapGetters } from 'vuex'
 // const $ = window.jQuery
 
 export default {
+    props: {
+        campaign: Object,
+    },
     components: {
         //
     },

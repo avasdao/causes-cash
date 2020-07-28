@@ -13,7 +13,7 @@
 						<div class="account-content dashboard">
 							<h3 class="account-title">Bitcoin Cash Wallet</h3>
 
-                            <div class="qr-code float-right d-none d-md-block m-3" v-html="qr" />
+                            <div class="qr-code float-right d-none d-md-block m-3" v-html="qr" @click="setClipboard" />
 
                             <div class="row my-3">
                                 <div class="col-1">
@@ -25,7 +25,7 @@
                                 </div>
 
                                 <div class="col-8">
-                                    <a :href="'https://explorer.bitcoin.com/bch/address/' + getAddress('deposit')" target="_blank">{{getAddress('deposit')}}</a>
+                                    <a :href="'https://explorer.bitcoin.com/bch/address/' + getAddress('deposit')" target="_blank">{{addressDisplay('deposit')}}</a>
                                 </div>
 
                                 <div class="col-1">
@@ -79,62 +79,101 @@
                                 </div>
 
                                 <div class="col-10">
-                                    <div class="qr-code text-center d-md-none" v-html="qr" />
+                                    <div class="qr-code text-center d-md-none" v-html="qr" @click="setClipboard" />
                                 </div>
 
                                 <div class="col-1">
                                     <!-- offset fix -->
                                 </div>
                             </div>
+						</div>
 
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
+                        <div class="account-content dashboard">
+							<h3 class="account-title">My Available Coins</h3>
 
-                                <div class="col-10">
-                                    <div class="account-content account-table">
-                                        <h3>My Available Coins</h3>
+                            <div v-if="coinsTable" class="account-content account-table my-available-coins p-3">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Label</th>
+                                            <th class="text-center">Value (sats)</th>
+                                            <th class="text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="coin of coinsTable" :key="coin.id">
+                                            <td>{{coin.status}}</td>
+                                            <td v-html="coinLabelDisplay(coin)"></td>
+                                            <td class="text-center">{{coinValueDisplay(coin)}}</td>
+                                            <td class="actions text-right">
+                                                <span v-if="coin.flags">
+                                                    <a href="javascript://">
+                                                        View
+                                                    </a>
 
-                                        <div v-if="coinsTable" class="utxos">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Label</th>
-                                                        <th>Value</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-for="coin of coinsTable" :key="coin.id">
-                                                        <td>{{coin.status}}</td>
-                                                        <td>{{coin.label}}</td>
-                                                        <td>{{coin.satoshis}}</td>
-                                                        <td class="actions">
-                                                            <a href="javascript://">View</a> |
-                                                            <a href="javascript://" @click="send(coin.details)">Send</a> |
-                                                            <a href="javascript://">Shuffle</a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                                    <span v-if="!coin.flags.locked">
+                                                        |
+                                                        <a href="javascript://" @click="send(coin.details)">
+                                                            Send
+                                                        </a>
+                                                    </span>
 
-                                    <button class="btn btn-warning" @click="updateCoins">Update Coins</button>
+                                                    <span v-if="coin.flags.shuffled">
+                                                        |
+                                                        <a href="javascript://">
+                                                            Re-shuffle
+                                                        </a>
+                                                    </span>
+
+                                                    <span v-if="coin.flags.locked">
+                                                        |
+                                                        <a href="javascript://">
+                                                            Unlock
+                                                        </a>
+                                                    </span>
+                                                </span>
+                                                <span v-else>
+                                                    <a href="javascript://">
+                                                        View
+                                                    </a>
+
+                                                    |
+                                                    <a href="javascript://" @click="send(coin.details)">
+                                                        Send
+                                                    </a>
+
+                                                    |
+                                                    <a href="javascript://">
+                                                        Shuffle
+                                                    </a>
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row p-2">
+                                <div class="col">
                                     <input
+                                        class="form-control form-control-lg"
                                         type="text"
                                         placeholder="Enter your destination address"
                                         v-model="output.address"
                                     >
                                 </div>
 
-                                <div class="col-1">
-                                    <!-- offset fix -->
+                                <div class="col">
+                                    <button
+                                        class="btn btn-warning btn-block"
+                                        @click="updateCoins"
+                                    >
+                                        Update Coins
+                                    </button>
                                 </div>
                             </div>
-
 						</div>
 
 					</div>
@@ -152,6 +191,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import Nito from 'nitojs'
+import numeral from 'numeral'
 import QRCode from 'qrcode'
 
 /* Import components. */
@@ -190,9 +230,14 @@ export default {
             'getHelp',
         ]),
 
+        ...mapGetters('utils', [
+            'getFormattedValue',
+        ]),
+
         ...mapGetters('wallet', [
             'getAddress',
             'getBalance',
+            'getMeta',
             'getMnemonic',
             'getWallet',
         ]),
@@ -236,6 +281,29 @@ export default {
                     /* Set label. */
                     const label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
 
+                    /* Retrieve metadata. */
+                    const meta = this.getMeta
+                    console.log('WALLET (meta):', meta)
+
+                    /* Initialize flags. */
+                    let flags = null
+
+                    if (meta.coins[id]) {
+                        if (meta.coins[id].lock && meta.coins[id].lock.isActive === true) {
+                            /* Validate flags. */
+                            if (flags === null) {
+                                /* Set flag. */
+                                flags = {
+                                    locked: true
+                                }
+                            } else {
+                                /* Set flag. */
+                                flags.locked = true
+                            }
+
+                        }
+                    }
+
                     /* Set status. */
                     // TODO: Will probably develop a rating scale??
                     const status = coin.status === 'active' ? '✓' : 'ⅹ'
@@ -247,6 +315,7 @@ export default {
                     const coinData = {
                         id,
                         label,
+                        flags,
                         status,
                         satoshis,
                         details: coin, // FIXME: Write this to outbox for multi-coin sending.
@@ -299,6 +368,10 @@ export default {
 
     },
     methods: {
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         ...mapActions('wallet', [
             'updateCoins',
         ]),
@@ -332,20 +405,81 @@ export default {
         },
 
         /**
+         * Coin Label Display
+         */
+        coinLabelDisplay(_coin) {
+            if (_coin.flags) {
+                if (_coin.flags.locked) {
+                    return `${_coin.label} <small class="text-danger">LOCKED</small>`
+                } else {
+                    return `${_coin.label} (${JSON.stringify(_coin.flags)})`
+                }
+            } else {
+                return _coin.label
+            }
+        },
+
+        addressDisplay(_type) {
+            if (this.getAddress(_type).indexOf('bitcoincash:') !== -1) {
+                return this.getAddress(_type).slice(12)
+            } else {
+                return this.getAddress(_type)
+            }
+        },
+
+        /**
+         * Coin Value Display
+         */
+        coinValueDisplay(_coin) {
+            return numeral(_coin.satoshis).format('0,0')
+        },
+
+        /**
          * Update Balance
          */
         async updateBalance() {
-            /* Retreive session balance. */
-            this.balance = await this
-                .getBalance('USD')
-                .catch(err => console.error(err))
-            console.log('DEPOSIT (balance):', this.balance)
+            // /* Retreive wallet balance. */
+            // this.balance = await this
+            //     .getBalance('USD')
+            //     .catch(err => console.error(err))
+            // console.log('DEPOSIT (balance):', this.balance)
+
+            /* Initialize wallet balance. */
+            let balance = 0
+
+            /* Validate wallet. */
+            if (this.getWallet) {
+                /* Initialize coins. */
+                const coins = this.getWallet.coins
+
+                Object.keys(coins).forEach(async coinId => {
+                    /* Initialize coin. */
+                    const coin = coins[coinId]
+                    // console.log('COINS (coin):', coin)
+
+                    if (coin.status === 'active' || coin.status === 'locked') {
+                        /* Add satoshis. */
+                        balance += coin.satoshis
+                    }
+                })
+            }
+
+            /* Retrieve market price. */
+            const marketPrice = await Nito.Markets.getTicker('BCH', 'USD')
+            console.info(`Market price (USD)`, marketPrice) // eslint-disable-line no-console
+
+            const formattedBalance =
+                this.getFormattedValue(balance, marketPrice, 'USD')
+            console.log('NEW BALANCE IS', formattedBalance)
+
+            /* Set wallet balance. */
+            this.balance = formattedBalance
         },
 
         async send(_coin) {
             console.log('SENDING COIN', _coin)
             if (!this.output.address) {
-                return console.error('NO output address!')
+                return this.toast(['Oops!', 'Invalid destination address. Please try again.', 'error'])
             }
 
             /* Build receivers. */
@@ -376,14 +510,7 @@ export default {
                 console.log('MESSAGE', message)
 
                 /* Display notification. */
-                // this.$notify({
-                //     message,
-                //     icon: 'ti-info-alt', // ti-info-alt | ti-alert
-                //     verticalAlign: 'top',
-                //     horizontalAlign: 'right',
-                //     type: 'info', // info | danger
-                //     // timeout: 0, // 0: persistent | 5000: default
-                // })
+                this.toast(['Done!', message, 'success'])
 
                 /* Wait a bit then update coins. */
                 // FIXME: How long should we wait?
@@ -397,17 +524,9 @@ export default {
             } else {
                 /* Set message. */
                 const message = `Oops! Something went wrong and your coin(s) were NOT sent.`
-                console.error('MESSAGE', message)
 
                 /* Display notification. */
-                // this.$notify({
-                //     message,
-                //     icon: 'ti-alert', // ti-info-alt | ti-alert
-                //     verticalAlign: 'top',
-                //     horizontalAlign: 'right',
-                //     type: 'danger', // info | danger
-                //     // timeout: 0, // 0: persistent | 5000: default
-                // })
+                this.toast(['Oops!', message, 'error'])
             }
 
         },
@@ -445,17 +564,10 @@ export default {
                 document.body.removeChild(textArea)
 
                 /* Set message. */
-                const message = `Your deposit address has been copied to your clipboard.`
+                const message = `Deposit address has been copied to your clipboard.`
 
                 /* Display notification. */
-                this.$notify({
-                    message,
-                    icon: 'ti-info-alt', // ti-info-alt | ti-alert
-                    verticalAlign: 'top',
-                    horizontalAlign: 'right',
-                    type: 'info', // info | danger
-                    // timeout: 0, // 0: persistent | 5000: default
-                })
+                this.toast(['Hey!', message, 'info'])
 
                 return true
             } catch (err) {
@@ -492,6 +604,13 @@ export default {
 }
 </script>
 
+<style>
+.my-available-coins small {
+    font-size: 0.8em;
+    font-weight: 500;
+}
+</style>
+
 <style scoped>
 .mnemonic {
     cursor: pointer;
@@ -508,4 +627,8 @@ export default {
 .actions a {
     display: inline-block;
 }
+
+/* .my-available-coins {
+    padding: 15px;
+} */
 </style>

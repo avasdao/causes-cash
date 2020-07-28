@@ -380,7 +380,6 @@ export default {
                     satoshis: _satoshis,
                 }
             ]
-            console.log('RECEIVERS', receivers)
 
             const campaignValue = this.userPledge.outputs[0].value
             console.log('CAMPAIGN VALUE', campaignValue);
@@ -391,16 +390,28 @@ export default {
             const changeAddress = this.getAddress('change')
             console.log('CHANGE ADDRESS', changeAddress)
 
+            const DUST = 546
+            const FEE = 270
+
+            if (_coin.satoshis - _satoshis > DUST + FEE) {
+                receivers.push(
+                    {
+                        address: changeAddress,
+                        satoshis: (_coin.satoshis - _satoshis - FEE),
+                    }
+                )
+            }
+            console.log('RECEIVERS', receivers)
+
 
 
             /* Set auto fee (flag). */
-            // const autoFee = false
+            const autoFee = false
 
-            const results = false
-            // const results = await Nito.Transaction
-            //     .sendCoin(_coin, receivers, autoFee)
-            //     .catch(err => console.error(err))
-            // console.log('OUTBOX SEND COIN (results):', results)
+            const results = await Nito.Transaction
+                .sendCoin(_coin, receivers, autoFee)
+                .catch(err => console.error(err))
+            console.log('OUTBOX SEND COIN (results):', results)
 
             if (results) {
                 /* Set message. */

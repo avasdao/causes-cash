@@ -37,8 +37,8 @@ export default {
         // ]),
     },
     methods: {
-        ...mapActions('campaigns', [
-            'addCampaign',
+        ...mapActions('utils', [
+            'toast',
         ]),
 
     },

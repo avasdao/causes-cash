@@ -42,6 +42,7 @@ const getBalanceBySessionId = (
         const address = addresses[i]
 
         /* Retrieve (address) balances. */
+        // TODO Use wallet.coins to track balance (faster!)
         const balances = await Nito.Address.balance(address)
 
         /* Validate balances. */

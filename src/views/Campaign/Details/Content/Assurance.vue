@@ -86,7 +86,7 @@
 
                     <div class="form-group row">
                         <div class="col">
-                            <button class="btn btn-primary btn-block">Copy Details</button>
+                            <button class="btn btn-primary btn-block" @click="setClipboard">Copy Details</button>
                         </div>
 
                         <div class="col">
@@ -254,6 +254,10 @@ export default {
             'addAssurance',
         ]),
 
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         _setPledgeUSD(_satoshis) {
             /* Calculate USD. */
             const usd = (_satoshis / 100000000) * this.usd
@@ -330,6 +334,46 @@ export default {
                 // const comment = null
                 // const createdAt = null
             }, 10)
+        },
+
+        /**
+         * Set Clipboard
+         */
+        setClipboard() {
+            try {
+                const textArea = document.createElement('textarea')
+                textArea.value = this.pledgeDetails
+                document.body.appendChild(textArea)
+
+                if (navigator.userAgent.match(/ipad|iphone/i)) {
+                    const range = document.createRange()
+                    range.selectNodeContents(textArea)
+
+                    const selection = window.getSelection()
+                    selection.removeAllRanges()
+                    selection.addRange(range)
+
+                    textArea.setSelectionRange(0, 999999)
+                } else {
+                    textArea.select()
+                }
+
+                document.execCommand('copy')
+                document.body.removeChild(textArea)
+
+                /* Set message. */
+                const message = `Pledge details copied to your clipboard.`
+
+                /* Display notification. */
+                this.toast(['Done!', message, 'success'])
+
+                return true
+            } catch (err) {
+                console.error(err) // eslint-disable-line no-console
+
+                /* Bugsnag alert. */
+                throw new Error(err)
+            }
         },
 
     },

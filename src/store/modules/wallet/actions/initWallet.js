@@ -57,6 +57,8 @@ const initWallet = ({ commit }) => {
     /* Build metadata. */
     const meta = {
         label: 'My Causes Wallet',
+        addresses: {},
+        coins: {},
         createdAt: moment().unix(),
     }
 

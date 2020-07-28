@@ -134,6 +134,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
+import moment from 'moment'
 import Nito from 'nitojs'
 
 /* Import components. */
@@ -161,6 +162,8 @@ export default {
             pledgeDetails: null,
             pledgeAuth: null,
 
+            campaignAddress: null,
+            campaignValue: null,
         }
     },
     computed: {
@@ -169,6 +172,7 @@ export default {
             'getBalance',
             'getDerivationPath',
             'getHDNode',
+            'getMeta',
             'getWallet',
         ]),
 
@@ -206,6 +210,7 @@ export default {
     methods: {
         ...mapActions('wallet', [
             'updateCoins',
+            'updateMeta',
         ]),
 
         /**
@@ -254,19 +259,19 @@ export default {
             let value = null
 
             /* Set campaign value. */
-            const campaignValue = this.userPledge.outputs[0].value
-            console.log('Campaign value:', campaignValue)
+            this.campaignValue = this.userPledge.outputs[0].value
+            console.log('Campaign value:', this.campaignValue)
 
             /* Set value. */
-            value = Nito.Utils.encodeNumber(campaignValue)
+            value = Nito.Utils.encodeNumber(this.campaignValue)
             console.log('Encoded value:', value)
 
             /* Set campaign address. */
-            const campaignAddress = this.userPledge.outputs[0].address
-            console.log('Campaign address:', campaignAddress)
+            this.campaignAddress = this.userPledge.outputs[0].address
+            console.log('Campaign address:', this.campaignAddress)
 
             /* Set locking script. */
-            const locking_script = Nito.Address.toPubKeyHash(campaignAddress)
+            const locking_script = Nito.Address.toPubKeyHash(this.campaignAddress)
             console.log('Campaign (locking_script):', locking_script)
 
             /* Set current output. */
@@ -375,14 +380,27 @@ export default {
                     satoshis: _satoshis,
                 }
             ]
+            console.log('RECEIVERS', receivers)
+
+            const campaignValue = this.userPledge.outputs[0].value
+            console.log('CAMPAIGN VALUE', campaignValue);
+
+
+
+            /* Set change address. */
+            const changeAddress = this.getAddress('change')
+            console.log('CHANGE ADDRESS', changeAddress)
+
+
 
             /* Set auto fee (flag). */
-            const autoFee = false
+            // const autoFee = false
 
-            const results = await Nito.Transaction
-                .sendCoin(_coin, receivers, autoFee)
-                .catch(err => console.error(err))
-            console.log('OUTBOX SEND COIN (results):', results)
+            const results = false
+            // const results = await Nito.Transaction
+            //     .sendCoin(_coin, receivers, autoFee)
+            //     .catch(err => console.error(err))
+            // console.log('OUTBOX SEND COIN (results):', results)
 
             if (results) {
                 /* Set message. */
@@ -434,7 +452,11 @@ export default {
         async confirmFlipstarter() {
             /* Initialize wallet. */
             const wallet = this.getWallet
-            console.log('WALLET', wallet)
+            // console.log('WALLET', wallet)
+
+            /* Initialize meta. */
+            const meta = this.getMeta
+            console.log('META', meta)
 
             /* Set accounts. */
             const accounts = wallet.accounts
@@ -482,19 +504,8 @@ export default {
             if (!isPledged) {
                 console.error('MAKE THE DEPOSIT')
 
-                /* Initialize current (coin) index. */
-                const currentIndex = accounts['causes']
-                console.log('FLIPSTARTER (currentIndex):', currentIndex)
-
-                /* Set (Causes Cash) chain. */
-                const chain = 6767
-
-                /* Set derivation path. */
-                const path = this.getDerivationPath(chain, currentIndex)
-                console.log('FLIPSTARTER (path)', path)
-
                 /* Set source coin. */
-                sourceCoin = coins[spendable[1]] // FIXME: Search for minimum sufficient coin(s).
+                sourceCoin = coins[spendable[0]] // FIXME: Search for minimum sufficient coin(s).
                 console.log('SOURCE COIN', sourceCoin)
 
                 /* Set pledge address. */
@@ -598,7 +609,41 @@ export default {
 
             /* Update pledge authorization. */
             this.pledgeAuth = encodedPledge
+
+            /* Initialize meta. */
+            const meta = this.getMeta
+            console.log('META', meta)
+
+            /* Set coin id. */
+            const coinid = `${_coin.txid}:${_coin.vout}`
+
+            /* Validate coins. */
+            // NOTE: Added to schema on 2020.7.27
+            if (!meta.coins) {
+                meta.coins = {}
+            }
+
+            /* Update meta data. */
+            meta['coins'][coinid] = {
+                lock: {
+                    isActive: true,
+                    label: alias,
+                    comment,
+                    campaignAddr: this.campaignAddress,
+                    createdAt: moment().unix(),
+                }
+            }
+
+            /* Update metadata. */
+            this.updateMeta(meta)
         },
+
+        /**
+         * Cancel Pledge
+         */
+        cancelPledge(_coin) {
+            console.log('TODO', _coin)
+        }
 
     },
     created: function () {

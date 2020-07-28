@@ -2,20 +2,20 @@
 import superagent from 'superagent'
 
 /**
- * Update Campaign
+ * Add Assurance
  */
-const updateCampaign = async ({ rootGetters }, _campaign) => {
-    // console.log('UPDATE CAMPAIGN:', _campaign)
+const addAssurance = async ({ rootGetters }, _assurance) => {
+    // console.log('ADD ASSURANCE:', _assurance)
 
-    const signedPkg = rootGetters['profile/getSignedMessage'](JSON.stringify(_campaign))
+    const signedPkg = rootGetters['profile/getSignedMessage'](JSON.stringify(_assurance))
     // console.log('SIGNED PACKAGE', signedPkg)
 
     /* Set api target. */
-    const target = 'http://localhost:6767/v1/campaigns'
+    const target = 'http://localhost:6767/v1/assurance'
     // const target = 'https://api.causes.cash/v1/campaigns'
 
     const result = await superagent
-        .put(target)
+        .post(target)
         .send(signedPkg)
     // console.log('RESULT', result)
 
@@ -24,4 +24,4 @@ const updateCampaign = async ({ rootGetters }, _campaign) => {
 }
 
 /* Export module. */
-export default updateCampaign
+export default addAssurance

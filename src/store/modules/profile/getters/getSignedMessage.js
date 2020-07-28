@@ -53,13 +53,13 @@ const getSignedMessage = (state, getters, rootState, rootGetters) => (_message) 
     const wif = childNode.privateKey.toWIF()
     // console.log('GET SIGNED MESSAGE (wif):', wif)
 
-    /* Request signature. */
-    const signature = Nito.Message.sign(_message, wif)
-    // console.log('GET SIGNED MESSAGE (signature):', signature)
-
     /* Set nonce. */
     const nonce = moment().unix()
     // console.log('NONCE', nonce)
+
+    /* Request signature. */
+    const signature = Nito.Message.sign(`${_message}:${nonce}`, wif)
+    // console.log('GET SIGNED MESSAGE (signature):', signature)
 
     /* Build package. */
     const pkg = {

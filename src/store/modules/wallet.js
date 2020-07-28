@@ -8,6 +8,7 @@ import getDustAmount from './wallet/getters/getDustAmount'
 import getHDNode from './wallet/getters/getHDNode'
 import getHistory from './wallet/getters/getHistory'
 import getMasterSeed from './wallet/getters/getMasterSeed'
+import getMeta from './wallet/getters/getMeta'
 import getMnemonic from './wallet/getters/getMnemonic'
 import getWallet from './wallet/getters/getWallet'
 
@@ -74,6 +75,7 @@ const getters = {
     getHDNode,
     getHistory,
     getMasterSeed,
+    getMeta,
     getMnemonic,
     getWallet,
 }

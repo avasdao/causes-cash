@@ -99,7 +99,25 @@
                             Pledge Details
                         </label>
 
-                        <textarea v-model="pledge" class="pledge-output" id="pledge-details" />
+                        <textarea v-model="pledgeDetails" class="pledge-output" id="pledge-details" />
+                    </div>
+
+                    <div class="form-group row pledge-group">
+                        <label for="pledge-auth">
+                            Pledge Authorization
+                        </label>
+
+                        <input
+                            ref="pledgeAuth"
+                            class="form-control"
+                            type="text"
+                            id="pledge-auth"
+                            placeholder="waiting for authorization message..."
+                            v-model="pledgeAuth"
+                            @change="handleAuth"
+                            @keyup="handleAuth"
+                            @paste="handleAuth"
+                         />
                     </div>
                 </form>
             </div>
@@ -155,6 +173,7 @@ export default {
             pledgeComment: null,
             pledgeRange: null,
             pledgeGoal: null,
+            pledgeAuth: null,
         }
     },
     computed: {
@@ -171,7 +190,7 @@ export default {
             return this.getAddress('deposit')
         },
 
-        pledge() {
+        pledgeDetails() {
             /* Build (pledge) package. */
             const pkg = {
                 outputs: [
@@ -232,7 +251,7 @@ export default {
     },
     methods: {
         ...mapActions('campaigns', [
-            'addCampaign',
+            'addAssurance',
         ]),
 
         _setPledgeUSD(_satoshis) {
@@ -278,6 +297,41 @@ export default {
             /* Update pledge display. */
             this._setPledgeUSD(satoshis)
         },
+
+        handleAuth() {
+            /* Wait a tick. */
+            setTimeout(() => {
+                /* Initialize pledge authorization. */
+                let pledgeAuth = null
+
+                try {
+                    /* Decode base-64. */
+                    pledgeAuth = Buffer.from(this.pledgeAuth, 'base64')
+                    // console.log('PLEDGE AUTH (buffer)', pledgeAuth.toString())
+
+                    /* Parse JSON. */
+                    pledgeAuth = JSON.parse(pledgeAuth)
+
+                    /* Add campaign id. */
+                    pledgeAuth.campaignid = this.campaign.id
+                    console.log('PLEDGE AUTH', pledgeAuth)
+
+                    this.addAssurance(pledgeAuth)
+                } catch (err) {
+                    console.error(err)
+                }
+
+                // const previousTransactionHash = null
+                // const previousTransactionIndex = null
+                // const unlockScript = null
+                // const sequenceNumber = null
+                // const satoshis = null
+                // const alias = null
+                // const comment = null
+                // const createdAt = null
+            }, 10)
+        },
+
     },
     created: async function () {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')

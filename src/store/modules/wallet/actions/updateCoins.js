@@ -4,24 +4,24 @@ const Nito = require('nitojs')
 /**
  * Update Status
  */
-const updateStatus = (_coins, dispatch) => {
-    Object.keys(_coins).forEach(async coinId => {
+const updateStatus = (_coins, _meta, dispatch) => {
+    Object.keys(_coins).forEach(async coinid => {
         /* Set txid. */
-        const txid = coinId.split(':')[0]
-        console.log('UPDATE STATUS (txid)', txid)
+        const txid = coinid.split(':')[0]
+        // console.log('UPDATE STATUS (txid)', txid)
 
         /* Set vout. */
-        const vout = coinId.split(':')[1]
-        console.log('UPDATE STATUS (vout)', vout)
+        const vout = coinid.split(':')[1]
+        // console.log('UPDATE STATUS (vout)', vout)
 
         /* Query spent status. */
         const isSpent = await Nito.Blockchain.Query.isSpent(txid, vout)
-        console.log('UPDATE STATUS (isSpent)', isSpent, txid, vout)
+        // console.log('UPDATE STATUS (isSpent)', isSpent, txid, vout)
 
         /* Validate spent. */
         if (isSpent) {
             /* Set coin. */
-            const coin = _coins[coinId]
+            const coin = _coins[coinid]
 
             /* Validate status. */
             if (coin && coin.status !== 'disabled') {
@@ -31,7 +31,27 @@ const updateStatus = (_coins, dispatch) => {
                 /* Request coin update. */
                 dispatch('updateCoin', coin)
             }
+        } else {
+            if (!_meta.coins[coinid]) {
+                return
+            }
+
+            if (_meta.coins[coinid].lock && _meta.coins[coinid].lock.isActive === true) {
+                /* Set coin. */
+                const coin = _coins[coinid]
+
+                /* Validate status. */
+                if (coin && coin.status !== 'locked') {
+                    /* Set status. */
+                    coin.status = 'locked'
+
+                    /* Request coin update. */
+                    dispatch('updateCoin', coin)
+                }
+            }
+
         }
+
     })
 
 }
@@ -42,7 +62,7 @@ const updateStatus = (_coins, dispatch) => {
 const updateCoins = async ({ dispatch, getters }) => {
     /* Set wallet. */
     const wallet = getters.getWallet
-    console.log('UPDATE COINS (wallet)', wallet)
+    // console.log('UPDATE COINS (wallet)', wallet)
 
     /* Validate wallet. */
     if (!wallet || !wallet.coins) {
@@ -51,14 +71,18 @@ const updateCoins = async ({ dispatch, getters }) => {
 
     /* Set coins. */
     const coins = wallet.coins
-    console.log('UPDATE COINS (coins)', coins)
+    // console.log('UPDATE COINS (coins)', coins)
+
+    /* Retrieve metadata. */
+    const meta = getters.getMeta
+    console.log('UPDATE COINS (meta):', meta)
 
     /* Update status. */
-    updateStatus(coins, dispatch)
+    updateStatus(coins, meta, dispatch)
 
     /* Retrieve accounts. */
     const accounts = getters.getAccounts
-    console.log('UPDATE COINS (accounts)', accounts)
+    // console.log('UPDATE COINS (accounts)', accounts)
 
     /* Validate accounts. */
     if (accounts === null) {
@@ -69,7 +93,7 @@ const updateCoins = async ({ dispatch, getters }) => {
     const addresses = accounts.map(obj => {
         return obj.address
     })
-    console.log('UPDATE COINS (addresses)', addresses)
+    // console.log('UPDATE COINS (addresses)', addresses)
 
     /* Initialize search details. */
     const searchDetails = []
@@ -209,7 +233,7 @@ const updateCoins = async ({ dispatch, getters }) => {
                             console.error(err) // eslint-disable-line no-console
                         }
                     } else {
-                        console.error('Coin already exists in the purse.')
+                        // console.error('Coin already exists in the purse.')
                     }
                 }
             })

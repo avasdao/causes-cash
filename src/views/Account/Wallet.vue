@@ -103,21 +103,19 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="coin of coinsTable" :key="coin.id">
-                                            <td>{{coin.status}}</td>
+                                            <td v-html="coin.status"></td>
                                             <td v-html="coinLabelDisplay(coin)"></td>
                                             <td class="text-center">{{coinValueDisplay(coin)}}</td>
                                             <td class="actions text-right">
-                                                <span v-if="coin.flags">
-                                                    <a href="javascript://">
-                                                        View
-                                                    </a>
+                                                <a href="javascript://">
+                                                    View
+                                                </a>
 
-                                                    <span v-if="!coin.flags.locked">
-                                                        |
-                                                        <a href="javascript://" @click="send(coin.details)">
-                                                            Send
-                                                        </a>
-                                                    </span>
+                                                <span v-if="coin.flags.spendable">
+                                                    |
+                                                    <a href="javascript://" @click="send(coin.details)">
+                                                        Send
+                                                    </a>
 
                                                     <span v-if="coin.flags.shuffled">
                                                         |
@@ -125,30 +123,20 @@
                                                             Re-shuffle
                                                         </a>
                                                     </span>
-
-                                                    <span v-if="coin.flags.locked">
+                                                    <span v-else>
                                                         |
                                                         <a href="javascript://">
-                                                            Unlock
+                                                            Shuffle
                                                         </a>
                                                     </span>
                                                 </span>
-                                                <span v-else>
-                                                    <a href="javascript://">
-                                                        View
-                                                    </a>
 
+                                                <span v-if="coin.flags.locked">
                                                     |
-                                                    <a href="javascript://" @click="send(coin.details)">
-                                                        Send
-                                                    </a>
-
-                                                    |
-                                                    <a href="javascript://">
-                                                        Shuffle
+                                                    <a href="javascript://" @click="unlock(coin.id)">
+                                                        Unlock
                                                     </a>
                                                 </span>
-
                                             </td>
                                         </tr>
                                     </tbody>
@@ -281,32 +269,25 @@ export default {
                     /* Set label. */
                     const label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
 
-                    /* Retrieve metadata. */
-                    const meta = this.getMeta
-                    console.log('WALLET (meta):', meta)
-
                     /* Initialize flags. */
-                    let flags = null
-
-                    if (meta.coins[id]) {
-                        if (meta.coins[id].lock && meta.coins[id].lock.isActive === true) {
-                            /* Validate flags. */
-                            if (flags === null) {
-                                /* Set flag. */
-                                flags = {
-                                    locked: true
-                                }
-                            } else {
-                                /* Set flag. */
-                                flags.locked = true
-                            }
-
-                        }
-                    }
+                    const flags = {}
 
                     /* Set status. */
                     // TODO: Will probably develop a rating scale??
-                    const status = coin.status === 'active' ? '✓' : 'ⅹ'
+                    let status = null
+
+                    switch(coin.status) {
+                    case 'active':
+                        status = '<icon class="fa fa-check"></icon>'
+                        flags.spendable = true
+                        break
+                    case 'locked':
+                        status = '<icon class="fa fa-lock text-danger"></icon>'
+                        flags.locked = true
+                        break
+                    default:
+                        status = ''
+                    }
 
                     /* Set satoshis. */
                     const satoshis = coin.satoshis
@@ -322,7 +303,7 @@ export default {
                     }
 
                     // TODO: Allow display of spent coins.
-                    if (status === '✓') {
+                    if (status !== '') {
                         tableData.push(coinData)
                     }
 
@@ -373,7 +354,9 @@ export default {
         ]),
 
         ...mapActions('wallet', [
+            'updateCoin',
             'updateCoins',
+            'updateMeta',
         ]),
 
         /**
@@ -408,12 +391,8 @@ export default {
          * Coin Label Display
          */
         coinLabelDisplay(_coin) {
-            if (_coin.flags) {
-                if (_coin.flags.locked) {
-                    return `${_coin.label} <small class="text-danger">LOCKED</small>`
-                } else {
-                    return `${_coin.label} (${JSON.stringify(_coin.flags)})`
-                }
+            if (_coin.flags.locked) {
+                return `${_coin.label} <small class="text-danger">LOCKED</small>`
             } else {
                 return _coin.label
             }
@@ -564,7 +543,7 @@ export default {
                 document.body.removeChild(textArea)
 
                 /* Set message. */
-                const message = `Deposit address has been copied to your clipboard.`
+                const message = `Deposit address copied to your clipboard.`
 
                 /* Display notification. */
                 this.toast(['Hey!', message, 'info'])
@@ -576,6 +555,33 @@ export default {
                 /* Bugsnag alert. */
                 throw new Error(err)
             }
+        },
+
+        /**
+         * Unlock
+         */
+        unlock(_coinid) {
+            /* Request metadata. */
+            const meta = this.getMeta
+
+            /* Initialize coins. */
+            const coins = this.getWallet.coins
+
+            const coin = coins[_coinid]
+
+            /* Update flag. */
+            coin.status = 'active'
+
+            /* Update coin. */
+            this.updateCoin(coin)
+            // console.log('COIN', coin);
+
+            /* Remove coin info from metadata. */
+            delete meta.coins[_coinid]
+
+            /* Update metadata. */
+            this.updateMeta(meta)
+            // console.log('META', meta)
         },
 
     },
@@ -606,7 +612,7 @@ export default {
 
 <style>
 .my-available-coins small {
-    font-size: 0.8em;
+    font-size: 0.7em;
     font-weight: 500;
 }
 </style>

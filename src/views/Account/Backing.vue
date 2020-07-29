@@ -145,6 +145,9 @@ import Header from '@/components/Header.vue'
 import Banner from '@/components/Account/Banner.vue'
 import Sidenav from '@/components/Account/Sidenav.vue'
 
+const DUST = 546
+const FEE = 270
+
 export default {
     components: {
         Footer,
@@ -390,9 +393,6 @@ export default {
             const changeAddress = this.getAddress('change')
             console.log('CHANGE ADDRESS', changeAddress)
 
-            const DUST = 546
-            const FEE = 270
-
             if (_coin.satoshis - _satoshis > DUST + FEE) {
                 receivers.push(
                     {
@@ -487,54 +487,90 @@ export default {
                 return null
             }
 
-            const spendable = Object.keys(coins).filter(coinId => {
-                return coins[coinId].status === 'active'
+            const spendable = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'active'
             })
             console.log('SPENDABLE', spendable)
 
-            let isPledged = false
+            const locked = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'locked'
+            })
+            console.log('LOCKED', locked)
 
+            /* Initialized locked flag. */
+            let isAlreadyLocked = false
+
+            /* Initialize source coin. */
             let sourceCoin = null
 
             /* Set donation amount. */
             const donation = this.userPledge.donation.amount
             console.log('DONATION', donation)
 
-            /* Loop through all spendables. */
-            spendable.forEach(coinId => {
-                if (coins[coinId].status === 'active' && coins[coinId].satoshis === donation) {
+            /* Loop through all locked. */
+            locked.forEach(coinid => {
+                if (coins[coinid].satoshis === donation) {
                     /* Set flag. */
-                    isPledged = true
+                    isAlreadyLocked = true
 
                     /* Set source coin. */
-                    sourceCoin = coins[coinId]
+                    sourceCoin = coins[coinid]
                 }
             })
 
-            /* Validate pledge balance. */
-            if (!isPledged) {
-                console.error('MAKE THE DEPOSIT')
+            /* Loop through all spendables. */
+            // FIXME FOR DEVELOPMENT ONLY
+            spendable.forEach(coinid => {
+                if (coins[coinid].satoshis === donation) {
+                    /* Set flag. */
+                    isAlreadyLocked = true
 
-                /* Set source coin. */
-                sourceCoin = coins[spendable[0]] // FIXME: Search for minimum sufficient coin(s).
-                console.log('SOURCE COIN', sourceCoin)
+                    /* Set source coin. */
+                    sourceCoin = coins[coinid]
+                }
+            })
+
+            /* Validate pledge availability. */
+            if (!isAlreadyLocked) {
+                console.error('MAKE THE DEPOSIT')
 
                 /* Set pledge address. */
                 const pledgeAddress = this.getAddress('causes')
                 console.log('PLEDGE ADDRESS', pledgeAddress)
 
-                /* Retrieve (address) balances. */
-                // const pledgeBalance = await Nito.Address.balance(pledgeAddress)
-                // console.log('PLEDGE BALANCE', pledgeBalance)
+                // TODO Sort spendables by value low->high.
 
-                this.loadFunds(sourceCoin, pledgeAddress, donation)
+                /* Handle all spendable coins. */
+                for (let i = 0; i < spendable.length; i++) {
+                    /* Set coin. */
+                    const coin = coins[spendable[i]]
+
+                    /* Validate coin value. */
+                    if (coin.satoshis > donation + DUST + FEE) {
+                        /* Set source coin. */
+                        sourceCoin = coin // FIXME: Search for minimum sufficient coin(s).
+                        console.log('SOURCE COIN', sourceCoin)
+
+                        break
+                    }
+                }
+
+                /* Validate source coin. */
+                if (sourceCoin) {
+                    /* Load funds. */
+                    this.loadFunds(sourceCoin, pledgeAddress, donation)
+
+                    /* Make pledge. */
+                    this.makePledge(sourceCoin)
+                } else {
+                    throw new Error(`Could not find a source coin for [ ${donation} ]`)
+                }
             } else {
                 console.error('RE-USE CURRENT DEPOSIT', sourceCoin)
 
+                /* Make pledge. */
                 this.makePledge(sourceCoin)
-
             }
-
 
         },
 
@@ -542,11 +578,7 @@ export default {
          * Make Pledge
          */
         makePledge(_coin) {
-            /* Initialize HD node. */
-            // const hdNode = this.getHDNode
-
             /* Initialize verification key. */
-            // const verificationKey = hdNode.deriveChild(_path)
             const verificationKey = Nito.Purse.fromWIF(_coin.wif)
             // console.log('verificationKey', verificationKey)
 

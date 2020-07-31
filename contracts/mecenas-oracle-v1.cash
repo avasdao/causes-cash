@@ -3,6 +3,8 @@ pragma cashscript ^0.4.0;
 /**
  * Mecenas Oracle (v1 - Fixed Blocks)
  *
+ * (last updated: 2020.7.29)
+ *
  * This contract enforces a fiat market price for daily payouts to the
  * contract's receipient.
  *

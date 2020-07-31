@@ -195,8 +195,8 @@ export default {
             const pkg = {
                 outputs: [
                     {
-                        value: this.pledgeGoal,
-                        address: 'bitcoincash:qrz4zlgjsqu0gu9xaayrrrlrttyv85xxzslp43veu6' // FIXME
+                        value: this.campaign.assurance.recipients[0].satoshis,
+                        address: this.campaign.assurance.recipients[0].address
                     }
                 ],
                 data: {
@@ -206,7 +206,7 @@ export default {
                 donation: {
                     amount: this.pledgeSatoshis
                 },
-                expires: 1596168000 // FIXME
+                expires: this.campaign.assurance.expiresAt
             }
 
             /* Format to base-64. */
@@ -379,10 +379,15 @@ export default {
     },
     created: async function () {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        console.info(`Market price (USD)`, this.usd)
+        // console.info(`Market price (USD)`, this.usd)
+        console.log('ASSURANCE', this.campaign.assurance)
 
         /* Initialize pledge range. */
         this.pledgeRange = 5
+
+        /* Initialize pledge. */
+        this.pledgeUSD = 1
+        this.onPledgeUpdate()
 
         /* Set pledge goal. */
         this.pledgeGoal = this.campaign.assurance.recipients[0].satoshis

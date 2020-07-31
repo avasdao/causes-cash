@@ -211,6 +211,10 @@ export default {
 
     },
     methods: {
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         ...mapActions('wallet', [
             'updateCoins',
             'updateMeta',
@@ -328,6 +332,9 @@ export default {
             const hashOutputs = Nito.Crypto.hash(
                 Buffer.concat(transactionOutpoints), 'sha256sha256'
             )
+            console.log('transactionOutpoints', transactionOutpoints);
+            console.log('transactionOutpoints (concat)', Buffer.concat(transactionOutpoints).toString('hex'));
+            console.log('hashOutputs', hashOutputs.toString('hex'));
 
             /* Set locktime. */
             const nLocktime = Buffer.from('00000000', 'hex')
@@ -359,9 +366,11 @@ export default {
                 nLocktime,
                 sighashType,
             ])
+            console.log('sighashMessage', sighashMessage.toString('hex'));
 
             /* Create signature hash digest (of message). */
             const sighashDigest = Nito.Crypto.hash(sighashMessage, 'sha256sha256')
+            console.log('sighashDigest', sighashDigest.toString('hex'));
 
             /* Return signature hash digest. */
             return sighashDigest
@@ -561,7 +570,15 @@ export default {
                     this.loadFunds(sourceCoin, pledgeAddress, donation)
 
                     /* Make pledge. */
-                    this.makePledge(sourceCoin)
+                    // this.makePledge(sourceCoin)
+
+                    // FIXME Wait until coin is in mempool, then `makePledge`
+
+                    /* Set message. */
+                    const message = `Your coin is ready to be pledged!`
+
+                    /* Display notification. */
+                    this.toast(['Done!', message, 'success'])
                 } else {
                     throw new Error(`Could not find a source coin for [ ${donation} ]`)
                 }
@@ -580,7 +597,7 @@ export default {
         makePledge(_coin) {
             /* Initialize verification key. */
             const verificationKey = Nito.Purse.fromWIF(_coin.wif)
-            // console.log('verificationKey', verificationKey)
+            console.log('verificationKey', verificationKey, _coin.wif)
 
             /* Set public key. */
             const publicKey = verificationKey.publicKey.toString()
@@ -604,7 +621,7 @@ export default {
 
             const previousTransactionHash = _coin.txid
             const previousTransactionOutputValue = Nito.Utils.encodeNumber(_coin.satoshis)
-            const previousTransactionOutputIndex = '00000000'
+            const previousTransactionOutputIndex = '00000000' // FIXME
             const inputLockScript = Nito.Address.toPubKeyHash(cashAddress)
 
             // Validate commitment signature
@@ -617,10 +634,10 @@ export default {
             console.log('verificationMessage', verificationMessage.toString('hex'))
 
             const pledgeSig = Nito.Account.sign(verificationMessage, verificationKey)
-            console.log('PLEDGE SIGNATURE', pledgeSig)
+            console.log('PLEDGE SIGNATURE', pledgeSig.toString())
 
             const previous_output_transaction_hash = previousTransactionHash
-            const previous_output_index = 0
+            const previous_output_index = 0 // FIXME
             const sequence_number = 4294967295
 
             const unlocking_script =
@@ -679,6 +696,12 @@ export default {
 
             /* Update metadata. */
             this.updateMeta(meta)
+
+            /* Set message. */
+            const message = `Your coin has been locked!`
+
+            /* Display notification. */
+            this.toast(['Done!', message, 'success'])
         },
 
         /**

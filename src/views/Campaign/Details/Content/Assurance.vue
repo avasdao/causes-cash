@@ -181,6 +181,10 @@ export default {
             'getHelp',
         ]),
 
+        ...mapGetters('campaigns', [
+            'getFullfillment',
+        ]),
+
         ...mapGetters('wallet', [
             'getAddress',
         ]),
@@ -365,11 +369,22 @@ export default {
             }, 10)
         },
 
-        broadcast() {
+        async broadcast() {
             console.log('STARTED BROADCASTING...')
 
-            const pledges = this.campaign.assurance.pledges.filter(pledge => !pledge.isSpent)
-            console.log('BROADCAST (pledges):', pledges)
+            try {
+                // Assemble pledges into transaction
+                const rawTransaction = this.getFullfillment(this.campaign)
+                console.log('RAW TRANSACTION', rawTransaction.toString('hex'))
+
+                const response = await Nito.Transaction
+                    .sendRawTransaction(rawTransaction.toString('hex'))
+                    .catch(err => console.error(err))
+                console.log('BROADCAST RESPONSE', response)
+            } catch (err) {
+                console.error(err)
+            }
+
         },
 
         /**

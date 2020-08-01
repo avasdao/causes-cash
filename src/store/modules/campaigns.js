@@ -5,6 +5,7 @@
 import getAsset from './campaigns/getters/getAsset'
 import getCampaign from './campaigns/getters/getCampaign'
 import getCampaigns from './campaigns/getters/getCampaigns'
+import getFullfillment from './campaigns/getters/getFullfillment'
 
 /* Import modules (actions). */
 import addAssurance from './campaigns/actions/addAssurance'
@@ -31,6 +32,7 @@ const getters = {
     getAsset,
     getCampaign,
     getCampaigns,
+    getFullfillment,
 }
 
 /* Actions. */

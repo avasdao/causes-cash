@@ -10,7 +10,7 @@
                     <th class="text-center">Amount (USD)</th>
                     <th class="text-right">Time</th>
                 </tr>
-                <tr v-for="pledge of pledges" :key="pledge.previousTransactionHash">
+                <tr v-for="pledge of pledges" :key="pledge.previousTransactionHash + ':' + pledge.previousOutputIndex">
                     <td>{{pledge.alias}}</td>
                     <td class="text-center">{{pledge.comment}}</td>
                     <td class="text-center">{{formatAmount(pledge.satoshis)}}</td>

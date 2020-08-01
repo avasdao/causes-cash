@@ -109,7 +109,7 @@
 
                         <input
                             ref="pledgeAuth"
-                            class="form-control"
+                            class="form-control pledge-auth"
                             type="text"
                             id="pledge-auth"
                             placeholder="waiting for authorization message..."
@@ -190,6 +190,21 @@ export default {
             return this.getAddress('deposit')
         },
 
+        pledgedValue() {
+            /* Calculate pledged (satoshis). */
+            const pledged = this.campaign.assurance.pledges
+                .reduce((accumulator, pledge) => {
+                    if (pledge.isSpent === true) {
+                        return accumulator
+                    } else {
+                        return accumulator + pledge.satoshis
+                    }
+                }, 0)
+            console.log('PLEDGED', pledged)
+
+            return pledged
+        },
+
         pledgeDetails() {
             /* Build (pledge) package. */
             const pkg = {
@@ -268,7 +283,8 @@ export default {
 
         onRangeChange() {
             /* Calculate remaining (satoshis). */
-            const remaining = this.pledgeGoal / 2 // FOR DEV ONLY
+            const remaining = this.pledgeGoal - this.pledgedValue
+            console.log('REMAINING', remaining)
 
             /* Calculate satoshis. */
             const satoshis = parseInt(remaining * (this.pledgeRange / 100.0))
@@ -303,6 +319,11 @@ export default {
         },
 
         handleAuth() {
+            /* Validate pledge authorization. */
+            if (!this.pledgeAuth) {
+                return
+            }
+
             /* Wait a tick. */
             setTimeout(() => {
                 /* Initialize pledge authorization. */
@@ -321,6 +342,14 @@ export default {
                     console.log('PLEDGE AUTH', pledgeAuth)
 
                     this.addAssurance(pledgeAuth)
+
+                    /* Calculate remaining (satoshis). */
+                    const remaining = this.pledgeGoal - this.pledgedValue
+                    console.log('REMAINING', remaining)
+
+                    if (remaining <= 0) {
+                        this.broadcast()
+                    }
                 } catch (err) {
                     console.error(err)
                 }
@@ -334,6 +363,13 @@ export default {
                 // const comment = null
                 // const createdAt = null
             }, 10)
+        },
+
+        broadcast() {
+            console.log('STARTED BROADCASTING...')
+
+            const pledges = this.campaign.assurance.pledges.filter(pledge => !pledge.isSpent)
+            console.log('BROADCAST (pledges):', pledges)
         },
 
         /**
@@ -380,7 +416,6 @@ export default {
     created: async function () {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
         // console.info(`Market price (USD)`, this.usd)
-        console.log('ASSURANCE', this.campaign.assurance)
 
         /* Initialize pledge range. */
         this.pledgeRange = 5
@@ -442,6 +477,9 @@ form {
 .pledge-output {
     width: 90%;
     height: 100px;
+}
+.pledge-auth {
+    width: 90%;
 }
 
 </style>

@@ -12,7 +12,7 @@ const addAssurance = async ({ rootGetters }, _assurance) => {
 
     /* Set api target. */
     const target = 'http://localhost:6767/v1/assurance'
-    // const target = 'https://api.causes.cash/v1/campaigns'
+    // const target = 'https://api.causes.cash/v1/assurance'
 
     const result = await superagent
         .post(target)

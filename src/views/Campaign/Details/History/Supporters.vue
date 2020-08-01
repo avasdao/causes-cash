@@ -5,14 +5,16 @@
         <table class="mt-3">
             <tbody>
                 <tr>
-                    <th>Name</th>
-                    <th>Donate Amount</th>
-                    <th>Date</th>
+                    <th>Nickname / Alias</th>
+                    <th class="text-center">Comment</th>
+                    <th class="text-center">Amount (USD)</th>
+                    <th class="text-right">Time</th>
                 </tr>
                 <tr v-for="pledge of pledges" :key="pledge.previousTransactionHash">
                     <td>{{pledge.alias}}</td>
-                    <td>{{pledge.satoshis}}</td>
-                    <td>{{formatDate(pledge.createdAt)}}</td>
+                    <td class="text-center">{{pledge.comment}}</td>
+                    <td class="text-center">{{formatAmount(pledge.satoshis)}}</td>
+                    <td class="text-right">{{formatDate(pledge.createdAt)}}</td>
                 </tr>
             </tbody>
         </table>
@@ -22,6 +24,7 @@
 <script>
 /* Import modules. */
 import moment from 'moment'
+import Nito from 'nitojs'
 import numeral from 'numeral'
 
 export default {
@@ -30,21 +33,31 @@ export default {
     },
     data: () => {
         return {
-            pledges: [],
+            usd: null,
+            pledges: null,
         }
     },
     watch: {
         campaign: function (_campaign) {
-            console.log('SUPPORTERS CAMPAIGN UPDATE', _campaign);
+            /* Handle campaign supporters. */
             if (_campaign && _campaign.assurance) {
-                this.pledges = _campaign.assurance.pledges
+                this.pledges = _campaign.assurance.pledges.filter(pledge => {
+                    return pledge.isSpent === false
+                })
+
+                /* Sort pledges (decending). */
+                this.pledges.sort((a, b) => {
+                    return b.satoshis - a.satoshis
+                })
             }
         },
     },
     methods: {
-        formatAmount(_value) {
-            if (_value) {
-                return numeral(_value).format('$0,0[.]00')
+        formatAmount(_amount) {
+            const value = (_amount / 100000000) * this.usd
+
+            if (value) {
+                return numeral(value).format('$0,0[.]00')
             } else {
                 return '$0.00'
             }
@@ -52,22 +65,18 @@ export default {
 
         formatDate(_date) {
             if (_date) {
-                return moment.unix(_date).format('lll')
+                return moment.unix(_date).fromNow()
             } else {
                 return 'n/a'
             }
         },
     },
-    created: function () {
-        /* Sample pledge. */
-        const pledge = {
-            txid: 'some-random-transaction-id',
-            name: 'Satoshi N.',
-            pledgeAmount: '$13.37',
-            pledgedAt: moment().subtract(3, 'hours').format('lll'),
-        }
+    created: async function () {
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        // console.info(`Market price (USD)`, this.usd)
 
-        this.pledges.push(pledge)
+        /* Initialize pledges. */
+        this.pledges = []
     },
 }
 </script>

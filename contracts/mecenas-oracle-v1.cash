@@ -69,11 +69,9 @@ contract MecenasOracle(
          *       Oracle signatures, as that would reduce the payout amount.
          */
         if (pk == oraclePk) {
-            /* require(tx.age >= 144); */
-            require(tx.age >= 0);
+            require(tx.age >= 144);
         } else {
-            /* require(tx.age >= 162); */
-            require(tx.age >= 1);
+            require(tx.age >= 162);
         }
 
         /* Set oracle-defined block height. */
@@ -96,7 +94,8 @@ contract MecenasOracle(
         int oraclePayoutAmt = int(oracleMsg.split(8)[1]);
 
         /* Set (hardcoded) miner fee. */
-        int minerFee = 1337;
+        /* int minerFee = 1337; */
+        int minerFee = 2000; // required for 2 inputs+outputs
 
         /* Retrieve the coin's value and cast it to an integer. */
         int coinValue = int(bytes(tx.value));

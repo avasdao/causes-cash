@@ -59,7 +59,7 @@ const updateStatus = (_coins, _meta, dispatch) => {
 /**
  * Update Coins (for ALL sessions)
  */
-const updateCoins = async ({ dispatch, getters }) => {
+const updateCoins = async ({ dispatch, getters, rootGetters }) => {
     /* Set wallet. */
     const wallet = getters.getWallet
     // console.log('UPDATE COINS (wallet)', wallet)
@@ -74,7 +74,7 @@ const updateCoins = async ({ dispatch, getters }) => {
     // console.log('UPDATE COINS (coins)', coins)
 
     /* Retrieve metadata. */
-    const meta = getters.getMeta
+    const meta = await rootGetters['profile/getMeta']
     console.log('UPDATE COINS (meta):', meta)
 
     /* Update status. */

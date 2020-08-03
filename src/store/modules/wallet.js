@@ -8,7 +8,6 @@ import getDustAmount from './wallet/getters/getDustAmount'
 import getHDNode from './wallet/getters/getHDNode'
 import getHistory from './wallet/getters/getHistory'
 import getMasterSeed from './wallet/getters/getMasterSeed'
-import getMeta from './wallet/getters/getMeta'
 import getMnemonic from './wallet/getters/getMnemonic'
 import getWallet from './wallet/getters/getWallet'
 
@@ -18,32 +17,14 @@ import destroyWallet from './wallet/actions/destroyWallet'
 import initWallet from './wallet/actions/initWallet'
 import updateCoin from './wallet/actions/updateCoin'
 import updateCoins from './wallet/actions/updateCoins'
-import updateMeta from './wallet/actions/updateMeta'
 import updateOutbox from './wallet/actions/updateOutbox'
 
 /* Import modules (mutations). */
 import setEmptyWallet from './wallet/mutations/setEmptyWallet'
-import setMeta from './wallet/mutations/setMeta'
 import setWallet from './wallet/mutations/setWallet'
 
 /* Initialize state. */
 const state = {
-    /**
-     * Metadata
-     *
-     * Used to store (user-defined) data for:
-     *     1. Individual accounts
-     *     2. Individual unspent transaction outputs (UXTOs)
-     *
-     * NOTE: Metadata MUST be used sparingly, to avoid data storage bloat;
-     *       and should be deleted when no longer needed.
-     *
-     * TODO: Allow this data to be stored on-chain using:
-     *       1. Bitcoin Files Protocol (BFP) (https://bitcoinfiles.com/)
-     *       2. Telr Locker (https://locker.telr.io)
-     */
-    meta: null,
-
     /**
      * Coins waiting to be sent out from the wallet.
      */
@@ -75,7 +56,6 @@ const getters = {
     getHDNode,
     getHistory,
     getMasterSeed,
-    getMeta,
     getMnemonic,
     getWallet,
 }
@@ -87,14 +67,12 @@ const actions = {
     initWallet,
     updateCoin,
     updateCoins,
-    updateMeta,
     updateOutbox,
 }
 
 /* Mutations. */
 const mutations = {
     setEmptyWallet,
-    setMeta,
     setWallet,
 }
 

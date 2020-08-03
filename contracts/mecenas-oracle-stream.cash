@@ -1,7 +1,16 @@
 pragma cashscript ^0.4.0;
 
-/**
- * Mecenas Oracle (v2 - Streaming Blocks)
+/*******************************************************************************
+ *
+ * Copyright (c) 2020 Bitcoin Cash Please
+ * Released under the MIT License.
+ *
+ * Mecenas Oracle (Streaming Blocks)
+ *
+ * Version 20.8.3
+ *
+ * https://bchplease.org
+ * support@bchplease.org
  *
  * This contract enforces a specific market price for payouts to the
  * contract's receipient.

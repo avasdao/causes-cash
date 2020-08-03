@@ -170,12 +170,15 @@ export default {
         }
     },
     computed: {
+        ...mapGetters('profile', [
+            'getMeta',
+        ]),
+
         ...mapGetters('wallet', [
             'getAddress',
             'getBalance',
             'getDerivationPath',
             'getHDNode',
-            'getMeta',
             'getWallet',
         ]),
 
@@ -475,7 +478,7 @@ export default {
             // console.log('WALLET', wallet)
 
             /* Initialize meta. */
-            const meta = this.getMeta
+            const meta = await this.getMeta
             console.log('META', meta)
 
             /* Set accounts. */
@@ -594,7 +597,7 @@ export default {
         /**
          * Make Pledge
          */
-        makePledge(_coin) {
+        async makePledge(_coin) {
             /* Initialize verification key. */
             const verificationKey = Nito.Purse.fromWIF(_coin.wif)
             console.log('verificationKey', verificationKey, _coin.wif)
@@ -671,7 +674,7 @@ export default {
             this.pledgeAuth = encodedPledge
 
             /* Initialize meta. */
-            const meta = this.getMeta
+            const meta = await this.getMeta
             console.log('META', meta)
 
             /* Set coin id. */

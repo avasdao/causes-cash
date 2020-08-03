@@ -164,7 +164,10 @@ import { mapActions, mapGetters } from 'vuex'
 import Nito from 'nitojs'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
+import superagent from 'superagent'
 import Swal from 'sweetalert2'
+
+const { Contract, SignatureTemplate } = require('cashscript')
 
 export default {
     props: {
@@ -177,6 +180,8 @@ export default {
         return {
             usd: null,
             satoshis: null,
+
+            payoutsContract: null,
 
             pledgeUSD: null,
             pledgeSatoshis: null,
@@ -375,6 +380,34 @@ export default {
             })
         },
 
+        /**
+         * Reclaim Pledge
+         */
+        async reclaimPledge() {
+            const funder = ''
+            const funderPk = ''
+            const funderAddress = ''
+
+            /**
+             * Instantiate a new Mecenas Oracle contract with constructor arguments:
+             *
+             * NOTE: Timeout value can only be block number, not a timestamp.
+             */
+            const instance = this.payoutsContract.new(
+                // FIXME
+            )
+            // console.log('Instance', instance)
+
+            const tx = await instance.functions
+                .reclaim(funderPk, new SignatureTemplate(funder))
+                // .from([contractUtxos.find(utxo => utxo.satoshis === 2000)])
+                .to(funderAddress, 1000)
+                .withHardcodedFee(1000)
+                .send()
+                .catch(err => console.error(err))
+            console.log('TX RESULTS', tx)
+        },
+
     },
     created: async function () {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
@@ -392,6 +425,46 @@ export default {
             /* Set pledge goal. */
             this.pledgeGoal = this.campaign.payouts.recipients[0].satoshis
             console.log('PLEDGE GOAL', this.pledgeGoal)
+        }
+
+        /* Set network. */
+        const network = 'mainnet'
+
+        /* Set contract URL. */
+        const contractUrl = 'https://ipfs.io/ipfs/QmZYoUt92FNVLqUQ7yyesLf9WdZSu1eXH5wWnxv9wDurFV'
+
+        /* Set contract path. */
+        const contract = await superagent.get(contractUrl)
+        // console.log('CONTRACT', contract.text)
+
+        if (contract && contract.text) {
+            /* Compile the Mecenas Oracle contract. */
+            this.payoutsContract = Contract.compile(contract.text, network)
+            console.log('Payouts Contract', this.payoutsContract)
+
+            const recipientPkh = ''
+            const funderPkh = ''
+            const oraclePk = ''
+
+            /* Initialize minimum valid block. */
+            const minValidBlock = 643123
+
+            /* Initialize monthly pledge amount. */
+            const monthlyPledgeAmt = 1337
+
+            /**
+             * Instantiate a new Mecenas Oracle contract with constructor arguments:
+             *
+             * NOTE: Timeout value can only be block number, not a timestamp.
+             */
+            const instance = this.payoutsContract.new(
+                recipientPkh,       // recipient public key hash
+                funderPkh,          // funder public key hash
+                oraclePk,           // oracle public key
+                minValidBlock,      // minimum valid block (signature & message)
+                monthlyPledgeAmt,   // monthly pledge amount
+            )
+            console.log('Instance', instance)
         }
     },
     mounted: function () {

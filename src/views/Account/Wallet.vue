@@ -218,6 +218,10 @@ export default {
             'getHelp',
         ]),
 
+        ...mapGetters('profile', [
+            'getMeta',
+        ]),
+
         ...mapGetters('utils', [
             'getFormattedValue',
         ]),
@@ -225,7 +229,6 @@ export default {
         ...mapGetters('wallet', [
             'getAddress',
             'getBalance',
-            'getMeta',
             'getMnemonic',
             'getWallet',
         ]),
@@ -560,9 +563,9 @@ export default {
         /**
          * Unlock
          */
-        unlock(_coinid) {
+        async unlock(_coinid) {
             /* Request metadata. */
-            const meta = this.getMeta
+            const meta = await this.getMeta
 
             /* Initialize coins. */
             const coins = this.getWallet.coins

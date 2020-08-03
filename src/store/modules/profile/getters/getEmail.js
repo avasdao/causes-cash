@@ -1,5 +1,5 @@
 /* Import modules. */
-const msgpack = require('msgpack-lite')
+import msgpack from 'msgpack-lite'
 
 /**
  * Get Email Address

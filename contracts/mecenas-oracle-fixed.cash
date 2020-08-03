@@ -1,11 +1,18 @@
 pragma cashscript ^0.4.0;
 
-/**
- * Mecenas Oracle (v1 - Fixed Blocks)
+/*******************************************************************************
  *
- * (last updated: 2020.7.29)
+ * Copyright (c) 2020 Bitcoin Cash Please
+ * Released under the MIT License.
  *
- * This contract enforces a fiat market price for daily payouts to the
+ * Mecenas Oracle (Fixed Blocks)
+ *
+ * Version 20.8.3
+ *
+ * https://bchplease.org
+ * support@bchplease.org
+ *
+ * This contract enforces a fiat-based market price for daily payouts to the
  * contract's receipient.
  *
  * recipient        : party whom will will receive the payouts

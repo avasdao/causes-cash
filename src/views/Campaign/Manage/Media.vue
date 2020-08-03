@@ -398,6 +398,10 @@ export default {
             'updateCampaign',
         ]),
 
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         /**
          * Save
          */
@@ -427,7 +431,7 @@ export default {
 
             /* Handle result. */
             if (result.ok && !result.error) {
-                alert('Campaign updated successfully!')
+                this.toast(['Done!', 'Campaign updated successfully!', 'success'])
             }
         },
 
@@ -452,7 +456,25 @@ export default {
         if (this.ownerSlug && this.slug) {
             /* Set campaign. */
             this.campaign = await this.getCampaign(this.ownerSlug, this.slug)
-            console.log('SOCIAL (campaign):', this.campaign)
+            console.log('MEDIA (campaign):', this.campaign)
+
+            /* Initilalize photos. */
+            if (this.campaign && this.campaign.media) {
+                /* Set media. */
+                const media = this.campaign.media
+
+                if (media.main) {
+                    this.photo1Url = media.main
+                }
+
+                if (media.gallery && media.gallery[0]) {
+                    this.photo2Url = media.gallery[0]
+                }
+
+                if (media.gallery && media.gallery[1]) {
+                    this.photo3Url = media.gallery[1]
+                }
+            }
 
             if (this.campaign.news) {
                 // FOR DEV ONLY

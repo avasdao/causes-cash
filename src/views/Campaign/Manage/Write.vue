@@ -107,6 +107,10 @@ export default {
             'updateCampaign',
         ]),
 
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         /**
          * Save
          */
@@ -148,7 +152,7 @@ export default {
 
             /* Handle result. */
             if (result.ok && !result.error) {
-                alert('Campaign updated successfully!')
+                this.toast(['Done!', 'Campaign updated successfully!', 'success'])
             }
         },
 

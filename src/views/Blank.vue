@@ -46,7 +46,7 @@ export default {
         //
     },
     mounted: function () {
-        //
+        // return this.toast(['Done!', 'Blank mounted successfully!', 'success'])
     },
 }
 </script>

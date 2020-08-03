@@ -15,7 +15,7 @@
                             <div class="account-main">
 								<div class="author clearfix">
                                     <a class="author-avatar" href="javascript://">
-                                        <img src="@/assets/img/dashboard-avatar.png" alt="">
+                                        <img src="getAvatar" alt="">
                                     </a>
 
 									<div class="author-content">
@@ -107,6 +107,7 @@ export default {
         ]),
 
         ...mapGetters('profile', [
+            'getAvatar',
             'getEmail',
             'getNickname',
         ]),

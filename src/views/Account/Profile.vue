@@ -15,7 +15,7 @@
 
 							<div class="author clearfix">
 								<a class="author-avatar" href="javascript://">
-                                    <img src="@/assets/img/dashboard-avatar.png" alt="">
+                                    <img :src="getAvatar" alt="">
                                 </a>
 
 								<div class="author-content">
@@ -34,7 +34,7 @@
                                             </a>
                                         </p>
 										<p>
-                                            Causes Cash member since June 2020
+                                            Causes Cash member since August 2020
                                         </p>
 									</div>
 								</div>
@@ -46,29 +46,11 @@
                                 </div>
 
                                 <div class="col-2">
-                                    <strong>First Name</strong>
+                                    <strong>Nickname</strong>
                                 </div>
 
                                 <div class="col-8">
-                                    Martinez
-                                </div>
-
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-                            </div>
-
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-2">
-                                    <strong>Last Name</strong>
-                                </div>
-
-                                <div class="col-8">
-                                    Melvin
+                                    Satoshi N.
                                 </div>
 
                                 <div class="col-1">
@@ -159,6 +141,7 @@ export default {
         ]),
 
         ...mapGetters('profile', [
+            'getAvatar',
             'getEmail',
             'getNickname',
         ]),

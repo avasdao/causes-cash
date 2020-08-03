@@ -42,7 +42,7 @@ export default {
             /* Handle campaign supporters. */
             if (_campaign && _campaign.assurance) {
                 this.pledges = _campaign.assurance.pledges.filter(pledge => {
-                    return pledge.isSpent === false
+                    return (pledge.isFilled === true || pledge.isSpent === false)
                 })
 
                 /* Sort pledges (decending). */

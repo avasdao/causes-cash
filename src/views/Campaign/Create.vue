@@ -422,6 +422,9 @@
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapActions } from 'vuex'
+
 /* Import modules. */
 import superagent from 'superagent'
 
@@ -474,28 +477,32 @@ export default {
         },
     },
     methods: {
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         /**
          * Create New
          */
         async createNew() {
             /* Validate title. */
             if (!this.title || !this.slug) {
-                return alert('Enter a title')
+                return this.toast(['Oops!', 'Please enter a title', 'error'])
             }
 
             // /* Validate model. */
             if (!this.model) {
-                return alert('Enter a model')
+                return this.toast(['Oops!', 'Please enter a model', 'error'])
             }
 
             /* Validate category. */
             if (!this.category) {
-                return alert('Enter a category')
+                return this.toast(['Oops!', 'Please enter a category', 'error'])
             }
 
             /* Validate location. */
             if (!this.location) {
-                return alert('Enter a location')
+                return this.toast(['Oops!', 'Please enter a location', 'error'])
             }
 
             const pkg = {
@@ -521,7 +528,7 @@ export default {
                 this.category = null
                 this.location = null
 
-                alert('New campaign created successfully!')
+                this.toast(['Done!', 'New campaign created successfully!', 'success'])
             }
         },
 

@@ -70,7 +70,7 @@
                         <span></span>
                     </div>
 
-                    <div class="row process-info">
+                    <div v-if="campaignModel == 'Community Pledge'" class="row process-info">
                         <div class="col">
                             <span>{{fundingGoal}}</span>
                             funding goal
@@ -91,10 +91,57 @@
                             {{lastUpdateSuffix}}
                         </div>
                     </div>
+
+                    <div v-if="campaignModel == 'Cash Payouts'" class="row process-info">
+                        <div class="col">
+                            <span>{{fundingGoal}}</span>
+                            <i class="fa fa-bitcoin" aria-hidden="true"></i>
+                            IN <small>(last 30 days)</small>
+                        </div>
+
+                        <div class="col">
+                            <span>{{fundingPledged}}</span>
+                            <i class="fa fa-bitcoin" aria-hidden="true"></i>
+                            OUT <small>(last 30 days)</small>
+                        </div>
+
+                        <div class="col">
+                            <span>{{numSupporters}}</span>
+                            supporters
+                        </div>
+
+                        <div class="col">
+                            <span>{{lastUpdate}}</span>
+                            {{lastUpdateSuffix}}
+                        </div>
+                    </div>
+
+                    <div v-if="campaignModel == 'Direct Donation'" class="row process-info">
+                        <div class="col">
+                            <span>{{fundingGoal}}</span>
+                            last 24hrs
+                        </div>
+
+                        <div class="col">
+                            <span>{{fundingPledged}}</span>
+                            last 30 days
+                        </div>
+
+                        <div class="col">
+                            <span>{{numSupporters}}</span>
+                            supporters
+                        </div>
+
+                        <div class="col">
+                            <span>{{lastUpdate}}</span>
+                            {{lastUpdateSuffix}}
+                        </div>
+                    </div>
+
 				</div>
 
                 <div v-if="showActions" class="button">
-                    <a href="javascript://" class="btn-primary" @click="showBacking">
+                    <a href="javascript://" class="btn-primary" @click="displaySupport">
                         Support this Campaign
                     </a>
 
@@ -118,7 +165,7 @@
 
 <script>
 /* Initialize vuex. */
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import Nito from 'nitojs'
@@ -245,7 +292,7 @@ export default {
                 case 'assurance':
                     return 'Community Pledge'
                 case 'payouts':
-                    return 'Daily Payouts'
+                    return 'Cash Payouts'
                 default:
                     return 'Unknown campaign type'
                 }
@@ -508,14 +555,34 @@ export default {
 
     },
     methods: {
+        ...mapActions('utils', [
+            'toast',
+        ]),
+
         /**
-         * Show Backing
+         * Display Support
          */
-        showBacking() {
+        displaySupport() {
             /* Hide actions. */
             this.showActions = false
 
-            this.showAssurance = true
+            /* Handle support window. */
+            if (this.campaign.assurance) {
+                /* Show assurance window. */
+                this.showAssurance = true
+            } else if (this.campaign.direct) {
+                /* Show direct window. */
+                this.showDirect = true
+            } else if (this.campaign.payouts) {
+                /* Show payouts window. */
+                this.showPayouts = true
+            } else {
+                /* Show actions. */
+                this.showActions = true
+
+                /* Show error notif. */
+                return this.toast(['Oops!', 'There is NO support for this campaign.', 'error'])
+            }
         },
 
     },
@@ -549,5 +616,10 @@ export default {
     float: right;
     margin: 0;
     padding: 0;
+}
+
+.process-info small {
+    font-size: 0.7em;
+    font-style: italic;
 }
 </style>

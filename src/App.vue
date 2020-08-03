@@ -439,6 +439,43 @@ button {
     background: #08aded;
     background-color: #0094d2;
 } */
+.btn-outline-danger {
+    background-color: #ffffff;
+    padding: 0 20px;
+    border-radius: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    height: 46px;
+    line-height: 46px;
+    border: 1pt solid #dc3545;
+    display: inline-block;
+}
+.btn-warning {
+    background-color: #ffc108;
+    padding: 0 20px;
+    border-radius: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    height: 46px;
+    line-height: 46px;
+    border: none;
+    display: inline-block;
+}
+/* .btn-danger:hover{
+    background: #08aded;
+    background-color: #0094d2;
+} */
+.btn-outline-warning {
+    background-color: #ffffff;
+    padding: 0 20px;
+    border-radius: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    height: 46px;
+    line-height: 46px;
+    border: 1pt solid #ffc108;
+    display: inline-block;
+}
 
 .markdown a, .campaigns a {
     display: inline-block;

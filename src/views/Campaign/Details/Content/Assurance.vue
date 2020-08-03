@@ -99,7 +99,7 @@
                             Pledge Details
                         </label>
 
-                        <textarea v-model="pledgeDetails" class="pledge-output" id="pledge-details" />
+                        <textarea :value="pledgeDetails" class="pledge-output" id="pledge-details" />
                     </div>
 
                     <div class="form-group row pledge-group">
@@ -150,10 +150,6 @@ import { mapActions, mapGetters } from 'vuex'
 import Nito from 'nitojs'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
-
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
 
 export default {
     props: {
@@ -210,6 +206,11 @@ export default {
         },
 
         pledgeDetails() {
+            /* Validate assurance. */
+            if (!this.campaign.assurance) {
+                return null
+            }
+
             /* Build (pledge) package. */
             const pkg = {
                 outputs: [
@@ -302,6 +303,11 @@ export default {
 
         onPledgeUpdate() {
             // console.log('UPDATE THE PLEDGE AMOUNT (USD)', this.pledgeUSD)
+
+            /* Validate USD pledge. */
+            if (!this.pledgeUSD) {
+                return null
+            }
 
             // TODO Perform a smart calculation of value units
             //        1. satoshis (no comma, decimal)
@@ -433,15 +439,18 @@ export default {
         // console.info(`Market price (USD)`, this.usd)
 
         /* Initialize pledge range. */
-        this.pledgeRange = 5
+        this.pledgeRange = 5 // FIXME
 
         /* Initialize pledge. */
-        this.pledgeUSD = 1
+        this.pledgeUSD = 1 // FIXME
         this.onPledgeUpdate()
 
-        /* Set pledge goal. */
-        this.pledgeGoal = this.campaign.assurance.recipients[0].satoshis
-        console.log('PLEDGE GOAL', this.pledgeGoal)
+        /* Validate assurance. */
+        if (this.campaign.assurance) {
+            /* Set pledge goal. */
+            this.pledgeGoal = this.campaign.assurance.recipients[0].satoshis
+            console.log('PLEDGE GOAL', this.pledgeGoal)
+        }
     },
     mounted: function () {
         //

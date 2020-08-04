@@ -1,6 +1,3 @@
-/* Import modules. */
-const moment = require('moment')
-
 /**
  * Initialize Wallet
  */
@@ -53,17 +50,6 @@ const initWallet = ({ commit }) => {
 
     /* Commit wallet. */
     commit('setWallet', walletModel)
-
-    /* Build metadata. */
-    const meta = {
-        label: 'My Causes Wallet',
-        addresses: {},
-        coins: {},
-        createdAt: moment().unix(),
-    }
-
-    /* Set metadata. */
-    commit('setMeta', meta)
 
     /* Return success. */
     return true

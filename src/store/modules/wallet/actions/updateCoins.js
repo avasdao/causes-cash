@@ -1,5 +1,5 @@
 /* Import components. */
-const Nito = require('nitojs')
+import Nito from 'nitojs'
 
 /**
  * Update Status

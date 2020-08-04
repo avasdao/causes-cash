@@ -21,23 +21,23 @@
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col btn-pledge-select">
+                        <div class="col btn-pledge-select" @click="handlePledge(1.00)">
                             $1.00/mo
                         </div>
 
-                        <div class="col btn-pledge-select">
+                        <div class="col btn-pledge-select" @click="handlePledge(5.00)">
                             $5.00/mo
                         </div>
 
-                        <div class="col btn-pledge-select">
+                        <div class="col btn-pledge-select" @click="handlePledge(10.00)">
                             $10.00/mo
                         </div>
 
-                        <div class="col btn-pledge-select">
+                        <div class="col btn-pledge-select" @click="handlePledge(20.00)">
                             $20.00/mo
                         </div>
 
-                        <div class="col btn-pledge-select">
+                        <div class="col btn-pledge-select" @click="handlePledge(50.00)">
                             $50.00/mo
                         </div>
 
@@ -112,7 +112,12 @@
 
                     <div class="form-group row">
                         <div class="col">
-                            <button class="btn btn-primary btn-block" @click="setClipboard">Copy Address</button>
+                            <button
+                                class="btn btn-primary btn-block"
+                                @click="savePledge"
+                            >
+                                Copy/Save Pledge
+                            </button>
                         </div>
 
                         <div class="col">
@@ -182,6 +187,7 @@ export default {
             satoshis: null,
 
             payoutsContract: null,
+            receipientAddress: null,
 
             pledgeUSD: null,
             pledgeSatoshis: null,
@@ -205,11 +211,6 @@ export default {
             'getAddress',
         ]),
 
-        pledgeAddress() {
-            // FIXME
-            return this.getAddress('deposit')
-        },
-
         pledgedValue() {
             /* Calculate pledged (satoshis). */
             const pledged = this.campaign.payouts.pledges
@@ -226,7 +227,7 @@ export default {
         },
 
         qr() {
-            if (!this.getAddress('deposit')) {
+            if (!this.pledgeAddress) {
                 return null
             }
 
@@ -244,7 +245,7 @@ export default {
                 }
             }
 
-            QRCode.toString(this.getAddress('deposit'), params, (err, value) => {
+            QRCode.toString(this.pledgeAddress, params, (err, value) => {
                 if (err) {
                     return console.error('QR Code ERROR:', err)
                 }
@@ -260,12 +261,20 @@ export default {
     },
     methods: {
         ...mapActions('campaigns', [
-            'addAssurance',
+            'addPayout',
         ]),
 
         ...mapActions('utils', [
             'toast',
         ]),
+
+        handlePledge(_amountUSD) {
+            this.pledgeUSD = _amountUSD
+
+            this.onPledgeUpdate()
+
+            this.createPledge()
+        },
 
         _setPledgeUSD(_satoshis) {
             /* Calculate USD. */
@@ -315,6 +324,16 @@ export default {
 
             /* Update pledge display. */
             this._setPledgeUSD(satoshis)
+        },
+
+        savePledge() {
+            this.setClipboard()
+
+            const pkg = {
+                hi: 'there'
+            }
+
+            this.addPayout(pkg)
         },
 
         /**
@@ -408,6 +427,70 @@ export default {
             console.log('TX RESULTS', tx)
         },
 
+        /**
+         * Create Pledge
+         */
+        async createPledge() {
+            /* Set network. */
+            const network = 'mainnet'
+
+            /* Set contract URL. */
+            const contractUrl = 'https://ipfs.io/ipfs/QmZYoUt92FNVLqUQ7yyesLf9WdZSu1eXH5wWnxv9wDurFV'
+
+            /* Set contract path. */
+            const contract = await superagent.get(contractUrl)
+            // console.log('CONTRACT', contract.text)
+
+            if (contract && contract.text) {
+                /* Compile the Mecenas Oracle contract. */
+                this.payoutsContract = Contract.compile(contract.text, network)
+                console.log('Payouts Contract', this.payoutsContract)
+
+                // const recipientAddress = 'bitcoincash:qq638hdce3q0pg370hfee7f7sgxkw6j46c9cw9sqer' // P2PKH - NitoJS
+                const recipientPkh = Nito.Address
+                    .toPubKeyHash(this.receipientAddress).slice(6, -4)
+                console.log('recipientPkh', recipientPkh)
+
+                /* Set funder address. */
+                // NOTE: Generated from next unused causes address.
+                const funderAddress = this.getAddress('causes')
+                const funderPkh = Nito.Address
+                    .toPubKeyHash(funderAddress).slice(6, -4)
+                console.log('funderPkh', funderPkh)
+
+                /* Set oracle public key. */
+                const oraclePk = '03fb19e8f648f9901709cad8ff8a0659bc6356aa64eeb1c460aed468255838c184'
+                console.log('oraclePk', oraclePk)
+
+                /* Initialize minimum valid block. */
+                const minValidBlock = 643123
+
+                /* Initialize monthly pledge amount. */
+                // const monthlyPledgeAmt = 1337
+                const pledgeUSD = numeral(this.pledgeUSD).value()
+                const monthlyPledgeAmt = Math.round(pledgeUSD * 100)
+                console.log('MONTHLY PLEDGE AMOUNT', pledgeUSD, monthlyPledgeAmt)
+
+                /**
+                 * Instantiate a new Mecenas Oracle contract with constructor arguments:
+                 *
+                 * NOTE: Timeout value can only be block number, not a timestamp.
+                 */
+                const instance = this.payoutsContract.new(
+                    recipientPkh,       // recipient public key hash
+                    funderPkh,          // funder public key hash
+                    oraclePk,           // oracle public key
+                    minValidBlock,      // minimum valid block (signature & message)
+                    monthlyPledgeAmt,   // monthly pledge amount
+                )
+                console.log('Instance', instance)
+
+                /* Set pledge address. */
+                this.pledgeAddress = instance.address
+            }
+
+        },
+
     },
     created: async function () {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
@@ -417,7 +500,7 @@ export default {
         this.pledgeRange = 5 // FIXME
 
         /* Initialize pledge. */
-        this.pledgeUSD = 1 // FIXME
+        this.pledgeUSD = 5.00
         this.onPledgeUpdate()
 
         /* Validate payouts. */
@@ -425,47 +508,15 @@ export default {
             /* Set pledge goal. */
             this.pledgeGoal = this.campaign.payouts.recipients[0].satoshis
             console.log('PLEDGE GOAL', this.pledgeGoal)
+
+            /* Set pledge goal. */
+            this.receipientAddress = this.campaign.payouts.recipients[0].address
+            console.log('RECIPIENT ADDRESS', this.receipientAddress)
         }
 
-        /* Set network. */
-        const network = 'mainnet'
+        /* Create new pledge. */
+        this.createPledge()
 
-        /* Set contract URL. */
-        const contractUrl = 'https://ipfs.io/ipfs/QmZYoUt92FNVLqUQ7yyesLf9WdZSu1eXH5wWnxv9wDurFV'
-
-        /* Set contract path. */
-        const contract = await superagent.get(contractUrl)
-        // console.log('CONTRACT', contract.text)
-
-        if (contract && contract.text) {
-            /* Compile the Mecenas Oracle contract. */
-            this.payoutsContract = Contract.compile(contract.text, network)
-            console.log('Payouts Contract', this.payoutsContract)
-
-            const recipientPkh = ''
-            const funderPkh = ''
-            const oraclePk = ''
-
-            /* Initialize minimum valid block. */
-            const minValidBlock = 643123
-
-            /* Initialize monthly pledge amount. */
-            const monthlyPledgeAmt = 1337
-
-            /**
-             * Instantiate a new Mecenas Oracle contract with constructor arguments:
-             *
-             * NOTE: Timeout value can only be block number, not a timestamp.
-             */
-            const instance = this.payoutsContract.new(
-                recipientPkh,       // recipient public key hash
-                funderPkh,          // funder public key hash
-                oraclePk,           // oracle public key
-                minValidBlock,      // minimum valid block (signature & message)
-                monthlyPledgeAmt,   // monthly pledge amount
-            )
-            console.log('Instance', instance)
-        }
     },
     mounted: function () {
         //
@@ -507,6 +558,7 @@ form {
 .btn-pledge-select {
     display: flex;
     border: 1pt solid rgba(255, 0, 255, 0.3);
+    background-color: rgba(220, 220, 220, 0.2);
     height: 50px;
     margin: 2px;
 
@@ -516,6 +568,8 @@ form {
     border-radius: 3px 3px 3px 3px;
     -moz-border-radius: 3px 3px 3px 3px;
     -webkit-border-radius: 3px 3px 3px 3px;
+
+    cursor: pointer;
 }
 
 </style>

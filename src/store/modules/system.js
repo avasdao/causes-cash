@@ -1,6 +1,3 @@
-/* Import libraries. */
-// import telr from '../../api/telr'
-
 /* Import modules (getters). */
 import getAssetSource from './system/getters/getAssetSource'
 import getEternalDbAddr from './system/getters/getEternalDbAddr'

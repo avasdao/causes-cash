@@ -1,5 +1,5 @@
 /* Import modules. */
-const Nito = require('nitojs')
+import Nito from 'nitojs'
 
 const DUST_LIMIT = 546
 const MAX_LIMIT = 2099999997690000

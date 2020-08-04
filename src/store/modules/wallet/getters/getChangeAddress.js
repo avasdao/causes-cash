@@ -1,6 +1,6 @@
 /* Import modules. */
 import msgpack from 'msgpack-lite'
-const Nito = require('nitojs')
+import Nito from 'nitojs'
 
 /**
  * Get Change Address

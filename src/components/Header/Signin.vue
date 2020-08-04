@@ -49,9 +49,7 @@ import { mapActions, mapGetters } from 'vuex'
 import Email from './SigninEmail'
 import Extensions from './SigninExtensions'
 import Ledger from './SigninLedger'
-
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
+import Swal from 'sweetalert2'
 
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
@@ -98,9 +96,28 @@ export default {
         /**
          * Sign In
          */
-        signIn() {
-            $('.form-signin').fadeToggle()
-            $('#signinForm').fadeToggle()
+        async signIn() {
+            // $('.form-signin').fadeToggle()
+            // $('#signinForm').fadeToggle()
+
+            const { value: formValues } = await Swal.fire({
+                title: 'Multiple inputs',
+                html:
+                    '<input id="swal-input1" class="swal2-input">' +
+                    '<input id="swal-input2" class="swal2-input">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    return [
+                        document.getElementById('swal-input1').value,
+                        document.getElementById('swal-input2').value
+                    ]
+                }
+            })
+
+            if (formValues) {
+                Swal.fire(JSON.stringify(formValues))
+            }
+
         },
 
         /**

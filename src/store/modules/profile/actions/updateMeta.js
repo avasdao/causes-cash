@@ -36,6 +36,9 @@ const updateMeta = async ({ commit, getters }, _meta) => {
     /* Commit metadata. */
     commit('setMeta', _meta)
 
+    const key = getters.getMasterSeed
+    console.log('MASTER SEED (key)', key)
+
     /**
      * Encrypt Metadata
      *
@@ -43,7 +46,7 @@ const updateMeta = async ({ commit, getters }, _meta) => {
      * data repository. For privacy reasons, ALL metadata is first encrypted
      * with a key ONLY know to this profile.
      */
-    const encrypted = _encrypt(JSON.stringify(_meta))
+    const encrypted = _encrypt(JSON.stringify(_meta), key)
     console.log('UPDATE META (encrypted):', encrypted)
 
     const signedPkg = getters.getSignedMessage(encrypted)

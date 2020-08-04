@@ -60,7 +60,10 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         /* Set contract path. */
         const response = await superagent.get(target)
         console.log('GET META', response)
-        console.log('GET META (decrypted)', _decrypt(response))
+
+        const key = getters.getMasterSeed
+        console.log('MASTER SEED (key)', key)
+        console.log('GET META (decrypted)', _decrypt(response, key))
 
         return null
     } else {

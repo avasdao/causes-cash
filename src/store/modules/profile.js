@@ -1,6 +1,3 @@
-/* Import libraries. */
-// import telr from '../../api/telr'
-
 /* Import modules (getters). */
 import getAvatar from './profile/getters/getAvatar'
 import getEmail from './profile/getters/getEmail'

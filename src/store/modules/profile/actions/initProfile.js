@@ -1,5 +1,6 @@
-/* Initialize BITBOX. */
-const Nito = require('nitojs')
+/* Import modules. */
+const moment = require('moment')
+import Nito from 'nitojs'
 
 /**
  * Initialize Wallet
@@ -28,6 +29,17 @@ const initProfile = async ({ state, commit }) => {
 
     /* Set new master (private) key. */
     commit('setMasterSeed', masterSeed)
+
+    /* Build metadata. */
+    const meta = {
+        label: 'My Causes Account',
+        addresses: {},
+        coins: {},
+        createdAt: moment().unix(),
+    }
+
+    /* Set metadata. */
+    commit('setMeta', meta)
 }
 
 /* Export module. */

@@ -1,6 +1,3 @@
-/* Import libraries. */
-// import telr from '../../api/telr'
-
 /* Import modules (getters). */
 import getBytesFromIPFS from './utils/getters/getBytesFromIPFS'
 import getCompletedPct from './utils/getters/getCompletedPct'

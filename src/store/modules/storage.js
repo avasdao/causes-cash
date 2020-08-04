@@ -1,6 +1,3 @@
-/* Import libraries. */
-// import telr from '../../api/telr'
-
 /* Import modules (getters). */
 import getIPFS from './storage/getters/getIPFS'
 import getOrbitDB from './storage/getters/getOrbitDB'

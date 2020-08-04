@@ -1,6 +1,6 @@
 /* Import modules. */
 import moment from 'moment'
-const Nito = require('nitojs')
+import Nito from 'nitojs'
 
 /**
  * Get Signed Message

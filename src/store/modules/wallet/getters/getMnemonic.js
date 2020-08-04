@@ -1,5 +1,5 @@
 /* Import modules. */
-const Nito = require('nitojs')
+import Nito from 'nitojs'
 
 /**
  * Get Mnemonic

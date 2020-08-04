@@ -1,5 +1,5 @@
 /* Import modules. */
-const Nito = require('nitojs')
+import Nito from 'nitojs'
 
 /**
 * Get Balance by Session Id
@@ -11,7 +11,10 @@ const Nito = require('nitojs')
 */
 const getBalanceBySessionId = (
     state, getters, rootState, rootGetters
-) => async (_currency) => {
+) => async (_quoteCurrency) => {
+    /* Set base currency. */
+    const baseCurrency = 'BCH'
+
     /* Retrieve accounts. */
     const accounts = getters.getAccounts
     console.log('GET BALANCE (accounts)', accounts)
@@ -59,15 +62,15 @@ const getBalanceBySessionId = (
     }
 
     /* Retrieve market price. */
-    const marketPrice = await Nito.Markets.getTicker('BCH', _currency)
-    console.info(`Market price (${_currency})`, marketPrice) // eslint-disable-line no-console
+    const marketPrice = await Nito.Markets.getTicker(baseCurrency, _quoteCurrency)
+    console.info(`Market price (${_quoteCurrency})`, marketPrice) // eslint-disable-line no-console
 
     /* Validate market price. */
     if (marketPrice) {
         /* Format balance (for display). */
         // TODO: Support additional currencies.
         const formattedBalance =
-            rootGetters['utils/getFormattedValue'](balance, marketPrice, 'USD')
+            rootGetters['utils/getFormattedValue'](balance, marketPrice, _quoteCurrency)
 
         /* Return (formatted) balance. */
         return formattedBalance

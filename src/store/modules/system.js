@@ -3,7 +3,9 @@ import getAssetSource from './system/getters/getAssetSource'
 import getEternalDbAddr from './system/getters/getEternalDbAddr'
 import getFlags from './system/getters/getFlags'
 import getHelp from './system/getters/getHelp'
+import getInbox from './system/getters/getInbox'
 import getLocale from './system/getters/getLocale'
+import getOutbox from './system/getters/getOutbox'
 
 /* Import modules (actions). */
 import updateAssetSource from './system/actions/updateAssetSource'
@@ -14,7 +16,9 @@ import updateLocale from './system/actions/updateLocale'
 import setAppStarts from './system/mutations/setAppStarts'
 import setAssetSource from './system/mutations/setAssetSource'
 import setFlags from './system/mutations/setFlags'
+import setInbox from './system/mutations/setInbox'
 import setLocale from './system/mutations/setLocale'
+import setOutbox from './system/mutations/setOutbox'
 
 /* Initialize state. */
 const state = {
@@ -87,7 +91,9 @@ const getters = {
     getEternalDbAddr,
     getFlags,
     getHelp,
+    getInbox,
     getLocale,
+    getOutbox,
 }
 
 /* Actions. */
@@ -102,7 +108,9 @@ const mutations = {
     setAppStarts,
     setAssetSource,
     setFlags,
+    setInbox,
     setLocale,
+    setOutbox,
 }
 
 /* Export. */

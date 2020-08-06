@@ -7,8 +7,17 @@ import msgpack from 'msgpack-lite'
  * `_source` is an object, with a key used to describe the asset type.
  */
 const setAssets = (state, _source) => {
+    /* Initialize assets. */
+    let assets = null
+
     /* Retrieve current assets. */
-    const assets = state.assets
+    // const assets = state.assets
+    try {
+        assets = msgpack.decode(Buffer.from(state.assets, 'hex'))
+    } catch (err) {
+        console.error(err)
+        assets = state.assets
+    }
 
     /* Update (merge) assets. */
     const updated = {

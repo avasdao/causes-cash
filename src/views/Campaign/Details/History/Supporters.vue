@@ -40,9 +40,15 @@ export default {
     watch: {
         campaign: function (_campaign) {
             /* Handle campaign supporters. */
-            if (_campaign && _campaign.assurance) {
-                this.pledges = _campaign.assurance.pledges.filter(pledge => {
-                    return (pledge.isFilled === true || pledge.isSpent === false)
+            if (_campaign && _campaign.assurances) {
+                /* Set pledges. */
+                const pledges = _campaign.assurances.pledges
+
+                /* Handle all pledges. */
+                Object.keys(pledges).filter(pledgeId => {
+                    if (pledges[pledgeId].isFilled === true || pledges[pledgeId].isSpent === false) {
+                        this.pledges.push(pledges[pledgeId])
+                    }
                 })
 
                 /* Sort pledges (decending). */

@@ -55,7 +55,7 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
 
         /* Set target. */
         const target = `http://localhost:6767/v1/meta/${address}`
-        // const target = `https://api.causes.cash/v1/meta/${ownerAddress}`
+        // const target = `https://api.causes.cash/v1/meta/${address}`
 
         /* Set contract path. */
         const response = await superagent.get(target)

@@ -6,9 +6,6 @@
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
-/* Import components. */
-// import { Notification } from '@/components'
-
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
@@ -51,6 +48,12 @@ export default {
             if (!this.getLocale) {
                 this.updateLocale('en-US')
             }
+        },
+
+        initCoinManager() {
+            setInterval(() => {
+                console.log('COIN MANAGER')
+            }, 5000)
         },
 
         /**
@@ -140,6 +143,9 @@ export default {
 
         /* Initialize application. */
         this.initApp()
+
+        /* Initialize coin manager. */
+        // this.initCoinManager()
 
         /* Initialize asset source. */
         this.updateAssetSource()

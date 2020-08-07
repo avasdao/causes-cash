@@ -229,8 +229,8 @@ export default {
         ...mapGetters('wallet', [
             'getAddress',
             'getBalance',
+            'getCoins',
             'getMnemonic',
-            'getWallet',
         ]),
 
         balanceDisplay() {
@@ -255,10 +255,10 @@ export default {
             /* Set table data. */
             const tableData = []
 
-            /* Validate wallet. */
-            if (this.getWallet) {
+            /* Validate coins. */
+            if (this.getCoins) {
                 /* Initialize coins. */
-                const coins = this.getWallet.coins
+                const coins = this.getCoins
                 console.log('COINS TABLE (coins):', coins)
 
                 Object.keys(coins).forEach(async coinId => {
@@ -402,6 +402,7 @@ export default {
         },
 
         addressDisplay(_type) {
+            console.log('this.getAddress(_type)', _type, this.getAddress(_type))
             if (this.getAddress(_type).indexOf('bitcoincash:') !== -1) {
                 return this.getAddress(_type).slice(12)
             } else {
@@ -429,10 +430,10 @@ export default {
             /* Initialize wallet balance. */
             let balance = 0
 
-            /* Validate wallet. */
-            if (this.getWallet) {
+            /* Validate coins. */
+            if (this.getCoins) {
                 /* Initialize coins. */
-                const coins = this.getWallet.coins
+                const coins = this.getCoins
 
                 Object.keys(coins).forEach(async coinId => {
                     /* Initialize coin. */
@@ -568,7 +569,7 @@ export default {
             const meta = await this.getMeta
 
             /* Initialize coins. */
-            const coins = this.getWallet.coins
+            const coins = this.getCoins
 
             const coin = coins[_coinid]
 
@@ -589,7 +590,7 @@ export default {
 
     },
     created: function () {
-        console.log('WALLET', this.getWallet)
+        console.log('COINS', this.getCoins)
 
         /* Set owner slug. */
         this.ownerSlug = this.$route.params.pathMatch.toLowerCase()

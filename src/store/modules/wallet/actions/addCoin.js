@@ -6,48 +6,60 @@
 const addCoin = ({ commit, getters }, _pkg) => {
     console.info('Adding new coin...', _pkg) // eslint-disable-line no-console
 
-    /* Set chain id. */
-    const chainId = _pkg.chainId
-    // console.log('ADD NEW COIN (chainid):', chainId)
+    /* Request accounts. */
+    const accounts = getters.getAccounts
+    // console.log('ADD NEW COIN (accounts):', accounts)
 
-    /* Set coin. */
-    const coin = _pkg.coin
-    // console.log('ADD NEW COIN (coin):', coin)
-
-    /* Set wallet. */
-    const wallet = getters.getWallet
-    // console.log('ADD NEW COIN (wallet):', wallet)
-
-    /* Validate wallet. */
-    if (!wallet) {
+    /* Validate accounts. */
+    if (!accounts) {
         return
     }
 
-    /* Add coin to wallet. */
-    wallet.coins[`${coin.txid}:${coin.vout}`] = coin
+    /* Set chain id. */
+    const chainId = _pkg.chainId
+    // console.log('ADD NEW COIN (chainid):', chainId)
 
     /* Increment deposit account. */
     switch(chainId) {
     case 0:
         /* Increment deposit index. */
-        wallet.accounts.deposit++
+        accounts.deposit++
         break
     case 1:
         /* Increment change index. */
-        wallet.accounts.change++
+        accounts.change++
         break
     case 6767:
         /* Increment causes index. */
-        wallet.accounts.causes++
+        accounts.causes++
         break
     case 7867:
         /* Increment nito index. */
-        wallet.accounts.nito++
+        accounts.nito++
         break
     }
 
-    /* Commit updated wallet`. */
-    commit('setWallet', wallet)
+    /* Request coins. */
+    const coins = getters.getCoins
+    // console.log('ADD NEW COIN (coins):', coins)
+
+    /* Validate coins. */
+    if (!coins) {
+        return
+    }
+
+    /* Set coin. */
+    const coin = _pkg.coin
+    // console.log('ADD NEW COIN (coin):', coin)
+
+    /* Add coin to wallet. */
+    coins[`${coin.txid}:${coin.vout}`] = coin
+
+    /* Commit updated accounts`. */
+    commit('setAccounts', accounts)
+
+    /* Commit updated coins`. */
+    commit('setCoins', coins)
 }
 
 /* Export module. */

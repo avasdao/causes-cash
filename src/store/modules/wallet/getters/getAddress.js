@@ -7,22 +7,14 @@ import Nito from 'nitojs'
  * Returns the next avaialble "receiving" address.
  */
 const getAddress = (state, getters) => (_account) => {
-    /* Validate wallet. */
-    if (!getters.getWallet) {
-        return null
-    }
-
-    /* Initialize wallet. */
-    const wallet = getters.getWallet
-    // console.log('GET ADDRESS (wallet):', wallet)
-
-    /* Set accounts. */
-    const accounts = wallet.accounts
-
     /* Validate accounts. */
-    if (!accounts) {
+    if (!getters.getAccounts) {
         return null
     }
+
+    /* Request accounts. */
+    const accounts = getters.getAccounts
+    // console.log('GET ADDRESS (accounts):', accounts)
 
     /* Initialize current (coin) index. */
     const currentIndex = accounts[_account]

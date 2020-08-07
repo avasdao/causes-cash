@@ -49,11 +49,13 @@ import { mapActions, mapGetters } from 'vuex'
 import Email from './SigninEmail'
 import Extensions from './SigninExtensions'
 import Ledger from './SigninLedger'
+import scrypt from 'scrypt-js'
+import superagent from 'superagent'
 import Swal from 'sweetalert2'
 
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
-const $ = window.jQuery
+// const $ = window.jQuery
 
 export default {
     components: {
@@ -69,6 +71,7 @@ export default {
     computed: {
         ...mapGetters('profile', [
             'getNickname',
+            'getSignedMessage',
         ]),
 
         /**
@@ -87,11 +90,141 @@ export default {
     methods: {
         ...mapActions('profile', [
             'destroyProfile',
+            'updateEmail',
+            'updateMasterSeed',
+            'updateNickname',
         ]),
 
         ...mapActions('utils', [
             'toast',
         ]),
+
+        ...mapActions('wallet', [
+            'initWallet',
+        ]),
+
+        /**
+         * Is Email (Address) Valid
+         */
+        isValidEmail(_email) {
+            /* Set regular express. */
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+            /* Return test result. */
+            return re.test(_email)
+        },
+
+        /**
+         * Authorization
+         */
+        async _authorize(_email, _password) {
+            /* Validate email. */
+            if (!this.isValidEmail(_email)) {
+                // this.toast(['Oops!', 'Invalid email. Please try again.', 'error'])
+                Swal.showValidationMessage(
+                    `Invalid email. Please try again.`
+                )
+
+                return false
+            }
+
+            /* Validate password. */
+            // TODO: Improve "strong" password validation.
+            if (!_password) {
+                // this.toast(['Oops!', 'Invalid password. Please try again.', 'error'])
+                Swal.showValidationMessage(
+                    `Invalid password. Please try again.`
+                )
+
+                return false
+            }
+
+            /* Disable sign in button. */
+            // this.canSignIn = false
+
+            // FIXME: We MUST check and update system.authHashes, if necessary.
+
+            /* Set password. */
+            const password = Buffer.from(_password.normalize('NFKC'))
+
+            /* Set salt (email address). */
+            const salt = Buffer.from(_email.normalize('NFKC'))
+
+            /* Set CPU (memory) cost. */
+            // NOTE: increasing this increases the overall difficulty.
+            // TODO: Test params on mobile devices (scale back, if necessary).
+            // const N = 16384 // 2^14 (original recommendation)
+            // const N = 32768 // 2^15 (safe recommendation)
+            const N = 65536 // 2^16 (JS-native recommendation)
+            // const N = 1048576 // 2^20 (optimal recommendation)
+
+            /* Set block size. */
+            // NOTE: Increasing this increases the dependency on memory
+            //       latency and bandwidth.
+            const r = 8
+
+            /* Set parallelization cost. */
+            // NOTE: Increasing this increases the dependency on
+            //       multi-processing.
+            const p = 1
+
+            /* Set derived key length (in bytes). */
+            const dkLen = 32
+
+            /* Compute key. */
+            const key = await scrypt
+                .scrypt(password, salt, N, r, p, dkLen)
+
+            /* Update master seed. */
+            this.updateMasterSeed(key)
+
+            /* Update email address. */
+            this.updateEmail(_email)
+
+            /* Set nickname. */
+            const nickname = _email.slice(0, _email.indexOf('@'))
+
+            /* Update nickname. */
+            this.updateNickname(nickname)
+
+            /* Initialize wallet. */
+            this.initWallet()
+
+            /* Set (current receiving) address. */
+            // const address = this.getAddress
+            // console.log('ADDRESS', address)
+
+            /* Enable sign in button. */
+            // this.canSignIn = true
+
+            /* Close modal. */
+            // $('.form-signin').fadeToggle()
+            // $('#signinForm').fadeToggle()
+
+            /* Set target. */
+            const target = 'https://api.causes.cash/v1/profiles'
+
+            const msg = {
+                action: 'SIGNIN_EMAIL',
+                email: _email,
+            }
+
+            /* Calculate auth signature. */
+            const signedMessage = this.getSignedMessage(JSON.stringify(msg))
+            console.log('SIGNED MESSAGE', signedMessage)
+
+            superagent
+                .post(target)
+                .send(signedMessage)
+                .end((err, res) => {
+                    if (err) return console.error(err) // eslint-disable-line no-console
+
+                    console.log('SIGN IN (response):', res)
+                })
+
+            return true
+
+        },
 
         /**
          * Sign In
@@ -100,24 +233,24 @@ export default {
             // $('.form-signin').fadeToggle()
             // $('#signinForm').fadeToggle()
 
-            const { value: formValues } = await Swal.fire({
-                title: 'Multiple inputs',
+            // const { value: formValues } = await Swal.fire({
+            await Swal.fire({
+                title: 'Sign In to Causes Cash',
                 html:
-                    '<input id="swal-input1" class="swal2-input">' +
-                    '<input id="swal-input2" class="swal2-input">',
+                    `<input type="email" id="swal-email" class="swal2-input" placeholder="Enter your email">` +
+                    `<input type="password" id="swal-password" class="swal2-input" placeholder="Enter your password">`,
                 focusConfirm: false,
-                preConfirm: () => {
-                    return [
-                        document.getElementById('swal-input1').value,
-                        document.getElementById('swal-input2').value
-                    ]
+                preConfirm: async () => {
+                    const email = document.getElementById('swal-email').value
+                    const password = document.getElementById('swal-password').value
+
+                    const isAuthorized = await this._authorize(email, password)
+                    console.log('isAuthorized', isAuthorized)
+                    // Swal.enableButtons()
+                    // throw new Error('maybe try again?')
+                    return isAuthorized
                 }
             })
-
-            if (formValues) {
-                Swal.fire(JSON.stringify(formValues))
-            }
-
         },
 
         /**
@@ -140,12 +273,12 @@ export default {
         //
     },
     mounted: function () {
-        $('.form-signin').on('click', function (e) {
-            e.preventDefault()
-
-            $(this).fadeToggle()
-            $(this).parent().find('#signinForm').fadeToggle()
-        })
+        // $('.form-signin').on('click', function (e) {
+        //     e.preventDefault()
+        //
+        //     $(this).fadeToggle()
+        //     $(this).parent().find('#signinForm').fadeToggle()
+        // })
     },
 }
 </script>

@@ -175,11 +175,12 @@ export default {
         ]),
 
         ...mapGetters('wallet', [
+            'getAccounts',
             'getAddress',
             'getBalance',
+            'getCoins',
             'getDerivationPath',
             'getHDNode',
-            'getWallet',
         ]),
 
         /**
@@ -473,31 +474,27 @@ export default {
          * Transfers the pledge amount into a dedicated UTXO.
          */
         async confirmFlipstarter() {
-            /* Initialize wallet. */
-            const wallet = this.getWallet
-            // console.log('WALLET', wallet)
-
-            /* Initialize meta. */
-            const meta = await this.getMeta
-            console.log('META', meta)
-
-            /* Set accounts. */
-            const accounts = wallet.accounts
+            /* Request accounts. */
+            const accounts = this.getAccounts
             console.log('ACCOUNTS', accounts)
-
-            /* Set coins. */
-            const coins = wallet.coins
-            console.log('COINS', coins)
 
             /* Validate accounts. */
             if (!accounts) {
                 return null
             }
 
+            /* Request coins. */
+            const coins = this.getCoins
+            console.log('COINS', coins)
+
             /* Validate coins. */
             if (!coins) {
                 return null
             }
+
+            /* Request metadata. */
+            const meta = await this.getMeta
+            console.log('META', meta)
 
             const spendable = Object.keys(coins).filter(coinid => {
                 return coins[coinid].status === 'active'

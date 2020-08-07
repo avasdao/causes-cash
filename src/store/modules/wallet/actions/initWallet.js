@@ -22,8 +22,11 @@ const initWallet = ({ commit }) => {
         nito: 0,
     }
 
+    /* Commit accounts. */
+    commit('setAccounts', accountsModel)
+
     /**
-     * Wallet Model
+     * Coins Model
      *
      * Coins are (UTXO) objects containing:
      *     - txid
@@ -43,13 +46,10 @@ const initWallet = ({ commit }) => {
      * NOTE: Reserved paths are used to "freeze" coins, for use with
      *       assurance contracts.
      */
-    const walletModel = {
-        accounts: accountsModel,
-        coins: {},
-    }
+    const coinsModel = {}
 
-    /* Commit wallet. */
-    commit('setWallet', walletModel)
+    /* Commit coins. */
+    commit('setCoins', coinsModel)
 
     /* Return success. */
     return true

@@ -6,20 +6,20 @@
 const updateCoin = ({ commit, getters }, _coin) => {
     console.info('Updating coin...', _coin) // eslint-disable-line no-console
 
-    /* Set wallet. */
-    const wallet = getters.getWallet
-    // console.log('UPDATE COIN (wallet):', wallet)
+    /* Request coins. */
+    const coins = getters.getCoins
+    // console.log('UPDATE COIN (coins):', coins)
 
-    /* Validate wallet. */
-    if (!wallet) {
+    /* Validate coins. */
+    if (!coins) {
         return
     }
 
     /* Add coin to session. */
-    wallet.coins[`${_coin.txid}:${_coin.vout}`] = _coin
+    coins[`${_coin.txid}:${_coin.vout}`] = _coin
 
     /* Commit updated wallet. */
-    commit('setWallet', wallet)
+    commit('setCoins', coins)
 }
 
 /* Export module. */

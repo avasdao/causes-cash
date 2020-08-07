@@ -12,12 +12,12 @@ const getAddress = (state, getters) => (_account) => {
         return null
     }
 
-    /* Request accounts. */
-    const accounts = getters.getAccounts
-    // console.log('GET ADDRESS (accounts):', accounts)
+    /* Request indicies. */
+    const indicies = getters.getIndicies
+    // console.log('GET ADDRESS (indicies):', indicies)
 
     /* Initialize current (coin) index. */
-    const currentIndex = accounts[_account]
+    const currentIndex = indicies[_account]
     // console.log('GET ADDRESS (currentIndex):', currentIndex)
 
     /* Initialize chain. */

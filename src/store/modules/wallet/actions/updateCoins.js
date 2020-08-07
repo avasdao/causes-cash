@@ -160,7 +160,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                 // console.log('UPDATE COINS (cashAddrs)', cashAddrs)
 
                 /* Initialize WIF. */
-                let chainId = null
+                let chainid = null
 
                 /* Initialize WIF. */
                 let wif = null
@@ -169,7 +169,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                 for (let i = 0; i < accounts.length; i++) {
                     if (accounts[i].address === searchAddr) {
                         /* Set chain id. */
-                        chainId = accounts[i].chainId
+                        chainid = accounts[i].chainid
 
                         /* Set WIF. */
                         wif = accounts[i].wif
@@ -209,7 +209,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                         /* Create coin package. */
                         const pkg = {
                             // sessionId,
-                            chainId,
+                            chainid,
                             coin,
                         }
 

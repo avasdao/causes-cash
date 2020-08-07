@@ -13,9 +13,12 @@ const setAssets = (state, _source) => {
     /* Retrieve current assets. */
     // const assets = state.assets
     try {
-        assets = msgpack.decode(Buffer.from(state.assets, 'hex'))
+        /* Validate assets. */
+        if (state.assets) {
+            assets = msgpack.decode(Buffer.from(state.assets, 'hex'))
+        }
     } catch (err) {
-        console.error(err)
+        console.error(err) // eslint-disable-line no-console
         assets = state.assets
     }
 
@@ -24,7 +27,7 @@ const setAssets = (state, _source) => {
         ...assets,
         ..._source,
     }
-    console.log('SYSTEM ASSETS (updated):', updated)
+    // console.log('SYSTEM ASSETS (updated):', updated)
 
     /* Set updated (merged) assets. */
     state.assets = msgpack.encode(updated).toString('hex')

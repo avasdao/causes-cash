@@ -9,6 +9,7 @@ import getDerivationPath from './wallet/getters/getDerivationPath'
 import getDustAmount from './wallet/getters/getDustAmount'
 import getHDNode from './wallet/getters/getHDNode'
 import getHistory from './wallet/getters/getHistory'
+import getIndicies from './wallet/getters/getIndicies'
 import getMnemonic from './wallet/getters/getMnemonic'
 
 /* Import modules (actions). */
@@ -20,19 +21,12 @@ import updateCoins from './wallet/actions/updateCoins'
 import updateOutbox from './wallet/actions/updateOutbox'
 
 /* Import modules (mutations). */
-import setAccounts from './wallet/mutations/setAccounts'
 import setCoins from './wallet/mutations/setCoins'
 import setEmptyWallet from './wallet/mutations/setEmptyWallet'
+import setIndicies from './wallet/mutations/setIndicies'
 
 /* Initialize state. */
 const state = {
-    /**
-     * Accounts
-     *
-     * Manages the index of account addresses.
-     */
-    accounts: null,
-
     /**
      * Coins
      *
@@ -55,6 +49,13 @@ const state = {
     inbox: null,
 
     /**
+     * (Account) Indices
+     *
+     * Manages the indices of account addresses.
+     */
+    indices: null,
+
+    /**
      * Outbox
      *
      * Coins waiting to be sent out from the wallet.
@@ -73,6 +74,7 @@ const getters = {
     getDustAmount,
     getHDNode,
     getHistory,
+    getIndicies,
     getMnemonic,
 }
 
@@ -88,9 +90,9 @@ const actions = {
 
 /* Mutations. */
 const mutations = {
-    setAccounts,
     setCoins,
     setEmptyWallet,
+    setIndicies,
 }
 
 /* Export. */

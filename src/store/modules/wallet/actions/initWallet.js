@@ -5,27 +5,6 @@ const initWallet = ({ commit }) => {
     console.info('Initializing wallet...') // eslint-disable-line no-console
 
     /**
-     * Accounts Model
-     *
-     * Manages the indexes of account (addresses) and their respective
-     * derivation paths.
-     *
-     * Deposit     : m/44'/145'/0'/0/<index>
-     * Change      : m/44'/145'/0'/1/<index>
-     * Causes Cash : m/44'/145'/0'/6767/<index>
-     * Nito Cash   : m/44'/145'/0'/7867/<index>
-     */
-    const accountsModel = {
-        deposit: 0,
-        change: 0,
-        causes: 0,
-        nito: 0,
-    }
-
-    /* Commit accounts. */
-    commit('setAccounts', accountsModel)
-
-    /**
      * Coins Model
      *
      * Coins are (UTXO) objects containing:
@@ -50,6 +29,27 @@ const initWallet = ({ commit }) => {
 
     /* Commit coins. */
     commit('setCoins', coinsModel)
+
+    /**
+     * Indicies Model
+     *
+     * Manages the indicies of account (addresses) and their respective
+     * derivation paths.
+     *
+     * Deposit     : m/44'/145'/0'/0/<index>
+     * Change      : m/44'/145'/0'/1/<index>
+     * Causes Cash : m/44'/145'/0'/6767/<index>
+     * Nito Cash   : m/44'/145'/0'/7867/<index>
+     */
+    const indiciesModel = {
+        deposit: 0,
+        change: 0,
+        causes: 0,
+        nito: 0,
+    }
+
+    /* Commit indicies. */
+    commit('setIndicies', indiciesModel)
 
     /* Return success. */
     return true

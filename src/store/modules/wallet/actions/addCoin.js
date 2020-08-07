@@ -16,11 +16,11 @@ const addCoin = ({ commit, getters }, _pkg) => {
     }
 
     /* Set chain id. */
-    const chainId = _pkg.chainId
-    // console.log('ADD NEW COIN (chainid):', chainId)
+    const chainid = _pkg.chainid
+    // console.log('ADD NEW COIN (chainid):', chainid)
 
     /* Increment deposit account. */
-    switch(chainId) {
+    switch(chainid) {
     case 0:
         /* Increment deposit index. */
         accounts.deposit++

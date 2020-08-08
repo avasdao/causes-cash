@@ -70,7 +70,7 @@
                                 placeholder="pledge amount (usd)"
                                 v-model="pledgeUSD"
                                 @blur="onPledgeUpdate"
-                                @keyup.enter="$refs.pledgeName.focus()"
+                                @keyup.enter="$refs.pledgeAlias.focus()"
                              />
                         </div>
                     </div>
@@ -82,12 +82,12 @@
 
                         <div class="col-md-8">
                             <input
-                                ref="pledgeName"
+                                ref="pledgeAlias"
                                 class="form-control"
                                 type="text"
                                 id="input-name"
                                 placeholder="(optional)"
-                                v-model="pledgeName"
+                                v-model="pledgeAlias"
                                 @keyup.enter="$refs.pledgeComment.focus()"
                              />
                         </div>
@@ -191,7 +191,7 @@ export default {
 
             pledgeUSD: null,
             pledgeSatoshis: null,
-            pledgeName: null,
+            pledgeAlias: null,
             pledgeComment: null,
             pledgeRange: null,
             pledgeGoal: null,
@@ -326,13 +326,37 @@ export default {
             this._setPledgeUSD(satoshis)
         },
 
-        savePledge() {
+        async savePledge() {
             this.setClipboard()
 
+            /* Set campaign id. */
+            const campaignid = this.campaign.id
+
+            /* Set funder address. */
+            // NOTE: Generated from next unused causes address.
+            const funderAddress = this.getAddress('causes')
+            const publicKeyHash = Nito.Address
+                .toPubKeyHash(funderAddress).slice(6, -4)
+            // console.log('publicKeyHash', publicKeyHash)
+
+            /* Set alias. */
+            const alias = this.pledgeAlias
+
+            /* Set comment. */
+            const comment = this.pledgeComment
+
+            const pledgeUSD = numeral(this.pledgeUSD).value()
+            const monthlyPledgeAmt = Math.round(pledgeUSD * 100)
+
             const pkg = {
-                hi: 'there'
+                campaignid,
+                publicKeyHash,
+                alias,
+                comment,
+                monthlyPledgeAmt,
             }
 
+            /* Add payout. */
             this.addPayout(pkg)
         },
 
@@ -506,11 +530,11 @@ export default {
         /* Validate payouts. */
         if (this.campaign.payouts) {
             /* Set pledge goal. */
-            this.pledgeGoal = this.campaign.payouts.recipients[0].satoshis
+            this.pledgeGoal = this.campaign.payouts.recipient.satoshis
             console.log('PLEDGE GOAL', this.pledgeGoal)
 
             /* Set pledge goal. */
-            this.receipientAddress = this.campaign.payouts.recipients[0].address
+            this.receipientAddress = this.campaign.payouts.recipient.address
             console.log('RECIPIENT ADDRESS', this.receipientAddress)
         }
 

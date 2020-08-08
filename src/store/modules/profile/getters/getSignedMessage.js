@@ -6,13 +6,11 @@ import Nito from 'nitojs'
  * Get Signed Message
  */
 const getSignedMessage = (state, getters, rootState, rootGetters) => (_message) => {
-    console.log('DEBUG', _message)
     /* Validate message. */
     if (!_message || !(typeof _message === 'string')) {
         throw new Error('Signed message MUST be a string.')
     }
 
-    console.log('ROOT GETTERS', rootGetters['wallet/getAccounts'])
     /* Validate accounts. */
     if (!rootGetters['wallet/getAccounts']) {
         return null

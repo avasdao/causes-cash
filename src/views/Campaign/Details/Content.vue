@@ -450,7 +450,7 @@ export default {
             const model = this.campaign.model
 
             if (model === 'assurance') {
-                return this.campaign.assurance.recipients[0].satoshis
+                return this.campaign.assurance.recipient.satoshis
             }
 
             return 0
@@ -468,7 +468,7 @@ export default {
             const model = this.campaign.model
 
             if (model === 'assurance') {
-                return this.campaign.assurance.recipients[0].address
+                return this.campaign.assurance.recipient.address
             }
 
             return 0
@@ -504,14 +504,14 @@ export default {
         fundingGoal() {
             if (this.campaign && this.campaign.assurance) {
                 /* Set recipients. */
-                const recipients = this.campaign.assurance.recipients
+                const recipient = this.campaign.assurance.recipient
 
                 /* Validate recipients. */
-                if (!recipients) {
+                if (!recipient) {
                     return '$0.00'
                 }
 
-                const calc = (recipients[0].satoshis / 100000000 * this.usd)
+                const calc = (recipient.satoshis / 100000000 * this.usd)
 
                 return numeral(calc).format('$0,0[.]00')
             }
@@ -525,15 +525,15 @@ export default {
         fundingPledged() {
             if (this.campaign && this.campaign.assurance) {
                 /* Set recipients. */
-                const recipients = this.campaign.assurance.recipients
+                const recipient = this.campaign.assurance.recipient
 
                 /* Validate recipients. */
-                if (!recipients) {
+                if (!recipient) {
                     return '$0.00'
                 }
 
                 // FOR DEV ONLY
-                const calc = (recipients[0].satoshis / 100000000 * this.usd) / 2.5
+                const calc = (recipient.satoshis / 100000000 * this.usd) / 2.5
 
                 return numeral(calc).format('$0,0[.]00')
             }

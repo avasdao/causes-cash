@@ -212,8 +212,8 @@ export default {
             const pkg = {
                 outputs: [
                     {
-                        value: this.campaign.direct.recipients[0].satoshis,
-                        address: this.campaign.direct.recipients[0].address
+                        value: this.campaign.direct.recipient.satoshis,
+                        address: this.campaign.direct.recipient.address
                     }
                 ],
                 data: {
@@ -380,7 +380,7 @@ export default {
         /* Validate direct. */
         if (this.campaign.direct) {
             /* Set pledge goal. */
-            this.pledgeGoal = this.campaign.direct.recipients[0].satoshis
+            this.pledgeGoal = this.campaign.direct.recipient.satoshis
             console.log('PLEDGE GOAL', this.pledgeGoal)
         }
     },

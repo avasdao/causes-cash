@@ -215,8 +215,8 @@ export default {
             const pkg = {
                 outputs: [
                     {
-                        value: this.campaign.assurance.recipients[0].satoshis,
-                        address: this.campaign.assurance.recipients[0].address
+                        value: this.campaign.assurance.recipient.satoshis,
+                        address: this.campaign.assurance.recipient.address
                     }
                 ],
                 data: {
@@ -448,7 +448,7 @@ export default {
         /* Validate assurance. */
         if (this.campaign.assurance) {
             /* Set pledge goal. */
-            this.pledgeGoal = this.campaign.assurance.recipients[0].satoshis
+            this.pledgeGoal = this.campaign.assurance.recipient.satoshis
             console.log('PLEDGE GOAL', this.pledgeGoal)
         }
     },

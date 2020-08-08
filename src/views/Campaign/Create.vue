@@ -89,7 +89,7 @@
                                 <option value="">Select a Category</option>
                                 <option value="adoption">Adoption</option>
                                 <option value="community">Community</option>
-                                <option value="dapp">Decentralized Apps</option>
+                                <option value="dapp">Decentralized App</option>
                                 <option value="design-art">Design & Art</option>
                                 <option value="education">Education</option>
                                 <option value="film-video">Film & Video</option>

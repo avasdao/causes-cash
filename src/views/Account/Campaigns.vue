@@ -38,7 +38,7 @@
                                         </div>
 
 										<div class="campaign-category">
-                                            {{formatCategory(campaign.category)}}
+                                            {{formatCategory(campaign.category)}} | {{formatModel(campaign.model)}}
                                         </div>
 
                                         <div class="campaign-title">
@@ -189,6 +189,20 @@ export default {
                 return null
             }
         },
+
+        /**
+         * Format Model
+         */
+        formatModel(_model) {
+            switch(_model) {
+            case 'assurance':
+                return 'Community Pledge'
+            case 'direct':
+                return 'Direct Cash'
+            case 'payouts':
+                return 'Daily Payouts'
+            }
+        }
 
     },
     created: async function () {

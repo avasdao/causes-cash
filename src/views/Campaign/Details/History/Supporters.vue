@@ -41,8 +41,17 @@ export default {
         campaign: function (_campaign) {
             /* Handle campaign supporters. */
             if (_campaign && _campaign.assurances) {
+                console.log('CAMPAIGN HAS CHANGED, UPDATE SUPPORTERS!!', _campaign)
+
+                const assuranceid = 0
+
                 /* Set pledges. */
-                const pledges = _campaign.assurances.pledges
+                const pledges = _campaign.assurances[assuranceid].pledges
+
+                /* Validate pledges. */
+                if (!pledges) {
+                    return
+                }
 
                 /* Handle all pledges. */
                 Object.keys(pledges).filter(pledgeId => {

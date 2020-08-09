@@ -141,8 +141,8 @@ export default {
 </script>
 
 <style scoped>
-h1 {
+/* h1 {
     margin-bottom: 20px;
     color: rgba(30, 30, 30, 0.2);
-}
+} */
 </style>

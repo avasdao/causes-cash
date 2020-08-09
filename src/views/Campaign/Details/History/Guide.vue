@@ -1,5 +1,5 @@
 <template>
-    <div id="guide" class="tabs">
+    <div id="guide" class="tabs markdown">
         <div v-if="guideDisplay" class="mt-3" v-html="guideDisplay" />
 
         <div v-else>
@@ -31,12 +31,12 @@ export default {
     watch: {
         campaign: function (_campaign) {
             if (_campaign && _campaign.guide) {
-                console.log('CAMPAIGN HAS CHANGED, UPDATE GUIDE!!', _campaign)
+                // console.log('CAMPAIGN HAS CHANGED, UPDATE GUIDE!!', _campaign)
 
                 if (_campaign && _campaign.guide) {
-                    /* Set summary. */
+                    /* Set guide. */
                     this.guide = _campaign.guide
-                    console.log('GUIDE', this.guide)
+                    // console.log('GUIDE', this.guide)
                 }
             }
         },
@@ -51,14 +51,13 @@ export default {
          */
         guideDisplay() {
             /* Validate guide. */
-            if (!this.guide) {
+            if (this.guide) {
+                /* Return guide (in markdown). */
+                return this.getMarkdown(this.guide)
+            } else {
                 return null
             }
-
-            /* Return summary (in markdown). */
-            return this.getMarkdown(this.guide)
         },
-
 
     },
     methods: {

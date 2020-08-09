@@ -190,9 +190,20 @@ export default {
             return this.getAddress('deposit')
         },
 
+        /**
+         * Pledged Value
+         *
+         * States the current value of all funds pledged to this campaign.
+         */
         pledgedValue() {
+            const assuranceid = 0
+
+            if (!this.campaign.assurances[assuranceid].pledges) {
+                return 0
+            }
+
             /* Calculate pledged (satoshis). */
-            const pledged = this.campaign.assurance.pledges
+            const pledged = this.campaign.assurances[assuranceid].pledges
                 .reduce((accumulator, pledge) => {
                     if (pledge.isSpent === true) {
                         return accumulator
@@ -207,16 +218,18 @@ export default {
 
         pledgeDetails() {
             /* Validate assurance. */
-            if (!this.campaign.assurance) {
+            if (!this.campaign.assurances) {
                 return null
             }
+
+            const assuranceid = 0
 
             /* Build (pledge) package. */
             const pkg = {
                 outputs: [
                     {
-                        value: this.campaign.assurance.recipient.satoshis,
-                        address: this.campaign.assurance.recipient.address
+                        value: this.campaign.assurances[assuranceid].recipient.satoshis,
+                        address: this.campaign.assurances[assuranceid].recipient.address
                     }
                 ],
                 data: {
@@ -226,7 +239,7 @@ export default {
                 donation: {
                     amount: this.pledgeSatoshis
                 },
-                expires: this.campaign.assurance.expiresAt
+                expires: this.campaign.assurances[assuranceid].expiresAt
             }
 
             /* Format to base-64. */
@@ -445,10 +458,12 @@ export default {
         this.pledgeUSD = 1 // FIXME
         this.onPledgeUpdate()
 
+        const assuranceid = 0
+
         /* Validate assurance. */
-        if (this.campaign.assurance) {
+        if (this.campaign.assurances) {
             /* Set pledge goal. */
-            this.pledgeGoal = this.campaign.assurance.recipient.satoshis
+            this.pledgeGoal = this.campaign.assurances[assuranceid].recipient.satoshis
             console.log('PLEDGE GOAL', this.pledgeGoal)
         }
     },

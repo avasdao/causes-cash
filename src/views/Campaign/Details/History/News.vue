@@ -5,26 +5,26 @@
         <ol v-if="articleList" class="comments-list">
             <li v-for="article of articleList" :key="article.id" class="comment clearfix">
                 <div class="comment-body">
-                    <div class="comment-avatar">
+                    <div class="comment-avatar float-left mr-3 mb-3">
                         <img class="avatar" :src="article.avatar" alt="">
                     </div>
 
                     <div class="comment-info">
                         <header class="comment-meta"></header>
 
-                        <cite class="comment-author">
+                        <div class="article-title">
                             <a :href="article.url" target="_blank">
                             {{article.title}}</a>
-                        </cite>
+                        </div>
 
-                        <div class="comment-inline">
-                            <span class="comment-date">{{article.timeAgo}}</span>
-                            <!-- <a href="javascript://" class="comment-reply">Reply</a> -->
+                        <div class="article-byline">
+                            by <span class="comment-date">{{article.author}}</span>
+                            &bullet; <span class="comment-date">{{article.timeAgo}}</span>
                         </div>
 
                         <div class="comment-content">
                             <p>
-                                {{article.summary}}
+                                {{formatSummary(article.summary)}}
                             </p>
                         </div>
                     </div>
@@ -61,6 +61,32 @@ export default {
             articles: [],
         }
     },
+    watch: {
+        campaign: function (_campaign) {
+            if (_campaign && _campaign.news) {
+                // console.log('CAMPAIGN HAS CHANGED, UPDATE NEWS!!', _campaign)
+
+                if (_campaign && _campaign.news) {
+                    /* Set summary. */
+                    const news = this.campaign.news
+                    // console.log('NEWS', news)
+
+                    /* Add each news article. */
+                    news.forEach(article => {
+                        this.articles.push({
+                            id: article.id,
+                            title: article.title,
+                            summary: article.summary,
+                            url: article.url,
+                            avatar: article.avatar,
+                            author: article.author,
+                            createdAt: article.createdAt,
+                        })
+                    })
+                }
+            }
+        },
+    },
     computed: {
         ...mapGetters('campaigns', [
             'getAsset',
@@ -88,29 +114,39 @@ export default {
             return articles.reverse()
         },
 
+
     },
     methods: {
         ...mapActions('campaigns', [
             'updateAsset',
         ]),
 
+        formatSummary(_summary) {
+            if (_summary.length > 250) {
+                return _summary.slice(0, 250) + ' [ more... ]'
+            } else {
+                return _summary
+            }
+        },
+
     },
     created: function () {
         /* Validate news. */
         if (this.campaign && this.campaign.news) {
             /* Set summary. */
-            this.news = this.campaign.news
-            console.log('NEWS', this.news)
+            const news = this.campaign.news
+            // console.log('NEWS', news)
 
             /* Add each news article. */
-            this.news.forEach(news => {
+            news.forEach(article => {
                 this.articles.push({
-                    id: news.id,
-                    title: news.title,
-                    summary: news.summary,
-                    avatar: news.avatar,
-                    url: news.url,
-                    createdAt: news.createdAt,
+                    id: article.id,
+                    title: article.title,
+                    summary: article.summary,
+                    url: article.url,
+                    avatar: article.avatar,
+                    author: article.author,
+                    createdAt: article.createdAt,
                 })
             })
         }
@@ -135,5 +171,16 @@ export default {
 
 span.comment-date {
     font-style: italic;
+}
+
+div.article-title {
+    font-size: 1.7em;
+    font-weight: 600;
+}
+
+div.article-byline {
+    font-style: italic;
+    margin: 5px 0;
+    color: rgba(30, 30, 30, 0.5);
 }
 </style>

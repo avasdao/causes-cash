@@ -141,8 +141,8 @@
 				</div>
 
                 <div v-if="showActions" class="button">
-                    <a href="javascript://" class="btn-primary" @click="displaySupport">
-                        Support this Campaign
+                    <a href="javascript://" class="btn-primary" @click="addMySupport">
+                        Add my support
                     </a>
 
                     <a href="javascript://" class="btn-secondary" @click="showActions = false; showReminder = true">
@@ -432,7 +432,7 @@ export default {
             const model = this.campaign.model
 
             if (model === 'assurance') {
-                return JSON.stringify(this.campaign.assurance, null, 2)
+                return JSON.stringify(this.campaign.assurances, null, 2)
             }
 
             return null
@@ -449,8 +449,10 @@ export default {
             /* Set model. */
             const model = this.campaign.model
 
+            const assuranceid = 0
+
             if (model === 'assurance') {
-                return this.campaign.assurance.recipient.satoshis
+                return this.campaign.assurances[assuranceid].recipient.satoshis
             }
 
             return 0
@@ -467,8 +469,10 @@ export default {
             /* Set model. */
             const model = this.campaign.model
 
+            const assuranceid = 0
+
             if (model === 'assurance') {
-                return this.campaign.assurance.recipient.address
+                return this.campaign.assurances[assuranceid].recipient.address
             }
 
             return 0
@@ -502,9 +506,11 @@ export default {
          * Funding Goal
          */
         fundingGoal() {
-            if (this.campaign && this.campaign.assurance) {
+            if (this.campaign && this.campaign.assurances) {
+                const assuranceid = 0
+
                 /* Set recipients. */
-                const recipient = this.campaign.assurance.recipient
+                const recipient = this.campaign.assurances[assuranceid].recipient
 
                 /* Validate recipients. */
                 if (!recipient) {
@@ -523,9 +529,11 @@ export default {
          * Funding Pledged
          */
         fundingPledged() {
-            if (this.campaign && this.campaign.assurance) {
+            if (this.campaign && this.campaign.assurances) {
+                const assuranceid = 0
+
                 /* Set recipients. */
-                const recipient = this.campaign.assurance.recipient
+                const recipient = this.campaign.assurances[assuranceid].recipient
 
                 /* Validate recipients. */
                 if (!recipient) {
@@ -560,14 +568,14 @@ export default {
         ]),
 
         /**
-         * Display Support
+         * Add My Support
          */
-        displaySupport() {
+        addMySupport() {
             /* Hide actions. */
             this.showActions = false
 
             /* Handle support window. */
-            if (this.campaign.assurance) {
+            if (this.campaign.assurances) {
                 /* Show assurance window. */
                 this.showAssurance = true
             } else if (this.campaign.direct) {

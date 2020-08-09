@@ -54,18 +54,20 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         // console.log('GET SIGNED MESSAGE (address):', address)
 
         /* Set target. */
-        const target = `http://localhost:6767/v1/meta/${address}`
-        // const target = `https://api.causes.cash/v1/meta/${address}`
+        const target = `https://api.causes.cash/v1/meta/${address}`
 
         /* Set contract path. */
         const response = await superagent.get(target)
-        console.log('GET META', response)
+        // console.log('GET META', response)
 
+        /* Request decryption key. */
         const key = getters.getMasterSeed
-        console.log('MASTER SEED (key)', key)
-        console.log('GET META (decrypted)', _decrypt(response, key))
 
-        return null
+        /* Decrypt metadata. */
+        const meta = _decrypt(response, key)
+
+        /* Return metadata. */
+        return meta
     } else {
         /* Return metadata. */
         return msgpack.decode(Buffer.from(state.meta, 'hex'))

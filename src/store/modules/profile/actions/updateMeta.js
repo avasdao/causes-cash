@@ -47,20 +47,18 @@ const updateMeta = async ({ commit, getters }, _meta) => {
      * with a key ONLY know to this profile.
      */
     const encrypted = _encrypt(JSON.stringify(_meta), key)
-    console.log('UPDATE META (encrypted):', encrypted)
+    // console.log('UPDATE META (encrypted):', encrypted)
 
     const signedPkg = getters.getSignedMessage(encrypted)
     // console.log('SIGNED PACKAGE', signedPkg)
 
     /* Set api target. */
-    const target = 'http://localhost:6767/v1/meta'
-    // const target = 'https://api.causes.cash/v1/meta'
+    const target = 'https://api.causes.cash/v1/meta'
 
-    const result = await superagent
+    /* Call api. */
+    await superagent
         .post(target)
         .send(signedPkg)
-    console.log('RESULT', result)
-
 }
 
 /* Export module. */

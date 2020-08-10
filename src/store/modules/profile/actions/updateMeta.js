@@ -32,7 +32,7 @@ function _encrypt(_plaintext, _key, _algo = 'aes-256-cbc') {
  *
  * Metadata is used to store details about addresses.
  */
-const updateMeta = async ({ commit, getters }, _meta) => {
+const updateMeta = async ({ commit, getters, rootGetters }, _meta) => {
     /* Commit metadata. */
     commit('setMeta', _meta)
 
@@ -51,9 +51,11 @@ const updateMeta = async ({ commit, getters }, _meta) => {
     const signedPkg = getters.getSignedMessage(encrypted)
     // console.log('SIGNED PACKAGE', signedPkg)
 
+    /* Retrieve API provider. */
+    const API_PROVIDER = rootGetters.getApiProvider
+
     /* Set api target. */
-    const target = 'http://localhost:6767/v1/profiles'
-    // const target = 'https://api.causes.cash/v1/meta'
+    const target = `${API_PROVIDER}/profiles`
 
     /* Call api. */
     await superagent

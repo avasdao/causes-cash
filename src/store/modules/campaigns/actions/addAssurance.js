@@ -10,9 +10,11 @@ const addAssurance = async ({ rootGetters }, _assurance) => {
     const signedPkg = rootGetters['profile/getSignedMessage'](JSON.stringify(_assurance))
     // console.log('SIGNED PACKAGE', signedPkg)
 
+    /* Retrieve API provider. */
+    const API_PROVIDER = rootGetters.getApiProvider
+
     /* Set api target. */
-    const target = 'http://localhost:6767/v1/assurances'
-    // const target = 'https://api.causes.cash/v1/assurances'
+    const target = `${API_PROVIDER}/assurances`
 
     const result = await superagent
         .post(target)

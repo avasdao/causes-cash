@@ -10,10 +10,13 @@ const updateCampaign = async ({ rootGetters }, _campaign) => {
     const signedPkg = rootGetters['profile/getSignedMessage'](JSON.stringify(_campaign))
     // console.log('SIGNED PACKAGE', signedPkg)
 
-    /* Set api target. */
-    const target = 'http://localhost:6767/v1/campaigns'
-    // const target = 'https://api.causes.cash/v1/campaigns'
+    /* Retrieve API provider. */
+    const API_PROVIDER = rootGetters.getApiProvider
 
+    /* Set api target. */
+    const target = `${API_PROVIDER}/campaigns`
+
+    /* Request campaign update. */
     const result = await superagent
         .put(target)
         .send(signedPkg)

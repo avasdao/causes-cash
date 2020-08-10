@@ -54,9 +54,11 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         const address = Nito.Address.toCashAddress(childNode)
         // console.log('GET SIGNED MESSAGE (address):', address)
 
+        /* Retrieve API provider. */
+        const API_PROVIDER = rootGetters.getApiProvider
+
         /* Set target. */
-        const target = `http://localhost:6767/v1/profiles/${address}`
-        // const target = `https://api.causes.cash/v1/profiles/${address}`
+        const target = `${API_PROVIDER}/profiles/${address}`
 
         /* Set contract path. */
         const response = await superagent.get(target)

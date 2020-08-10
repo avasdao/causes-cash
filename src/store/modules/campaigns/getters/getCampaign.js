@@ -4,14 +4,17 @@ import superagent from 'superagent'
 /**
 * Get Campaign
 */
-const getCampaign = () => async (_ownerSlug, _campaignSlug) => {
+const getCampaign = (state, getters, rootState, rootGetters) => async (_ownerSlug, _campaignSlug) => {
     // console.log('Retrieving campaign...', _ownerSlug, _campaignId)
 
     /* Initialize campaign. */
     // let campaign = null
 
+    /* Retrieve API provider. */
+    const API_PROVIDER = rootGetters.getApiProvider
+
     /* Set target. */
-    const target = `https://api.causes.cash/v1/campaigns/${_ownerSlug}/${_campaignSlug}`
+    const target = `${API_PROVIDER}/campaigns/${_ownerSlug}/${_campaignSlug}`
     // console.log('TARGET', target)
 
     /* Request campaign. */

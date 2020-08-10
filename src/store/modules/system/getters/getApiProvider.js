@@ -5,8 +5,8 @@
  */
 const getApiProvider = () => {
     /* Return url endpoint. */
-    return 'http://localhost:6767/v1/'
-    // return 'https://api.causes.cash/v1/'
+    return 'http://localhost:6767/v1'
+    // return 'https://api.causes.cash/v1'
 }
 
 /* Export module. */

@@ -9,9 +9,11 @@ const addPayout = async ({ rootGetters }, _payout) => {
     const signedPkg = rootGetters['profile/getSignedMessage'](JSON.stringify(_payout))
     // console.log('SIGNED PACKAGE', signedPkg)
 
+    /* Retrieve API provider. */
+    const API_PROVIDER = rootGetters.getApiProvider
+
     /* Set api target. */
-    const target = 'http://localhost:6767/v1/payouts'
-    // const target = 'https://api.causes.cash/v1/payouts'
+    const target = `${API_PROVIDER}/payouts`
 
     /* Make remote call. */
     const result = await superagent

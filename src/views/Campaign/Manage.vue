@@ -129,8 +129,7 @@ export default {
         // console.log('SLUG', this.slug)
 
         /* Set live URL. */
-        // FOR DEVELOPMENT ONLY
-        this.liveUrl = `http://localhost:8080/#/@${this.ownerSlug}/${this.slug}-null`
+        this.liveUrl = `https://causes.cash/@${this.ownerSlug}/${this.slug}-null`
 
     },
     mounted: function () {

@@ -1,5 +1,5 @@
 /* Import modules. */
-const moment = require('moment')
+import moment from 'moment'
 import Nito from 'nitojs'
 
 /**

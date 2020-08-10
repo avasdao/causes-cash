@@ -1,4 +1,5 @@
 /* Import modules. */
+import crypto from 'crypto'
 import msgpack from 'msgpack-lite'
 import Nito from 'nitojs'
 import superagent from 'superagent'
@@ -54,20 +55,32 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         // console.log('GET SIGNED MESSAGE (address):', address)
 
         /* Set target. */
-        const target = `https://api.causes.cash/v1/meta/${address}`
+        const target = `http://localhost:6767/v1/profiles/${address}`
+        // const target = `https://api.causes.cash/v1/profiles/${address}`
 
         /* Set contract path. */
         const response = await superagent.get(target)
         // console.log('GET META', response)
 
-        /* Request decryption key. */
-        const key = getters.getMasterSeed
+        /* Validate resopnse. */
+        if (response && response.body && response.body.meta) {
+            /* Request decryption key. */
+            const key = getters.getMasterSeed
 
-        /* Decrypt metadata. */
-        const meta = _decrypt(response, key)
+            try {
+                /* Decrypt metadata. */
+                const meta = _decrypt(response.body.meta, key)
 
-        /* Return metadata. */
-        return meta
+                /* Return metadata. */
+                return meta
+            } catch (err) {
+                console.error(err) // eslint-disable-line no-console
+            }
+
+            return null
+        } else {
+            return null
+        }
     } else {
         /* Return metadata. */
         return msgpack.decode(Buffer.from(state.meta, 'hex'))

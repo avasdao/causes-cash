@@ -10,6 +10,9 @@ const destroyProfile = (state) => {
     /* Reset master seed. */
     state.masterSeed = null
 
+    /* Reset metadata. */
+    state.meta = null
+
     /* Reset nickname. */
     state.nickname = null
 }

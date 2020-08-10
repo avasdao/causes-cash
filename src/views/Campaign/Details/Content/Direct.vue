@@ -122,7 +122,7 @@
             <div class="col-12 col-md-5">
                 <a href="javascript://" class="btn-danger float-right" @click="$emit('cancel')">
                     <i class="fa fa-times-circle" aria-hidden="true"></i>
-                    Cancel Direct Donation
+                    Close Direct Donation
                 </a>
 
                 <h3>Direct Donation</h3>

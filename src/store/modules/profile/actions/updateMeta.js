@@ -1,5 +1,5 @@
 /* Import modules. */
-const crypto = require('crypto')
+import crypto from 'crypto'
 import superagent from 'superagent'
 
 /**
@@ -37,7 +37,6 @@ const updateMeta = async ({ commit, getters }, _meta) => {
     commit('setMeta', _meta)
 
     const key = getters.getMasterSeed
-    console.log('MASTER SEED (key)', key)
 
     /**
      * Encrypt Metadata
@@ -53,7 +52,8 @@ const updateMeta = async ({ commit, getters }, _meta) => {
     // console.log('SIGNED PACKAGE', signedPkg)
 
     /* Set api target. */
-    const target = 'https://api.causes.cash/v1/meta'
+    const target = 'http://localhost:6767/v1/profiles'
+    // const target = 'https://api.causes.cash/v1/meta'
 
     /* Call api. */
     await superagent

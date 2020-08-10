@@ -32,7 +32,8 @@ const updateStatus = (_coins, _meta, dispatch) => {
                 dispatch('updateCoin', coin)
             }
         } else {
-            if (!_meta.coins[coinid]) {
+            /* Validate metadata coins. */
+            if (!_meta || !_meta.coins[coinid]) {
                 return
             }
 

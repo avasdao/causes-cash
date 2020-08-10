@@ -172,7 +172,8 @@ import QRCode from 'qrcode'
 import superagent from 'superagent'
 import Swal from 'sweetalert2'
 
-const { Contract, SignatureTemplate } = require('cashscript')
+// const { Contract, SignatureTemplate } = require('cashscript')
+import { Contract, SignatureTemplate } from 'cashscript'
 
 export default {
     props: {

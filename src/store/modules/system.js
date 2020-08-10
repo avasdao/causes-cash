@@ -1,4 +1,5 @@
 /* Import modules (getters). */
+import getApiProvider from './system/getters/getApiProvider'
 import getAssetSource from './system/getters/getAssetSource'
 import getEternalDbAddr from './system/getters/getEternalDbAddr'
 import getFlags from './system/getters/getFlags'
@@ -87,6 +88,7 @@ const state = {
 
 /* Getters. */
 const getters = {
+    getApiProvider,
     getAssetSource,
     getEternalDbAddr,
     getFlags,

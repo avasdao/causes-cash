@@ -125,7 +125,7 @@
             <div class="col-12 col-md-5">
                 <a href="javascript://" class="btn-danger float-right" @click="$emit('cancel')">
                     <i class="fa fa-times-circle" aria-hidden="true"></i>
-                    Cancel Community Pledge
+                    Close Community Pledge
                 </a>
 
                 <h3>Community Pledge</h3>

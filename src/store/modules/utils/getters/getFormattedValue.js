@@ -1,5 +1,4 @@
 /* Import modules. */
-// const numeral = require('numeral')
 import numeral from 'numeral'
 
 /**

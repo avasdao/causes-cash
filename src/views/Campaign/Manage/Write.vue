@@ -128,27 +128,36 @@ export default {
             const guide = this.quillGuide.getText()
 
             /* Set images. */
-            const images = {
-               main: this.photo1Url || null,
-               cover: this.photo1Url || null,
-               gallery: [
-                   this.photo2Url || null,
-                   this.photo3Url || null,
-               ]
-           }
+            // const images = {
+            //     main: this.photo1Url || null,
+            //     cover: this.photo1Url || null,
+            //     gallery: [
+            //         this.photo2Url || null,
+            //         this.photo3Url || null,
+            //     ]
+            // }
 
+            /* Build campaign. */
             const campaign = {
                 campaignId,
                 summary,
                 description,
                 guide,
-                images,
+                // images,
             }
-            console.log('WRITE (campaign):', campaign)
+            // console.log('WRITE (campaign):', campaign)
 
             /* Request update. */
             const result = await this.updateCampaign(campaign)
-            console.log('WRITE UPDATE (result):')
+                .catch(err => {
+                    /* Handle error message. */
+                    if (err && err.message === 'Unauthorized') {
+                        this.toast(['Oops!', 'You are NOT authorized to do that', 'error'])
+                    } else {
+                        console.error(err)
+                    }
+                })
+            // console.log('WRITE UPDATE (result):', result)
 
             /* Handle result. */
             if (result.ok && !result.error) {
@@ -205,15 +214,15 @@ export default {
             }
 
             /* Validate media. */
-            if (this.campaign && this.campaign.media) {
-                this.photo1Url = this.campaign.media.main
-
-                /* Validate gallery. */
-                if (this.campaign.media.gallery) {
-                    this.photo2Url = this.campaign.media.gallery[0]
-                    this.photo3Url = this.campaign.media.gallery[1]
-                }
-            }
+            // if (this.campaign && this.campaign.media) {
+            //     this.photo1Url = this.campaign.media.main
+            //
+            //     /* Validate gallery. */
+            //     if (this.campaign.media.gallery) {
+            //         this.photo2Url = this.campaign.media.gallery[0]
+            //         this.photo3Url = this.campaign.media.gallery[1]
+            //     }
+            // }
         }
     },
     mounted: function () {

@@ -3,7 +3,12 @@
         <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
 
         <ol v-if="articleList" class="comments-list">
-            <li v-for="article of articleList" :key="article.id" class="comment clearfix">
+
+            <li
+                v-for="article of articleList"
+                :key="article.id"
+                class="comment clearfix mb-3"
+            >
                 <div class="comment-body">
                     <div class="comment-avatar float-left mr-3 mb-3">
                         <img class="avatar" :src="article.avatar" alt="">
@@ -29,7 +34,10 @@
                         </div>
                     </div>
                 </div>
+
+                <hr />
             </li>
+
         </ol>
 
         <div v-else class="campaigns">

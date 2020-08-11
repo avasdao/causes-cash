@@ -275,18 +275,18 @@ export default {
          * Campaign Model
          */
         campaignModel() {
-            /* Validate campaign model. */
-            if (!this.campaign || !this.campaign.model) {
+            /* Validate campaign theme. */
+            if (!this.campaign || !this.campaign.theme) {
                 return null
             }
 
-            /* Set model. */
-            const model = this.campaign.model
+            /* Set theme. */
+            const theme = this.campaign.theme
 
-            /* Validate model. */
-            if (model) {
+            /* Validate theme. */
+            if (theme) {
                 /* Handle campaign type. */
-                switch(model) {
+                switch(theme) {
                 case 'direct':
                     return 'Direct Cash'
                 case 'assurance':
@@ -424,14 +424,14 @@ export default {
          * Details
          */
         details() {
-            if (!this.campaign || !this.campaign.model) {
+            if (!this.campaign || !this.campaign.theme) {
                 return null
             }
 
-            /* Set model. */
-            const model = this.campaign.model
+            /* Set theme. */
+            const theme = this.campaign.theme
 
-            if (model === 'assurance') {
+            if (theme === 'assurance') {
                 return JSON.stringify(this.campaign.assurances, null, 2)
             }
 
@@ -442,16 +442,16 @@ export default {
          * Satoshis
          */
         satoshis() {
-            if (!this.campaign || !this.campaign.model) {
+            if (!this.campaign || !this.campaign.theme) {
                 return 0
             }
 
-            /* Set model. */
-            const model = this.campaign.model
+            /* Set theme. */
+            const theme = this.campaign.theme
 
             const assuranceid = 0
 
-            if (model === 'assurance') {
+            if (theme === 'assurance') {
                 return this.campaign.assurances[assuranceid].recipient.satoshis
             }
 
@@ -462,16 +462,16 @@ export default {
          * Address
          */
         address() {
-            if (!this.campaign || !this.campaign.model) {
+            if (!this.campaign || !this.campaign.theme) {
                 return 0
             }
 
-            /* Set model. */
-            const model = this.campaign.model
+            /* Set theme. */
+            const theme = this.campaign.theme
 
             const assuranceid = 0
 
-            if (model === 'assurance') {
+            if (theme === 'assurance') {
                 return this.campaign.assurances[assuranceid].recipient.address
             }
 

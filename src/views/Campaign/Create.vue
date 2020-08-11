@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="field">
-                        <label for="model">
+                        <label for="theme">
                             Primary Funding Model
                         </label>
 
@@ -66,7 +66,7 @@
                         </span>
 
                         <div class="field-select">
-                            <select id="model" v-model="model">
+                            <select id="theme" v-model="theme">
                                 <option value="">Select a Campaign Type</option>
                                 <option value="direct">Direct Payment</option>
                                 <option value="assurance">Community Pledge</option>
@@ -447,7 +447,7 @@ export default {
 
             title: null,
             category: null,
-            model: null,
+            theme: null,
             location: null,
         }
     },
@@ -490,9 +490,9 @@ export default {
                 return this.toast(['Oops!', 'Please enter a title', 'error'])
             }
 
-            // /* Validate model. */
-            if (!this.model) {
-                return this.toast(['Oops!', 'Please enter a model', 'error'])
+            // /* Validate theme. */
+            if (!this.theme) {
+                return this.toast(['Oops!', 'Please enter a theme', 'error'])
             }
 
             /* Validate category. */
@@ -509,7 +509,7 @@ export default {
                 campaignId: 'NEW',
                 slug: this.slug,
                 title: this.title,
-                model: this.model,
+                theme: this.theme,
                 category: this.category,
                 owner: this.ownerSlug,
                 location: this.location,

@@ -7,6 +7,65 @@
                     <h1>Dashboard</h1>
                     <hr />
 
+                    <h1>{{title}}</h1>
+                    <h3 class="text-secondary">{{category}}</h3>
+
+                    <div class="row">
+                        <div class="col">
+                            <v-card
+                                class="mx-auto"
+                                max-width="344"
+                            >
+                                <v-list-item three-line>
+                                    <v-list-item-content>
+                                        <div class="overline mb-4">PLEDGES</div>
+                                        <v-list-item-title class="headline mb-1">Headline 5</v-list-item-title>
+                                        <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
+                                    </v-list-item-content>
+
+                                    <v-list-item-avatar
+                                        tile
+                                        size="80"
+                                        color="grey"
+                                    ></v-list-item-avatar>
+                                </v-list-item>
+
+                                <v-card-actions>
+                                    <v-btn text>Button</v-btn>
+                                    <v-btn text>Button</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </div>
+
+                        <div class="col">
+                            <v-card
+                                class="mx-auto"
+                                max-width="344"
+                            >
+                                <v-list-item three-line>
+                                    <v-list-item-content>
+                                        <div class="overline mb-4">EVENTS</div>
+                                        <v-list-item-title class="headline mb-1">Headline 5</v-list-item-title>
+                                        <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
+                                    </v-list-item-content>
+
+                                    <v-list-item-avatar
+                                        tile
+                                        size="80"
+                                        color="grey"
+                                    ></v-list-item-avatar>
+                                </v-list-item>
+
+                                <v-card-actions>
+                                    <v-btn text>Button</v-btn>
+                                    <v-btn text>Button</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </div>
+                    </div>
+
+                    <hr />
+
 <!-- Risks & Challenges -->
                     <!-- <div class="field">
                         <label for="risks">Risks and challenges</label>
@@ -17,18 +76,7 @@
 
                     </div> -->
 
-                    <div class="field">
-                        <label for="projecttitle">Project Title</label>
-
-                        <span class="label-desc">
-                            Our search looks through words from your project title and blurb, so make them clear and descriptive of what you’re making.
-                            Your profile name will be searchable, too.
-                        </span>
-
-                        <input type="text" id="projecttitle" :value="title" maxlength="60" disabled>
-                    </div>
-
-                    <div class="field">
+                    <!-- <div class="field">
                         <label for="shortblurb">
                             Short Blurb
                         </label>
@@ -39,39 +87,7 @@
                         </span>
 
                         <textarea id="shortblurb" cols="30" rows="4" maxlength="135"></textarea>
-                    </div>
-
-                    <div class="field">
-                        <label for="field-cat">
-                            Category <span>*</span>
-                        </label>
-
-                        <span class="label-desc">
-                            To help backers find your campaign, select a category that best represents your project.
-                        </span>
-
-                        <div class="field-select field-cat">
-                            <select id="field-cat">
-                                <option selected="selected">Select a category</option>
-                                <option value="book">Book</option>
-                                <option value="crafts">Crafts</option>
-                                <option value="design-art">Design &amp; Art</option>
-                                <option value="perfomances">Perfomances</option>
-                                <option value="technology">Technology</option>
-                            </select>
-                        </div>
-
-                        <div class="field-select">
-                            <select name="s">
-                                <option selected="selected">Subcategory (optional)</option>
-                                <option value="book">Book</option>
-                                <option value="crafts">Crafts</option>
-                                <option value="design-art">Design &amp; Art</option>
-                                <option value="perfomances">Perfomances</option>
-                                <option value="technology">Technology</option>
-                            </select>
-                        </div>
-                    </div>
+                    </div> -->
 
                     <div class="field">
                         <label for="projectlocation">
@@ -117,7 +133,7 @@
                                 </div>
                             </div>
 
-                            <div class="spopup-content">
+                            <!-- <div class="spopup-content">
                                 <p>If your project is successfully funded, the following fees will be collected from your funding total: Ideapress 5% fee, and payment processing fees (between 3% and 5%). If funding isn’t successful, there are no fees.</p>
 
                                 <ul>
@@ -136,7 +152,7 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
 
                         <input type="text" value="" id="fundinggoal">
@@ -151,10 +167,6 @@
 <script>
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
-
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-const $ = window.jQuery
 
 export default {
     components: {
@@ -173,14 +185,29 @@ export default {
         }
     },
     computed: {
+        ...mapGetters([
+            'getHelp',
+        ]),
+
         ...mapGetters('campaigns', [
-            'getAsset',
             'getCampaign',
+        ]),
+
+        ...mapGetters('utils', [
+            'getCategoryDisplay',
         ]),
 
         title() {
             if (this.campaign && this.campaign.title) {
                 return this.campaign.title
+            } else {
+                return null
+            }
+        },
+
+        category() {
+            if (this.campaign && this.campaign.title) {
+                return this.getCategoryDisplay(this.campaign.category)
             } else {
                 return null
             }
@@ -196,8 +223,8 @@ export default {
 
     },
     methods: {
-        ...mapActions('campaigns', [
-            'updateAsset',
+        ...mapActions('utils', [
+            'toast',
         ]),
 
     },
@@ -236,22 +263,7 @@ export default {
         }
     },
     mounted: function () {
-        $('.view-fees').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().parent().find('.spopup-bg').fadeIn()
-			$(this).parent().parent().find('.fees-popup').fadeIn()
-		})
-		$('.spopup-bg').on('click', function (e) {
-			e.preventDefault()
-			$(this).fadeOut()
-			$(this).parent().find('.fees-popup').fadeOut()
-			$(this).parent().find('.item-popup').fadeOut()
-		})
-		$('.spopup-close').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().parent().fadeOut()
-			$(this).parent().parent().parent().find('.spopup-bg').fadeOut()
-		})
+        //
     },
 }
 </script>

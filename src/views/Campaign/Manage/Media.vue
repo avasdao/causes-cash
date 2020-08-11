@@ -6,13 +6,13 @@
                     <h1>Media Center</h1>
                     <hr />
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <label for="contactemail">News Article #1</label>
 
                         <input type="email" id="contactemail" placeholder="Amazing Expose" v-model="news[0].title">
-                    </div>
+                    </div> -->
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <span class="label-desc">
                             Enter the account you’d like to use to receive funds if your project is successfully funded.
                             The account should belong to the person or legal entity running this project.
@@ -30,158 +30,93 @@
 
                             <label for="legal">Legal entity (company or organization)</label>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="field">
                         <label for="uploadfile">
-                            Project Image
+                            Campaign Main Image
                         </label>
 
                         <span class="label-desc">
-                            This is the first thing that people will see when they come across your project.
+                            This is the first thing that people will see when they come across your campaign.
                             Choose an image that’s crisp and text-free.
+                            570px by 400px recommended resolution.
+
                             <a href="javascript://">Here are some tips.</a>
                         </span>
 
-                        <div class="list-upload">
-                            <div class="file-upload">
-                                <div class="upload-bg">
-                                    <div id="myfileupload">
-                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" accept="image/*" />
-                                    </div>
+                        <img :src="photo1Url" />
 
-                                    <div id="thumbbox">
-                                        <img src="images/assets/logo.png" height="695" width="460" alt="Thumb image" id="thumbimage" />
-                                        <a class="removeimg" href="javascript:"></a>
-                                    </div>
+                        <input
+                            type="text"
+                            id="capaignstory"
+                            placeholder="Photo #1 caption"
+                            v-model="photo1Caption"
+                            disabled
+                        >
 
-                                    <div id="boxchoice">
-                                        <a href="javascript:" class="choicefile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                        <p></p>
-                                    </div>
-
-                                    <label class="filename"></label>
-                                </div>
-                            </div>
-                        </div>
+                        <input
+                            type="text"
+                            id="capaignstory"
+                            placeholder="Photo #1 URL"
+                            v-model="photo1Url"
+                        >
                     </div>
 
                     <hr />
 
-<!-- Campaign Images -->
                     <div class="field">
-                        <label for="uploadfile">Campaign Images *</label>
+                        <label for="uploadfile">Media Gallery</label>
 
-                        <span class="label-desc">Upload a square image that represents your campaign. 570px by 400px recommended resolution.</span>
+                        <span class="label-desc">
+                            Upload a square image that represents your campaign.
+                            570px by 400px recommended resolution.
+                        </span>
 
-                        <div class="list-upload">
-                            <div class="file-upload">
-                                <div class="upload-bg">
-                                    <div id="myfileupload">
-                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
-                                    </div>
+                        <div class="row">
+                            <div class="col">
+                                <img :src="photo2Url" />
 
-                                    <div id="thumbbox">
-                                        <img src="images/assets/logo.png" height="100" width="100" alt="Thumb image" id="thumbimage" />
-                                        <a class="removeimg" href="javascript:"></a>
-                                    </div>
+                                <input
+                                    type="text"
+                                    id="capaignstory"
+                                    placeholder="Photo #2 caption"
+                                    v-model="photo2Caption"
+                                    disabled
+                                >
 
-                                    <div id="boxchoice">
-                                        <a href="javascript:" class="choicefile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                        <p></p>
-                                    </div>
+                                <input
+                                    type="text"
+                                    id="capaignstory"
+                                    placeholder="Photo #2 URL"
+                                    v-model="photo2Url"
+                                >
 
-                                    <label class="filename"></label>
-
-                                    <input
-                                        type="text"
-                                        id="capaignstory"
-                                        placeholder="Photo #1 caption"
-                                        v-model="photo1Caption"
-                                    >
-
-                                    <input
-                                        type="text"
-                                        id="capaignstory"
-                                        placeholder="Photo #1 URL"
-                                        v-model="photo1Url"
-                                    >
-                                </div>
                             </div>
 
-                            <div class="file-upload">
-                                <div class="upload-bg">
-                                    <div id="myfileupload1">
-                                        <input type="file" id="uploadfile1" name="ImageUpload" onchange="readURL1(this);" />
-                                    </div>
+                            <div class="col">
+                                <img :src="photo3Url" />
 
-                                    <div id="thumbbox1">
-                                        <img src="images/assets/logo.png" height="100" width="100" alt="Thumb image" id="thumbimage1" />
-                                        <a class="removeimg1" href="javascript:"></a>
-                                    </div>
+                                <input
+                                    type="text"
+                                    id="capaignstory"
+                                    placeholder="Photo #3 caption"
+                                    v-model="photo3Caption"
+                                    disabled
+                                >
 
-                                    <div id="boxchoice1">
-                                        <a href="javascript:" class="choicefile1"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                        <p></p>
-                                    </div>
-
-                                    <label class="filename1"></label>
-
-                                    <input
-                                        type="text"
-                                        id="capaignstory"
-                                        placeholder="Photo #2 caption"
-                                        v-model="photo2Caption"
-                                    >
-
-                                    <input
-                                        type="text"
-                                        id="capaignstory"
-                                        placeholder="Photo #2 URL"
-                                        v-model="photo2Url"
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="file-upload">
-                                <div class="upload-bg">
-                                    <div id="myfileupload2">
-                                        <input type="file" id="uploadfile2" name="ImageUpload" onchange="readURL2(this);" />
-                                    </div>
-
-                                    <div id="thumbbox2">
-                                        <img src="images/assets/logo.png" height="100" width="100" alt="Thumb image" id="thumbimage2" />
-                                        <a class="removeimg2" href="javascript:"></a>
-                                    </div>
-
-                                    <div id="boxchoice2">
-                                        <a href="javascript:" class="choicefile2"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Image</a>
-                                        <p></p>
-                                    </div>
-
-                                    <label class="filename2"></label>
-
-                                    <input
-                                        type="text"
-                                        id="capaignstory"
-                                        placeholder="Photo #3 caption"
-                                        v-model="photo3Caption"
-                                    >
-
-                                    <input
-                                        type="text"
-                                        id="capaignstory"
-                                        placeholder="Photo #3 URL"
-                                        v-model="photo3Url"
-                                    >
-                                </div>
+                                <input
+                                    type="text"
+                                    id="capaignstory"
+                                    placeholder="Photo #3 URL"
+                                    v-model="photo3Url"
+                                >
                             </div>
                         </div>
                     </div>
 
                     <hr />
 
-<!-- Campaign Video -->
                     <div class="field">
                         <label for="uploadfile1">
                             Campaign Video
@@ -237,6 +172,7 @@
                             id="capaignstory"
                             placeholder="Enter a caption for your video"
                             v-model="videoCaption"
+                            disabled
                         >
                     </div>
 
@@ -254,28 +190,29 @@
                             id="capaignstory"
                             placeholder="Enter a few tagline"
                             v-model="videoDescription"
+                            disabled
                         ></textarea>
                     </div>
 
                     <hr />
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <label for="profilename">Facebook</label>
 
                         <span class="label-desc">
-                            Heads up: Once you launch a project, you cannot make changes to your name on Ideapress.
+                            Heads up: Once you launch a project, you cannot make changes to your name on Causes Cash.
                         </span>
 
                         <input type="text" id="profilename">
-                    </div>
+                    </div> -->
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <label for="biography">Frequently Asked Questions (FAQ)</label>
 
                         <textarea id="biography" cols="30" rows="4"></textarea>
-                    </div>
+                    </div> -->
 
-                    <div class="field">
+                    <!-- <div class="field">
                         <label>Websites</label>
 
                         <span class="label-desc">
@@ -283,9 +220,9 @@
                         </span>
 
                         <input type="text">
-                    </div>
+                    </div> -->
 
-                    <div class="start-box">
+                    <!-- <div class="start-box">
                         <h4>Request help from the community</h4>
 
                         <p>
@@ -316,7 +253,7 @@
 
                             <textarea id="projectneed2" cols="30" rows="3" placeholder="Do you have experience with image projection onto rounded, uneven surfaces? Please get in touch!"></textarea>
                         </div>
-                    </div>
+                    </div> -->
 
                     <input
                         type="submit"

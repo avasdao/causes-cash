@@ -38,7 +38,7 @@
                                         </div>
 
 										<div class="campaign-category">
-                                            {{formatCategory(campaign.category)}} | {{formatModel(campaign.model)}}
+                                            {{formatCategory(campaign.category)}} | {{formatModel(campaign.theme)}}
                                         </div>
 
                                         <div class="campaign-title">
@@ -191,10 +191,10 @@ export default {
         },
 
         /**
-         * Format Model
+         * Format Theme
          */
-        formatModel(_model) {
-            switch(_model) {
+        formatModel(_theme) {
+            switch(_theme) {
             case 'assurance':
                 return 'Community Pledge'
             case 'direct':

@@ -145,7 +145,7 @@
                         Add my support
                     </a>
 
-                    <a href="javascript://" class="btn-secondary" @click="showActions = false; showReminder = true">
+                    <a href="javascript://" class="btn-secondary" @click="remindMe">
                         <i class="fa fa-heart" aria-hidden="true"></i>
                         Remind me
                     </a>
@@ -568,6 +568,16 @@ export default {
         ]),
 
         /**
+         * Remind Me
+         */
+        remindMe() {
+            this.toast(['Oops!', 'This feature is not quite ready yet', 'error'])
+
+            // this.showActions = false
+            // this.showReminder = true
+        },
+
+        /**
          * Add My Support
          */
         addMySupport() {
@@ -589,7 +599,7 @@ export default {
                 this.showActions = true
 
                 /* Show error notif. */
-                return this.toast(['Oops!', 'There is NO support for this campaign.', 'error'])
+                return this.toast(['Oops!', 'There is NO option to support this campaign', 'error'])
             }
         },
 

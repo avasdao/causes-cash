@@ -120,9 +120,9 @@ export default {
         async _authorize(_email, _password) {
             /* Validate email. */
             if (!this.isValidEmail(_email)) {
-                // this.toast(['Oops!', 'Invalid email. Please try again.', 'error'])
+                // this.toast(['Oops!', 'Invalid email, please try again', 'error'])
                 Swal.showValidationMessage(
-                    `Invalid email. Please try again.`
+                    `Invalid email, please try again`
                 )
 
                 return false
@@ -131,9 +131,9 @@ export default {
             /* Validate password. */
             // TODO: Improve "strong" password validation.
             if (!_password) {
-                // this.toast(['Oops!', 'Invalid password. Please try again.', 'error'])
+                // this.toast(['Oops!', 'Invalid password, please try again', 'error'])
                 Swal.showValidationMessage(
-                    `Invalid password. Please try again.`
+                    `Invalid password, please try again`
                 )
 
                 return false

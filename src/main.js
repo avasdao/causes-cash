@@ -8,6 +8,7 @@ import store from './store'
 
 /* Import (3rd-party) plugins. */
 // require('./plugins/bugsnag')
+import vuetify from './plugins/vuetify'
 
 /* Import main application. */
 import App from './App.vue'
@@ -22,5 +23,6 @@ Vue.config.productionTip = false
 new Vue({
     router,
     store,
+    vuetify,
     render: h => h(App)
 }).$mount('#app')

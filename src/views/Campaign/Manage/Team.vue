@@ -6,7 +6,33 @@
                     <h1>Team Workspace</h1>
                     <hr />
 
-                    <div class="field">
+                    <div class="row mt-3">
+                        <div class="col">
+                            <p class="under-construction mt-3">
+                                Oops! We're still working on this area.
+                            </p>
+
+                            <p class="under-construction mt-3">
+                                Want to help us get this platform ready ASAP?
+                            </p>
+
+                            <p class="under-construction my-3">
+                                Learn how your ❤️ and support Causes Cash.
+                            </p>
+
+                            <button class="btn btn-block btn-outline-success" @click="supportCauses">
+                                Support Causes Cash
+                            </button>
+                        </div>
+
+                        <div class="col">
+                            <!-- This area is still under development. -->
+                            <!-- <img class="under-construction" src="https://i.imgur.com/8nvqTcU.png" /> -->
+                            <img class="under-construction rounded" src="https://i.imgur.com/1yAHZ69.png" />
+                        </div>
+                    </div>
+
+                    <!-- <div class="field">
                         <label for="contactemail">Team Member #1</label>
 
                         <input type="email" id="contactemail">
@@ -91,7 +117,7 @@
                         </div>
                     </div>
 
-                    <input type="submit" class="btn-primary" value="Submit">
+                    <input type="submit" class="btn-primary" value="Submit"> -->
                 </form>
             </div>
         </section>
@@ -103,6 +129,11 @@ export default {
     components: {
         //
     },
+    methods: {
+        supportCauses() {
+            this.$router.push('/@BCHPlease/causes-cash-8ab5c2fc')
+        }
+    },
     mounted: function () {
         //
     },
@@ -110,5 +141,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+p.under-construction {
+    font-size: 1.4em;
+}
 </style>

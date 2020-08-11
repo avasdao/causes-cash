@@ -175,13 +175,13 @@ export default {
         signIn() {
             /* Validate email. */
             if (!this.isValidEmail()) {
-                return this.toast(['Oops!', 'Invalid email. Please try again.', 'error'])
+                return this.toast(['Oops!', 'Invalid email, please try again', 'error'])
             }
 
             /* Validate password. */
             // TODO: Improve "strong" password validation.
             if (!this.password) {
-                return this.toast(['Oops!', 'Invalid password. Please try again.', 'error'])
+                return this.toast(['Oops!', 'Invalid password, please try again', 'error'])
             }
 
             /* Disable sign in button. */

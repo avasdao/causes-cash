@@ -462,7 +462,7 @@ export default {
         async send(_coin) {
             console.log('SENDING COIN', _coin)
             if (!this.output.address) {
-                return this.toast(['Oops!', 'Invalid destination address. Please try again.', 'error'])
+                return this.toast(['Oops!', 'Invalid destination address, please try again', 'error'])
             }
 
             /* Build receivers. */
@@ -506,7 +506,7 @@ export default {
 
             } else {
                 /* Set message. */
-                const message = `Oops! Something went wrong and your coin(s) were NOT sent.`
+                const message = `Something went wrong and your coin(s) were NOT sent`
 
                 /* Display notification. */
                 this.toast(['Oops!', message, 'error'])

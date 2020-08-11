@@ -2,10 +2,36 @@
     <div role="tabpanel" class="tab-pane" id="calc">
         <section class="campaign-form form-update">
             <form action="javascript://">
-                <h1>Accounting Center</h1>
+                <h1>Accounting Department</h1>
                 <hr />
 
-                <div id="itemform">
+                <div class="row mt-3">
+                    <div class="col">
+                        <p class="under-construction mt-3">
+                            Oops! We're still working on this area.
+                        </p>
+
+                        <p class="under-construction mt-3">
+                            Want to help us get this platform ready ASAP?
+                        </p>
+
+                        <p class="under-construction my-3">
+                            Learn how your ❤️ and support Causes Cash.
+                        </p>
+
+                        <button class="btn btn-block btn-outline-success" @click="supportCauses">
+                            Support Causes Cash
+                        </button>
+                    </div>
+
+                    <div class="col">
+                        <!-- This area is still under development. -->
+                        <!-- <img class="under-construction" src="https://i.imgur.com/8nvqTcU.png" /> -->
+                        <img class="under-construction rounded" src="https://i.imgur.com/1yAHZ69.png" />
+                    </div>
+                </div>
+
+                <!-- <div id="itemform">
                     <div class="start-form">
                         <div class="field">
                             <label for="rewardtitle">
@@ -155,36 +181,30 @@
                     <input type="text" id="cduration" value="" name="title" placeholder="60 days" />
                 </div>
 
-                <input type="submit" class="btn-primary" value="Save & Continue">
+                <input type="submit" class="btn-primary" value="Save & Continue"> -->
             </form>
         </section>
     </div>
 </template>
 
 <script>
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-const $ = window.jQuery
-
 export default {
     components: {
         //
     },
+    methods: {
+        supportCauses() {
+            this.$router.push('/@BCHPlease/causes-cash-8ab5c2fc')
+        }
+    },
     mounted: function () {
-        $('.add-item').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().find('.spopup-bg').fadeIn()
-			$(this).parent().find('.item-popup').fadeIn()
-		})
-        $('.item-cancel').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().parent().fadeOut()
-			$(this).parent().parent().parent().find('.spopup-bg').fadeOut()
-		})
+        //
     },
 }
 </script>
 
 <style scoped>
-/*  */
+p.under-construction {
+    font-size: 1.4em;
+}
 </style>

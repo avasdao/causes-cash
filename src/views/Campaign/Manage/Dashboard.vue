@@ -8,22 +8,13 @@
                     <hr />
 
 <!-- Risks & Challenges -->
-                    <div class="field">
+                    <!-- <div class="field">
                         <label for="risks">Risks and challenges</label>
 
                         <span class="label-desc">
                             What are the risks and challenges that come with completing your project, and how are you qualified to overcome them?
                         </span>
 
-                    </div>
-
-                    <!-- <div class="start-box">
-                        <h4>Project FAQs</h4>
-
-                        <p>
-                            You can add frequently asked questions to the FAQ tab on your project page once it goes live.
-                            <a href="javascript://">Learn more</a>
-                        </p>
                     </div> -->
 
                     <div class="field">
@@ -34,7 +25,7 @@
                             Your profile name will be searchable, too.
                         </span>
 
-                        <input type="text" id="projecttitle" v-model="title" maxlength="60" disabled>
+                        <input type="text" id="projecttitle" :value="title" maxlength="60" disabled>
                     </div>
 
                     <div class="field">

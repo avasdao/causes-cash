@@ -27,11 +27,11 @@
                                             </router-link>
 
                                             <div class="text-center">
-                                                <router-link :to="campaign.slug + '-null'">
+                                                <router-link :to="'/@' + campaign.owner.slug + '/' + campaign.slug + '-null'">
                                                     open live
                                                 </router-link>
                                                 |
-                                                <router-link :to="campaign.slug + '/manage'">
+                                                <router-link :to="'/@' + campaign.owner.slug + '/' + campaign.slug + '/manage'">
                                                     manage
                                                 </router-link>
                                             </div>
@@ -138,6 +138,7 @@ export default {
         ]),
 
         ...mapGetters('profile', [
+            'getDetails',
             'getSignedMessage',
         ]),
 
@@ -207,10 +208,21 @@ export default {
     },
     created: async function () {
         /* Set owner slug. */
-        this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
+        // this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
+        // console.log('OWNER SLUG', this.ownerSlug)
+
+        const details = await this.getDetails
+        console.log('GET DETAILS (campaigns)', details)
+
+        const account = details.account
+        console.log('ACCOUNT', account);
+
+        const address = account.address
+        console.log('ADDRESS', address);
 
         /* Retrieve campaigns. */
-        this.campaigns = await this.getCampaigns(this.ownerSlug)
+        // this.campaigns = await this.getCampaigns(this.ownerSlug)
+        this.campaigns = await this.getCampaigns(address)
         console.log('ACCOUNT CAMAPAIGNS', this.campaigns)
     },
 }

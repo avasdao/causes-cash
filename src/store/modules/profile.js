@@ -1,5 +1,6 @@
 /* Import modules (getters). */
 import getAvatar from './profile/getters/getAvatar'
+import getDetails from './profile/getters/getDetails'
 import getEmail from './profile/getters/getEmail'
 import getMasterSeed from './profile/getters/getMasterSeed'
 import getMeta from './profile/getters/getMeta'
@@ -68,6 +69,7 @@ const state = {
 /* Getters. */
 const getters = {
     getAvatar,
+    getDetails,
     getEmail,
     getMasterSeed,
     getMeta,

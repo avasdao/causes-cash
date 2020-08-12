@@ -488,10 +488,11 @@ export default {
                 console.log('oraclePk', oraclePk)
 
                 /* Initialize minimum valid block. */
-                const minValidBlock = 643123
+                // const minValidBlock = 643123
+                const minValidBlock = await Nito.Blockchain.getBlockHeight()
+                console.log('MIN VALID BLOCK', minValidBlock)
 
                 /* Initialize monthly pledge amount. */
-                // const monthlyPledgeAmt = 1337
                 const pledgeUSD = numeral(this.pledgeUSD).value()
                 const monthlyPledgeAmt = Math.round(pledgeUSD * 100)
                 console.log('MONTHLY PLEDGE AMOUNT', pledgeUSD, monthlyPledgeAmt)

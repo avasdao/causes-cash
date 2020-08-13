@@ -1,167 +1,149 @@
 <template>
-    <div role="tabpanel" class="tab-pane active" id="dashboard">
-        <section class="campaign-form form-update">
-            <!-- <div class="container"> -->
-            <div class="start-form">
-                <form action="javascript://">
-                    <h1>Dashboard</h1>
-                    <hr />
+    <main role="tabpanel" class="tab-pane active" id="dashboard">
+        <div class="row">
+            <div class="col-3">
+                <!-- spacer -->
+            </div>
 
-                    <h1>{{title}}</h1>
+            <div class="col-7">
+                <div v-if="title">
+                    <h1>{{title}} Dashboard</h1>
                     <h3 class="text-secondary">{{category}}</h3>
 
-                    <div class="row">
-                        <div class="col">
-                            <v-card
-                                class="mx-auto"
-                                max-width="344"
-                            >
-                                <v-list-item three-line>
-                                    <v-list-item-content>
-                                        <div class="overline mb-4">PLEDGES</div>
-                                        <v-list-item-title class="headline mb-1">Headline 5</v-list-item-title>
-                                        <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
-                                    </v-list-item-content>
-
-                                    <v-list-item-avatar
-                                        tile
-                                        size="80"
-                                        color="grey"
-                                    ></v-list-item-avatar>
-                                </v-list-item>
-
-                                <v-card-actions>
-                                    <v-btn text>Button</v-btn>
-                                    <v-btn text>Button</v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </div>
-
-                        <div class="col">
-                            <v-card
-                                class="mx-auto"
-                                max-width="344"
-                            >
-                                <v-list-item three-line>
-                                    <v-list-item-content>
-                                        <div class="overline mb-4">EVENTS</div>
-                                        <v-list-item-title class="headline mb-1">Headline 5</v-list-item-title>
-                                        <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
-                                    </v-list-item-content>
-
-                                    <v-list-item-avatar
-                                        tile
-                                        size="80"
-                                        color="grey"
-                                    ></v-list-item-avatar>
-                                </v-list-item>
-
-                                <v-card-actions>
-                                    <v-btn text>Button</v-btn>
-                                    <v-btn text>Button</v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </div>
-                    </div>
-
                     <hr />
+                </div>
 
-<!-- Risks & Challenges -->
-                    <!-- <div class="field">
-                        <label for="risks">Risks and challenges</label>
+                <div class="row mt-3">
+                    <div class="col">
+                        <p class="under-construction mt-3">
+                            Oops! We're still working on this area.
+                        </p>
 
-                        <span class="label-desc">
-                            What are the risks and challenges that come with completing your project, and how are you qualified to overcome them?
-                        </span>
+                        <p class="under-construction mt-3">
+                            Want to help us get this platform ready ASAP?
+                        </p>
 
-                    </div> -->
+                        <p class="under-construction my-3">
+                            Learn how your ❤️ and support Causes Cash.
+                        </p>
 
-                    <!-- <div class="field">
-                        <label for="shortblurb">
-                            Short Blurb
-                        </label>
-
-                        <span class="label-desc">
-                            Give people a sense of what you’re doing.
-                            Skip “Help me” and focus on what you’re making.
-                        </span>
-
-                        <textarea id="shortblurb" cols="30" rows="4" maxlength="135"></textarea>
-                    </div> -->
-
-                    <div class="field">
-                        <label for="projectlocation">
-                            Project Location
-                        </label>
-
-                        <input type="text" id="projectlocation" v-model="location">
+                        <button class="btn btn-block btn-outline-success" @click="supportCauses">
+                            Support Causes Cash
+                        </button>
                     </div>
 
-                    <div class="field">
-                        <label for="funding">
-                            Funding Duration
-                        </label>
-
-                        <span class="label-desc">
-                            Projects with shorter durations have higher success rates.
-                            You won’t be able to adjust your duration after you launch.
-                        </span>
-
-                        <input type="date" id="funding" value="">
+                    <div class="col">
+                        <!-- This area is still under development. -->
+                        <!-- <img class="under-construction" src="https://i.imgur.com/8nvqTcU.png" /> -->
+                        <img class="under-construction rounded" src="https://i.imgur.com/1yAHZ69.png" />
                     </div>
-                    <div class="field">
-                        <label for="fundinggoal">Funding Goal</label>
+                </div>
 
-                        <span class="label-desc">
-                            Community Pledge funding on Causes Cash is all-or-nothing.
-                            It’s okay to raise more than your goal, but if your goal isn’t met, no money will be collected.
-                            Your goal should reflect the minimum amount of funds you need to complete your project and send out rewards, and include a buffer for payments processing fees.
-                            If your project is successfully funded, the following fees will be collected from your funding total:
-                            Causes Cash 5% fee, and payment processing fees (between 3% and 5%).
-                            If funding isn’t successful, there are no fees.
-                            <a href="javascript://" class="view-fees">View fees breakdown</a>
-                        </span>
+                <!-- <div class="row">
+                    <div class="col-6">
+                        <v-card
+                            class="mx-auto"
+                            max-width="344"
+                        >
+                            <v-list-item three-line>
+                                <v-list-item-content>
+                                    <div class="overline mb-4">Messages</div>
+                                    <v-list-item-title class="headline mb-1">Weekly Earnings Report 5</v-list-item-title>
+                                    <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
+                                </v-list-item-content>
 
-                        <div class="spopup-bg"></div>
+                                <v-list-item-avatar
+                                    tile
+                                    size="80"
+                                    color="grey"
+                                ></v-list-item-avatar>
+                            </v-list-item>
 
-                        <div class="fees-popup start-popup">
-                            <div class="spopup-title">
-                                <h3>Fees</h3>
-
-                                <div class="spopup-close">
-                                    <span class="ion-ios-close-empty"></span>
-                                </div>
-                            </div>
-
-                            <!-- <div class="spopup-content">
-                                <p>If your project is successfully funded, the following fees will be collected from your funding total: Ideapress 5% fee, and payment processing fees (between 3% and 5%). If funding isn’t successful, there are no fees.</p>
-
-                                <ul>
-                                    <li>
-                                        <h4>Ideapress fee</h4>
-                                        <div class="fee-desc">
-                                            <p>5% of total funds raised </p>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <h4>Payment processing fees</h4>
-                                        <div class="fee-desc">
-                                            <p>3% + €0.20 per pledge</p>
-                                            <p>Pledges under €10 have a discounted micropledge fee of 5% + €0.05 per pledge</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div> -->
-                        </div>
-
-                        <input type="text" value="" id="fundinggoal">
+                            <v-card-actions>
+                                <v-btn text>Button</v-btn>
+                                <v-btn text>Button</v-btn>
+                            </v-card-actions>
+                        </v-card>
                     </div>
 
-                </form>
+                    <div class="col-6">
+                        <v-card
+                            class="mx-auto"
+                            max-width="344"
+                        >
+                            <v-list-item three-line>
+                                <v-list-item-content>
+                                    <div class="overline mb-4">Weekly Earnings Report</div>
+                                    <v-list-item-title class="headline mb-1">Headline 5</v-list-item-title>
+                                    <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
+                                </v-list-item-content>
+
+                                <v-list-item-avatar
+                                    tile
+                                    size="80"
+                                    color="grey"
+                                ></v-list-item-avatar>
+                            </v-list-item>
+
+                            <v-card-actions>
+                                <v-btn text>Button</v-btn>
+                                <v-btn text>Button</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </div>
+                </div> -->
+
+                <!-- <hr /> -->
+
+                <!-- <v-timeline>
+                    <v-timeline-item color="red lighten-2" large>
+                        <v-card class="elevation-2">
+                            <v-card-title class="headline">Lorem ipsum</v-card-title>
+
+                            <v-card-text>
+                                Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.
+                            </v-card-text>
+                        </v-card>
+                    </v-timeline-item>
+
+                    <v-timeline-item color="teal lighten-3" small>
+                        <v-card class="elevation-2">
+                            <v-card-title class="headline">Lorem ipsum</v-card-title>
+
+                            <v-card-text>
+                                Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.
+                            </v-card-text>
+                        </v-card>
+                    </v-timeline-item>
+
+                    <v-timeline-item
+                        small
+                        fill-dot
+                    >
+                        <template v-slot:icon>
+                            <v-avatar>
+                                <img src="http://i.pravatar.cc/64">
+                            </v-avatar>
+                        </template>
+
+                        <template v-slot:opposite>
+                            <span>New Contributor</span>
+                        </template>
+
+                        <v-alert
+                            value="true"
+                            color="blue"
+                            icon=""
+                            class="white--text"
+                        >
+                            Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut, sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando voluptatibus, vix an salutandi sententiae.
+                        </v-alert>
+                    </v-timeline-item>
+                </v-timeline> -->
             </div>
-        </section>
-    </div>
+        </div>
+
+    </main>
 </template>
 
 <script>
@@ -227,6 +209,10 @@ export default {
             'toast',
         ]),
 
+        supportCauses() {
+            this.$router.push('/@BCHPlease/causes-cash-8ab5c2fc')
+        },
+
     },
     created: async function () {
         console.log('PARAMS', this.$route.params)
@@ -269,5 +255,7 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+p.under-construction {
+    font-size: 1.4em;
+}
 </style>

@@ -1,13 +1,13 @@
 ## Roadmap of planned features and ideas
 
-_Last updated: July 1, 2020_
+_Last updated: August 3, 2020_
 
 The goal for __[Causes Cash](https://causes.cash)__ is to make BUIDLing for Bitcoin Cash sustainable; through contributions in the form of financial, labor, resources and more.
 
 ## Underway
 
-- [ ] Enable user-creation of 1 of 3 campaign types.
-- [ ] Enable dynamic content using IPFS OrbitDB.
+- [ ] Add TOP30 crypto->crypto donation support
+- [ ] Add USD->crypto donation support
 
 ## Planned
 
@@ -15,11 +15,13 @@ The goal for __[Causes Cash](https://causes.cash)__ is to make BUIDLing for Bitc
 - [ ] Enable hardware wallet support (w/ Ledger)
 - [ ] One-click downloadable causes.cash runs "locally" in your web browser
 - [ ] Allow for GDPR-free, IPFS edition (no usage logging, no error reporting)
+- [ ] Enable dynamic content using IPFS OrbitDB.
 
 ## Complete
 
-- [ ] Add support for Mecenas contracts.
-- [ ] Add support for Flipstarter campaigns.
+- [x] Add support for Mecenas contracts.
+- [x] Add support for Flipstarter campaigns.
+- [x] Enable user-creation of 1 of 3 campaign types.
 - [x] Enable a secure web wallet, dedicated to public pledges.
 - [x] Reach out to the Bitcoin Cash community for platform feedback.
 - [x] Complete static content (for preview).

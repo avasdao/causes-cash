@@ -142,11 +142,17 @@
 
                 <div v-if="showActions" class="button">
                     <a href="javascript://" class="btn-primary" @click="addMySupport">
+                        <i class="fa fa-heart mr-2" aria-hidden="true"></i>
                         Add my support
                     </a>
 
+                    <a href="javascript://" class="btn-danger mr-5" @click="burn">
+                        <i class="fa fa-fire mr-2" aria-hidden="true"></i>
+                        Burn PIF
+                    </a>
+
                     <a href="javascript://" class="btn-secondary" @click="remindMe">
-                        <i class="fa fa-heart" aria-hidden="true"></i>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
                         Remind me
                     </a>
 				</div>
@@ -571,10 +577,20 @@ export default {
          * Remind Me
          */
         remindMe() {
-            this.toast(['Oops!', 'This feature is not quite ready yet', 'error'])
+            this.toast(['Oops!', 'Campaign reminders are coming soon', 'error'])
 
             // this.showActions = false
             // this.showReminder = true
+        },
+
+        /**
+         * Burn PIF
+         */
+        burn() {
+            this.toast(['Oops!', 'You have no PIF to burn', 'error'])
+
+            // this.showActions = false
+            // this.showBurn = true
         },
 
         /**

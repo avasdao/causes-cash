@@ -11,7 +11,7 @@
                         href="javascript://"
                         @click="setActive(slide.id)"
                         :data-slide-index="slide.index"
-                    >{{slide.title}}</a>
+                    >{{slide.title}} <small>{{slide.pct}}</small></a>
                 </li>
             </ul>
 
@@ -79,21 +79,24 @@ export default {
         this.slides.push({
             index: index++,
             id: 'adoption',
-            title: 'Adoption'
+            title: 'Adoption',
+            pct: 5,
         })
 
         /* Community. */
         this.slides.push({
             index: index++,
             id: 'community',
-            title: 'Community'
+            title: 'Community',
+            pct: 10,
         })
 
-        /* DApps. */
+        /* DApp. */
         this.slides.push({
             index: index++,
             id: 'dapp',
-            title: 'DApp'
+            title: 'DApp',
+            pct: 5,
         })
 
         /* Design & Art. */
@@ -107,42 +110,48 @@ export default {
         this.slides.push({
             index: index++,
             id: 'education',
-            title: 'Education'
+            title: 'Education',
+            pct: 2,
         })
 
         /* Film & Video. */
         this.slides.push({
             index: index++,
             id: 'film-video',
-            title: 'Film & Video'
+            title: 'Film & Video',
+            pct: 4,
         })
 
         /* Fun & Games. */
         this.slides.push({
             index: index++,
             id: 'fun-games',
-            title: 'Fun & Games'
+            title: 'Fun & Games',
+            pct: 3,
         })
 
         /* Hardware. */
         this.slides.push({
             index: index++,
             id: 'hardware',
-            title: 'Hardware'
+            title: 'Hardware',
+            pct: 2,
         })
 
         /* Health. */
         this.slides.push({
             index: index++,
             id: 'health',
-            title: 'Health'
+            title: 'Health',
+            pct: 10,
         })
 
         /* Infrastructure. */
         this.slides.push({
             index: index++,
             id: 'infrastructure',
-            title: 'Infrastructure'
+            title: 'Infrastructure',
+            pct: 5,
         })
 
         /* Music. */
@@ -156,42 +165,48 @@ export default {
         this.slides.push({
             index: index++,
             id: 'privacy',
-            title: 'Privacy'
+            title: 'Privacy',
+            pct: 15,
         })
 
         /* Publishing. */
         this.slides.push({
             index: index++,
             id: 'publishing',
-            title: 'Publishing'
+            title: 'Publishing',
+            pct: 4,
         })
 
         /* Security. */
         this.slides.push({
             index: index++,
             id: 'security',
-            title: 'Security'
+            title: 'Security',
+            pct: 10,
         })
 
         /* Software. */
         this.slides.push({
             index: index++,
             id: 'software',
-            title: 'Software'
+            title: 'Software',
+            pct: 3,
         })
 
         /* World View. */
         this.slides.push({
             index: index++,
             id: 'world-view',
-            title: 'World View'
+            title: 'World View',
+            pct: 4,
         })
 
         /* Youth. */
         this.slides.push({
             index: index++,
             id: 'youth',
-            title: 'Youth'
+            title: 'Youth',
+            pct: 7,
         })
 
     },
@@ -199,5 +214,10 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.menu-category small {
+    display: none;
+    /* font-size: 0.8em; */
+    color: rgba(255, 0, 0, 0.5);
+    font-weight: 500;
+}
 </style>

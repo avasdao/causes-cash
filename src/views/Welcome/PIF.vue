@@ -4,10 +4,18 @@
             <div class="row">
                 <div class="col-lg-10 col-sm-9 col-9">
                     <div class="project-love-title">
-                        <h2 class="title left-title">Most ❤️ By Our Community</h2>
+                        <!-- <h2 class="title left-title">Most ❤️ By Our Community</h2> -->
+                        <h2 class="title left-title">Community Picks</h2>
 
                         <div class="description left-description">
-                            Pay-It-Forward (PIF) and vote for YOUR favorite campaign(s).
+                            <!-- Pay-It-Forward (PIF) to vote for YOUR favorite causes. -->
+                            Pay-it-forward (PIF) to show your favorite causes some
+                            <i class="fa fa-heart fa-lg text-danger" aria-hidden="true"></i>
+                            and
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                <i class="fa fa-bitcoin fa-stack-1x fa-inverse"></i>
+                            </span>
                         </div>
                     </div>
 
@@ -338,6 +346,10 @@ export default {
 </script>
 
 <style scoped>
+.fa-bitcoin {
+    transform: rotate(-15deg);
+}
+
 .category-btn, .category-link {
     float: right;
 }

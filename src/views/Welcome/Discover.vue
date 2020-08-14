@@ -1,7 +1,7 @@
 <template>
     <div class="latest campaign">
         <div class="container">
-            <h2 class="title">Discover Causes</h2>
+            <h2 class="title">Discover Campaigns</h2>
 
             <div class="campaign-tabs filter-theme">
                 <button class="button" data-filter=".filterinteresting">
@@ -24,72 +24,72 @@
             <div class="campaign-content grid">
                 <div class="row">
 
-                    <!-- Start causes. -->
+                    <!-- Start campaigns. -->
                     <div
-                        v-for="cause of causes"
-                        :key="cause.id"
+                        v-for="campaign of campaigns"
+                        :key="campaign.id"
                         class="col-lg-4 col-md-6 col-sm-6 col-6 filterinteresting filterpopular filterlatest">
                         <div class="campaign-item">
-                            <!-- <a class="overlay" href="javascript://" @click="loadDetails(cause)">
-                                <img :src="cause.coverImgUrl" alt="">
+                            <!-- <a class="overlay" href="javascript://" @click="loadDetails(campaign)">
+                                <img :src="campaign.coverImgUrl" alt="">
                                 <span class="ion-ios-search-strong"></span>
                             </a> -->
-                            <a class="category" href="javascript://" @click="loadDetails(cause)">
-                                <img :src="cause.coverImgUrl" alt="">
+                            <a class="category" href="javascript://" @click="loadDetails(campaign)">
+                                <img :src="displayImage(campaign)" alt="">
                             </a>
 
                             <div class="campaign-box">
-                                <a class="category" href="javascript://" @click="loadCategory(cause)">
-                                    {{cause.category}}
+                                <a class="category" href="javascript://" @click="loadCategory(campaign)">
+                                    {{campaign.category}}
                                 </a>
 
                                 <h3>
-                                    <a href="javascript://" @click="loadDetails(cause)">
-                                        {{cause.title}}
+                                    <a href="javascript://" @click="loadDetails(campaign)">
+                                        {{campaign.title}}
                                     </a>
                                 </h3>
 
                                 <div class="campaign-description">
-                                    {{cause.summary}}
+                                    {{campaign.summary}}
                                 </div>
 
                                 <div class="campaign-author">
-                                    <a class="author-icon" :href="cause.ownerLink" target="_blank">
-                                        <img :src="cause.ownerAvatar" alt="">
-                                        by {{cause.ownerName}}
+                                    <a class="author-icon" :href="weblink(campaign)" target="_blank">
+                                        <img :src="avatar(campaign)" alt="">
+                                        by {{displayOwnerName(campaign)}}
                                     </a>
                                 </div>
 
                                 <div class="process">
                                     <div class="raised">
-                                        <span :style="{ width: completedPct(cause, true) + '%'}"></span>
+                                        <span :style="{ width: completedPct(campaign, true) + '%'}"></span>
                                     </div>
 
                                     <div class="process-info">
                                         <div class="process-pledged">
-                                            <span>{{formatPledged(cause)}}</span>pledged
+                                            <span>{{formatPledged(campaign)}}</span>pledged
                                         </div>
 
                                         <div class="process-funded">
-                                            <span>{{formatFunded(cause)}}</span>funded
+                                            <span>{{formatFunded(campaign)}}</span>funded
                                         </div>
 
                                         <div class="process-time">
-                                            <span>{{cause.updatedAt}}</span>days ago
+                                            <span>{{campaign.updatedAt}}</span>days ago
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- End causes. -->
+                    <!-- End campaigns. -->
 
                 </div>
             </div>
 
             <div class="latest-button">
                 <router-link to="/discover" class="btn-primary">
-                    Discover More Causes
+                    Discover More Campaigns
                 </router-link>
             </div>
         </div>
@@ -113,7 +113,7 @@ export default {
     },
     data: () => {
         return {
-            causes: [],
+            campaigns: [],
         }
     },
     computed: {
@@ -123,11 +123,67 @@ export default {
     },
     methods: {
         /**
+         * Load Featured Campaigns
+         */
+        async loadFeatured() {
+            /* Request campaigns. */
+            const campaigns = await Promise.all([
+                this.getCampaign('bitcoinverde','bitcoin-verde-node-development'),
+                this.getCampaign('bchd', 'bchd-node-development'),
+                this.getCampaign('bitcoinabc', 'bitcoin-cash-protocol-development-fundraiser'),
+                this.getCampaign('knuth', 'knuth-platform-development'),
+                this.getCampaign('bchn', 'bitcoin-cash-node-initiative'),
+                this.getCampaign('eatbch', 'help-us-deliver-food-for-one-month'),
+            ])
+            .catch(err => console.error(err))
+            // console.log('RETRIEVED CAMPAIGNS', campaigns)
+
+            /* Load campaigns. */
+            campaigns.forEach(campaign => {
+                this.campaigns.push(campaign)
+            })
+
+        },
+
+        avatar(_campaign) {
+            if (_campaign.owner && _campaign.owner.avatar) {
+                return _campaign.owner.avatar
+            } else {
+                return null
+            }
+        },
+
+        weblink(_campaign) {
+            if (_campaign.owner && _campaign.owner.link) {
+                return _campaign.owner.link
+            } else {
+                return null
+            }
+        },
+
+        displayImage(_campaign) {
+            if (_campaign.media && _campaign.media.main) {
+                return _campaign.media.main
+            } else {
+                return null
+            }
+        },
+
+        displayOwnerName(_campaign) {
+            if (_campaign && (_campaign.owner.label || _campaign.owner.nickname)) {
+                return _campaign.owner.label || _campaign.owner.nickname
+            } else {
+                return null
+            }
+        },
+
+
+        /**
          * Load Category
          */
-        loadCategory(_cause) {
+        loadCategory(_campaign) {
             /* Set category. */
-            const category = _cause.category
+            const category = _campaign.category
 
             alert('goto ' + category)
         },
@@ -135,11 +191,11 @@ export default {
         /**
          * Load Details
          */
-        loadDetails(_cause) {
-            // console.log('CAUSE', _cause)
+        loadDetails(_campaign) {
+            // console.log('CAUSE', _campaign)
 
             /* Set campaign id. */
-            const id = _cause.id
+            const id = _campaign.id
 
             /* Validate id. */
             if (!id) {
@@ -147,7 +203,7 @@ export default {
             }
 
             /* Set slug. */
-            const slug = _cause.slug
+            const slug = _campaign.slug
 
             /* Validate slug. */
             if (!slug) {
@@ -155,7 +211,7 @@ export default {
             }
 
             /* Set author id. */
-            const ownerId = _cause.ownerId
+            const ownerId = _campaign.ownerId
 
             /* Validate author id. */
             if (!ownerId) {
@@ -172,9 +228,9 @@ export default {
         /**
          * Completed Percentage
          */
-        completedPct(_cause, _integer = false) {
+        completedPct(_campaign, _integer = false) {
             /* Calculate completion percentage. */
-            const completedPct = (_cause.pledged / _cause.requested)
+            const completedPct = (_campaign.pledged / _campaign.requested)
 
             /* Validate integer flag. */
             if (_integer) {
@@ -187,15 +243,15 @@ export default {
         /**
          * Format Pledged
          */
-        formatPledged(_cause) {
+        formatPledged(_campaign) {
             /* Set pledged amount. */
-            const pledged = _cause.pledged
+            const pledged = _campaign.pledged
 
             /* Initialize dollar value. */
             let dollar = null
 
             /* Calculate dollar value. */
-            if (_cause.currency === 'BCH') {
+            if (_campaign.currency === 'BCH') {
                 dollar = pledged * 244.18
             } else {
                 dollar = pledged
@@ -211,9 +267,9 @@ export default {
         /**
          * Format Funded
          */
-        formatFunded(_cause) {
+        formatFunded(_campaign) {
             /* Set percentage. */
-            const pct = _cause.pct
+            const pct = _campaign.pct
 
             /* Initialize formatted. */
             let formatted = null
@@ -221,7 +277,7 @@ export default {
             if (pct === 0) {
                 formatted = 'ongoing'
             } else {
-                const completePct = this.completedPct(_cause)
+                const completePct = this.completedPct(_campaign)
 
                 formatted = numeral(completePct).format('0.00%')
             }
@@ -232,23 +288,8 @@ export default {
 
     },
     created: function () {
-        /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-verde-node-development-14214ea4cd41'))
-
-        /* Cause */
-        this.causes.push(this.getCampaign('bchd-node-development-8331b54814ea'))
-
-        /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-cash-protocol-development-fundraiser-43eda61596e7'))
-
-        /* Cause */
-        this.causes.push(this.getCampaign('knuth-platform-development-158ef2f48aa0'))
-
-        /* Cause */
-        this.causes.push(this.getCampaign('bitcoin-cash-node-initiative-f837f2d17747'))
-
-        /* Cause */
-        this.causes.push(this.getCampaign('help-us-deliver-food-for-one-month-b6ce6ceb819f'))
+        /* Load featured campaigns. */
+        this.loadFeatured()
 
     },
     mounted: function () {

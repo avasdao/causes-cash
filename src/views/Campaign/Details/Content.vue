@@ -55,7 +55,7 @@
 					<div class="author-profile">
 						<a class="author-icon" href="javascript://">
                             <img :src="ownerAvatar" alt=""></a>
-                            by <a class="author-name" href="javascript://">{{ownerLabel}}</a>
+                            by <a class="author-name" href="javascript://">{{ownerNickname}}</a>
 					</div>
 
                     <div class="author-address">
@@ -367,11 +367,11 @@ export default {
         },
 
         /**
-         * Owner Label
+         * Owner Nickname
          */
-        ownerLabel() {
-            if (this.campaign && this.campaign.owner.label) {
-                return this.campaign.owner.label
+        ownerNickname() {
+            if (this.campaign && this.campaign.owner.nickname) {
+                return this.campaign.owner.nickname
             } else {
                 return null
             }

@@ -7,71 +7,69 @@
                         <h2 class="title left-title">Most ❤️ By Our Community</h2>
 
                         <div class="description left-description">
-                            Pay-It-Forward (PIF) and vote for YOUR favorite cause(s).
+                            Pay-It-Forward (PIF) and vote for YOUR favorite campaign(s).
                         </div>
                     </div>
 
                     <ul class="project-love-slider">
-                        <li v-for="cause of causes" :key="cause.id">
+                        <li v-for="campaign of campaigns" :key="campaign.id">
                             <div class="project-love-item clearfix">
                                 <!-- <router-link to="/details" class="project-love-image"> -->
                                 <router-link to="/welcome" class="project-love-image">
-                                    <img :src="cause.imgUrl" class="img-rounded" alt="">
+                                    <img :src="displayImage(campaign)" class="img-rounded" alt="">
                                 </router-link>
 
                                 <div class="project-love-item-content project-love-box">
                                     <router-link to="/discover" class="category category-link">
-                                        {{cause.category}}
+                                        {{displayCategory(campaign)}}
                                     </router-link>
 
                                     <h3>
                                         <!-- <router-link to="/details"> -->
                                         <router-link to="/welcome">
-                                            {{cause.title}}
+                                            {{campaign.title}}
                                         </router-link>
                                     </h3>
 
-                                    <div class="project-love-description">
-                                        {{cause.description}}
-                                    </div>
+                                    <div v-html="getMarkdown(campaign.summary)" class="project-love-description" />
 
                                     <div class="project-love-author">
                                         <div class="author-profile">
-                                            <a class="author-avatar" :href="cause.ownerLink" target="_blank">
-                                                <img :src="cause.ownerAvatar" alt="">
+                                            <a class="author-avatar" :href="weblink(campaign)" target="_blank">
+                                                <img :src="avatar(campaign)" alt="">
                                             </a>
                                             by
-                                            <a class="author-name" :href="cause.ownerLink" target="_blank">
-                                                {{cause.ownerName}}
+                                            <a class="author-name" :href="weblink(campaign)" target="_blank">
+                                                {{displayOwnerName(campaign)}}
                                             </a>
                                         </div>
 
                                         <div class="author-address">
                                             <span class="ion-location"></span>
-                                            {{cause.location}}
+                                            {{displayLocation(campaign)}}
                                         </div>
                                     </div>
 
                                     <div class="process">
                                         <div class="raised">
-                                            <span :style="{ width: completedPct(cause, true) + '%'}"></span>
+                                            <span :style="{ width: completedPct(campaign, true) + '%'}"></span>
                                         </div>
 
                                         <div class="process-info">
                                             <div class="process-pledged">
-                                                <span>{{formatRequested(cause)}}</span>requested
+                                                <span>{{formatRequested(campaign)}}</span>requested
                                             </div>
 
                                             <div class="process-funded">
-                                                <span>{{formatPledged(cause)}}</span>pledged
+                                                <span>{{formatPledged(campaign)}}</span>pledged
                                             </div>
 
                                             <div class="process-time">
-                                                <span>{{cause.backers}}</span>backers
+                                                <span>{{displayBackers(campaign)}}</span>backers
                                             </div>
 
                                             <!-- <div class="process-time">
-                                                <span>{{cause.updatedAt}}</span>days ago
+                                                <span>{{campaign.updatedAt}}</span>days ago
                                             </div> -->
                                         </div>
                                     </div>
@@ -112,21 +110,75 @@ export default {
     },
     data: () => {
         return {
-            causes: [],
+            campaigns: [],
         }
     },
     computed: {
         ...mapGetters('campaigns', [
             'getCampaign',
         ]),
+
+        ...mapGetters('utils', [
+            'getCategoryDisplay',
+            'getMarkdown',
+        ]),
+
     },
     methods: {
+
+        /**
+         * Load Featured Campaigns
+         */
+        async loadFeatured() {
+            /* Request campaigns. */
+            const campaigns = await Promise.all([
+                this.getCampaign('bchpizza', 'bch-for-pizza'), // Adoption
+                this.getCampaign('bchplease', 'causes-cash'), // Community
+                this.getCampaign('memo', 'memo'), // DApp
+                this.getCampaign('bchplease', 'cash-devops'), // Education
+                this.getCampaign('naomibrockwell', 'naomi-brockwell-tv'), // Film & Video
+                this.getCampaign('blockchainpoker', 'blockchain-poker'), // Fun & Games
+                this.getCampaign('bu', 'bitcoin-cashdrive'), // Hardware
+                this.getCampaign('eatbch', 'help-us-deliver-food-for-one-month'), // Health & Wellness
+                this.getCampaign('bchn', 'bitcoin-cash-node-initiative'), // Infrastructure
+                this.getCampaign('bchplease', 'nito-cash'), // Privacy
+                this.getCampaign('readcash', 'readcash-fund'), // Publishing
+                this.getCampaign('idrix', 'veracrypt'), // Security
+                this.getCampaign('bchplease', 'nito-gateway'), // Software
+                this.getCampaign('coins4clothes', 'coins-4-clothes'), // World View
+                this.getCampaign('bitcoincashteens', 'bitcoin-cash-teens-ph'), // Youth
+
+            ])
+            .catch(err => console.error(err))
+            // console.log('RETRIEVED CAMPAIGNS', campaigns)
+
+            /* Load campaigns. */
+            campaigns.forEach(campaign => {
+                this.campaigns.push(campaign)
+            })
+
+            /* Wait a tick. */
+            setTimeout(() => {
+                $('.project-love-slider').bxSlider({
+                    pagerCustom: '#bx-pager',
+                    // mode: 'fade',
+                    mode: 'vertical',
+                    controls: false,
+                    startSlide: 1,
+                    touchEnabled : (navigator.maxTouchPoints > 0),
+                })
+            }, 10)
+
+        },
+
+
+
         /**
          * Completed Percentage
          */
-        completedPct(_cause, _integer = false) {
+        completedPct(_campaign, _integer = false) {
             /* Calculate completion percentage. */
-            const completedPct = (_cause.pledged / _cause.requested)
+            const completedPct = (_campaign.pledged / _campaign.requested)
 
             /* Validate integer flag. */
             if (_integer) {
@@ -136,18 +188,76 @@ export default {
             }
         },
 
+        avatar(_campaign) {
+            if (_campaign.owner && _campaign.owner.avatar) {
+                return _campaign.owner.avatar
+            } else {
+                return null
+            }
+        },
+
+        weblink(_campaign) {
+            if (_campaign.owner && _campaign.owner.link) {
+                return _campaign.owner.link
+            } else {
+                return null
+            }
+        },
+
+        displayImage(_campaign) {
+            if (_campaign && _campaign.media.main) {
+                return _campaign.media.main
+            } else {
+                return null
+            }
+        },
+
+        displayCategory(_campaign) {
+            if (_campaign) {
+                return this.getCategoryDisplay(_campaign.category)
+            } else {
+                return null
+            }
+        },
+
+        displayOwnerName(_campaign) {
+            if (_campaign && (_campaign.owner.label || _campaign.owner.nickname)) {
+                return _campaign.owner.label || _campaign.owner.nickname
+            } else {
+                return null
+            }
+        },
+
+        displayLocation(_campaign) {
+            if (_campaign) {
+                return _campaign.location
+            } else {
+                return null
+            }
+        },
+
+        displayBackers(_campaign) {
+            if (_campaign) {
+                return _campaign.backers
+            } else {
+                return null
+            }
+        },
+
+
+
         /**
          * Format Requested
          */
-        formatRequested(_cause) {
+        formatRequested(_campaign) {
             /* Set requested amount. */
-            const requested = _cause.requested
+            const requested = _campaign.requested
 
             /* Initialize dollar value. */
             let dollar = null
 
             /* Calculate dollar value. */
-            if (_cause.currency === 'BCH') {
+            if (_campaign.currency === 'BCH') {
                 dollar = requested * 244.18
             } else {
                 dollar = requested
@@ -163,15 +273,15 @@ export default {
         /**
          * Format Pledged
          */
-        formatPledged(_cause) {
+        formatPledged(_campaign) {
             /* Set pledged amount. */
-            const pledged = _cause.pledged
+            const pledged = _campaign.pledged
 
             /* Initialize dollar value. */
             let dollar = null
 
             /* Calculate dollar value. */
-            if (_cause.currency === 'BCH') {
+            if (_campaign.currency === 'BCH') {
                 dollar = pledged * 244.18
             } else {
                 dollar = pledged
@@ -187,9 +297,9 @@ export default {
         /**
          * Format Funded
          */
-        formatFunded(_cause) {
+        formatFunded(_campaign) {
             /* Set percentage. */
-            const pct = _cause.pct
+            const pct = _campaign.pct
 
             /* Initialize formatted. */
             let formatted = null
@@ -197,7 +307,7 @@ export default {
             if (pct === 0) {
                 formatted = 'ongoing'
             } else {
-                const completePct = this.completedPct(_cause)
+                const completePct = this.completedPct(_campaign)
 
                 formatted = numeral(completePct).format('0.00%')
             }
@@ -207,64 +317,12 @@ export default {
         },
 
     },
-    created: function () {
-        /* Adoption. */
-        this.causes.push(this.getCampaign('bch-pizza-0e8c00641daa'))
-
-        /* Community. */
-        this.causes.push(this.getCampaign('pay-it-forward-02d76e6ca0f5'))
-
-        /* DApps. */
-        this.causes.push(this.getCampaign('memo-6ecee5eb74e2'))
-
-        /* Education. */
-        this.causes.push(this.getCampaign('cash-devops-4398271b5ef1'))
-
-        /* Film & Video. */
-        this.causes.push(this.getCampaign('naomi-brockwell-tv-fcc6e720c27f'))
-
-        /* Fun & Games. */
-        this.causes.push(this.getCampaign('blockchain-poker-52c6e99fff12'))
-
-        /* Hardware. */
-        this.causes.push(this.getCampaign('bitcoin-cashdrive-28c4c05ad744'))
-
-        /* Health. */
-        this.causes.push(this.getCampaign('help-us-deliver-food-for-one-month-b6ce6ceb819f'))
-
-        /* Infrastructure. */
-        this.causes.push(this.getCampaign('bitcoin-cash-node-initiative-f837f2d17747'))
-        // this.causes.push(this.getCampaign('bitcoin-verde-node-development-14214ea4cd41'))
-
-        /* Privacy. */
-        this.causes.push(this.getCampaign('nito-cash-07dd70f04162'))
-
-        /* Publishing. */
-        this.causes.push(this.getCampaign('read-cash-fund-44c7d3cfe560'))
-
-        /* Security. */
-        this.causes.push(this.getCampaign('veracrypt-4158c2f0eda0'))
-
-        /* Software. */
-        this.causes.push(this.getCampaign('nito-exchange-443db3869688'))
-
-        /* World View. */
-        this.causes.push(this.getCampaign('coins-4-clothes-93e037309d77'))
-
-        /* Youth. */
-        this.causes.push(this.getCampaign('bitcoin-cash-teens-ph-ddb1c79caf39'))
+    created: async function () {
+        /* Load featured campaigns. */
+        this.loadFeatured()
 
     },
     mounted: function () {
-        $('.project-love-slider').bxSlider({
-            pagerCustom: '#bx-pager',
-            mode: 'fade',
-            // mode: 'vertical',
-            controls: false,
-            startSlide: 8,
-            touchEnabled : (navigator.maxTouchPoints > 0),
-        })
-
         /* Animated completion bar. */
         // $('.raised > span').each(function () {
 		// 	$(this)
@@ -285,6 +343,9 @@ export default {
 }
 
 .img-rounded {
+    width: 470px;
+    height: 340px;
+
     border: 2px solid rgba(180, 180, 180, 0.2);
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;

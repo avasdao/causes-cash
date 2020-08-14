@@ -69,7 +69,7 @@ export default {
     },
     created: function () {
         /* Initialize active slide. */
-        this.activeSlide = 'infrastructure'
+        this.activeSlide = 'community'
 
         /* Initialize index. */
         // FOR DEVELOPMENT PURPOSES ONLY
@@ -92,8 +92,8 @@ export default {
         /* DApps. */
         this.slides.push({
             index: index++,
-            id: 'dapps',
-            title: 'DApps'
+            id: 'dapp',
+            title: 'DApp'
         })
 
         /* Design & Art. */

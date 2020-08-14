@@ -42,10 +42,6 @@ import numeral from 'numeral'
 /* Import icons. */
 // import '@/compiled-icons/<icon-name>'
 
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
-
 export default {
     components: {
         //
@@ -60,6 +56,7 @@ export default {
 
             return display
         },
+
         featuredSummaryDisplay: function () {
             /* Initialize display. */
             let display = this.featuredSummary
@@ -69,12 +66,15 @@ export default {
 
             return display
         },
+
         pledgedDisplay: function () {
             return numeral(this.pledged).format('$0,0.00[00]')
         },
+
         goalDisplay: function () {
             return numeral(this.goal).format('$0,0.00[00]')
         },
+
         fundedPctDisplay: function () {
             /* Calculate (funded) amount. */
             const amount = this.pledged / this.goal
@@ -82,6 +82,7 @@ export default {
 
             return numeral(amount).format('0,0.00[0000]%')
         },
+
         numBackersDisplay: function () {
             return numeral(this.numBackers).format('0,0')
         },

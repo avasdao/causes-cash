@@ -118,6 +118,31 @@
                     <hr />
 
                     <div class="field">
+                        <label for="uploadfile">
+                            Campaign Banner Image
+                        </label>
+
+                        <!-- <span class="label-desc">
+                            This is the first thing that people will see when they come across your campaign.
+                            Choose an image that’s crisp and text-free.
+                            570px by 400px recommended resolution.
+
+                            <a href="javascript://">Here are some tips.</a>
+                        </span> -->
+
+                        <img :src="bannerUrl" />
+
+                        <input
+                            type="text"
+                            id="capaignstory"
+                            placeholder="Banner URL"
+                            v-model="bannerUrl"
+                        >
+                    </div>
+
+                    <hr />
+
+                    <div class="field">
                         <label for="uploadfile1">
                             Campaign Video
                         </label>
@@ -286,6 +311,8 @@ export default {
             // fundId: null,
             // referrerId: null,
 
+            bannerUrl: null,
+
             videoCaption: null,
             videoDescription: null,
 
@@ -349,6 +376,7 @@ export default {
             /* Set media. */
             const media = {
                main: this.photo1Url || null,
+               banner: this.bannerUrl || null,
                cover: this.photo1Url || null,
                gallery: [
                    this.photo2Url || null,

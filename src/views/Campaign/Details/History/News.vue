@@ -118,8 +118,13 @@ export default {
                 return article
             })
 
+            /* Sort by date (newest first). */
+            articles.sort((a, b) => {
+                return b.createdAt - a.createdAt
+            })
+
             /* Return (reversed) array. */
-            return articles.reverse()
+            return articles
         },
 
 

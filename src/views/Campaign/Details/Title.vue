@@ -46,7 +46,10 @@ export default {
     watch: {
         campaign: function (_campaign) {
             if (_campaign && _campaign.title) {
-                console.log('CAMPAIGN HAS CHANGED, UPDATE TITLE!!', _campaign)
+                // console.log('CAMPAIGN HAS CHANGED, UPDATE TITLE!!', _campaign)
+
+                /* Update banner. */
+                this.updateBanner()
 
                 /* Update title. */
                 this.updateTitle()
@@ -66,11 +69,16 @@ export default {
          * Update Banner
          */
         updateBanner() {
-            /* Set banner URL. */
-            // this.bannerUrl = 'https://i.imgur.com/3UPJZT6.jpg' // sofa
-            // this.bannerUrl = 'https://i.imgur.com/2NuUJxd.jpg' // headphones
-            this.bannerUrl = 'https://i.imgur.com/JQbiIbD.jpg' // working @ desk
-            // this.bannerUrl = 'https://i.imgur.com/9vNfGgt.jpg' // organized desk
+            if (this.campaign && this.campaign.media && this.campaign.media.banner) {
+                /* Set banner URL. */
+                this.bannerUrl = this.campaign.media.banner
+            } else {
+                /* Set banner URL. */
+                // this.bannerUrl = 'https://i.imgur.com/3UPJZT6.jpg' // sofa
+                // this.bannerUrl = 'https://i.imgur.com/2NuUJxd.jpg' // headphones
+                this.bannerUrl = 'https://i.imgur.com/JQbiIbD.jpg' // working @ desk
+                // this.bannerUrl = 'https://i.imgur.com/9vNfGgt.jpg' // organized desk
+            }
         },
 
         /**

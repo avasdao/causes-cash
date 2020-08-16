@@ -170,7 +170,7 @@ import Nito from 'nitojs'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
 import superagent from 'superagent'
-import Swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 
 // const { Contract, SignatureTemplate } = require('cashscript')
 import { Contract, SignatureTemplate } from 'cashscript'
@@ -247,7 +247,13 @@ export default {
                 }
             }
 
-            QRCode.toString(this.pledgeAddress, params, (err, value) => {
+            /* Calculate pledge amount (in BCH). */
+            const amount = parseFloat(this.pledgeSatoshis / 100000000.0)
+
+            /* Set payment URL. */
+            const paymentUrl = `${this.pledgeAddress}?amount=${amount}`
+
+            QRCode.toString(paymentUrl, params, (err, value) => {
                 if (err) {
                     return console.error('QR Code ERROR:', err)
                 }
@@ -385,23 +391,25 @@ export default {
          * Wallet Pay
          */
         walletPay() {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                }
-            })
+            this.toast(['Oops!', 'Your wallet balance is not enough', 'error'])
+
+            // Swal.fire({
+            //     title: 'Are you sure?',
+            //     text: "You won't be able to revert this!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Yes, delete it!'
+            // }).then((result) => {
+            //     if (result.value) {
+            //         Swal.fire(
+            //             'Deleted!',
+            //             'Your file has been deleted.',
+            //             'success'
+            //         )
+            //     }
+            // })
         },
 
         /**

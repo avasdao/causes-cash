@@ -42,9 +42,9 @@
 									</div>
 								</div>
 
-                                <hr />
+                                <!-- <hr /> -->
 
-                                <div class="dashboard-latest my-causes">
+                                <!-- <div class="dashboard-latest my-causes">
 									<h3>My Latest Causes</h3>
 
 									<ul>
@@ -63,7 +63,7 @@
 											</div>
 										</li>
 									</ul>
-								</div>
+								</div> -->
 
 							</div>
 						</div>

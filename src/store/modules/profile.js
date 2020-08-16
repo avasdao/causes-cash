@@ -5,6 +5,7 @@ import getEmail from './profile/getters/getEmail'
 import getMasterSeed from './profile/getters/getMasterSeed'
 import getMeta from './profile/getters/getMeta'
 import getNickname from './profile/getters/getNickname'
+import getRootAddress from './profile/getters/getRootAddress'
 import getSignedMessage from './profile/getters/getSignedMessage'
 
 /* Import modules (actions). */
@@ -74,6 +75,7 @@ const getters = {
     getMasterSeed,
     getMeta,
     getNickname,
+    getRootAddress,
     getSignedMessage,
 }
 

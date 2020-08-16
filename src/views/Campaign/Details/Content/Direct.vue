@@ -86,7 +86,7 @@
 
                     <div class="form-group row">
                         <div class="col">
-                            <button class="btn btn-primary btn-block" @click="setClipboard">Copy Details</button>
+                            <button class="btn btn-primary btn-block" @click="copyDetails">Copy Details</button>
                         </div>
 
                         <div class="col">
@@ -272,6 +272,7 @@ export default {
         ]),
 
         ...mapActions('utils', [
+            'setClipboard',
             'toast',
         ]),
 
@@ -326,43 +327,17 @@ export default {
         },
 
         /**
-         * Set Clipboard
+         * Copy Details
          */
-        setClipboard() {
-            try {
-                const textArea = document.createElement('textarea')
-                textArea.value = this.pledgeDetails
-                document.body.appendChild(textArea)
+        copyDetails() {
+            /* Set clipboard. */
+            this.setClipboard(this.pledgeDetails)
 
-                if (navigator.userAgent.match(/ipad|iphone/i)) {
-                    const range = document.createRange()
-                    range.selectNodeContents(textArea)
+            /* Set message. */
+            const message = `Pledge details copied to your clipboard.`
 
-                    const selection = window.getSelection()
-                    selection.removeAllRanges()
-                    selection.addRange(range)
-
-                    textArea.setSelectionRange(0, 999999)
-                } else {
-                    textArea.select()
-                }
-
-                document.execCommand('copy')
-                document.body.removeChild(textArea)
-
-                /* Set message. */
-                const message = `Pledge details copied to your clipboard.`
-
-                /* Display notification. */
-                this.toast(['Done!', message, 'success'])
-
-                return true
-            } catch (err) {
-                console.error(err) // eslint-disable-line no-console
-
-                /* Bugsnag alert. */
-                throw new Error(err)
-            }
+            /* Display notification. */
+            this.toast(['Done!', message, 'success'])
         },
 
     },

@@ -423,7 +423,7 @@
 
 <script>
 /* Initialize vuex. */
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import superagent from 'superagent'
@@ -452,6 +452,10 @@ export default {
         }
     },
     computed: {
+        ...mapGetters([
+            'getApiProvider',
+        ]),
+
         /* Campaign Banner Image */
         bannerImg() {
             return 'https://i.imgur.com/9vNfGgt.jpg'
@@ -516,7 +520,7 @@ export default {
             }
 
             /* Set api target. */
-            const target = 'https://api.causes.cash/v1/campaigns'
+            const target = this.getApiProvider + '/campaigns'
 
             const result = await superagent
                 .post(target)

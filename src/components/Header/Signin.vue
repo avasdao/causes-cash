@@ -69,6 +69,10 @@ export default {
         }
     },
     computed: {
+        ...mapGetters([
+            'getApiProvider',
+        ]),
+
         ...mapGetters('profile', [
             'getNickname',
             'getSignedMessage',
@@ -202,7 +206,7 @@ export default {
             // $('#signinForm').fadeToggle()
 
             /* Set target. */
-            const target = 'https://api.causes.cash/v1/profiles'
+            const target = this.getApiProvider + '/profiles'
 
             const msg = {
                 action: 'SIGNIN_EMAIL',

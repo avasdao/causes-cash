@@ -210,19 +210,19 @@ export default {
                 return alert('Invalid slug!')
             }
 
-            /* Set author id. */
-            const ownerId = _campaign.ownerId
+            /* Set owner. */
+            const owner = _campaign.owner
 
             /* Validate author id. */
-            if (!ownerId) {
-                return alert('Invalid author!')
+            if (!owner) {
+                return alert('Invalid owner!')
             }
 
             /* Set extended slug. */
             const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
 
             /* Load details. */
-            this.$router.push(`@${ownerId}/${extSlug}`)
+            this.$router.push(`@${owner.slug}/${extSlug}`)
         },
 
         /**

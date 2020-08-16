@@ -21,18 +21,22 @@
 								<div class="author-content">
 									<div class="author-title">
                                         <h3>
-                                            <a href="javascript://">
-                                                {{getNickname}}
-                                            </a>
+                                            {{getNickname}}
                                         </h3>
                                     </div>
 
 									<div class="author-info">
 										<p>
-                                            <a href="javascript://" class="">
-                                                {{getEmail}}
-                                            </a>
+                                            {{getEmail}}
                                         </p>
+
+										<p>
+                                            <a :href="'https://explorer.bitcoin.com/bch/address/' + getRootAddress" target="_blank">
+                                                <strong>{{getRootAddress}}</strong>
+                                            </a>
+                                            <i class="fa fa-copy ml-2 copy-address" @click="copyToClipboard"></i>
+                                        </p>
+
 										<p>
                                             Causes Cash member since August 2020
                                         </p>
@@ -50,7 +54,7 @@
                                 </div>
 
                                 <div class="col-8">
-                                    Satoshi N.
+                                    {{getNickname}}
                                 </div>
 
                                 <div class="col-1">
@@ -69,7 +73,7 @@
 
                                 <div class="col-8">
                                     <p>
-                                        I feel the presence of the Almighty, who formed us in his own image, and the breath of that universal love which bears and sustains us, as it floats around us in an eternity of bliss; and then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                                     </p>
                                 </div>
 
@@ -78,25 +82,6 @@
                                 </div>
                             </div>
 
-                            <div class="row my-3">
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-
-                                <div class="col-2">
-                                    <strong>Bio</strong>
-                                </div>
-
-                                <div class="col-8">
-                                    <p>
-                                        Oh, would I could describe these conceptions, could impress upon paper all that is living so full and warm within me, that it might be the mirror of my soul, as my soul is the mirror of the infinite God!
-                                    </p>
-                                </div>
-
-                                <div class="col-1">
-                                    <!-- offset fix -->
-                                </div>
-                            </div>
 						</div>
 
                         <!-- <a href="javascript://" class="btn-primary mt-3">Save My Profile</a> -->
@@ -144,6 +129,7 @@ export default {
             'getAvatar',
             'getEmail',
             'getNickname',
+            'getRootAddress',
         ]),
 
         ...mapGetters('wallet', [
@@ -151,10 +137,24 @@ export default {
         ]),
     },
     methods: {
-        ...mapActions('campaigns', [
-            'addCampaign',
+        ...mapActions('utils', [
+            'setClipboard',
+            'toast',
         ]),
 
+        /**
+         * Copy To Clipboard
+         */
+        copyToClipboard() {
+            /* Set clipboard. */
+            this.setClipboard(this.getRootAddress)
+
+            /* Set message. */
+            const message = `Profile address was copied to clipboard`
+
+            /* Display notification. */
+            this.toast(['Done!', message, 'info'])
+        },
     },
     created: function () {
         /* Set owner slug. */
@@ -166,5 +166,15 @@ export default {
 <style scoped>
 .author {
     margin: 20px 40px;
+}
+.author-info a {
+    display: inline-block;
+}
+.author-title h3 {
+    font-size: 2.2em;
+}
+
+.copy-address {
+    cursor: pointer;
 }
 </style>

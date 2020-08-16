@@ -35,7 +35,7 @@
                 </li>
 
                 <li :class="{active: tab === 'wallet'}">
-                    <router-link :to="wallet">Bitcoin Cash Wallet</router-link>
+                    <router-link :to="wallet">Cash Wallet</router-link>
                 </li>
 
                 <li :class="{active: tab === 'received'}">

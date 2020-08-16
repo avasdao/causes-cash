@@ -9,6 +9,7 @@ import getMarkdown from './utils/getters/getMarkdown'
 import getShuffledArray from './utils/getters/getShuffledArray'
 
 /* Import modules (actions). */
+import setClipboard from './utils/actions/setClipboard'
 import toast from './utils/actions/toast'
 
 /* Import modules (mutations). */
@@ -33,6 +34,7 @@ const getters = {
 
 /* Actions. */
 const actions = {
+    setClipboard,
     toast,
 }
 

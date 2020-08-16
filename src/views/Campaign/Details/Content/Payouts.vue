@@ -186,6 +186,7 @@ export default {
         return {
             usd: null,
             satoshis: null,
+            blockHeight: null,
 
             payoutsContract: null,
             receipientAddress: null,
@@ -204,9 +205,9 @@ export default {
             'getHelp',
         ]),
 
-        ...mapGetters('campaigns', [
-            'getFullfillment',
-        ]),
+        // ...mapGetters('campaigns', [
+        //     'getFullfillment',
+        // ]),
 
         ...mapGetters('wallet', [
             'getAddress',
@@ -266,6 +267,7 @@ export default {
         ]),
 
         ...mapActions('utils', [
+            'setClipboard',
             'toast',
         ]),
 
@@ -328,7 +330,7 @@ export default {
         },
 
         async savePledge() {
-            this.setClipboard()
+            this.copyToClipboard()
 
             /* Set campaign id. */
             const campaignid = this.campaign.id
@@ -348,6 +350,8 @@ export default {
 
             const pledgeUSD = numeral(this.pledgeUSD).value()
             const monthlyPledgeAmt = Math.round(pledgeUSD * 100)
+            const minValidBlock = this.blockHeight
+            const scriptVer = 'v20.8.3-fixed'
 
             const pkg = {
                 campaignid,
@@ -355,6 +359,8 @@ export default {
                 alias,
                 comment,
                 monthlyPledgeAmt,
+                minValidBlock,
+                scriptVer,
             }
 
             /* Add payout. */
@@ -362,43 +368,17 @@ export default {
         },
 
         /**
-         * Set Clipboard
+         * Copy To Clipboard
          */
-        setClipboard() {
-            try {
-                const textArea = document.createElement('textarea')
-                textArea.value = this.pledgeAddress
-                document.body.appendChild(textArea)
+        copyToClipboard() {
+            /* Set clipboard. */
+            this.setClipboard(this.pledgeAddress)
 
-                if (navigator.userAgent.match(/ipad|iphone/i)) {
-                    const range = document.createRange()
-                    range.selectNodeContents(textArea)
+            /* Set message. */
+            const message = `Pledge address copied to your clipboard.`
 
-                    const selection = window.getSelection()
-                    selection.removeAllRanges()
-                    selection.addRange(range)
-
-                    textArea.setSelectionRange(0, 999999)
-                } else {
-                    textArea.select()
-                }
-
-                document.execCommand('copy')
-                document.body.removeChild(textArea)
-
-                /* Set message. */
-                const message = `Pledge address copied to your clipboard.`
-
-                /* Display notification. */
-                this.toast(['Done!', message, 'success'])
-
-                return true
-            } catch (err) {
-                console.error(err) // eslint-disable-line no-console
-
-                /* Bugsnag alert. */
-                throw new Error(err)
-            }
+            /* Display notification. */
+            this.toast(['Done!', message, 'success'])
         },
 
         /**
@@ -471,7 +451,6 @@ export default {
                 this.payoutsContract = Contract.compile(contract.text, network)
                 console.log('Payouts Contract', this.payoutsContract)
 
-                // const recipientAddress = 'bitcoincash:qq638hdce3q0pg370hfee7f7sgxkw6j46c9cw9sqer' // P2PKH - NitoJS
                 const recipientPkh = Nito.Address
                     .toPubKeyHash(this.receipientAddress).slice(6, -4)
                 console.log('recipientPkh', recipientPkh)
@@ -488,8 +467,7 @@ export default {
                 console.log('oraclePk', oraclePk)
 
                 /* Initialize minimum valid block. */
-                // const minValidBlock = 643123
-                const minValidBlock = await Nito.Blockchain.getBlockHeight()
+                const minValidBlock = this.blockHeight
                 console.log('MIN VALID BLOCK', minValidBlock)
 
                 /* Initialize monthly pledge amount. */
@@ -519,8 +497,12 @@ export default {
 
     },
     created: async function () {
+        /* Set USD price. */
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
         // console.info(`Market price (USD)`, this.usd)
+
+        /* Set block height. */
+        this.blockHeight = await Nito.Blockchain.getBlockHeight()
 
         /* Initialize pledge range. */
         this.pledgeRange = 5 // FIXME

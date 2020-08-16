@@ -73,16 +73,16 @@
                         <div class="row">
 
                             <!-- Start featured. -->
-                            <div class="col-lg-12">
+                            <div v-if="featured" class="col-lg-12">
                                 <div class="campaign-big-item clearfix">
                                     <a href="javascript://" class="campaign-big-image" @click="loadDetails(featured)">
                                         <!-- <img src="@/assets/img/campaign-big-item.jpg" alt=""> -->
-                                        <img :src="featured.coverImgUrl" class="featured-img" alt="">
+                                        <img :src="featured.media.main" class="featured-img" alt="">
                                     </a>
 
                                     <div class="campaign-big-box">
                                         <a href="javascript://" class="category" @click="loadCategory(featured)">
-                                            {{featured.category}}
+                                            {{displayCategory(featured)}}
                                         </a>
 
                                         <h3 class="featured-title">
@@ -97,18 +97,18 @@
 
                                         <div class="staff-picks-author">
                                             <div class="author-profile">
-                                                <a class="author-avatar" :href="featured.ownerLink" target="_blank">
-                                                    <img :src="featured.ownerAvatar" alt="">
+                                                <a class="author-avatar" :href="weblink(featured)" target="_blank">
+                                                    <img :src="avatar(featured)" alt="">
                                                 </a>
                                                 by
                                                 <a class="author-name" :href="featured.ownerLink" target="_blank">
-                                                    {{featured.ownerName}}
+                                                    {{displayOwnerName(featured)}}
                                                 </a>
                                             </div>
 
                                             <div class="author-address">
                                                 <span class="ion-location"></span>
-                                                {{featured.location}}
+                                                {{displayLocation(featured)}}
                                             </div>
                                         </div>
 
@@ -160,12 +160,12 @@
                                         <span class="ion-ios-search-strong"></span>
                                     </a> -->
                                     <a class="category" href="javascript://" @click="loadDetails(cause)">
-                                        <img :src="cause.coverImgUrl" alt="">
+                                        <img :src="displayImage(cause)" alt="">
                                     </a>
 
                                     <div class="campaign-box">
                                         <a class="category" href="javascript://" @click="loadCategory(cause)">
-                                            {{cause.category}}
+                                            {{displayCategory(cause)}}
                                         </a>
 
                                         <h3>
@@ -179,9 +179,9 @@
                                         </div>
 
                                         <div class="campaign-author">
-                                            <a class="author-icon" :href="cause.ownerLink" target="_blank">
-                                                <img :src="cause.ownerAvatar" alt="">
-                                                by {{cause.ownerName}}
+                                            <a class="author-icon" :href="weblink(cause)" target="_blank">
+                                                <img :src="avatar(cause)" alt="">
+                                                by {{displayOwnerName(cause)}}
                                             </a>
                                         </div>
 
@@ -262,6 +262,7 @@ export default {
         ]),
 
         ...mapGetters('utils', [
+            'getCategoryDisplay',
             'getCompletedPct',
             'getFormatFunded',
             'getShuffledArray',
@@ -275,28 +276,77 @@ export default {
         },
     },
     methods: {
+
+        avatar(_campaign) {
+            if (_campaign.owner && _campaign.owner.avatar) {
+                return _campaign.owner.avatar
+            } else {
+                return null
+            }
+        },
+
+        weblink(_campaign) {
+            if (_campaign.owner && _campaign.owner.link) {
+                return _campaign.owner.link
+            } else {
+                return null
+            }
+        },
+
+        displayImage(_campaign) {
+            if (_campaign && _campaign.media.main) {
+                return _campaign.media.main
+            } else {
+                return null
+            }
+        },
+
+        displayCategory(_campaign) {
+            if (_campaign) {
+                return this.getCategoryDisplay(_campaign.category)
+            } else {
+                return null
+            }
+        },
+
+        displayOwnerName(_campaign) {
+            if (_campaign && (_campaign.owner.label || _campaign.owner.nickname)) {
+                return _campaign.owner.label || _campaign.owner.nickname
+            } else {
+                return null
+            }
+        },
+
+        displayLocation(_campaign) {
+            if (_campaign) {
+                return _campaign.location
+            } else {
+                return null
+            }
+        },
+
         /**
          * Make Featured
          */
-        makeFeatured() {
+        async makeFeatured() {
             /* Initialize featured candidates. */
-            const candidates = [
-                'bitcoin-verde-node-development-14214ea4cd41',
-                'bchd-node-development-8331b54814ea',
-                'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
-                'knuth-platform-development-158ef2f48aa0',
-                'nito-exchange-443db3869688',
-            ]
+            // const candidates = [
+            //     'bitcoin-verde-node-development-14214ea4cd41',
+            //     'bchd-node-development-8331b54814ea',
+            //     'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
+            //     'knuth-platform-development-158ef2f48aa0',
+            //     'nito-exchange-443db3869688',
+            // ]
 
             /* Choose a "random" campaign id. */
             // NOTE: Randomly selected.
-            const campaignId = candidates[
-                Math.floor(Math.random() * candidates.length)
-            ]
+            // const campaignId = candidates[
+            //     Math.floor(Math.random() * candidates.length)
+            // ]
 
             /* Set featured campaign. */
-            this.featured = this.getCampaign(campaignId)
-
+            // this.featured = this.getCampaign(campaignId)
+            this.featured = await this.getCampaign('bitcoinverde','bitcoin-verde-node-development')
         },
 
         /**
@@ -331,19 +381,19 @@ export default {
                 return alert('Invalid slug!')
             }
 
-            /* Set author id. */
-            const ownerId = _cause.ownerId
+            /* Set owner. */
+            const owner = _cause.owner
 
             /* Validate author id. */
-            if (!ownerId) {
-                return alert('Invalid author!')
+            if (!owner) {
+                return alert('Invalid owner!')
             }
 
             /* Set extended slug. */
             const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
 
             /* Load details. */
-            this.$router.push(`@${ownerId}/${extSlug}`)
+            this.$router.push(`@${owner.slug}/${extSlug}`)
         },
 
         /**
@@ -423,12 +473,12 @@ export default {
         },
 
     },
-    created: function () {
+    created: async function () {
         /* Initialize number of campaigns displayed. */
         this.numDisplayed = 9
 
         /* Make a featured campaign. */
-        this.makeFeatured()
+        await this.makeFeatured()
 
         /* Initialize all qualified campaigns. */
         this.campaigns = [
@@ -451,25 +501,25 @@ export default {
         /**
          * Remove Item Once
          */
-        function _removeItemOnce(arr, value) {
-            const index = arr.indexOf(value)
-
-            if (index > -1) {
-                arr.splice(index, 1);
-            }
-
-            return arr
-        }
+        // function _removeItemOnce(arr, value) {
+        //     const index = arr.indexOf(value)
+        //
+        //     if (index > -1) {
+        //         arr.splice(index, 1);
+        //     }
+        //
+        //     return arr
+        // }
 
         /* Set (featured) extended slug. */
-        const extSlug = `${this.featured.slug}-${this.featured.id
-            .slice(this.featured.id.lastIndexOf('-') + 1)}`
+        // const extSlug = `${this.featured.slug}-${this.featured.id
+        //     .slice(this.featured.id.lastIndexOf('-') + 1)}`
 
         /* Remove featured campaign. */
-        _removeItemOnce(this.campaigns, extSlug)
+        // _removeItemOnce(this.campaigns, extSlug)
 
         /* Shuffle campaigns (array). */
-        this.getShuffledArray(this.campaigns)
+        // this.getShuffledArray(this.campaigns)
 
         /* Initialize number of campaigns to display. */
         let numToDisplay = 0
@@ -480,12 +530,39 @@ export default {
         } else {
             numToDisplay = this.campaigns.length
         }
+        console.log('numToDisplay', numToDisplay);
 
         /* Add campaigns to causes. */
-        for (let i = 0; i < numToDisplay; i++) {
-            /* Add campaign to cause. */
-            this.causes.push(this.getCampaign(this.campaigns[i]))
-        }
+        // for (let i = 0; i < numToDisplay; i++) {
+        //     /* Add campaign to cause. */
+        //     this.causes.push(this.getCampaign(this.campaigns[i]))
+        // }
+
+        // 'read-cash-fund-44c7d3cfe560',
+        // 'veracrypt-4158c2f0eda0',
+        /* Request campaigns. */
+        const campaigns = await Promise.all([
+            this.getCampaign('bchpizza', 'bch-for-pizza'),
+            this.getCampaign('bitcoinverde', 'bitcoin-verde-node-development'),
+            this.getCampaign('blockchainpoker', 'blockchain-poker'),
+            this.getCampaign('bchd', 'bchd-node-development'),
+            this.getCampaign('coins4clothes', 'coins-4-clothes'),
+            this.getCampaign('bitcoinabc', 'bitcoin-cash-protocol-development-fundraiser'),
+            this.getCampaign('pokkst', 'crescent-cash'),
+            this.getCampaign('knuth', 'knuth-platform-development'),
+            this.getCampaign('memo', 'memo'),
+            this.getCampaign('bchn', 'bitcoin-cash-node-initiative'),
+            this.getCampaign('naomibrockwell', 'naomi-brockwell-tv'),
+            this.getCampaign('eatbch', 'help-us-deliver-food-for-one-month'),
+            this.getCampaign('bchplease', 'nito-cash'),
+        ])
+        .catch(err => console.error(err))
+        // console.log('RETRIEVED CAMPAIGNS', campaigns)
+
+        /* Load campaigns. */
+        campaigns.forEach(campaign => {
+            this.causes.push(campaign)
+        })
 
     },
     mounted: function () {

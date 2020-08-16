@@ -11,9 +11,9 @@
 					<div class="col-lg-9">
 
 						<div class="account-content dashboard">
-							<h3 class="account-title">Bitcoin Cash Wallet</h3>
+							<h3 class="account-title">Cash Wallet</h3>
 
-                            <div class="qr-code float-right d-none d-md-block m-3" v-html="qr" @click="setClipboard" />
+                            <div class="qr-code float-right d-none d-md-block m-3" v-html="qr" @click="copyAddress" />
 
                             <div class="row my-3">
                                 <div class="col-1">
@@ -79,7 +79,7 @@
                                 </div>
 
                                 <div class="col-10">
-                                    <div class="qr-code text-center d-md-none" v-html="qr" @click="setClipboard" />
+                                    <div class="qr-code text-center d-md-none" v-html="qr" @click="copyAddress" />
                                 </div>
 
                                 <div class="col-1">
@@ -524,41 +524,15 @@ export default {
         /**
          * Set Clipboard
          */
-        setClipboard() {
-            try {
-                const textArea = document.createElement('textarea')
-                textArea.value = this.getAddress('deposit')
-                document.body.appendChild(textArea)
+        copyAddress() {
+            /* Set clipboard. */
+            this.setClipboard(this.getAddress('deposit'))
 
-                if (navigator.userAgent.match(/ipad|iphone/i)) {
-                    const range = document.createRange()
-                    range.selectNodeContents(textArea)
+            /* Set message. */
+            const message = `Deposit address copied to your clipboard.`
 
-                    const selection = window.getSelection()
-                    selection.removeAllRanges()
-                    selection.addRange(range)
-
-                    textArea.setSelectionRange(0, 999999)
-                } else {
-                    textArea.select()
-                }
-
-                document.execCommand('copy')
-                document.body.removeChild(textArea)
-
-                /* Set message. */
-                const message = `Deposit address copied to your clipboard.`
-
-                /* Display notification. */
-                this.toast(['Hey!', message, 'info'])
-
-                return true
-            } catch (err) {
-                console.error(err) // eslint-disable-line no-console
-
-                /* Bugsnag alert. */
-                throw new Error(err)
-            }
+            /* Display notification. */
+            this.toast(['Hey!', message, 'info'])
         },
 
         /**

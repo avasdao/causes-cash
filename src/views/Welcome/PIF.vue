@@ -23,7 +23,7 @@
                         <li v-for="campaign of campaigns" :key="campaign.id">
                             <div class="project-love-item clearfix">
                                 <!-- <router-link to="/details" class="project-love-image"> -->
-                                <router-link to="/welcome" class="project-love-image">
+                                <router-link :to="path(campaign)" class="project-love-image">
                                     <img :src="displayImage(campaign)" class="img-rounded" alt="">
                                 </router-link>
 
@@ -134,6 +134,40 @@ export default {
     },
     methods: {
 
+        path(_campaign) {
+            /* Set campaign id. */
+            const id = _campaign.id
+
+            /* Validate id. */
+            if (!id) {
+                return alert('Invalid ID!')
+            }
+
+            /* Set slug. */
+            const slug = _campaign.slug
+
+            /* Validate slug. */
+            if (!slug) {
+                return alert('Invalid slug!')
+            }
+
+            /* Set owner. */
+            const owner = _campaign.owner
+
+            /* Validate author id. */
+            if (!owner) {
+                return alert('Invalid owner!')
+            }
+
+            /* Set extended slug. */
+            const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
+
+            /* Load details. */
+            // this.$router.push(`@${owner.slug}/${extSlug}`)
+            return `/@${owner.slug}/${extSlug}`
+
+        },
+
         /**
          * Load Featured Campaigns
          */
@@ -141,7 +175,7 @@ export default {
             /* Request campaigns. */
             const campaigns = await Promise.all([
                 this.getCampaign('bchpizza', 'bch-for-pizza'), // Adoption
-                this.getCampaign('bchplease', 'causes-cash'), // Community
+                this.getCampaign('bchplease', 'pay-it-forward'), // Community
                 this.getCampaign('memo', 'memo'), // DApp
                 this.getCampaign('bchplease', 'cash-devops'), // Education
                 this.getCampaign('naomibrockwell', 'naomi-brockwell-tv'), // Film & Video

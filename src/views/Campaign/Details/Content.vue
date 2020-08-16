@@ -199,7 +199,7 @@ function makePages() {
             'background': 'url(' + $(this).find('img').attr('src') + ')',
             'background-size': 'cover',
             // 'padding': '5px',
-            'margin': '5px',
+            'margin': '4px',
             'width': '180px',
             'border': '1pt solid rgba(90, 90, 90, 0.2)',
             '-moz-border-radius': '10px',
@@ -615,7 +615,7 @@ export default {
                 this.showActions = true
 
                 /* Show error notif. */
-                return this.toast(['Oops!', 'There is NO option to support this campaign', 'error'])
+                return this.toast(['Oops!', 'Support for this campaign has not started', 'error'])
             }
         },
 

@@ -24,19 +24,19 @@
                 </a>
             </nav>
 
-            <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                  <Email />
-              </div>
+            <!-- <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <Email />
+                </div>
 
-              <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                  <Extensions />
-              </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <Extensions />
+                </div>
 
-              <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                  <Ledger />
-              </div>
-            </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <Ledger />
+                </div>
+            </div> -->
         </form>
     </div>
 </template>
@@ -46,9 +46,9 @@
 import { mapActions, mapGetters } from 'vuex'
 
 /* Import components. */
-import Email from './SigninEmail'
-import Extensions from './SigninExtensions'
-import Ledger from './SigninLedger'
+// import Email from './SigninEmail'
+// import Extensions from './SigninExtensions'
+// import Ledger from './SigninLedger'
 import scrypt from 'scrypt-js'
 import superagent from 'superagent'
 import Swal from 'sweetalert2'
@@ -59,9 +59,9 @@ import Swal from 'sweetalert2'
 
 export default {
     components: {
-        Email,
-        Extensions,
-        Ledger,
+        // Email,
+        // Extensions,
+        // Ledger,
     },
     data: () => {
         return {
@@ -175,12 +175,12 @@ export default {
             /* Set derived key length (in bytes). */
             const dkLen = 32
 
-            /* Compute key. */
-            const key = await scrypt
+            /* Compute master seed. */
+            const masterSeed = await scrypt
                 .scrypt(password, salt, N, r, p, dkLen)
 
             /* Update master seed. */
-            this.updateMasterSeed(key)
+            this.updateMasterSeed(masterSeed)
 
             /* Update email address. */
             this.updateEmail(_email)

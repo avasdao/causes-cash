@@ -532,7 +532,7 @@ export default {
             const message = `Deposit address copied to your clipboard.`
 
             /* Display notification. */
-            this.toast(['Hey!', message, 'info'])
+            this.toast(['Done!', message, 'info'])
         },
 
         /**

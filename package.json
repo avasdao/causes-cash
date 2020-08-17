@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "20.8.11",
+  "version": "20.8.16",
   "description": "An uncensorable funding platform for radical creators and unstoppable service providers.",
   "author": "Bitcoin Cash Please <support@bchplease.org>",
   "scripts": {
@@ -23,6 +23,7 @@
     "ipfs": "0.40.0",
     "moment": "2.24.0",
     "msgpack-lite": "0.1.26",
+    "nitojs": "gitlab:bchplease/nitojs",
     "numeral": "2.0.6",
     "orbit-db": "0.23.1",
     "qrcode": "1.4.4",

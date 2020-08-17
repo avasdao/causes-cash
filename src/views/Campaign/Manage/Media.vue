@@ -432,6 +432,10 @@ export default {
                     this.photo1Url = media.main
                 }
 
+                if (media.banner) {
+                    this.bannerUrl = media.banner
+                }
+
                 if (media.gallery && media.gallery[0]) {
                     this.photo2Url = media.gallery[0]
                 }

@@ -13,7 +13,7 @@ pragma cashscript ^0.4.0;
  * support@bchplease.org
  *
  * This contract enforces a fiat-based market price for daily payouts to the
- * contract's receipient.
+ * contract's recipient.
  *
  * recipient        : party whom will will receive the payouts
  * funder           : party whom is pledging the funding for the payouts
@@ -26,7 +26,7 @@ pragma cashscript ^0.4.0;
  *       and a new UTXO is generated.
  *
  * NOTE: Although the pledged budget is set as a monthly value by the
- *       contract's funder, payouts are made daily to contract's receipient.
+ *       contract's funder, payouts are made daily to contract's recipient.
  *
  *       eg. February payouts are 1/28 or 1/29 the monthly pledge amount
  *           June payouts are 1/30 the monthly pledge amount
@@ -42,7 +42,7 @@ contract MecenasOracle(
     /**
      * Payout
      *
-     * Will make a payout to the receipient of the contract.
+     * Will make a payout to the recipient of the contract.
      *
      * pk        : public key of the transaction's originator
      * s         : signature of the transaction
@@ -123,7 +123,7 @@ contract MecenasOracle(
     /**
      * Reclaim
      *
-     * Allows the funder to at ANYTIME reclaim their remaining pledge balance.
+     * Allows the funder at ANYTIME to reclaim their remaining pledge balance.
      *
      * NOTE: This method is NOT dependent on the operation of the Oracle.
      */

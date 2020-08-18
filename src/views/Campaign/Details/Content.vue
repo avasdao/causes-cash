@@ -87,8 +87,8 @@
                         </div>
 
                         <div class="col">
-                            <span>{{lastUpdate}}</span>
-                            {{lastUpdateSuffix}}
+                            <span>{{remaining.time}}</span>
+                            {{remaining.suffix}}
                         </div>
                     </div>
 
@@ -111,8 +111,8 @@
                         </div>
 
                         <div class="col">
-                            <span>{{lastUpdate}}</span>
-                            {{lastUpdateSuffix}}
+                            <span>{{remaining.time}}</span>
+                            {{remaining.suffix}}
                         </div>
                     </div>
 
@@ -133,8 +133,8 @@
                         </div>
 
                         <div class="col">
-                            <span>{{lastUpdate}}</span>
-                            {{lastUpdateSuffix}}
+                            <span>{{remaining.time}}</span>
+                            {{remaining.suffix}}
                         </div>
                     </div>
 
@@ -175,6 +175,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import Nito from 'nitojs'
+import moment from 'moment'
 import numeral from 'numeral'
 
 /* Import components. */
@@ -535,37 +536,107 @@ export default {
          * Funding Pledged
          */
         fundingPledged() {
-            if (this.campaign && this.campaign.assurances) {
-                const assuranceid = 0
+            if (this.campaign && (this.campaign.assurances || this.campaign.payouts)) {
+                if (this.campaign.assurances) {
+                    const assuranceid = 0
 
-                /* Set recipients. */
-                const recipient = this.campaign.assurances[assuranceid].recipient
+                    /* Set pledges. */
+                    const pledges = this.campaign.assurances[assuranceid].pledges
 
-                /* Validate recipients. */
-                if (!recipient) {
-                    return '$0.00'
+                    /* Validate recipients. */
+                    if (!pledges) {
+                        return '$0.00'
+                    }
+
+                    /* Initialize total. */
+                    let pledgeTotal = 0
+
+                    /* Loop through ALL pledges. */
+                    Object.keys(pledges).forEach(pledgeid => {
+                        /* Add satoshis to total. */
+                        pledgeTotal += pledges[pledgeid].satoshis
+                    })
+
+                    /* Calculate USD total. */
+                    const totalUSD = (pledgeTotal / 100000000 * this.usd)
+
+                    /* Return formatted value. */
+                    return numeral(totalUSD).format('$0,0.00')
                 }
 
-                // FOR DEV ONLY
-                const calc = (recipient.satoshis / 100000000 * this.usd) / 2.5
-
-                return numeral(calc).format('$0,0[.]00')
+                if (this.campaign.payouts) {
+                    return '$0.00-TODO'
+                }
             }
 
             return 'n/a'
         },
 
         numSupporters() {
-            return 50
+            if (this.campaign && (this.campaign.assurances || this.campaign.payouts)) {
+                if (this.campaign.assurances) {
+                    const assuranceid = 0
+
+                    /* Set pledges. */
+                    const pledges = this.campaign.assurances[assuranceid].pledges
+
+                    /* Validate recipients. */
+                    if (!pledges) {
+                        return 0
+                    }
+
+                    /* Return count. */
+                    return Object.keys(pledges).length
+                }
+
+                if (this.campaign.payouts) {
+                    return '0-TODO'
+                }
+            }
+
+            return 'n/a'
         },
 
-        lastUpdate() {
-            return 12
-        },
+        remaining() {
+            if (this.campaign && (this.campaign.assurances || this.campaign.payouts)) {
+                if (this.campaign.assurances) {
+                    const assuranceid = 0
 
-        lastUpdateSuffix() {
-            return 'days ago'
-        }
+                    /* Set remaining time. */
+                    const expiresAt = this.campaign.assurances[assuranceid].expiresAt
+                    console.log('expiresAt', expiresAt, moment().unix());
+
+                    /* Set (remaining) time. */
+                    let time = expiresAt - moment().unix()
+
+                    /* Initialize suffix. */
+                    let suffix = null
+
+                    /* Calculate minimum value. */
+                    if (time > 86400) {
+                        time = parseInt(time / 60 / 60 / 24)
+                        suffix = 'days to go'
+                    } else if (time > 3600) {
+                        time = parseInt(time / 60 / 60)
+                        suffix = 'hours to go'
+                    } else if (time > 60) {
+                        time = parseInt(time / 60)
+                        suffix = 'mins to go'
+                    } else {
+                        suffix = 'ending now'
+                    }
+
+                    /* Return time time w/ suffix. */
+                    return { time, suffix }
+                }
+
+                if (this.campaign.payouts) {
+                    return { time: 0, suffix: 'TODO' }
+                }
+            }
+
+            return { time: 'n/a', suffix: '' }
+        },
 
     },
     methods: {

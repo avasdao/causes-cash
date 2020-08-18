@@ -127,15 +127,8 @@ export default {
             /* Set guide. */
             const guide = this.quillGuide.getText()
 
-            /* Set images. */
-            // const images = {
-            //     main: this.photo1Url || null,
-            //     cover: this.photo1Url || null,
-            //     gallery: [
-            //         this.photo2Url || null,
-            //         this.photo3Url || null,
-            //     ]
-            // }
+            /* Set description. */
+            const tags = this.tags
 
             /* Build campaign. */
             const campaign = {
@@ -143,7 +136,7 @@ export default {
                 summary,
                 description,
                 guide,
-                // images,
+                tags,
             }
             // console.log('WRITE (campaign):', campaign)
 
@@ -213,16 +206,12 @@ export default {
                 this.quillGuide.insertText(0, this.campaign.guide)
             }
 
-            /* Validate media. */
-            // if (this.campaign && this.campaign.media) {
-            //     this.photo1Url = this.campaign.media.main
-            //
-            //     /* Validate gallery. */
-            //     if (this.campaign.media.gallery) {
-            //         this.photo2Url = this.campaign.media.gallery[0]
-            //         this.photo3Url = this.campaign.media.gallery[1]
-            //     }
-            // }
+            /* Validate tags. */
+            if (this.campaign && this.campaign.tags) {
+                /* Set tags. */
+                this.tags = this.campaign.tags
+            }
+
         }
     },
     mounted: function () {
@@ -276,27 +265,6 @@ export default {
 <style>
 #desc-editor .ql-editor, #guide-editor .ql-editor {
     height: 300px;
-}
-
-#story table th, #story table td {
-    border: 1pt solid #c8c8c8;
-    padding: 5px;
-}
-
-#story h1, #story h2 {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1pt solid #c8c8c8;
-}
-#story h1 {
-    font-size: 2.5em;
-}
-#story h2 {
-    font-size: 1.5em;
-}
-#story h3 {
-    margin-bottom: 10px;
 }
 </style>
 

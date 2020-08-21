@@ -258,6 +258,8 @@ export default {
             ],
             theme: 'snow'
 		})
+
+        // TODO: Add ctrl-s / cmd-s capture for saving content.
     },
 }
 </script>

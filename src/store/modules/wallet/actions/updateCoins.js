@@ -218,14 +218,14 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                         dispatch('addCoin', pkg)
 
                         try {
-                            /* Initialize media. */
-                            const media = new Audio(require('@/media/coins.wav'))
+                            /* Initialize coins. */
+                            const coins = new Audio(require('@/assets/audio/coins.wav'))
 
-                            /* Play media. */
+                            /* Play coins. */
                             // WARNING: This action may fail on several browsers;
                             //          so it's best to do this last to avoid any
                             //          unforseen side-effects.
-                            media.play()
+                            coins.play()
                         } catch (err) {
                             console.error(err) // eslint-disable-line no-console
                         }

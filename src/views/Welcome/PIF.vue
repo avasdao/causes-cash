@@ -53,17 +53,20 @@
                                         </div>
 
                                         <div class="author-address">
-                                            <span class="ion-location"></span>
-                                            {{displayLocation(campaign)}}
+                                            <i v-if="campaignModel(campaign) == 'Cash Payouts'" class="fa fa-money mr-1" aria-hidden="true"></i>
+                                            <i v-if="campaignModel(campaign) == 'Community Pledge'" class="fa fa-users mr-1" aria-hidden="true"></i>
+                                            <i v-if="campaignModel(campaign) == 'Direct Donation'" class="fa fa-btc mr-1" aria-hidden="true"></i>
+                                            <i v-if="campaignModel(campaign) == 'Unknown campaign type'" class="fa fa-question mr-1" aria-hidden="true"></i>
+                                            {{campaignModel(campaign)}}
                                         </div>
                                     </div>
 
                                     <div class="process">
-                                        <div class="raised">
+                                        <div v-if="campaignModel(campaign) == 'Community Pledge'" class="raised">
                                             <span :style="{ width: completedPct(campaign, true) + '%'}"></span>
                                         </div>
 
-                                        <div class="process-info">
+                                        <!-- <div class="process-info">
                                             <div class="process-pledged">
                                                 <span>{{formatRequested(campaign)}}</span>requested
                                             </div>
@@ -75,11 +78,76 @@
                                             <div class="process-time">
                                                 <span>{{displayBackers(campaign)}}</span>backers
                                             </div>
+                                        </div> -->
 
-                                            <!-- <div class="process-time">
-                                                <span>{{campaign.updatedAt}}</span>days ago
+                                        <div v-if="campaignModel(campaign) == 'Community Pledge'" class="row process-info">
+                                            <div class="col">
+                                                <span>{{fundingGoal(campaign)}}</span>
+                                                funding goal
+                                            </div>
+
+                                            <div class="col">
+                                                <span>{{fundingPledged(campaign)}}</span>
+                                                pledged
+                                            </div>
+
+                                            <div class="col">
+                                                <span>{{numSupporters(campaign)}}</span>
+                                                supporters
+                                            </div>
+
+                                            <div class="col">
+                                                <span>{{remaining(campaign).time}}</span>
+                                                {{remaining(campaign).suffix}}
+                                            </div>
+                                        </div>
+
+                                        <div v-if="campaignModel(campaign) == 'Cash Payouts'" class="row process-info">
+                                            <div class="col">
+                                                <span>{{fundingPledged(campaign)}}</span>
+                                                <i class="fa fa-bitcoin" aria-hidden="true"></i>
+                                                IN <small>(last 30 days)</small>
+                                            </div>
+
+                                            <div class="col">
+                                                <span>$0.00</span>
+                                                <i class="fa fa-bitcoin" aria-hidden="true"></i>
+                                                OUT <small>(last 30 days)</small>
+                                            </div>
+
+                                            <div class="col">
+                                                <span>{{numSupporters(campaign)}}</span>
+                                                supporters
+                                            </div>
+
+                                            <!-- <div class="col">
+                                                <span>{{remaining(campaign).time}}</span>
+                                                {{remaining(campaign).suffix}}
                                             </div> -->
                                         </div>
+
+                                        <div v-if="campaignModel(campaign) == 'Direct Donation'" class="row process-info">
+                                            <div class="col">
+                                                <span>{{fundingGoal(campaign)}}</span>
+                                                last 24hrs
+                                            </div>
+
+                                            <div class="col">
+                                                <span>{{fundingPledged(campaign)}}</span>
+                                                last 30 days
+                                            </div>
+
+                                            <div class="col">
+                                                <span>{{numSupporters(campaign)}}</span>
+                                                supporters
+                                            </div>
+
+                                            <!-- <div class="col">
+                                                <span>{{remaining(campaign).time}}</span>
+                                                {{remaining(campaign).suffix}}
+                                            </div> -->
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -98,6 +166,8 @@
 import { mapGetters } from 'vuex'
 
 /* Import modules. */
+import moment from 'moment'
+import Nito from 'nitojs'
 import numeral from 'numeral'
 
 /* Import components. */
@@ -119,6 +189,7 @@ export default {
     data: () => {
         return {
             campaigns: [],
+            usd: null,
         }
     },
     computed: {
@@ -214,6 +285,195 @@ export default {
         },
 
 
+        /**
+         * Campaign Model
+         */
+        campaignModel(_campaign) {
+            /* Validate campaign theme. */
+            if (!_campaign || !_campaign.theme) {
+                return null
+            }
+
+            /* Set theme. */
+            const theme = _campaign.theme
+
+            /* Validate theme. */
+            if (theme) {
+                /* Handle campaign type. */
+                switch(theme) {
+                case 'direct':
+                    return 'Direct Cash'
+                case 'assurance':
+                    return 'Community Pledge'
+                case 'payouts':
+                    return 'Cash Payouts'
+                default:
+                    return 'Unknown campaign type'
+                }
+            } else {
+                return null
+            }
+        },
+
+
+        /**
+         * Funding Goal
+         */
+        fundingGoal(_campaign) {
+            if (_campaign && _campaign.assurances) {
+                const assuranceid = 0
+
+                /* Set recipients. */
+                const recipient = _campaign.assurances[assuranceid].recipient
+
+                /* Validate recipients. */
+                if (!recipient) {
+                    return '$0.00'
+                }
+
+                const calc = (recipient.satoshis / 100000000 * this.usd)
+
+                return numeral(calc).format('$0,0[.]00')
+            }
+
+            return 'n/a'
+        },
+
+        /**
+         * Funding Pledged
+         */
+        fundingPledged(_campaign) {
+            if (_campaign && (_campaign.assurances || _campaign.payouts)) {
+                if (_campaign.assurances) {
+                    const assuranceid = 0
+
+                    /* Set pledges. */
+                    const pledges = _campaign.assurances[assuranceid].pledges
+
+                    /* Validate recipients. */
+                    if (!pledges) {
+                        return '$0.00'
+                    }
+
+                    /* Initialize total. */
+                    let pledgeTotal = 0
+
+                    /* Loop through ALL pledges. */
+                    Object.keys(pledges).forEach(pledgeid => {
+                        /* Add satoshis to total. */
+                        pledgeTotal += pledges[pledgeid].satoshis
+                    })
+
+                    /* Calculate USD total. */
+                    const totalUSD = (pledgeTotal / 100000000 * this.usd)
+
+                    /* Return formatted value. */
+                    return numeral(totalUSD).format('$0,0.00')
+                }
+
+                if (_campaign.payouts) {
+                    /* Set funders. */
+                    const funders = _campaign.payouts.funders
+                    // console.log('FUNDERS', funders);
+
+                    /* Validate recipients. */
+                    if (!funders) {
+                        return '$0.00'
+                    }
+
+                    /* Initialize total. */
+                    let funderTotal = 0
+
+                    /* Loop through ALL funders. */
+                    Object.keys(funders).forEach(funderid => {
+                        /* Add satoshis to total. */
+                        funderTotal += funders[funderid].monthlyPledgeAmt
+                    })
+                    // console.log('FUNDER TOTAL', funderTotal);
+
+                    /* Calculate USD total. */
+                    const totalUSD = (funderTotal / 1000000 * this.usd)
+                    // console.log('TOTAL USD', totalUSD);
+
+                    /* Return formatted value. */
+                    return numeral(totalUSD).format('$0,0.00')
+                }
+            }
+
+            return 'n/a'
+        },
+
+        numSupporters(_campaign) {
+            if (_campaign && (_campaign.assurances || _campaign.payouts)) {
+                if (_campaign.assurances) {
+                    const assuranceid = 0
+
+                    /* Set pledges. */
+                    const pledges = _campaign.assurances[assuranceid].pledges
+
+                    /* Validate recipients. */
+                    if (!pledges) {
+                        return 0
+                    }
+
+                    /* Return count. */
+                    return Object.keys(pledges).length
+                }
+
+                if (_campaign.payouts) {
+                    /* Set funders. */
+                    const funders = _campaign.payouts.funders
+
+                    /* Validate recipients. */
+                    if (!funders) {
+                        return 0
+                    }
+
+                    /* Return count. */
+                    // FIXME: Limit to `nextPayoutAt` > 0
+                    return Object.keys(funders).length
+                }
+            }
+
+            return 'n/a'
+        },
+
+        remaining(_campaign) {
+            if (_campaign && (_campaign.assurances || _campaign.payouts)) {
+                if (_campaign.assurances) {
+                    const assuranceid = 0
+
+                    /* Set remaining time. */
+                    const expiresAt = _campaign.assurances[assuranceid].expiresAt
+                    console.log('expiresAt', expiresAt, moment().unix());
+
+                    /* Set (remaining) time. */
+                    let time = expiresAt - moment().unix()
+
+                    /* Initialize suffix. */
+                    let suffix = null
+
+                    /* Calculate minimum value. */
+                    if (time > 86400) {
+                        time = parseInt(time / 60 / 60 / 24)
+                        suffix = 'days to go'
+                    } else if (time > 3600) {
+                        time = parseInt(time / 60 / 60)
+                        suffix = 'hours to go'
+                    } else if (time > 60) {
+                        time = parseInt(time / 60)
+                        suffix = 'mins to go'
+                    } else {
+                        suffix = 'ending now'
+                    }
+
+                    /* Return time time w/ suffix. */
+                    return { time, suffix }
+                }
+            }
+
+            return { time: 'n/a', suffix: '' }
+        },
 
         /**
          * Completed Percentage
@@ -265,14 +525,6 @@ export default {
         displayOwnerName(_campaign) {
             if (_campaign && (_campaign.owner.label || _campaign.owner.nickname)) {
                 return _campaign.owner.label || _campaign.owner.nickname
-            } else {
-                return null
-            }
-        },
-
-        displayLocation(_campaign) {
-            if (_campaign) {
-                return _campaign.location
             } else {
                 return null
             }
@@ -363,6 +615,8 @@ export default {
         /* Load featured campaigns. */
         this.loadFeatured()
 
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        // console.info(`Market price (USD)`, this.usd)
     },
     mounted: function () {
         /* Animated completion bar. */

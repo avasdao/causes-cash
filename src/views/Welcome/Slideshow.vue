@@ -18,24 +18,57 @@
                     <div class="raised"><span></span></div>
 
                     <div class="process-info">
-                        <div class="process-pledged"><span>{{pledgedDisplay}}</span>contributions</div>
-                        <div class="process-pledged"><span>{{goalDisplay}}</span>funding goal</div>
-                        <div class="process-funded"><span>{{fundedPctDisplay}}</span>completed</div>
-                        <div class="process-backers"><span>{{numBackersDisplay}}</span>backers</div>
-                        <div class="process-time"><span>{{daysRemaining}}</span>days remaining</div>
+                        <div class="process-pledged">
+                            <span>6</span>campaigns
+                        </div>
+
+                        <div class="process-pledged">
+                            <span>$1.50</span>in payouts
+                        </div>
+
+                        <div class="process-pledged">
+                            <span>$6.50</span>in pledges
+                        </div>
+
+                        <div class="process-pledged">
+                            <span>10</span>supporters
+                        </div>
+
+                        <!-- <div class="process-pledged">
+                            <span>{{pledgedDisplay}}</span>contributions
+                        </div> -->
+
+                        <!-- <div class="process-pledged">
+                            <span>{{goalDisplay}}</span>funding goal
+                        </div> -->
+
+                        <!-- <div class="process-funded">
+                            <span>{{fundedPctDisplay}}</span>completed
+                        </div> -->
+
+                        <!-- <div class="process-backers">
+                            <span>{{numBackersDisplay}}</span>backers
+                        </div> -->
+
+                        <!-- <div class="process-time">
+                            <span>{{daysRemaining}}</span>days remaining
+                        </div> -->
                     </div>
                 </div>
 
-                <div class="button wow fadeInUp" data-wow-delay="0.1s">
+                <!-- <div class="button wow fadeInUp" data-wow-delay="0.1s">
                     <a href="javascript://" class="btn-secondary">View Cause Details</a>
                     <a href="javascript://" class="btn-primary">Contribute Now!</a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
+/* Initialize vuex. */
+import { mapGetters } from 'vuex'
+
 /* Import modules. */
 import numeral from 'numeral'
 
@@ -47,7 +80,16 @@ export default {
         //
     },
     computed: {
-        featuredTitleDisplay: function () {
+        ...mapGetters('campaigns', [
+            'getSummary',
+        ]),
+
+        featuredTitleDisplay() {
+            /* Validate featured title. */
+            if (!this.featuredTitle) {
+                return null
+            }
+
             /* Initialize display. */
             let display = this.featuredTitle
 
@@ -57,7 +99,12 @@ export default {
             return display
         },
 
-        featuredSummaryDisplay: function () {
+        featuredSummaryDisplay() {
+            /* Validate featured summary. */
+            if (!this.featuredSummary) {
+                return null
+            }
+
             /* Initialize display. */
             let display = this.featuredSummary
 
@@ -67,15 +114,30 @@ export default {
             return display
         },
 
-        pledgedDisplay: function () {
+        pledgedDisplay() {
+            /* Validate pledged. */
+            if (!this.pledged) {
+                return null
+            }
+
             return numeral(this.pledged).format('$0,0.00[00]')
         },
 
-        goalDisplay: function () {
+        goalDisplay() {
+            /* Validate goal. */
+            if (!this.goal) {
+                return null
+            }
+
             return numeral(this.goal).format('$0,0.00[00]')
         },
 
-        fundedPctDisplay: function () {
+        fundedPctDisplay() {
+            /* Validate values. */
+            if (!this.pledged || !this.goal) {
+                return null
+            }
+
             /* Calculate (funded) amount. */
             const amount = this.pledged / this.goal
             console.log('Funded', amount)
@@ -83,25 +145,50 @@ export default {
             return numeral(amount).format('0,0.00[0000]%')
         },
 
-        numBackersDisplay: function () {
+        numBackersDisplay() {
+            /* Validate number of backers. */
+            if (!this.numBackers) {
+                return null
+            }
+
             return numeral(this.numBackers).format('0,0')
         },
     },
     data: () => {
         return {
-            featuredTitle: `We're working towards a sustainable future for Bitcoin Cash BUIDLers`,
-            featuredSummary: `100% Transparency. 100% Open Source. 100% Decentralized.
-            Optimized for On-going Project / Campaign Management
-            Pay It Forward into our Community Funding Pool
-            `,
-            pledged: 10.00,
-            goal: 1000000.00,
-            numBackers: 1,
-            daysRemaining: 999,
+            featuredTitle: null,
+            featuredSummary: null,
+            pledged: null,
+            goal: null,
+            numBackers: null,
+            daysRemaining: null,
         }
     },
     methods: {
         //
+    },
+    created: async function () {
+        /* Request campaign summary. */
+        const summary = await this.getSummary
+        console.log('SUMMARY', summary)
+
+        this.featuredTitle = `We're working towards a sustainable future for Bitcoin Cash BUIDLers`
+
+        this.featuredSummary = `100% Transparency. 100% Open Source. 100% Decentralized.
+        Optimized for On-going Project / Campaign Management
+        Pay It Forward into our Community Funding Pool
+        `
+
+        this.pledged = 10.00
+
+        this.goal = 1000000.00
+
+        this.numBackers = 1
+
+        this.daysRemaining = 999
+    },
+    mounted: function () {
+
     },
 }
 </script>
@@ -123,7 +210,7 @@ export default {
     left: 0;
     bottom: 0;
     border-radius: 25px;
-    width: 3%;
+    width: 60%;
     background-color: #00a6eb;
     display: block;
     -webkit-border-top-right-radius: 25px;

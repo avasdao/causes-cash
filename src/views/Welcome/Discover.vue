@@ -3,7 +3,7 @@
         <div class="container">
             <h2 class="title">Discover Campaigns</h2>
 
-            <div class="campaign-tabs filter-theme">
+            <!-- <div class="campaign-tabs filter-theme">
                 <button class="button" data-filter=".filterinteresting">
                     Ending Soon
                 </button>
@@ -19,7 +19,7 @@
                 <button class="button" data-filter=".filtersuccessful">
                     Successful
                 </button>
-            </div>
+            </div> -->
 
             <div class="campaign-content grid">
                 <div class="row">

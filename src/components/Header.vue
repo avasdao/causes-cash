@@ -248,10 +248,128 @@ export default {
 </script>
 
 <style scoped>
+/*------------------------------------------------------------------
+2. Header / #header
+-------------------------------------------------------------------*/
+.top-header{
+    /* padding: 12px 0; */
+    background-color: #f9fbfb;
+}
 .top-header .slogan {
     float: right;
     color: #6a6a6a;
 }
+
+ul.socials-top{
+    float: left;
+}
+ul.socials-top li{
+    list-style: none;
+    display: inline-block;
+    margin-right: 12px;
+}
+ul.socials-top li:last-child{
+    margin-right: 0;
+}
+ul.socials-top li i{
+    color: #6a6a6a;
+}
+ul.socials-top li:hover i{
+    color: #00a6eb;
+}
+.site-header.fixed{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 99;
+    -webkit-box-shadow: 0 3px 3px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 3px 3px rgba(0,0,0,.1);
+    box-shadow: 0 3px 3px rgba(0,0,0,.1);
+}
+.site-header .container{
+    position: relative;
+}
+.site-header .site-brand{
+    float: left;
+    /* line-height: 80px; */
+}
+.site-header .right-header{
+    float: right;
+}
+.site-header .login .btn-primary{
+    height: 38px;
+    line-height: 38px;
+}
+.site-header .login,
+.site-header .search-icon,
+.site-header .main-menu{
+    display: inline-block;
+    margin-left: 45px;
+    /* line-height: 80px; */
+}
+.site-header .main-menu,
+.site-header .main-menu li:first-child{
+    margin-left: 0px;
+}
+.site-header .login a{
+    display: inline-block;
+}
+.site-header .search-icon a{
+    font-size: 22px;
+    line-height: normal;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 5px;
+}
+.main-menu ul{
+    letter-spacing: -0.3em;
+}
+.main-menu ul li{
+    list-style: none;
+    display: inline-block;
+    letter-spacing: normal;
+    margin-left: 35px;
+    position: relative;
+}
+.main-menu ul li i{
+    display: none;
+}
+.main-menu ul li > .sub-menu{
+    position: absolute;
+    top: 100px;
+    z-index: 99;
+    width: 200px;
+    left: 0;
+    background-color: #fff;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.4s;
+}
+.main-menu ul li:hover > .sub-menu{
+    top: 80px;
+    visibility: visible;
+    opacity: 1;
+}
+.main-menu ul li > .sub-menu li{
+    line-height: normal;
+    display: block;
+    margin: 0;
+    border-top: 1px solid #ededed;
+}
+.main-menu ul li > .sub-menu li a{
+    padding: 12px 15px;
+}
+.main-menu ul li a{
+    color: #20222b;
+}
+.main-menu ul li:hover > a{
+    color: #00a6eb;
+}
+
+/*  */
+
 .slogan strong {
     font-weight: 500;
 }

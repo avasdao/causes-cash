@@ -59,8 +59,10 @@
 					</div>
 
                     <div class="author-address">
-                        <i v-if="campaignModel == 'Community Pledge'" class="fa fa-users" aria-hidden="true"></i>
-                        <i v-if="campaignModel == 'Unknown campaign type'" class="fa fa-question" aria-hidden="true"></i>
+                        <i v-if="campaignModel == 'Cash Payouts'" class="fa fa-money mr-1" aria-hidden="true"></i>
+                        <i v-if="campaignModel == 'Community Pledge'" class="fa fa-users mr-1" aria-hidden="true"></i>
+                        <i v-if="campaignModel == 'Direct Donation'" class="fa fa-btc mr-1" aria-hidden="true"></i>
+                        <i v-if="campaignModel == 'Unknown campaign type'" class="fa fa-question mr-1" aria-hidden="true"></i>
                         {{campaignModel}}
                     </div>
 				</div>
@@ -699,7 +701,7 @@ export default {
         this.pledgeAmount = 0
 
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        console.info(`Market price (USD)`, this.usd)
+        // console.info(`Market price (USD)`, this.usd)
     },
     mounted: function () {
         //

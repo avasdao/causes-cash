@@ -96,13 +96,13 @@
 
                     <div v-if="campaignModel == 'Cash Payouts'" class="row process-info">
                         <div class="col">
-                            <span>{{fundingGoal}}</span>
+                            <span>{{fundingPledged}}</span>
                             <i class="fa fa-bitcoin" aria-hidden="true"></i>
                             IN <small>(last 30 days)</small>
                         </div>
 
                         <div class="col">
-                            <span>{{fundingPledged}}</span>
+                            <span>$0.00</span>
                             <i class="fa fa-bitcoin" aria-hidden="true"></i>
                             OUT <small>(last 30 days)</small>
                         </div>
@@ -112,10 +112,10 @@
                             supporters
                         </div>
 
-                        <div class="col">
+                        <!-- <div class="col">
                             <span>{{remaining.time}}</span>
                             {{remaining.suffix}}
-                        </div>
+                        </div> -->
                     </div>
 
                     <div v-if="campaignModel == 'Direct Donation'" class="row process-info">
@@ -134,10 +134,10 @@
                             supporters
                         </div>
 
-                        <div class="col">
+                        <!-- <div class="col">
                             <span>{{remaining.time}}</span>
                             {{remaining.suffix}}
-                        </div>
+                        </div> -->
                     </div>
 
 				</div>
@@ -567,7 +567,31 @@ export default {
                 }
 
                 if (this.campaign.payouts) {
-                    return '$0.00-TODO'
+                    /* Set funders. */
+                    const funders = this.campaign.payouts.funders
+                    // console.log('FUNDERS', funders);
+
+                    /* Validate recipients. */
+                    if (!funders) {
+                        return '$0.00'
+                    }
+
+                    /* Initialize total. */
+                    let funderTotal = 0
+
+                    /* Loop through ALL funders. */
+                    Object.keys(funders).forEach(funderid => {
+                        /* Add satoshis to total. */
+                        funderTotal += funders[funderid].monthlyPledgeAmt
+                    })
+                    // console.log('FUNDER TOTAL', funderTotal);
+
+                    /* Calculate USD total. */
+                    const totalUSD = (funderTotal / 1000000 * this.usd)
+                    // console.log('TOTAL USD', totalUSD);
+
+                    /* Return formatted value. */
+                    return numeral(totalUSD).format('$0,0.00')
                 }
             }
 
@@ -592,7 +616,17 @@ export default {
                 }
 
                 if (this.campaign.payouts) {
-                    return '0-TODO'
+                    /* Set funders. */
+                    const funders = this.campaign.payouts.funders
+
+                    /* Validate recipients. */
+                    if (!funders) {
+                        return 0
+                    }
+
+                    /* Return count. */
+                    // FIXME: Limit to `nextPayoutAt` > 0
+                    return Object.keys(funders).length
                 }
             }
 

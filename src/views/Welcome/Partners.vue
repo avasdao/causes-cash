@@ -2,23 +2,9 @@
     <div class="partners">
         <div class="container">
             <div class="partners-slider owl-carousel">
-                <div>
-                    <a href="javascript://"><img src="~@/assets/partners/partner-01.png" alt=""></a>
-                </div>
-                <div>
-                    <a href="javascript://"><img src="~@/assets/partners/partner-02.png" alt=""></a>
-                </div>
-                <div>
-                    <a href="javascript://"><img src="~@/assets/partners/partner-03.png" alt=""></a>
-                </div>
-                <div>
-                    <a href="javascript://"><img src="~@/assets/partners/partner-04.png" alt=""></a>
-                </div>
-                <div>
-                    <a href="javascript://"><img src="~@/assets/partners/partner-05.png" alt=""></a>
-                </div>
-                <div>
-                    <a href="javascript://"><img src="~@/assets/partners/partner-06.png" alt=""></a>
+                <div v-for="partner of partners" :key="partner.title">
+                    <a :href="partner.url" target="_blank">
+                        <img :src="partner.imageUrl" :alt="partner.title"></a>
                 </div>
             </div>
         </div>
@@ -26,12 +12,6 @@
 </template>
 
 <script>
-/* Import components. */
-// import Name from '@/components/Name.vue'
-
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
-
 /* Import JQuery. */
 // FIXME: Remove ALL jQuery dependencies.
 const $ = window.jQuery
@@ -42,14 +22,58 @@ export default {
     },
     data: () => {
         return {
-            //
+            partners: null,
         }
     },
     methods: {
         //
     },
     created: function () {
-        //
+        /* Initialize partners. */
+        this.partners = []
+
+        /* Add partner. */
+        this.partners.push({
+            title: 'Bitcoin.com',
+            url: 'https://bitcoin.com',
+            imageUrl: 'https://i.imgur.com/oOIbAcA.png',
+        })
+
+        /* Add partner. */
+        this.partners.push({
+            title: 'Bitcoin',
+            url: 'https://bitcoin.com/',
+            imageUrl: 'https://i.imgur.com/otYhXUP.png',
+        })
+
+        /* Add partner. */
+        this.partners.push({
+            title: 'CoinSpice',
+            url: 'https://coinspice.io/',
+            imageUrl: 'https://i.imgur.com/BpzVRSD.png',
+        })
+
+        /* Add partner. */
+        this.partners.push({
+            title: 'SLP Foundation',
+            url: 'https://simpleledger.io/',
+            imageUrl: 'https://i.imgur.com/ZQg5IdB.png',
+        })
+
+        /* Add partner. */
+        this.partners.push({
+            title: 'Blockchain Poker',
+            url: 'https://blockchain.poker/',
+            imageUrl: 'https://i.imgur.com/5toFEp9.png',
+        })
+
+        /* Add partner. */
+        this.partners.push({
+            title: 'Bitcoin',
+            url: 'https://bitcoin.com/',
+            imageUrl: 'https://i.imgur.com/otYhXUP.png',
+        })
+
     },
     mounted: function () {
         $('.partners-slider').owlCarousel({

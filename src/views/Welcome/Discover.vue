@@ -307,6 +307,45 @@ export default {
 }
 </script>
 
+<style>
+.campaign{
+    /* padding-top: 120px; */
+    padding-top: 40px;
+}
+
+.latest .campaign-item,
+.campaigns .campaign-item{
+    background-color: #f5f6f6;
+    margin-bottom: 30px;
+}
+.latest .latest-button{
+    text-align: center;
+    margin-top: 30px;
+}
+.latest{
+    /* margin-bottom: 120px; */
+    margin-bottom: 40px;
+}
+
+.site-main .campaigns{
+  padding: 0;
+}
+.site-main .campaigns .latest-button{
+  text-align: center;
+  margin-top: 30px;
+}
+.site-main .campaigns .latest-button a{
+  background: none;
+  border: 2px solid #00a6eb;
+  color: #00a6eb;
+  line-height: 42px;
+}
+.site-main .campaigns .latest-button a:hover{
+  background-color: #00a6eb;
+  color: #fff;
+}
+</style>
+
 <style scoped>
 .campaign-item img {
     border: 1px solid rgba(180, 180, 180, 0.2);

@@ -1,52 +1,50 @@
 <template>
-    <main>
-        <div class="how-it-work">
-            <div class="container">
-                <h2 class="title">3 Ways To Offer Your Support</h2>
+    <main class="how-it-work">
+        <div class="container">
+            <h2 class="title">3 Ways To Offer Your Support</h2>
 
-                <div class="description">
-                    Choose your preferred method of showing ❤️ to your favorite cause(s).
+            <div class="description">
+                Choose your preferred method of showing <i class="fa fa-heart text-danger"></i> to your favorite causes.
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="item-work">
+                        <div class="item-icon"><span>01</span><i class="fa fa-flask" aria-hidden="true"></i></div>
+                        <div class="item-content">
+                            <h3 class="item-title">Direct Donation</h3>
+                            <div class="item-desc">
+                                <p>
+                                    Send BCH from your desktop OR mobile wallet directly to the registered account address of your preferred cause(s).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="item-work">
-                            <div class="item-icon"><span>01</span><i class="fa fa-flask" aria-hidden="true"></i></div>
-                            <div class="item-content">
-                                <h3 class="item-title">Direct Donation</h3>
-                                <div class="item-desc">
-                                    <p>
-                                        Send BCH from your desktop OR mobile wallet directly to the registered account address of your preferred cause(s).
-                                    </p>
-                                </div>
+                <div class="col-lg-4">
+                    <div class="item-work">
+                        <div class="item-icon"><span>02</span><i class="fa fa-leaf" aria-hidden="true"></i></div>
+                        <div class="item-content">
+                            <h3 class="item-title">Community Pledge</h3>
+                            <div class="item-desc">
+                                <p>
+                                    Pledge BCH to your preferred cause(s), with the guarantee that funds won't be collected unless they reach their campaign goal.
+                                </p>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-4">
-                        <div class="item-work">
-                            <div class="item-icon"><span>02</span><i class="fa fa-leaf" aria-hidden="true"></i></div>
-                            <div class="item-content">
-                                <h3 class="item-title">Community Pledge</h3>
-                                <div class="item-desc">
-                                    <p>
-                                        Pledge BCH to your preferred cause(s), with the guarantee that funds won't be collected unless they reach their campaign goal.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="item-work">
-                            <div class="item-icon"><span>03</span><i class="fa fa-money" aria-hidden="true"></i></div>
-                            <div class="item-content">
-                                <h3 class="item-title">Cash Payouts</h3>
-                                <div class="item-desc">
-                                    <p>
-                                        Set a USD or BCH budget to be distributed amongst your preferred cause(s), based on performance and output results.
-                                    </p>
-                                </div>
+                <div class="col-lg-4">
+                    <div class="item-work">
+                        <div class="item-icon"><span>03</span><i class="fa fa-money" aria-hidden="true"></i></div>
+                        <div class="item-content">
+                            <h3 class="item-title">Cash Payouts</h3>
+                            <div class="item-desc">
+                                <p>
+                                    Set a USD or BCH budget to be distributed amongst your preferred cause(s), based on performance and output results.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -83,5 +81,11 @@ export default {
 </script>
 
 <style scoped>
-/*  */
+.how-it-work{
+    /* padding: 120px 0; */
+    padding: 40px 0;
+    background-color: #f5f6f6;
+    /* margin-top: 120px; */
+    margin-top: 20px;
+}
 </style>

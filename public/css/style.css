@@ -758,13 +758,6 @@ textarea:focus {
     font-weight: 500;
     margin-right: 80px;
 }
-.project-love .process-info span{
-    font-size: 16px;
-    margin-right: 80px !important;
-}
-.campaign{
-    padding-top: 120px;
-}
 .campaign-item{
     background: #f5f6f6;
     border-radius: 2px 2px 2px 2px;
@@ -915,17 +908,6 @@ textarea:focus {
 .staff-picks{
     padding-top: 90px;
 }
-.project-love{
-    padding-top: 120px;
-}
-.project-love .bx-wrapper{
-    box-shadow: none;
-    border: 0;
-    margin-bottom: 0;
-}
-.project-love .content-tab .active{
-    display: block;
-}
 ul.menu-category{
     border-left: 1px solid #ededed;
     padding: 10px 0;
@@ -1041,22 +1023,6 @@ ul.menu-category li.active:after{
     width: auto;
     margin-bottom: 20px;
 }
-.project-love .pls-col .process-info span{
-    margin-right: 60px !important;
-}
-.project-love .tab-menu{
-    position: relative;
-}
-.project-love .tab-menu a.all-project{
-    position: absolute;
-    top: 10px;
-    /* left: -125px; */
-    left: -135px;
-    font-weight: 500;
-}
-.project-love .project-love-title{
-    margin-bottom: 35px;
-}
 .border-title{
     border-bottom: 1px solid #ededed;
     padding-bottom: 11px;
@@ -1105,9 +1071,6 @@ ul.menu-category li.active:after{
 }
 .campaign-big-item .process .process-info{
     margin-bottom: 0;
-}
-.project-love-item .project-love-item-content{
-    padding: 0 0 0 500px;
 }
 .staff-picks-item-content a.category,
 .project-love-item-content a.category,
@@ -1178,11 +1141,6 @@ ul.menu-category li.active:after{
 .campaign-big-box .process .process-info span{
     font-size: 16px;
 }
-.project-love-item-content .project-love-description{
-    overflow: hidden;
-    max-height: 83px;
-    margin-bottom: 40px;
-}
 .staff-picks-item-content .author-address span,
 .project-love-item-content .author-address span,
 .campaign-big-box .author-address span{
@@ -1219,18 +1177,6 @@ ul.menu-category li.active:after{
 .slider-controls-top .owl-prev{
     margin-right: 10px;
 }
-.latest .campaign-item,
-.campaigns .campaign-item{
-    background-color: #f5f6f6;
-    margin-bottom: 30px;
-}
-.latest .latest-button{
-    text-align: center;
-    margin-top: 30px;
-}
-.latest{
-    margin-bottom: 120px;
-}
 .partners{
     background-color: #f5f6f6;
     padding: 60px 0;
@@ -1241,28 +1187,6 @@ ul.menu-category li.active:after{
 .partners .partners-slider img{
     width: auto;
     display: inline-block;
-}
-.blognews-cat{
-    font-size: 12px;
-    color: #555555;
-    margin-bottom: 8px;
-}
-.blognews-title{
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 15px;
-    height: 20px;
-    overflow: hidden;
-}
-.blognews{
-    margin-bottom: 120px;
-}
-.blognews-thumb{
-    margin-bottom: 17px;
-    border-radius: 3px;
-}
-.blognews-content .post{
-    margin-bottom: 0;
 }
 /*------------------------------------------------------------------
 3.1. Layout three / #layout-three
@@ -1326,23 +1250,6 @@ ul.menu-category li.active:after{
 }
 .campaigns.section .section-item{
   margin-bottom: 30px;
-}
-.site-main .campaigns{
-  padding: 0;
-}
-.site-main .campaigns .latest-button{
-  text-align: center;
-  margin-top: 30px;
-}
-.site-main .campaigns .latest-button a{
-  background: none;
-  border: 2px solid #00a6eb;
-  color: #00a6eb;
-  line-height: 42px;
-}
-.site-main .campaigns .latest-button a:hover{
-  background-color: #00a6eb;
-  color: #fff;
 }
 /*------------------------------------------------------------------
 3.2. Blogs / #blogs
@@ -2737,11 +2644,6 @@ form .create-account input[type="checkbox"]{
 /*------------------------------------------------------------------
 3.12. Index V2 / #index-v2
 -------------------------------------------------------------------*/
-.how-it-work{
-  padding: 120px 0;
-  background-color: #f5f6f6;
-  margin-top: 120px;
-}
 .item-work .item-icon{
   float: left;
   height: 64px;

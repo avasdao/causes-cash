@@ -633,6 +633,49 @@ export default {
 }
 </script>
 
+<style>
+.project-love .process-info span{
+    font-size: 16px;
+    margin-right: 80px !important;
+}
+.project-love{
+    /* padding-top: 120px; */
+    padding-top: 40px;
+}
+.project-love .bx-wrapper{
+    box-shadow: none;
+    border: 0;
+    margin-bottom: 0;
+}
+.project-love .content-tab .active{
+    display: block;
+}
+.project-love .pls-col .process-info span{
+    margin-right: 60px !important;
+}
+.project-love .tab-menu{
+    position: relative;
+}
+.project-love .tab-menu a.all-project{
+    position: absolute;
+    top: 10px;
+    /* left: -125px; */
+    left: -135px;
+    font-weight: 500;
+}
+.project-love .project-love-title{
+    margin-bottom: 35px;
+}
+.project-love-item .project-love-item-content{
+    padding: 0 0 0 500px;
+}
+.project-love-item-content .project-love-description{
+    overflow: hidden;
+    max-height: 83px;
+    margin-bottom: 40px;
+}
+</style>
+
 <style scoped>
 .fa-bitcoin {
     transform: rotate(-15deg);

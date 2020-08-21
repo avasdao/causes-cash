@@ -131,6 +131,32 @@ export default {
 </script>
 
 <style scoped>
+.blognews-cat{
+    font-size: 12px;
+    color: #555555;
+    margin-bottom: 8px;
+}
+.blognews-title{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    height: 20px;
+    overflow: hidden;
+}
+.blognews{
+    /* margin-bottom: 120px; */
+    margin-bottom: 40px;
+}
+.blognews-thumb{
+    margin-bottom: 17px;
+    border-radius: 3px;
+}
+.blognews-content .post{
+    margin-bottom: 0;
+}
+
+/*  */
+
 .author {
     cursor: pointer;
     color: rgba(30, 30, 220, 0.8);

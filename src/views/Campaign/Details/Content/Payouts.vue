@@ -5,12 +5,12 @@
         <div class="row">
             <div class="col-12 col-md-7">
                 <form action="javascript://">
-                    <div class="text-center mb-3">
+                    <div v-if="!hasDepositMask" class="text-center mb-3">
                         <a :href="'https://explorer.bitcoin.com/bch/address/' + pledgeAddress" target="_blank"><strong>{{pledgeAddress}}</strong></a>
                         <h4>Your <i class="fa fa-heart text-danger"></i> and support causes cash for this campaign <i class="fa fa-arrow-down text-danger"></i></h4>
                     </div>
 
-                    <div class="code-area float-right">
+                    <div v-if="!hasDepositMask" class="code-area float-right">
                         <div class="qr-code" v-html="qr" />
 
                         <div class="text-center ml-2">
@@ -198,16 +198,26 @@ export default {
             pledgeRange: null,
             pledgeGoal: null,
             pledgeAddress: null,
+
+            hasDepositMask: null,
         }
+    },
+    watch: {
+        pledgeUSD: function (_pledge) {
+            console.log('PLEDGE (USD) HAS CHANGED', _pledge)
+
+            if (_pledge) {
+                // TODO: Mask the deposit address.
+                this.hasDepositMask = true
+
+            }
+        },
+
     },
     computed: {
         ...mapGetters([
             'getHelp',
         ]),
-
-        // ...mapGetters('campaigns', [
-        //     'getFullfillment',
-        // ]),
 
         ...mapGetters('wallet', [
             'getAddress',
@@ -371,6 +381,11 @@ export default {
 
             /* Add payout. */
             this.addPayout(pkg)
+
+            // FIXME: Assumes that payout has been added remotely
+            this.hasDepositMask = false
+
+            // TODO: Add meta data (both local and "encrypted" remote)
         },
 
         /**
@@ -457,31 +472,31 @@ export default {
             if (contract && contract.text) {
                 /* Compile the Mecenas Oracle contract. */
                 this.payoutsContract = Contract.compile(contract.text, network)
-                console.log('Payouts Contract', this.payoutsContract)
+                // console.log('Payouts Contract', this.payoutsContract)
 
                 const recipientPkh = Nito.Address
                     .toPubKeyHash(this.receipientAddress).slice(6, -4)
-                console.log('recipientPkh', recipientPkh)
+                // console.log('recipientPkh', recipientPkh)
 
                 /* Set funder address. */
                 // NOTE: Generated from next unused causes address.
                 const funderAddress = this.getAddress('causes')
                 const funderPkh = Nito.Address
                     .toPubKeyHash(funderAddress).slice(6, -4)
-                console.log('funderPkh', funderPkh)
+                // console.log('funderPkh', funderPkh)
 
                 /* Set oracle public key. */
                 const oraclePk = '03fb19e8f648f9901709cad8ff8a0659bc6356aa64eeb1c460aed468255838c184'
-                console.log('oraclePk', oraclePk)
+                // console.log('oraclePk', oraclePk)
 
                 /* Initialize minimum valid block. */
                 const minValidBlock = this.blockHeight
-                console.log('MIN VALID BLOCK', minValidBlock)
+                // console.log('MIN VALID BLOCK', minValidBlock)
 
                 /* Initialize monthly pledge amount. */
                 const pledgeUSD = numeral(this.pledgeUSD).value()
                 const monthlyPledgeAmt = Math.round(pledgeUSD * 100)
-                console.log('MONTHLY PLEDGE AMOUNT', pledgeUSD, monthlyPledgeAmt)
+                // console.log('MONTHLY PLEDGE AMOUNT', pledgeUSD, monthlyPledgeAmt)
 
                 /**
                  * Instantiate a new Mecenas Oracle contract with constructor arguments:
@@ -495,7 +510,7 @@ export default {
                     minValidBlock,      // minimum valid block (signature & message)
                     monthlyPledgeAmt,   // monthly pledge amount
                 )
-                console.log('Instance', instance)
+                // console.log('Instance', instance)
 
                 /* Set pledge address. */
                 this.pledgeAddress = instance.address
@@ -505,6 +520,9 @@ export default {
 
     },
     created: async function () {
+        /* Set deposit (address) mask. */
+        this.hasDepositMask = true
+
         /* Set USD price. */
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
         // console.info(`Market price (USD)`, this.usd)
@@ -513,7 +531,7 @@ export default {
         this.blockHeight = await Nito.Blockchain.getBlockHeight()
 
         /* Initialize pledge range. */
-        this.pledgeRange = 5 // FIXME
+        this.pledgeRange = 5
 
         /* Initialize pledge. */
         this.pledgeUSD = 5.00
@@ -523,11 +541,11 @@ export default {
         if (this.campaign.payouts) {
             /* Set pledge goal. */
             this.pledgeGoal = this.campaign.payouts.recipient.satoshis
-            console.log('PLEDGE GOAL', this.pledgeGoal)
+            // console.log('PLEDGE GOAL', this.pledgeGoal)
 
             /* Set pledge goal. */
             this.receipientAddress = this.campaign.payouts.recipient.address
-            console.log('RECIPIENT ADDRESS', this.receipientAddress)
+            // console.log('RECIPIENT ADDRESS', this.receipientAddress)
         }
 
         /* Create new pledge. */

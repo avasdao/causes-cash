@@ -69,7 +69,7 @@
 
                 <div class="process">
 					<div class="raised">
-                        <span></span>
+                        <span v-if="campaignModel == 'Community Pledge'"></span>
                     </div>
 
                     <div v-if="campaignModel == 'Community Pledge'" class="row process-info">

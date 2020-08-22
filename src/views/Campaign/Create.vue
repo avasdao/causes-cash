@@ -525,14 +525,17 @@ export default {
             const result = await superagent
                 .post(target)
                 .send(pkg)
+                .catch(err => console.error(err))
             console.log('RESULT', result)
 
-            if (result.ok && !result.error) {
+            if (result && result.ok && !result.error) {
                 this.title = null
                 this.category = null
                 this.location = null
 
                 this.toast(['Done!', 'New campaign created successfully!', 'success'])
+            } else {
+                this.toast(['Oops!', 'Campaign failed to be created, please try again..', 'error'])
             }
         },
 

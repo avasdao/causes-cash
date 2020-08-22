@@ -15,7 +15,7 @@
                     <td class="text-center">{{funder.comment}}</td>
                     <td class="text-center">
                         {{formatUSD(funder.monthlyPledgeAmt)}}
-                        <small>[ <span class="text-danger">{{funder.payouts.length}}x</span> ]</small>
+                        <small>[ <span class="text-danger">{{funder.payouts ? funder.payouts.length : '0'}}x</span> ]</small>
                     </td>
                     <td class="text-right">{{formatDate(funder.createdAt)}}</td>
                 </tr>
@@ -157,7 +157,7 @@ export default {
         // console.info(`Market price (USD)`, this.usd)
 
         /* Validate assurances. */
-        if (this.campaign.assurances) {
+        if (this.campaign && this.campaign.assurances) {
             /* Set assurance id. */
             const assuranceid = 0 // FIXME: Hard-coded to a single assurance campaign
 
@@ -186,7 +186,7 @@ export default {
         }
 
         /* Validate payouts. */
-        if (this.campaign.payouts && this.campaign.payouts.funders) {
+        if (this.campaign && this.campaign.payouts && this.campaign.payouts.funders) {
             /* Set funders. */
             const funders = this.campaign.payouts.funders
 

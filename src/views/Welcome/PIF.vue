@@ -62,8 +62,11 @@
                                     </div>
 
                                     <div class="process">
-                                        <div v-if="campaignModel(campaign) == 'Community Pledge'" class="raised">
-                                            <span :style="{ width: completedPct(campaign, true) + '%'}"></span>
+                                        <div class="raised">
+                                            <span
+                                                 v-if="campaignModel(campaign) == 'Community Pledge'"
+                                                 :style="{ width: completedPct(campaign, true) + '%'}"
+                                            ></span>
                                         </div>
 
                                         <!-- <div class="process-info">

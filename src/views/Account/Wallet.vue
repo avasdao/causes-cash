@@ -490,7 +490,6 @@ export default {
 
                 /* Set message. */
                 const message = `Your coins have been sent successfully!`
-                console.log('MESSAGE', message)
 
                 /* Display notification. */
                 this.toast(['Done!', message, 'success'])
@@ -541,6 +540,7 @@ export default {
         async unlock(_coinid) {
             /* Request metadata. */
             const meta = await this.getMeta
+            console.log('WALLET (meta):', meta)
 
             /* Initialize coins. */
             const coins = this.getCoins
@@ -581,8 +581,8 @@ export default {
     beforeDestroy() {
         /* Validate blockchain. */
         if (this.blockchain) {
-            /* Stop blockchain. */
-            this.blockchain.stop()
+            /* Unsubscribe from blockchain. */
+            this.blockchain.unsubscribe()
         }
     },
 }

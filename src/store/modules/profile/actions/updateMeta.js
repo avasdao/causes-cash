@@ -36,6 +36,7 @@ const updateMeta = async ({ commit, getters, rootGetters }, _meta) => {
     /* Commit metadata. */
     commit('setMeta', _meta)
 
+    /* Request master seed. */
     const key = getters.getMasterSeed
 
     /**
@@ -43,12 +44,12 @@ const updateMeta = async ({ commit, getters, rootGetters }, _meta) => {
      *
      * For convenience reasons, all metadata is stored in the platform's
      * data repository. For privacy reasons, ALL metadata is first encrypted
-     * with a key ONLY know to this profile.
+     * with a key ONLY known to this profile.
      */
     const encrypted = _encrypt(JSON.stringify(_meta), key)
     // console.log('UPDATE META (encrypted):', encrypted)
 
-    const signedPkg = getters.getSignedMessage(encrypted)
+    const signedPkg = getters.getSignedMessage(JSON.stringify(encrypted))
     // console.log('SIGNED PACKAGE', signedPkg)
 
     /* Retrieve API provider. */
@@ -58,9 +59,10 @@ const updateMeta = async ({ commit, getters, rootGetters }, _meta) => {
     const target = `${API_PROVIDER}/profiles`
 
     /* Call api. */
-    await superagent
-        .post(target)
+    return await superagent
+        .put(target)
         .send(signedPkg)
+        .catch(err => console.error(err)) // eslint-disable-line no-console
 }
 
 /* Export module. */
@@ -75,17 +77,13 @@ export default updateMeta
  *       "comment": <string>,
  *       "lock": {
  *         "isActive": <boolean>,
- *         "label": <string>,
- *         "comment": <string>,
- *         "campaignid": <string>,
+ *         "source": <string>, (source_code:source_id)
  *         "createdAt": <datetime>,
  *         "expiresAt": <datetime>
  *       }
  *     }
  *   }],
  * }
- *
- * Metadata is used to store details about coins.
  *
  * {
  *   "coins": [{
@@ -94,25 +92,23 @@ export default updateMeta
  *       "comment": <string>,
  *       "cashfusion": {
  *         "isActive": <boolean>,
- *         "label": <string>,
- *         "comment": <string>,
- *         "rounds": <integer>,
+ *         "sessionid": <string>,
+ *         "phase": <string>,
+ *         "generation": <integer>,
  *         "createdAt": <datetime>,
  *         "updatedAt": <datetime>
  *       },
  *       "cashshuffle": {
  *         "isActive": <boolean>,
- *         "label": <string>,
- *         "comment": <string>,
- *         "rounds": <integer>,
+ *         "sessionid": <string>,
+ *         "phase": <string>,
+ *         "generation": <integer>,
  *         "createdAt": <datetime>,
  *         "updatedAt": <datetime>
  *       },
  *       "lock": {
  *         "isActive": <boolean>,
- *         "label": <string>,
- *         "comment": <string>,
- *         "campaignid": <string>,
+ *         "source": <string>, (source_code:source_id)
  *         "createdAt": <datetime>,
  *         "expiresAt": <datetime>
  *       }

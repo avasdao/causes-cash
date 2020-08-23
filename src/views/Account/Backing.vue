@@ -181,6 +181,7 @@ export default {
             'getCoins',
             'getDerivationPath',
             'getHDNode',
+            'getIndices',
         ]),
 
         /**
@@ -215,13 +216,16 @@ export default {
 
     },
     methods: {
+        ...mapActions('profile', [
+            'updateMeta',
+        ]),
+
         ...mapActions('utils', [
             'toast',
         ]),
 
         ...mapActions('wallet', [
             'updateCoins',
-            'updateMeta',
         ]),
 
         /**
@@ -494,7 +498,7 @@ export default {
 
             /* Request metadata. */
             const meta = await this.getMeta
-            console.log('META', meta)
+            console.log('BACKING (meta):', meta)
 
             const spendable = Object.keys(coins).filter(coinid => {
                 return coins[coinid].status === 'active'
@@ -615,6 +619,9 @@ export default {
             const comment = this.userPledge.data.comment
             console.log('COMMENT:', comment)
 
+            const expires = this.userPledge.expires
+            console.log('EXPIRES:', expires)
+
             if (!_coin.txid || !_coin.satoshis) {
                 return console.error('No UTXO available for pledge.')
             }
@@ -672,10 +679,16 @@ export default {
 
             /* Initialize meta. */
             const meta = await this.getMeta
-            console.log('META', meta)
+            console.log('BACKING (meta):', meta)
 
             /* Set coin id. */
-            const coinid = `${_coin.txid}:${_coin.vout}`
+            // const coinid = `${_coin.txid}:${_coin.vout}`
+
+            /* Validate coins. */
+            // NOTE: Added to schema on 2020.7.27
+            if (!meta.addresses) {
+                meta.addresses = {}
+            }
 
             /* Validate coins. */
             // NOTE: Added to schema on 2020.7.27
@@ -684,13 +697,15 @@ export default {
             }
 
             /* Update meta data. */
-            meta['coins'][coinid] = {
+            // meta['coins'][coinid] = {
+            meta['addresses'][this.campaignAddress] = {
+                label: alias,
+                comment,
                 lock: {
                     isActive: true,
-                    label: alias,
-                    comment,
-                    campaignAddr: this.campaignAddress,
+                    source: 'flipstarter',
                     createdAt: moment().unix(),
+                    expiresAt: expires,
                 }
             }
 
@@ -698,7 +713,8 @@ export default {
             this.updateMeta(meta)
 
             /* Set message. */
-            const message = `Your coin has been locked!`
+            // const message = `Your coin has been locked!`
+            const message = `Your adddress has been locked!`
 
             /* Display notification. */
             this.toast(['Done!', message, 'success'])
@@ -712,12 +728,30 @@ export default {
         }
 
     },
-    created: function () {
+    created: async function () {
         /* Set owner slug. */
         this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
 
         /* Initialize accepting flag. */
         this.accepting = false
+
+        const meta = await this.getMeta
+        if (meta.message === 'unable to decrypt data') {
+            /* Set message. */
+            // const message = `Your coin has been locked!`
+            const message = `Your metadata could NOT be decrypted from the cloud`
+
+            /* Display notification. */
+            this.toast(['Oops!', message, 'error'])
+        }
+        console.log('BACKING (meta):', meta);
+
+        // this.getIndices
+
+        // const results = await this.updateMeta({
+        //     hi: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        // })
+        // console.log('UPDATE META RESULTS:', results);
     },
 }
 </script>

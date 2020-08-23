@@ -41,7 +41,7 @@ export default {
 
         /* Add partner. */
         this.partners.push({
-            title: 'Bitcoin',
+            title: 'Bitcoin-1',
             url: 'https://bitcoin.com/',
             imageUrl: 'https://i.imgur.com/otYhXUP.png',
         })
@@ -69,7 +69,7 @@ export default {
 
         /* Add partner. */
         this.partners.push({
-            title: 'Bitcoin',
+            title: 'Bitcoin-2',
             url: 'https://bitcoin.com/',
             imageUrl: 'https://i.imgur.com/otYhXUP.png',
         })

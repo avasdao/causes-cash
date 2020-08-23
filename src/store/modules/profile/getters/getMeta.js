@@ -13,12 +13,17 @@ function _decrypt(_encrypted, _key) {
     /* Set initilization vector. */
     const iv = Buffer.from(_encrypted.iv, 'hex')
 
+    /* Set encrypted text. */
     const encryptedText = Buffer.from(_encrypted.body, 'hex')
 
-    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(_key), iv)
+    /* Initialize decipher. */
+    const decipher = crypto
+        .createDecipheriv('aes-256-cbc', Buffer.from(_key), iv)
 
+    /* Update decipher with encrypted text. */
     let decrypted = decipher.update(encryptedText)
 
+    /* Finalize decrypted message. */
     decrypted = Buffer.concat([decrypted, decipher.final()])
 
     /* Return decrypted string. */
@@ -31,11 +36,8 @@ function _decrypt(_encrypted, _key) {
 const getMeta = async (state, getters, rootState, rootGetters) => {
     /* Validate state. */
     if (!state || !state.meta) {
-        // TODO: Attempt to retrieve metadata from cloud.
-
         /* Set profile index. */
         const profileIndex = 0
-        // console.log('GET ADDRESS (profileIndex):', profileIndex)
 
         /* Set chain. */
         const chain = 0 // receiving account
@@ -52,7 +54,6 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
 
         /* Set (profile) address. */
         const address = Nito.Address.toCashAddress(childNode)
-        // console.log('GET SIGNED MESSAGE (address):', address)
 
         /* Retrieve API provider. */
         const API_PROVIDER = rootGetters.getApiProvider
@@ -62,24 +63,36 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
 
         /* Set contract path. */
         const response = await superagent.get(target)
-        // console.log('GET META', response)
+        // console.log('GET META (response):', response)
 
         /* Validate resopnse. */
-        if (response && response.body && response.body.meta) {
+        // FIXME: This may be singleton OR not index-0
+        if (response && response.body && response.body[0].meta) {
+
+            /* Set (encrypted) metadata. */
+            const encrypted = response.body[0].meta // FIXME: This may be singleton OR not index-0
+            // console.log('GET META (encrypted):', encrypted)
+
             /* Request decryption key. */
             const key = getters.getMasterSeed
 
             try {
                 /* Decrypt metadata. */
-                const meta = _decrypt(response.body.meta, key)
+                const decrypted = _decrypt(encrypted, key)
+                // console.log('GET META (decrypted):', decrypted)
 
-                /* Return metadata. */
-                return meta
+                const parsed = JSON.parse(decrypted)
+                // console.log('GET META (parsed):', parsed)
+
+                /* Return (parsed) metadata. */
+                return parsed
             } catch (err) {
                 console.error(err) // eslint-disable-line no-console
-            }
 
-            return null
+                /* Return error message. */
+                return err
+                // return err.message
+            }
         } else {
             return null
         }

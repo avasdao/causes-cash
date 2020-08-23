@@ -374,6 +374,12 @@ export default {
                     if (remaining <= 0) {
                         this.broadcast()
                     }
+
+                    /* Set message. */
+                    const message = `Your pledge has been accepted!`
+
+                    /* Display notification. */
+                    this.toast(['Done!', message, 'success'])
                 } catch (err) {
                     console.error(err)
                 }

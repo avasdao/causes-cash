@@ -58,30 +58,14 @@
                             </li>
 
                             <li>
-                                <a href="javascript://">
-                                    Causes<i class="fa fa-caret-down" aria-hidden="true"></i>
-                                </a>
-
-                                <ul class="sub-menu">
-                                    <li>
-                                        <!-- <router-link to="/create"> -->
-                                        <router-link to="/">
-                                            Create a cause
-                                        </router-link>
-                                    </li>
-
-                                    <li>
-                                        <!-- <router-link to="/manage"> -->
-                                        <router-link to="/">
-                                            Manage a cause
-                                        </router-link>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>
                                 <router-link to="/contact">
                                     Contact
+                                </router-link>
+                            </li>
+
+                            <li v-if="hasAuth">
+                                <router-link :to="'/@' + getNickname + '/create'">
+                                    <strong class="text-danger">Create</strong>
                                 </router-link>
                             </li>
 

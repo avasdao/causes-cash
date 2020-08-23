@@ -72,6 +72,15 @@
                         <span v-if="campaignModel == 'Community Pledge'"></span>
                     </div>
 
+                    <div v-if="recipient" class="receipient-address">
+                        <a :href="'https://explorer.bitcoin.com/bch/address/' + recipient" target="_blank">
+                            <i class="fa fa-check-circle text-success ml-2 mr-1"></i>
+                            <span class="text-secondary">{{recipient}}</span>
+                        </a>
+
+                        (<a href="javascript://">view proof</a>)
+                    </div>
+
                     <div v-if="campaignModel == 'Community Pledge'" class="row process-info">
                         <div class="col">
                             <span>{{fundingGoal}}</span>
@@ -148,9 +157,9 @@
                         Add my support
                     </a>
 
-                    <a href="javascript://" class="btn-danger mr-5" @click="burn">
-                        <i class="fa fa-fire mr-2" aria-hidden="true"></i>
-                        Burn PIF
+                    <a href="javascript://" class="btn-warning mr-5" @click="stakePIF">
+                        <i class="fa fa-flag mr-2" aria-hidden="true"></i>
+                        Stake PIF
                     </a>
 
                     <a href="javascript://" class="btn-secondary" @click="remindMe">
@@ -349,6 +358,40 @@ export default {
             } else {
                 return null
             }
+        },
+
+        recipient() {
+            if (this.campaign && (this.campaign.assurances || this.campaign.payouts)) {
+                if (this.campaign.assurances) {
+                    const assuranceid = 0
+
+                    /* Set recipient. */
+                    const recipient = this.campaign.assurances[assuranceid].recipient
+
+                    /* Validate recipient. */
+                    if (!recipient) {
+                        return ''
+                    }
+
+                    /* Return recipient address. */
+                    return recipient.address
+                }
+
+                if (this.campaign.payouts) {
+                    /* Set recipient. */
+                    const recipient = this.campaign.payouts.recipient
+
+                    /* Validate recipient. */
+                    if (!recipient) {
+                        return ''
+                    }
+
+                    /* Return recipient address. */
+                    return recipient.address
+                }
+            }
+
+            return ''
         },
 
         /**
@@ -691,10 +734,10 @@ export default {
         },
 
         /**
-         * Burn PIF
+         * Stake PIF
          */
-        burn() {
-            this.toast(['Oops!', 'You have no PIF to burn', 'error'])
+        stakePIF() {
+            this.toast(['Oops!', 'You have no PIF to stake', 'error'])
 
             // this.showActions = false
             // this.showBurn = true
@@ -762,5 +805,13 @@ export default {
 .process-info small {
     font-size: 0.7em;
     font-style: italic;
+}
+
+.receipient-address {
+    font-size: 0.8em;
+    margin-top: -10px;
+}
+.receipient-address a {
+    display: inline-block;
 }
 </style>

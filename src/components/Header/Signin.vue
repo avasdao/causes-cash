@@ -241,8 +241,10 @@ export default {
             await Swal.fire({
                 title: 'Sign In to Causes Cash',
                 html:
-                    `<input type="email" id="swal-email" class="swal2-input" placeholder="Enter your email">` +
-                    `<input type="password" id="swal-password" class="swal2-input" placeholder="Enter your password">`,
+                    `<span class="text-danger">NO REGISTRATION REQUIRED</span>` +
+                    `<input type="email" id="swal-email" class="swal2-input" placeholder="Enter ANY email address">` +
+                    `<input type="password" id="swal-password" class="swal2-input" placeholder="Enter ANY strong password">` +
+                    `<small class="text-secondary">( account data is managed locally by your browser )</small>`,
                 focusConfirm: false,
                 preConfirm: async () => {
                     const email = document.getElementById('swal-email').value
@@ -270,7 +272,7 @@ export default {
             this.destroyProfile()
 
             /* Show notification. */
-            this.toast(['Success!', `You've been signed out successfully.`, 'success'])
+            this.toast(['Success!', `You've been signed out successfully`, 'success'])
         },
     },
     created: function () {

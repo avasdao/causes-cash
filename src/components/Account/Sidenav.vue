@@ -43,7 +43,7 @@
                 </li>
 
                 <li :class="{active: tab === 'backing'}">
-                    <router-link :to="backing">Backed Causes</router-link>
+                    <router-link :to="backing">Backed Campaigns</router-link>
                 </li>
             </ul>
         </nav>

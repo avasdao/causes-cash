@@ -133,7 +133,7 @@
 
                                     <li>
                                         <router-link :to="'/@' + getNickname + '/backing'">
-                                            Backed Causes
+                                            Backed Campaigns
                                         </router-link>
                                     </li>
 

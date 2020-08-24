@@ -1,6 +1,7 @@
 <template>
     <main>
         <!-- content goes here -->
+        <i class="fa fa-question-circle-o" aria-hidden="true" @click="getHelp('campaigns/payment')"></i>
     </main>
 </template>
 

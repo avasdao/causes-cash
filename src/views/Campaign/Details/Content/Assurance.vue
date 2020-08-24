@@ -90,7 +90,9 @@
                         </div>
 
                         <div class="col">
-                            <button class="btn btn-primary btn-block">Use Wallet</button>
+                            <button class="btn btn-primary btn-block" @click="walletPay">
+                                Use Wallet
+                            </button>
                         </div>
                     </div>
 
@@ -425,6 +427,31 @@ export default {
 
             /* Display notification. */
             this.toast(['Done!', message, 'success'])
+        },
+
+        /**
+         * Wallet Pay
+         */
+        walletPay() {
+            this.toast(['Oops!', 'Your wallet balance is not enough', 'error'])
+
+            // Swal.fire({
+            //     title: 'Are you sure?',
+            //     text: "You won't be able to revert this!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Yes, delete it!'
+            // }).then((result) => {
+            //     if (result.value) {
+            //         Swal.fire(
+            //             'Deleted!',
+            //             'Your file has been deleted.',
+            //             'success'
+            //         )
+            //     }
+            // })
         },
 
     },

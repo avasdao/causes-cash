@@ -58,6 +58,10 @@ const updateMeta = async ({ commit, getters, rootGetters }, _meta) => {
     /* Set api target. */
     const target = `${API_PROVIDER}/profiles`
 
+    // FIXME: Consider complications when updating a profile that is OLDER
+    //        than the most recent cloud version (as in running the application
+    //        for multiple devices).
+
     /* Call api. */
     return await superagent
         .put(target)

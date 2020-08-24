@@ -72,7 +72,7 @@
                         <span v-if="campaignModel == 'Community Pledge'"></span>
                     </div>
 
-                    <div v-if="recipient" class="receipient-address">
+                    <div v-if="recipient" class="recipient-address">
                         <a :href="'https://explorer.bitcoin.com/bch/address/' + recipient" target="_blank">
                             <i class="fa fa-check-circle text-success ml-2 mr-1"></i>
                             <span class="text-secondary">{{recipient}}</span>
@@ -807,11 +807,11 @@ export default {
     font-style: italic;
 }
 
-.receipient-address {
+.recipient-address {
     font-size: 0.8em;
     margin-top: -10px;
 }
-.receipient-address a {
+.recipient-address a {
     display: inline-block;
 }
 </style>

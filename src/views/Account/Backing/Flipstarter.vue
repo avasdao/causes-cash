@@ -6,18 +6,18 @@
 
                 <div class="col-9">
                     <span>
-                        On the Flipstarter campaign's page, find the box that says, <strong class="text-primary">"1. Copy details"</strong> and click the green <strong class="text-primary">"COPY DETAILS"</strong> button, which will:
+                        On the Flipstarter campaign's page, find the box that says <strong class="text-primary">"1. Copy details"</strong> and click the green <strong class="text-primary">"COPY DETAILS"</strong> button, which will:
                     </span>
 
                     <ol class="ml-5">
                         <li>
-                            lock-in your pledge details
+                            Lock-in your pledge details
                         </li>
                         <li>
-                            package your pledge details
+                            Package your pledge details
                         </li>
                         <li>
-                            copy pledge package to your clipboard
+                            Copy pledge package to your clipboard
                         </li>
                     </ol>
                 </div>
@@ -28,11 +28,12 @@
 
         <div class="row">
             <div class="col">
-                <h3>STEP 2: Paste your pledge details</h3>
+                <h3>STEP 2: Paste your pledge (package) details</h3>
 
                 <div class="col-9">
                     <span>
                         Paste the pledge details you copied from the campaign page into the box below.
+                        Then review the camapign and pledge details from the Flipstarter package.
                     </span>
                 </div>
 
@@ -44,19 +45,25 @@
 
                 <!-- <div v-if="userPledge" class="row mt-3 parsedJson"> -->
                 <div v-if="userPledge" class="row mt-3">
-                    <h3>Campaign details</h3>
+                    <div class="col-12 text-center">
+                        <h2>Campaign Details</h2>
+                    </div>
+
                     <div class="row">
                         <div class="col-5 text-right">
                             Fulfillment address
                         </div>
-                        <div class="col-7">
+                        <div class="col-7 recipient-address">
                             <a :href="campaignAddressLink" target="_blank">
+                                <i class="fa fa-check-circle text-success mr-1"></i>
                                 <strong>{{campaignAddress}}</strong>
                             </a>
+
+                            (<a href="javascript://">view proof</a>)
                         </div>
 
                         <div class="col-5 text-right">
-                            Requested amount
+                            Fulfillment amount
                         </div>
                         <div class="col-7" v-html="campaignValue" />
 
@@ -66,7 +73,10 @@
                         <div class="col-7" v-html="expirationDate" />
                     </div>
 
-                    <h3>Pledge details</h3>
+                    <div class="col-12 text-center">
+                        <h2>Pledge Details</h2>
+                    </div>
+
                     <div class="row">
                         <div class="col-5 text-right">
                             Pledge alias
@@ -92,9 +102,9 @@
             </div>
         </div>
 
-        <hr />
+        <hr v-if="userPledge" />
 
-        <div class="row">
+        <div v-if="userPledge" class="row">
             <div class="col-12">
                 <h3>STEP 3: Confirm your pledged coins</h3>
 
@@ -103,11 +113,11 @@
 
                     <ol class="ml-5">
                         <li>
-                            Pledge directly from your Causes wallet.
+                            Pledge directly from your Causes wallet
                             <i class="fa fa-question-circle-o" aria-hidden="true" @click="getHelp('community/intro')"></i>
                         </li>
                         <li>
-                            Pledge using a QR Code Payment Request.
+                            Pledge using a QR Code Payment Request
                             <i class="fa fa-question-circle-o" aria-hidden="true" @click="getHelp('community/payment')"></i>
                         </li>
                     </ol>
@@ -117,7 +127,7 @@
             <div class="col-8">
                 <h3>QR COde Payment Request</h3>
 
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <div class="qr-code m-3" v-html="qr" @click="copyAddress" />
             </div>
 
             <div class="col-4">
@@ -126,10 +136,17 @@
                 <input
                     class="mt-3 mb-2"
                     type="text"
-                    id="title"
-                    placeholder="How much from your wallet."
+                    placeholder="Fiat wallet value"
                     v-model="walletContribution"
-                    @keyup="walletValidation($event)"
+                    disabled
+                 />
+
+                <input
+                    class="mt-3 mb-2"
+                    type="text"
+                    placeholder="Satoshi wallet value"
+                    v-model="walletContribution"
+                    disabled
                  />
 
                 <a
@@ -142,37 +159,29 @@
             </div>
         </div>
 
-        <hr />
+        <hr v-if="userPledge" />
 
-        <div class="row">
+        <div v-if="userPledge" class="row">
             <div class="col">
                 <h3>STEP 4: Submit pledge authorization</h3>
 
                 <div class="col-9">
                     <span>
-                        On the Flipstarter campaign's page, find the box that says, <strong class="text-primary">"3. Paste pledge"</strong>, then paste in the clipboard you copied above, finally click the green <strong class="text-primary">"SUBMIT PLEDGE"</strong> button, which will:
+                        On the Flipstarter campaign's page, find the box that says <strong class="text-primary">"3. Paste pledge"</strong>, then paste in the clipboard you copied above, finally click the green <strong class="text-primary">"SUBMIT PLEDGE"</strong> button, which will:
                     </span>
 
                     <ol class="ml-5">
                         <li>
-                            submit your pledge to the campaign's server
+                            Submit your pledge to the campaign's server
                         </li>
                         <li>
-                            add your pledge to the campaign's page
+                            Add your pledge to the campaign's page
                         </li>
                     </ol>
                 </div>
             </div>
         </div>
 
-        <!-- <button
-            v-if="userPledge"
-            class="btn-primary mt-3"
-            @click="confirmFlipstarter"
-            :disabled="pledgeAuth"
-        >
-            Confirm Flipstarter Pledge
-        </button> -->
     </main>
 </template>
 
@@ -184,6 +193,7 @@ import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
 import Nito from 'nitojs'
 import numeral from 'numeral'
+import QRCode from 'qrcode'
 
 export default {
     components: {
@@ -349,11 +359,373 @@ export default {
             }
         },
 
+        qr() {
+            if (!this.getAddress('causes') || !this.userPledge) {
+                return null
+            }
+
+            /* Initialize (string) value. */
+            let strValue = ''
+
+            /* Initialize scanner parameters. */
+            const params = {
+                type: 'svg',
+                width: 225,
+                height: 225,
+                color: {
+                    dark: '#000',
+                    light: '#fff'
+                }
+            }
+
+            /* Calculate pledge amount (in BCH). */
+            const amount = parseFloat(this.userPledge.donation.amount / 100000000.0)
+            console.log('AMOUNT', amount);
+
+            /* Set payment URL. */
+            const paymentUrl = `${this.getAddress('causes')}?amount=${amount}`
+            console.log('PAYMENT URL', paymentUrl);
+
+            QRCode.toString(paymentUrl, params, (err, value) => {
+            // QRCode.toString(this.getAddress('causes'), params, (err, value) => {
+                if (err) {
+                    return console.error('QR Code ERROR:', err)
+                }
+
+                /* Set (string) value. */
+                strValue = value
+            })
+
+            /* Return (string) value. */
+            return strValue
+        },
+
     },
     methods: {
+        ...mapActions('profile', [
+            'updateMeta',
+        ]),
+
         ...mapActions('utils', [
             'toast',
         ]),
+
+        ...mapActions('wallet', [
+            'updateCoins',
+        ]),
+
+        /**
+         * Assemble Signature Hash Digest
+         */
+        assembleSighashDigest(
+            previousTransactionHash,
+            previousTransactionOutputIndex,
+            previousTransactionOutputValue,
+            inputLockScript
+        ) {
+            /* Initialize an empty array of outpoints. */
+            const transactionOutpoints = []
+
+            /* Initialize value. */
+            let value = null
+
+            /* Set campaign value. */
+            this.campaignValue = this.userPledge.outputs[0].value
+            // console.log('Campaign value:', this.campaignValue)
+
+            /* Set value. */
+            value = Nito.Utils.encodeNumber(this.campaignValue)
+            // console.log('Encoded value:', value)
+
+            /* Set campaign address. */
+            this.campaignAddress = this.userPledge.outputs[0].address
+            // console.log('Campaign address:', this.campaignAddress)
+
+            /* Set locking script. */
+            const locking_script = Nito.Address.toPubKeyHash(this.campaignAddress)
+            // console.log('Campaign (locking_script):', locking_script)
+
+            /* Set current output. */
+            // NOTE: This is the pledge recipient.
+            // FIXME: Allow multiple pledge recipients.
+            const thisOutputs = [{ value, locking_script }]
+
+            /* Add each output in the current contract. */
+            for (const currentOutput in thisOutputs) {
+                // Add the output value.
+                transactionOutpoints.push(thisOutputs[currentOutput].value)
+
+                // Add the output lockscript.
+                transactionOutpoints.push(
+                    Nito.Utils.varBuf(thisOutputs[currentOutput].locking_script)
+                )
+            }
+            // console.log('Transaction outpoints:', transactionOutpoints)
+
+            /* Set version. */
+            const nVersion = Buffer.from('02000000', 'hex')
+
+            /* Set hash previous output. */
+            const hashPrevouts = Buffer.from(''.padStart(64, '0'), 'hex')
+
+            /* Set hash sequence. */
+            const hashSequence = Buffer.from(''.padStart(64, '0'), 'hex')
+
+            /* Set outpoint. */
+            const outpoint = Buffer.concat([
+                Nito.Utils.reverseBuffer(previousTransactionHash),
+                previousTransactionOutputIndex,
+            ])
+
+            /* Set script code. */
+            const scriptCode = Buffer.concat([
+                Buffer.from('19', 'hex'),
+                inputLockScript,
+            ])
+
+            /* Set (transaction) value. */
+            value = previousTransactionOutputValue
+
+            /* Set sequence. */
+            const nSequence = Buffer.from('FFFFFFFF', 'hex')
+
+            /* Set hash outputs. */
+            // const hashOutputs = bitbox.Crypto.hash256(
+            //     Buffer.concat(transactionOutpoints)
+            // )
+            const hashOutputs = Nito.Crypto.hash(
+                Buffer.concat(transactionOutpoints), 'sha256sha256'
+            )
+            // console.log('transactionOutpoints', transactionOutpoints);
+            // console.log('transactionOutpoints (concat)', Buffer.concat(transactionOutpoints).toString('hex'));
+            // console.log('hashOutputs', hashOutputs.toString('hex'));
+
+            /* Set locktime. */
+            const nLocktime = Buffer.from('00000000', 'hex')
+
+            /* Set signature hash type. */
+            const sighashType = Buffer.from('c1000000', 'hex')
+
+            // console.log('nVersion', nVersion);
+            // console.log('hashPrevouts', hashPrevouts);
+            // console.log('hashSequence', hashSequence);
+            // console.log('outpoint', outpoint);
+            // console.log('scriptCode', scriptCode);
+            // console.log('value', value);
+            // console.log('nSequence', nSequence);
+            // console.log('hashOutputs', hashOutputs);
+            // console.log('nLocktime', nLocktime);
+            // console.log('sighashType', sighashType);
+
+            /* Construct signature hash message. */
+            const sighashMessage = Buffer.concat([
+                nVersion,
+                hashPrevouts,
+                hashSequence,
+                outpoint,
+                scriptCode,
+                value,
+                nSequence,
+                hashOutputs,
+                nLocktime,
+                sighashType,
+            ])
+            // console.log('sighashMessage', sighashMessage.toString('hex'));
+
+            /* Create signature hash digest (of message). */
+            const sighashDigest = Nito.Crypto.hash(sighashMessage, 'sha256sha256')
+            // console.log('sighashDigest', sighashDigest.toString('hex'));
+
+            /* Return signature hash digest. */
+            return sighashDigest
+        },
+
+        /**
+         * Confirm Flipstarter (Pledge)
+         *
+         * Transfers the pledge amount into a dedicated UTXO.
+         */
+        async confirmFlipstarter() {
+            /* Request accounts. */
+            const accounts = this.getAccounts
+            console.log('ACCOUNTS', accounts)
+
+            /* Validate accounts. */
+            if (!accounts) {
+                return null
+            }
+
+            /* Request coins. */
+            const coins = this.getCoins
+            console.log('COINS', coins)
+
+            /* Validate coins. */
+            if (!coins) {
+                return null
+            }
+
+            /* Request metadata. */
+            const meta = await this.getMeta
+            console.log('BACKING (meta):', meta)
+
+            const spendable = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'active'
+            })
+            console.log('SPENDABLE', spendable)
+
+            const locked = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'locked'
+            })
+            console.log('LOCKED', locked)
+
+            /* Initialize source coin. */
+            let sourceCoin = null
+
+            /* Set donation amount. */
+            const donation = this.userPledge.donation.amount
+            console.log('DONATION', donation)
+
+            /* Loop through all locked. */
+            locked.forEach(coinid => {
+                if (coins[coinid].satoshis === donation) {
+                    /* Set source coin. */
+                    sourceCoin = coins[coinid]
+                }
+            })
+
+            /* Loop through all spendables. */
+            // FIXME FOR DEVELOPMENT ONLY
+            spendable.forEach(coinid => {
+                if (coins[coinid].satoshis === donation) {
+                    /* Set source coin. */
+                    sourceCoin = coins[coinid]
+                }
+            })
+            console.log('SOURCE COIN', sourceCoin);
+
+            /* Make pledge. */
+            // this.makePledge(sourceCoin)
+
+        },
+
+        /**
+         * Make Pledge
+         */
+        async makePledge(_coin) {
+            /* Initialize verification key. */
+            const verificationKey = Nito.Purse.fromWIF(_coin.wif)
+            console.log('verificationKey', verificationKey, _coin.wif)
+
+            /* Set public key. */
+            const publicKey = verificationKey.publicKey.toString()
+            console.log('\nPublic key:', publicKey)
+
+            /* Set cash address. */
+            const cashAddress = Nito.Address.toCashAddress(verificationKey)
+            console.log('FLIPSTARTER (pledge address)', cashAddress)
+
+            console.log('USER PLEDGE', this.userPledge)
+
+            const alias = this.userPledge.data.alias
+            console.log('ALIAS:', alias)
+
+            const comment = this.userPledge.data.comment
+            console.log('COMMENT:', comment)
+
+            const expires = this.userPledge.expires
+            console.log('EXPIRES:', expires)
+
+            if (!_coin.txid || !_coin.satoshis) {
+                return console.error('No UTXO available for pledge.')
+            }
+
+            const previousTransactionHash = _coin.txid
+            const previousTransactionOutputValue = Nito.Utils.encodeNumber(_coin.satoshis)
+            // const previousTransactionOutputIndex = '00000000'
+            const previousTransactionOutputIndex = Nito.Utils.encodeNumber(_coin.vout)
+            const inputLockScript = Nito.Address.toPubKeyHash(cashAddress)
+
+            /* Validate commitment signature. */
+            const verificationMessage = this.assembleSighashDigest(
+                Buffer.from(previousTransactionHash, 'hex'),
+                Buffer.from(previousTransactionOutputIndex, 'hex'),
+                Buffer.from(previousTransactionOutputValue, 'hex'),
+                Buffer.from(inputLockScript, 'hex')
+            )
+            console.log('verificationMessage', verificationMessage.toString('hex'))
+
+            const pledgeSig = Nito.Account.sign(verificationMessage, verificationKey)
+            console.log('PLEDGE SIGNATURE', pledgeSig.toString())
+
+            const previous_output_transaction_hash = previousTransactionHash
+            // const previous_output_index = 0
+            const previous_output_index = _coin.vout
+            const sequence_number = 4294967295 // NOTE: 0xFFFFFFFF | 32-bit max int
+
+            const unlocking_script =
+                (pledgeSig.toString().slice(2, 4) === '44' ? '47' : '48') + // FIXME??
+                pledgeSig.toString() +
+                'c1' + // NOTE: sigHashType
+                '21' +
+                publicKey
+            console.log('UNLOCKING SCRIPT:', unlocking_script)
+
+            const assuranceOutput = {
+                inputs: [{
+                    previous_output_transaction_hash,
+                    previous_output_index,
+                    sequence_number,
+                    unlocking_script,
+                }],
+                data: {
+                    alias,
+                    comment,
+                },
+                data_signature: null
+            }
+            console.log('ASSURANCE OUTPUT:', assuranceOutput)
+
+            /* Encode assurance pledge. */
+            const encodedPledge = Buffer.from(JSON.stringify(assuranceOutput)).toString('base64')
+            console.log('Flipstarter encoded pledge (base64):', encodedPledge)
+
+            /* Update pledge authorization. */
+            this.pledgeAuth = encodedPledge
+
+            /* Initialize meta. */
+            const meta = await this.getMeta
+            console.log('FLIPSTARTER (meta):', meta)
+
+            /* Set coin id. */
+            const coinid = `${_coin.txid}:${_coin.vout}`
+
+            /* Validate coins. */
+            // NOTE: Added to schema on 2020.7.27
+            if (!meta.coins) {
+                meta.coins = {}
+            }
+
+            /* Update meta data. */
+            meta['coins'][coinid] = {
+                label: alias,
+                comment,
+                lock: {
+                    isActive: true,
+                    source: 'flipstarter',
+                    createdAt: moment().unix(),
+                    expiresAt: expires,
+                }
+            }
+
+            /* Update metadata. */
+            this.updateMeta(meta)
+
+            /* Set message. */
+            const message = `Your coin has been locked!`
+
+            /* Display notification. */
+            this.toast(['Done!', message, 'success'])
+        },
 
         /**
          * Apply Balance
@@ -385,6 +757,20 @@ export default {
         },
 
         /**
+         * Set Clipboard
+         */
+        copyAddress() {
+            /* Set clipboard. */
+            this.setClipboard(this.getAddress('causes'))
+
+            /* Set message. */
+            const message = `Pledge address copied to your clipboard.`
+
+            /* Display notification. */
+            this.toast(['Done!', message, 'info'])
+        },
+
+        /**
          * Cancel Pledge
          */
         cancelPledge(_coin) {
@@ -406,7 +792,7 @@ export default {
 
 <style scoped>
 textarea {
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: rgba(141, 195, 81, 0.5);
 }
 
 .pledge-details, .pledge-auth {
@@ -419,5 +805,9 @@ textarea {
 .parsedJson {
     padding: 5px;
     border-top: 3pt solid rgba(90, 90, 90, 0.5);
+}
+
+.recipient-address a {
+    display: inline-block;
 }
 </style>

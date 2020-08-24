@@ -29,7 +29,7 @@ pragma cashscript ^0.4.0;
  * Mecenas Oracle (Fixed Block)
  *
  * This contract enforces a specific market price for payouts to the
- * contract's receipient.
+ * contract's recipient.
  *
  * A minimum block is provided to ensure that the oracle price
  *
@@ -53,7 +53,7 @@ contract MecenasOracleFixed(
     /**
      * Payout
      *
-     * Will make a payout to the receipient of the contract.
+     * Will make a payout to the recipient of the contract.
      *
      * pk        : public key of the transaction's originator
      * s         : signature of the transaction

@@ -270,6 +270,13 @@ export default {
                 }
             }
 
+            /* Calculate pledge amount (in BCH). */
+            // const amount = parseFloat(this.pledgeSatoshis / 100000000.0)
+
+            /* Set payment URL. */
+            // const paymentUrl = `${this.pledgeAddress}?amount=${amount}`
+
+            // QRCode.toString(paymentUrl, params, (err, value) => {
             QRCode.toString(this.getAddress('deposit'), params, (err, value) => {
                 if (err) {
                     return console.error('QR Code ERROR:', err)

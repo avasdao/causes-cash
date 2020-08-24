@@ -189,7 +189,7 @@ export default {
             blockHeight: null,
 
             payoutsContract: null,
-            receipientAddress: null,
+            recipientAddress: null,
 
             pledgeUSD: null,
             pledgeSatoshis: null,
@@ -475,7 +475,7 @@ export default {
                 // console.log('Payouts Contract', this.payoutsContract)
 
                 const recipientPkh = Nito.Address
-                    .toPubKeyHash(this.receipientAddress).slice(6, -4)
+                    .toPubKeyHash(this.recipientAddress).slice(6, -4)
                 // console.log('recipientPkh', recipientPkh)
 
                 /* Set funder address. */
@@ -544,8 +544,8 @@ export default {
             // console.log('PLEDGE GOAL', this.pledgeGoal)
 
             /* Set pledge goal. */
-            this.receipientAddress = this.campaign.payouts.recipient.address
-            // console.log('RECIPIENT ADDRESS', this.receipientAddress)
+            this.recipientAddress = this.campaign.payouts.recipient.address
+            // console.log('RECIPIENT ADDRESS', this.recipientAddress)
         }
 
         /* Create new pledge. */

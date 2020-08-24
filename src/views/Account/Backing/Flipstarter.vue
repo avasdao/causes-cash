@@ -124,20 +124,20 @@
                 </div>
             </div>
 
-            <div class="col-8">
-                <h3>QR COde Payment Request</h3>
+            <div class="col-7">
+                <h3>Payment Request</h3>
 
                 <div class="qr-code m-3" v-html="qr" @click="copyAddress" />
             </div>
 
-            <div class="col-4">
-                <h3>Wallet balance: $0.00</h3>
+            <div class="col-5">
+                <h3>Wallet Balance</h3>
 
                 <input
                     class="mt-3 mb-2"
                     type="text"
                     placeholder="Fiat wallet value"
-                    v-model="walletContribution"
+                    v-model="fiatContribution"
                     disabled
                  />
 
@@ -145,7 +145,7 @@
                     class="mt-3 mb-2"
                     type="text"
                     placeholder="Satoshi wallet value"
-                    v-model="walletContribution"
+                    v-model="satoshiContribution"
                     disabled
                  />
 
@@ -156,12 +156,35 @@
                 >
                     Apply to pledge
                 </a>
+
+                <a
+                    href="javascript://"
+                    class="btn-warning btn-block mt-3"
+                    @click="updateCoins"
+                >
+                    Update coins
+                </a>
+            </div>
+
+            <div v-if="pledgeAuth" class="col-12">
+                <textarea
+                    class="pledge-auth mt-3"
+                    v-model="pledgeAuth">
+                </textarea>
+
+                <a
+                    href="javascript://"
+                    class="btn-primary mt-3"
+                    @click="copyAuth"
+                >
+                    Copy authorization to clipboard
+                </a>
             </div>
         </div>
 
-        <hr v-if="userPledge" />
+        <hr v-if="pledgeAuth" />
 
-        <div v-if="userPledge" class="row">
+        <div v-if="pledgeAuth" class="row">
             <div class="col">
                 <h3>STEP 4: Submit pledge authorization</h3>
 
@@ -202,7 +225,8 @@ export default {
     data: () => {
         return {
             usd: null,
-            walletContribution: null,
+            fiatContribution: null,
+            satoshiContribution: null,
 
             pledgeDetails: null,
             pledgeAuth: null,
@@ -213,14 +237,14 @@ export default {
             'getHelp',
         ]),
 
+        ...mapGetters('profile', [
+            'getMeta',
+        ]),
+
         ...mapGetters('wallet', [
             'getAccounts',
             'getAddress',
-            'getBalance',
             'getCoins',
-            'getDerivationPath',
-            'getHDNode',
-            'getIndices',
         ]),
 
         /**
@@ -380,14 +404,11 @@ export default {
 
             /* Calculate pledge amount (in BCH). */
             const amount = parseFloat(this.userPledge.donation.amount / 100000000.0)
-            console.log('AMOUNT', amount);
 
             /* Set payment URL. */
             const paymentUrl = `${this.getAddress('causes')}?amount=${amount}`
-            console.log('PAYMENT URL', paymentUrl);
 
             QRCode.toString(paymentUrl, params, (err, value) => {
-            // QRCode.toString(this.getAddress('causes'), params, (err, value) => {
                 if (err) {
                     return console.error('QR Code ERROR:', err)
                 }
@@ -407,6 +428,7 @@ export default {
         ]),
 
         ...mapActions('utils', [
+            'setClipboard',
             'toast',
         ]),
 
@@ -429,20 +451,14 @@ export default {
             /* Initialize value. */
             let value = null
 
-            /* Set campaign value. */
-            this.campaignValue = this.userPledge.outputs[0].value
-            // console.log('Campaign value:', this.campaignValue)
-
             /* Set value. */
-            value = Nito.Utils.encodeNumber(this.campaignValue)
+            value = Nito.Utils
+                .encodeNumber(this.userPledge.outputs[0].value)
             // console.log('Encoded value:', value)
 
-            /* Set campaign address. */
-            this.campaignAddress = this.userPledge.outputs[0].address
-            // console.log('Campaign address:', this.campaignAddress)
-
             /* Set locking script. */
-            const locking_script = Nito.Address.toPubKeyHash(this.campaignAddress)
+            const locking_script = Nito.Address
+                .toPubKeyHash(this.userPledge.outputs[0].address)
             // console.log('Campaign (locking_script):', locking_script)
 
             /* Set current output. */
@@ -490,32 +506,14 @@ export default {
             const nSequence = Buffer.from('FFFFFFFF', 'hex')
 
             /* Set hash outputs. */
-            // const hashOutputs = bitbox.Crypto.hash256(
-            //     Buffer.concat(transactionOutpoints)
-            // )
-            const hashOutputs = Nito.Crypto.hash(
-                Buffer.concat(transactionOutpoints), 'sha256sha256'
-            )
-            // console.log('transactionOutpoints', transactionOutpoints);
-            // console.log('transactionOutpoints (concat)', Buffer.concat(transactionOutpoints).toString('hex'));
-            // console.log('hashOutputs', hashOutputs.toString('hex'));
+            const hashOutputs = Nito.Crypto
+                .hash(Buffer.concat(transactionOutpoints), 'sha256sha256')
 
             /* Set locktime. */
             const nLocktime = Buffer.from('00000000', 'hex')
 
             /* Set signature hash type. */
             const sighashType = Buffer.from('c1000000', 'hex')
-
-            // console.log('nVersion', nVersion);
-            // console.log('hashPrevouts', hashPrevouts);
-            // console.log('hashSequence', hashSequence);
-            // console.log('outpoint', outpoint);
-            // console.log('scriptCode', scriptCode);
-            // console.log('value', value);
-            // console.log('nSequence', nSequence);
-            // console.log('hashOutputs', hashOutputs);
-            // console.log('nLocktime', nLocktime);
-            // console.log('sighashType', sighashType);
 
             /* Construct signature hash message. */
             const sighashMessage = Buffer.concat([
@@ -541,11 +539,134 @@ export default {
         },
 
         /**
-         * Confirm Flipstarter (Pledge)
-         *
-         * Transfers the pledge amount into a dedicated UTXO.
+         * Make Pledge
          */
-        async confirmFlipstarter() {
+        async makePledge(_coin) {
+            /* Initialize verification key. */
+            const verificationKey = Nito.Purse.fromWIF(_coin.wif)
+            // console.log('verificationKey', verificationKey, _coin.wif)
+
+            /* Set public key. */
+            const publicKey = verificationKey.publicKey.toString()
+            // console.log('\nPublic key:', publicKey)
+
+            /* Set cash address. */
+            const cashAddress = Nito.Address.toCashAddress(verificationKey)
+            // console.log('FLIPSTARTER (pledge address)', cashAddress)
+
+            // console.log('USER PLEDGE', this.userPledge)
+
+            const alias = this.userPledge.data.alias
+            // console.log('ALIAS:', alias)
+
+            const comment = this.userPledge.data.comment
+            // console.log('COMMENT:', comment)
+
+            const expires = this.userPledge.expires
+            // console.log('EXPIRES:', expires)
+
+            if (!_coin.txid || !_coin.satoshis) {
+                return console.error('No UTXO available for pledge.')
+            }
+
+            const previousTransactionHash = _coin.txid
+            const previousTransactionOutputValue = Nito.Utils.encodeNumber(_coin.satoshis)
+
+            // const previousTransactionOutputIndex = '01000000'
+            const previousTransactionOutputIndex = Buffer.allocUnsafe(4)
+            previousTransactionOutputIndex.writeUIntLE(_coin.vout, 0, 4)
+            console.log('PREVIOUS TX OUT IDX', previousTransactionOutputIndex)
+            console.log('PREVIOUS TX OUT IDX (hex)', previousTransactionOutputIndex.toString('hex'))
+            const inputLockScript = Nito.Address.toPubKeyHash(cashAddress)
+
+            /* Validate commitment signature. */
+            const verificationMessage = this.assembleSighashDigest(
+                Buffer.from(previousTransactionHash, 'hex'),
+                // Buffer.from(previousTransactionOutputIndex, 'hex'),
+                previousTransactionOutputIndex,
+                Buffer.from(previousTransactionOutputValue, 'hex'),
+                Buffer.from(inputLockScript, 'hex')
+            )
+            // console.log('verificationMessage', verificationMessage.toString('hex'))
+
+            const pledgeSig = Nito.Account.sign(verificationMessage, verificationKey)
+            // console.log('PLEDGE SIGNATURE', pledgeSig.toString())
+
+            const previous_output_transaction_hash = previousTransactionHash
+            // const previous_output_index = 0
+            const previous_output_index = _coin.vout
+            const sequence_number = 4294967295 // NOTE: 0xFFFFFFFF | 32-bit max int
+
+            const unlocking_script =
+                (pledgeSig.toString().slice(2, 4) === '44' ? '47' : '48') + // FIXME??
+                pledgeSig.toString() +
+                'c1' + // NOTE: sigHashType
+                '21' +
+                publicKey
+            // console.log('UNLOCKING SCRIPT:', unlocking_script)
+
+            const assuranceOutput = {
+                inputs: [{
+                    previous_output_transaction_hash,
+                    previous_output_index,
+                    sequence_number,
+                    unlocking_script,
+                }],
+                data: {
+                    alias,
+                    comment,
+                },
+                data_signature: null
+            }
+            console.info('Assurance output:', assuranceOutput)
+
+            /* Encode assurance pledge. */
+            const encodedPledge = Buffer.from(JSON.stringify(assuranceOutput)).toString('base64')
+            console.log('Flipstarter encoded pledge (base64):', encodedPledge)
+
+            /* Update pledge authorization. */
+            this.pledgeAuth = encodedPledge
+
+            /* Initialize meta. */
+            const meta = await this.getMeta
+            console.log('FLIPSTARTER (meta):', meta)
+
+            /* Set coin id. */
+            const coinid = `${_coin.txid}:${_coin.vout}`
+
+            /* Validate coins. */
+            // NOTE: Added to schema on 2020.7.27
+            if (!meta.coins) {
+                meta.coins = {}
+            }
+
+            /* Update meta data. */
+            meta['coins'][coinid] = {
+                label: alias,
+                comment,
+                lock: {
+                    isActive: true,
+                    source: 'flipstarter',
+                    createdAt: moment().unix(),
+                    expiresAt: expires,
+                }
+            }
+
+            /* Update metadata. */
+            const metaUpdate = await this.updateMeta(meta)
+            console.log('FLIPSTARTER (metaUpdate):', metaUpdate)
+
+            /* Set message. */
+            const message = `Your coin has been locked!`
+
+            /* Display notification. */
+            this.toast(['Done!', message, 'success'])
+        },
+
+        /**
+         * Apply Balance
+         */
+        async applyBalance() {
             /* Request accounts. */
             const accounts = this.getAccounts
             console.log('ACCOUNTS', accounts)
@@ -603,153 +724,30 @@ export default {
             })
             console.log('SOURCE COIN', sourceCoin);
 
-            /* Make pledge. */
-            // this.makePledge(sourceCoin)
+            if (sourceCoin) {
+                /* Make pledge. */
+                this.makePledge(sourceCoin)
+            } else {
+                this.toast(['Oops!', 'Your wallet is missing pledge amount', 'error'])
 
-        },
-
-        /**
-         * Make Pledge
-         */
-        async makePledge(_coin) {
-            /* Initialize verification key. */
-            const verificationKey = Nito.Purse.fromWIF(_coin.wif)
-            console.log('verificationKey', verificationKey, _coin.wif)
-
-            /* Set public key. */
-            const publicKey = verificationKey.publicKey.toString()
-            console.log('\nPublic key:', publicKey)
-
-            /* Set cash address. */
-            const cashAddress = Nito.Address.toCashAddress(verificationKey)
-            console.log('FLIPSTARTER (pledge address)', cashAddress)
-
-            console.log('USER PLEDGE', this.userPledge)
-
-            const alias = this.userPledge.data.alias
-            console.log('ALIAS:', alias)
-
-            const comment = this.userPledge.data.comment
-            console.log('COMMENT:', comment)
-
-            const expires = this.userPledge.expires
-            console.log('EXPIRES:', expires)
-
-            if (!_coin.txid || !_coin.satoshis) {
-                return console.error('No UTXO available for pledge.')
+                // Swal.fire({
+                //     title: 'Are you sure?',
+                //     text: "You won't be able to revert this!",
+                //     icon: 'warning',
+                //     showCancelButton: true,
+                //     confirmButtonColor: '#3085d6',
+                //     cancelButtonColor: '#d33',
+                //     confirmButtonText: 'Yes, delete it!'
+                // }).then((result) => {
+                //     if (result.value) {
+                //         Swal.fire(
+                //             'Deleted!',
+                //             'Your file has been deleted.',
+                //             'success'
+                //         )
+                //     }
+                // })
             }
-
-            const previousTransactionHash = _coin.txid
-            const previousTransactionOutputValue = Nito.Utils.encodeNumber(_coin.satoshis)
-            // const previousTransactionOutputIndex = '00000000'
-            const previousTransactionOutputIndex = Nito.Utils.encodeNumber(_coin.vout)
-            const inputLockScript = Nito.Address.toPubKeyHash(cashAddress)
-
-            /* Validate commitment signature. */
-            const verificationMessage = this.assembleSighashDigest(
-                Buffer.from(previousTransactionHash, 'hex'),
-                Buffer.from(previousTransactionOutputIndex, 'hex'),
-                Buffer.from(previousTransactionOutputValue, 'hex'),
-                Buffer.from(inputLockScript, 'hex')
-            )
-            console.log('verificationMessage', verificationMessage.toString('hex'))
-
-            const pledgeSig = Nito.Account.sign(verificationMessage, verificationKey)
-            console.log('PLEDGE SIGNATURE', pledgeSig.toString())
-
-            const previous_output_transaction_hash = previousTransactionHash
-            // const previous_output_index = 0
-            const previous_output_index = _coin.vout
-            const sequence_number = 4294967295 // NOTE: 0xFFFFFFFF | 32-bit max int
-
-            const unlocking_script =
-                (pledgeSig.toString().slice(2, 4) === '44' ? '47' : '48') + // FIXME??
-                pledgeSig.toString() +
-                'c1' + // NOTE: sigHashType
-                '21' +
-                publicKey
-            console.log('UNLOCKING SCRIPT:', unlocking_script)
-
-            const assuranceOutput = {
-                inputs: [{
-                    previous_output_transaction_hash,
-                    previous_output_index,
-                    sequence_number,
-                    unlocking_script,
-                }],
-                data: {
-                    alias,
-                    comment,
-                },
-                data_signature: null
-            }
-            console.log('ASSURANCE OUTPUT:', assuranceOutput)
-
-            /* Encode assurance pledge. */
-            const encodedPledge = Buffer.from(JSON.stringify(assuranceOutput)).toString('base64')
-            console.log('Flipstarter encoded pledge (base64):', encodedPledge)
-
-            /* Update pledge authorization. */
-            this.pledgeAuth = encodedPledge
-
-            /* Initialize meta. */
-            const meta = await this.getMeta
-            console.log('FLIPSTARTER (meta):', meta)
-
-            /* Set coin id. */
-            const coinid = `${_coin.txid}:${_coin.vout}`
-
-            /* Validate coins. */
-            // NOTE: Added to schema on 2020.7.27
-            if (!meta.coins) {
-                meta.coins = {}
-            }
-
-            /* Update meta data. */
-            meta['coins'][coinid] = {
-                label: alias,
-                comment,
-                lock: {
-                    isActive: true,
-                    source: 'flipstarter',
-                    createdAt: moment().unix(),
-                    expiresAt: expires,
-                }
-            }
-
-            /* Update metadata. */
-            this.updateMeta(meta)
-
-            /* Set message. */
-            const message = `Your coin has been locked!`
-
-            /* Display notification. */
-            this.toast(['Done!', message, 'success'])
-        },
-
-        /**
-         * Apply Balance
-         */
-        applyBalance() {
-            this.toast(['Oops!', 'Your wallet balance is too low', 'error'])
-
-            // Swal.fire({
-            //     title: 'Are you sure?',
-            //     text: "You won't be able to revert this!",
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Yes, delete it!'
-            // }).then((result) => {
-            //     if (result.value) {
-            //         Swal.fire(
-            //             'Deleted!',
-            //             'Your file has been deleted.',
-            //             'success'
-            //         )
-            //     }
-            // })
         },
 
         walletValidation(_evt) {
@@ -757,7 +755,21 @@ export default {
         },
 
         /**
-         * Set Clipboard
+         * Copy (Pledge) Authorization
+         */
+        copyAuth() {
+            /* Set clipboard. */
+            this.setClipboard(this.pledgeAuth)
+
+            /* Set message. */
+            const message = `Pledge authorization copied to your clipboard.`
+
+            /* Display notification. */
+            this.toast(['Done!', message, 'info'])
+        },
+
+        /**
+         * Copy Clipboard
          */
         copyAddress() {
             /* Set clipboard. */
@@ -779,10 +791,14 @@ export default {
 
     },
     created: async function () {
-        this.walletContribution = '$0.00'
+        this.fiatContribution = '$0.00'
+        this.satoshiContribution = '0'
 
         /* Request BCH/USD market price. */
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+
+        const meta = await this.getMeta
+        console.log('FLIPSTARTER (meta):', meta);
     },
     mounted: function () {
         // return this.toast(['Done!', 'Blank mounted successfully!', 'success'])

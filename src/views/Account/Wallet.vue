@@ -353,6 +353,7 @@ export default {
     },
     methods: {
         ...mapActions('utils', [
+            'setClipboard',
             'toast',
         ]),
 

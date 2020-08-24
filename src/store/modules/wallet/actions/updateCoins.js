@@ -33,7 +33,7 @@ const updateStatus = (_coins, _meta, dispatch) => {
             }
         } else {
             /* Validate metadata coins. */
-            if (!_meta || !_meta.coins[coinid]) {
+            if (!_meta || !_meta.coins || !_meta.coins[coinid]) {
                 return
             }
 

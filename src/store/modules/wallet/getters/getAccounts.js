@@ -41,32 +41,32 @@ const loadPath = (_getters, _accounts, _chainid, _acctIdx) => {
  */
 const getAccounts = (state, getters) => {
     /* Validate state. */
-    if (!state || !state.indicies) {
-        throw new Error('Current state is invalid. Missing `wallet.indicies`.')
+    if (!state || !state.indices) {
+        throw new Error('Current state is invalid. Missing `wallet.indices`.')
     }
 
     /* Initialize accounts. */
     const accounts = []
 
-    /* Initialize account indicies. */
-    const acctIndexes = msgpack.decode(Buffer.from(state.indicies, 'hex'))
+    /* Initialize account indices. */
+    const acctIndexes = msgpack.decode(Buffer.from(state.indices, 'hex'))
 
-    /* Loop through ALL (deposit) indicies (inclusive). */
+    /* Loop through ALL (deposit) indices (inclusive). */
     for (let i = 0; i <= acctIndexes.deposit; i++) {
         loadPath(getters, accounts, 0, i)
     }
 
-    /* Loop through ALL (change) indicies (inclusive). */
+    /* Loop through ALL (change) indices (inclusive). */
     for (let i = 0; i <= acctIndexes.change; i++) {
         loadPath(getters, accounts, 1, i)
     }
 
-    /* Loop through ALL (causes) indicies (inclusive). */
+    /* Loop through ALL (causes) indices (inclusive). */
     for (let i = 0; i <= acctIndexes.causes; i++) {
         loadPath(getters, accounts, 6767, i)
     }
 
-    /* Loop through ALL (nito) indicies (inclusive). */
+    /* Loop through ALL (nito) indices (inclusive). */
     for (let i = 0; i <= acctIndexes.nito; i++) {
         loadPath(getters, accounts, 7867, i)
     }

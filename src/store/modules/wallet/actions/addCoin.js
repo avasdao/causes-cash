@@ -6,12 +6,12 @@
 const addCoin = ({ commit, getters }, _pkg) => {
     console.info('Adding new coin...', _pkg) // eslint-disable-line no-console
 
-    /* Request accounts. */
-    const accounts = getters.getAccounts
-    // console.log('ADD NEW COIN (accounts):', accounts)
+    /* Request indices. */
+    const indices = getters.getIndices
+    // console.log('ADD NEW COIN (indices):', indices)
 
-    /* Validate accounts. */
-    if (!accounts) {
+    /* Validate indices. */
+    if (!indices) {
         return
     }
 
@@ -23,19 +23,19 @@ const addCoin = ({ commit, getters }, _pkg) => {
     switch(chainid) {
     case 0:
         /* Increment deposit index. */
-        accounts.deposit++
+        indices.deposit++
         break
     case 1:
         /* Increment change index. */
-        accounts.change++
+        indices.change++
         break
     case 6767:
         /* Increment causes index. */
-        accounts.causes++
+        indices.causes++
         break
     case 7867:
         /* Increment nito index. */
-        accounts.nito++
+        indices.nito++
         break
     }
 
@@ -55,8 +55,8 @@ const addCoin = ({ commit, getters }, _pkg) => {
     /* Add coin to wallet. */
     coins[`${coin.txid}:${coin.vout}`] = coin
 
-    /* Commit updated accounts`. */
-    commit('setAccounts', accounts)
+    /* Commit updated indices`. */
+    commit('setIndices', indices)
 
     /* Commit updated coins`. */
     commit('setCoins', coins)

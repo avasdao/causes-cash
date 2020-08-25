@@ -67,8 +67,7 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
 
         /* Validate resopnse. */
         // FIXME: This may be singleton OR not index-0
-        if (response && response.body && response.body[0].meta) {
-
+        if (response && response.body && response.body[0] && response.body[0].meta) {
             /* Set (encrypted) metadata. */
             const encrypted = response.body[0].meta // FIXME: This may be singleton OR not index-0
             // console.log('GET META (encrypted):', encrypted)

@@ -628,17 +628,23 @@ export default {
             this.pledgeAuth = encodedPledge
 
             /* Initialize meta. */
-            const meta = await this.getMeta
+            let meta = await this.getMeta
             console.log('FLIPSTARTER (meta):', meta)
 
-            /* Set coin id. */
-            const coinid = `${_coin.txid}:${_coin.vout}`
+            /* Validate metadata. */
+            // NOTE: Added to schema on 2020.7.27
+            if (!meta) {
+                meta = {}
+            }
 
             /* Validate coins. */
             // NOTE: Added to schema on 2020.7.27
             if (!meta.coins) {
                 meta.coins = {}
             }
+
+            /* Set coin id. */
+            const coinid = `${_coin.txid}:${_coin.vout}`
 
             /* Update meta data. */
             meta['coins'][coinid] = {

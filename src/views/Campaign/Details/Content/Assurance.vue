@@ -98,23 +98,28 @@
 
                     <div class="form-group row pledge-group">
                         <label for="pledge-details">
-                            Pledge Details
+                            Pledge details <small class="text-danger">(base64 encoded)</small>
                         </label>
 
-                        <textarea :value="pledgeDetails" class="pledge-output" id="pledge-details" />
+                        <textarea
+                            id="pledge-details"
+                            :value="pledgeDetails"
+                            class="pledge-output"
+                            @click="copyDetails"
+                        />
                     </div>
 
                     <div class="form-group row pledge-group">
                         <label for="pledge-auth">
-                            Pledge Authorization
+                            Pledge authorization <small class="text-danger">(base64 encoded)</small>
                         </label>
 
-                        <input
+                        <textarea
                             ref="pledgeAuth"
-                            class="form-control pledge-auth"
-                            type="text"
                             id="pledge-auth"
-                            placeholder="waiting for authorization message..."
+                            type="text"
+                            class="form-control pledge-auth"
+                            placeholder="Waiting... Paste your encoded authorization message here."
                             v-model="pledgeAuth"
                             @change="handleAuth"
                             @keyup="handleAuth"
@@ -188,8 +193,11 @@ export default {
         ]),
 
         pledgeAddress() {
-            // FIXME
-            return this.getAddress('deposit')
+            if (this.getAddress('causes')) {
+                return this.getAddress('causes')
+            } else {
+                return null
+            }
         },
 
         /**
@@ -204,13 +212,17 @@ export default {
                 return 0
             }
 
+            /* Set pledges. */
+            const pledges = this.campaign.assurances[assuranceid].pledges
+            console.log('PLEDGES', pledges)
+
             /* Calculate pledged (satoshis). */
-            const pledged = this.campaign.assurances[assuranceid].pledges
-                .reduce((accumulator, pledge) => {
-                    if (pledge.isSpent === true) {
+            const pledged = Object.keys(pledges)
+                .reduce((accumulator, pledgeid) => {
+                    if (pledges[pledgeid].isSpent === true) {
                         return accumulator
                     } else {
-                        return accumulator + pledge.satoshis
+                        return accumulator + pledges[pledgeid].satoshis
                     }
                 }, 0)
             console.log('PLEDGED', pledged)
@@ -252,7 +264,7 @@ export default {
         },
 
         qr() {
-            if (!this.getAddress('deposit')) {
+            if (!this.getAddress('causes')) {
                 return null
             }
 
@@ -271,13 +283,13 @@ export default {
             }
 
             /* Calculate pledge amount (in BCH). */
-            // const amount = parseFloat(this.pledgeSatoshis / 100000000.0)
+            const amount = parseFloat(this.pledgeSatoshis / 100000000.0)
 
             /* Set payment URL. */
-            // const paymentUrl = `${this.pledgeAddress}?amount=${amount}`
+            const paymentUrl = `${this.pledgeAddress}?amount=${amount}`
 
-            // QRCode.toString(paymentUrl, params, (err, value) => {
-            QRCode.toString(this.getAddress('deposit'), params, (err, value) => {
+            QRCode.toString(paymentUrl, params, (err, value) => {
+            // QRCode.toString(this.getAddress('causes'), params, (err, value) => {
                 if (err) {
                     return console.error('QR Code ERROR:', err)
                 }
@@ -557,9 +569,14 @@ form {
 .pledge-output {
     width: 90%;
     height: 100px;
+    cursor: grab;
 }
 .pledge-auth {
     width: 90%;
 }
+textarea {
+    background-color: rgba(141, 195, 81, 0.5);
+}
+
 
 </style>

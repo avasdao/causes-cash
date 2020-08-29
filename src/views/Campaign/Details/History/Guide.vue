@@ -1,5 +1,5 @@
 <template>
-    <div id="guide" class="tabs markdown">
+    <main class="markdown">
         <div v-if="guideDisplay" class="mt-3" v-html="guideDisplay" />
 
         <div v-else>
@@ -9,7 +9,7 @@
                 There is no guide available
             </p>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

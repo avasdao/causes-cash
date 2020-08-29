@@ -407,6 +407,32 @@ export default {
         async broadcast() {
             console.log('STARTED BROADCASTING...')
 
+            // // Create a buffered version statement.
+            // const version = Buffer.from("02000000", "hex");
+            //
+            // // Create the input counter and input data buffers.
+            // const inputCount = bitcoinCashUtilities.varInt(this.inputs.length);
+            // const inputs = this.serializeCommitments();
+            //
+            // // Create the output counter and output data buffer.
+            // const outputCount = bitcoinCashUtilities.varInt(
+            //   Object.keys(this.outputs).length
+            // );
+            // const outputs = this.serializeOutputs();
+            //
+            // // Create a buffered disable locktime statement.
+            // const locktime = Buffer.from("00000000", "hex");
+            //
+            // // Return the assembled transaction.
+            // return Buffer.concat([
+            //   version,
+            //   inputCount,
+            //   inputs,
+            //   outputCount,
+            //   outputs,
+            //   locktime,
+            // ]);
+
             try {
                 // Assemble pledges into transaction
                 const rawTransaction = this.getFullfillment(this.campaign)

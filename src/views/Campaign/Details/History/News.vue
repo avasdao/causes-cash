@@ -1,5 +1,5 @@
 <template>
-    <div id="news" class="tabs">
+    <main>
         <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
 
         <ol v-if="articleList" class="comments-list">
@@ -47,7 +47,7 @@
                 There is no news available
             </p>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

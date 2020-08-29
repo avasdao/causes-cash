@@ -483,28 +483,39 @@ button {
     display: inline-block;
 }
 
+/* Markdown handling */
 .markdown a, .campaigns a {
     display: inline-block;
 }
-
-#story table th, #story table td, #guide table th, #guide table td {
+.markdown-ul, .markdown-ol {
+    margin: 20px 40px;
+}
+.markdown table th, .markdown table td {
     border: 1pt solid #c8c8c8;
     padding: 5px;
 }
-
-#story h1, #story h2, #guide h1, #guide h2 {
+.markdown h1, .markdown h2 {
     margin-top: 30px;
     margin-bottom: 10px;
     padding-bottom: 5px;
     border-bottom: 1pt solid #c8c8c8;
 }
-#story h1, #guide h1 {
+.markdown h1 {
     font-size: 2.5em;
 }
-#story h2, #guide h2 {
+.markdown h2 {
     font-size: 1.5em;
 }
-#story h3, #guide h3 {
+.markdown h3 {
     margin-bottom: 10px;
+}
+.markdown p {
+    margin: 15px 0;
+}
+.markdown .pane-box{
+    display: none;
+}
+.markdown .pane-box.active{
+    display: block;
 }
 </style>

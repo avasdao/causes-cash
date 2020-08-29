@@ -1,5 +1,5 @@
 <template>
-    <div id="story" class="tabs active markdown">
+    <main id="story" class="markdown">
         <div v-if="story" v-html="story" />
 
         <div v-else>
@@ -9,7 +9,7 @@
                 There is no story available
             </p>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

@@ -1,7 +1,5 @@
 <template>
-    <div id="premium" class="tabs">
-        <!-- <h3 class="comments-title">New &amp; Noteworthy</h3> -->
-
+    <main>
         <ol v-if="itemList" class="comments-list">
             <li v-for="item of itemList" :key="item.id" class="comment clearfix">
                 <div class="comment-body">
@@ -39,7 +37,7 @@
                 There is no premium content available
             </p>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

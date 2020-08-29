@@ -235,9 +235,13 @@ export default {
 /*------------------------------------------------------------------
 2. Header / #header
 -------------------------------------------------------------------*/
-.top-header{
-    /* padding: 12px 0; */
+.top-header {
+    /* padding: 5px 0; */
+    padding: 0;
     background-color: #f9fbfb;
+}
+.content-header {
+    padding: 10px 0;
 }
 .top-header .slogan {
     float: right;

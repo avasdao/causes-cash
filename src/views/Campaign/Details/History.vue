@@ -1,46 +1,47 @@
 <template>
     <div class="campaign-history">
-        <div class="container">
+        <div v-if="campaign && campaign.isPublished" class="container">
             <div class="row">
 
                 <div class="col-lg-8">
                     <div class="campaign-tabs">
                         <ul class="tabs-controls">
-                            <li class="active" data-tab="story">
-                                <a href="javascript://">Story</a>
+                            <li :class="{ active: activeTab === 'story' }" data-tab="story">
+                                <a href="javascript://" @click="activeTab = 'story'">Story</a>
                             </li>
 
-                            <li data-tab="supporters">
-                                <a href="javascript://">Supporters</a>
+                            <li :class="{ active: activeTab === 'supporters' }" data-tab="supporters">
+                                <a href="javascript://" @click="activeTab = 'supporters'">Supporters</a>
                             </li>
 
-                            <li data-tab="funds">
-                                <a href="javascript://">Funds</a>
+                            <li :class="{ active: activeTab === 'funds' }" data-tab="funds">
+                                <a href="javascript://" @click="activeTab = 'funds'">Funds</a>
                             </li>
 
-                            <li data-tab="news">
-                                <a href="javascript://">News</a>
+                            <li :class="{ active: activeTab === 'news' }" data-tab="news">
+                                <a href="javascript://" @click="activeTab = 'news'">News</a>
                             </li>
 
-                            <li data-tab="guide">
-                                <a href="javascript://">Guide</a>
+                            <li :class="{ active: activeTab === 'guide' }" data-tab="guide">
+                                <a href="javascript://" @click="activeTab = 'guide'">Guide</a>
                             </li>
 
-                            <li data-tab="premium">
-                                <a href="javascript://">
+                            <li :class="{ active: activeTab === 'premium' }" data-tab="premium">
+                                <a href="javascript://" @click="activeTab = 'premium'">
                                     <span class="text-danger">Premium</span>
                                 </a>
                             </li>
                         </ul>
 
                         <a name="history"></a>
-                        <div class="campaign-content">
-                            <Story :campaign="campaign" />
-                            <Supporters :campaign="campaign" />
-                            <Funds :campaign="campaign" />
-                            <News :campaign="campaign" />
-                            <Guide :campaign="campaign" />
-                            <Premium :campaign="campaign" />
+                        <!-- <div class="campaign-content"> -->
+                        <div class="">
+                            <Story v-if="activeTab === 'story'" :campaign="campaign" />
+                            <Supporters v-if="activeTab === 'supporters'" :campaign="campaign" />
+                            <Funds v-if="activeTab === 'funds'" :campaign="campaign" />
+                            <News v-if="activeTab === 'news'" :campaign="campaign" />
+                            <Guide v-if="activeTab === 'guide'" :campaign="campaign" />
+                            <Premium v-if="activeTab === 'premium'" :campaign="campaign" />
                         </div>
                     </div>
                 </div>
@@ -63,11 +64,12 @@ import Supporters from './History/Supporters'
 
 /* Import jQuery. */
 // FIXME: Remove ALL jQuery dependencies.
-const $ = window.jQuery
+// const $ = window.jQuery
 
 export default {
     props: {
         campaign: Object,
+        isLoading: Boolean,
     },
     components: {
         Events,
@@ -80,53 +82,18 @@ export default {
     },
     data: () => {
         return {
-            //
+            activeTab: null,
         }
     },
     methods: {
-        //
+        // 
+    },
+    created: function () {
+        /* Set active tab. */
+        this.activeTab = 'story'
     },
     mounted: function () {
-        // change is-checked class on buttons
-        $('.campaign-tabs').each(function(i, buttonGroup) {
-            var $buttonGroup = $(buttonGroup);
-            $buttonGroup.on('click', 'button', function() {
-                $buttonGroup.find('.is-checked').removeClass('is-checked');
-                $(this).addClass('is-checked');
-            });
-        });
-
-        /*  [ Tab Controls ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.menu-category li.mc-option').on('click', function(e) {
-            e.preventDefault();
-            var tab_id = $(this).attr('data-tab');
-            $('.menu-category li.mc-option').removeClass('active');
-            $('.popular-project .pp-item').removeClass('active');
-            $(this).addClass('active');
-            $("#" + tab_id).addClass('active');
-        });
-
-        $('.tabs-controls li').on('click', function(e) {
-            e.preventDefault();
-            var tab_id = $(this).attr('data-tab');
-            $('.tabs-controls li').removeClass('active');
-            $('.campaign-content .tabs').removeClass('active');
-            $(this).addClass('active');
-            $("#" + tab_id).addClass('active');
-        });
-        /*  [ Menu Category ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.menu-category li.mc-option').on('click', function() {
-            // var tab_id = $(this).attr('data-hash');
-            $(this).attr('data-hash');
-            $('.menu-category li.mc-option').removeClass('active');
-            $(this).addClass('active');
-        });
-        $('.menu-category li.cat-more a').on('click', function() {
-            var url = $(this).attr('href');
-            window.location.href = url;
-        });
+        //
     },
 }
 </script>

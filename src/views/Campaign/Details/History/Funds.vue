@@ -1,5 +1,5 @@
 <template>
-    <div id="funds" class="tabs">
+    <main>
         <div v-if="budget">
             <h1>Use of Funds</h1>
 
@@ -63,8 +63,7 @@
                 There is no budget available
             </p>
         </div>
-
-    </div>
+    </main>
 </template>
 
 <script>

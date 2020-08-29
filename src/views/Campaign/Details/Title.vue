@@ -33,6 +33,7 @@
 export default {
     props: {
         campaign: Object,
+        isLoading: Boolean,
     },
     components: {
         //
@@ -48,11 +49,14 @@ export default {
             if (_campaign && _campaign.title) {
                 // console.log('CAMPAIGN HAS CHANGED, UPDATE TITLE!!', _campaign)
 
-                /* Update banner. */
-                this.updateBanner()
+                /* Validate publish flag. */
+                if (_campaign.isPublished) {
+                    /* Update banner. */
+                    this.updateBanner()
 
-                /* Update title. */
-                this.updateTitle()
+                    /* Update title. */
+                    this.updateTitle()
+                }
             }
         },
     },
@@ -69,7 +73,12 @@ export default {
          * Update Banner
          */
         updateBanner() {
-            if (this.campaign && this.campaign.media && this.campaign.media.banner) {
+            if (
+                this.campaign
+                && this.campaign.isPublished
+                && this.campaign.media
+                && this.campaign.media.banner
+            ) {
                 /* Set banner URL. */
                 this.bannerUrl = this.campaign.media.banner
             } else {
@@ -92,11 +101,17 @@ export default {
         }
     },
     created: function () {
-        /* Update banner. */
-        this.updateBanner()
+        /* Validate publish flag. */
+        if (this.campaign && this.campaign.isPublished) {
+            /* Update banner. */
+            this.updateBanner()
 
-        /* Update title. */
-        this.updateTitle()
+            /* Update title. */
+            this.updateTitle()
+        } else {
+            /* Set default banner. */
+            this.bannerUrl = 'https://i.imgur.com/9vNfGgt.jpg' // working @ desk
+        }
 
     },
 }

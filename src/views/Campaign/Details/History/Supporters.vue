@@ -1,5 +1,5 @@
 <template>
-    <div id="supporters" class="tabs">
+    <main>
         <h1>Featured Supporters</h1>
 
         <table class="mt-3" v-if="funders">
@@ -38,8 +38,7 @@
                 </tr>
             </tbody>
         </table>
-
-    </div>
+    </main>
 </template>
 
 <script>
@@ -215,10 +214,10 @@ export default {
 </script>
 
 <style scoped>
-#supporters table {
+main table {
   width: 100%;
 }
-#supporters table tr th, #supporters table tr td {
+main table tr th, main table tr td {
   border: 1px solid #ededed;
   padding: 15px;
 }

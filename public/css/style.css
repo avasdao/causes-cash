@@ -3764,12 +3764,6 @@ border: 0;
     font-weight: 400;
     margin-bottom: 8px;
 }
-#story .pane-box{
-    display: none;
-}
-#story .pane-box.active{
-    display: block;
-}
 .pane-tab{
     margin-bottom: 40px;
 }

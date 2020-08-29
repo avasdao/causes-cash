@@ -1,9 +1,9 @@
 <template>
     <main class="campaign-detail">
         <Header :campaign="campaign" />
-        <Title :campaign="campaign" />
-        <Content :campaign="campaign" />
-        <History :campaign="campaign" />
+        <Title :campaign="campaign" :isLoading="isLoading" />
+        <Content :campaign="campaign" :isLoading="isLoading" />
+        <History :campaign="campaign" :isLoading="isLoading" />
         <Footer />
     </main>
 </template>
@@ -55,6 +55,8 @@ export default {
             ownerSlug: null,
             slug: null,
             extSlug: null,
+
+            isLoading: null,
 
             campaign: null,
             campaignId: null,
@@ -142,6 +144,9 @@ export default {
 
     },
     created: async function () {
+        /* Set is loading flag. */
+        this.isLoading = true
+
         console.log('PARAMS', this.$route.params)
         console.log('QUERY', this.$route.query)
         console.log('HASH', this.$route.hash)
@@ -186,15 +191,20 @@ export default {
             this.campaign = await this.getCampaign(this.ownerSlug, this.slug)
             console.log('CAMPAIGN', this.campaign)
 
-            /* Set referrer id (to campaign). */
-            this.campaign.referrerId = this.referrerId
+            /* Validate publish flag. */
+            if (this.campaign && this.campaign.isPublished) {
+                /* Set referrer id (to campaign). */
+                this.campaign.referrerId = this.referrerId
 
-            /* Update assets. */
-            this.updateAssets()
+                /* Update assets. */
+                this.updateAssets()
+            }
+
         }
     },
     mounted: function () {
-        //
+        /* Set loading flag. */
+        this.isLoading = false
     },
 }
 </script>

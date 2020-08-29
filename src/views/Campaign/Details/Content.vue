@@ -1,6 +1,25 @@
 <template>
     <div class="container campaign-content">
-		<div class="campaign-item clearfix">
+
+		<div v-if="campaign && !campaign.isPublished" class="campaign-not-found clearfix">
+            <h1>CAMPAIGN NOT FOUND</h1>
+
+            <p class="p-3 mt-3">
+                <!-- We are sorry, but the campaign link you entered cannot be found. -->
+                Sorry we can't find that campaign.
+                Please check the link URL and try again.
+            </p>
+
+            <div class="col-12 col-md-7 form-group p-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search by name, title, or town/city"
+                >
+            </div>
+        </div>
+
+		<div v-if="campaign && campaign.isPublished" class="campaign-item clearfix">
 
             <div v-if="images" class="campaign-image">
 				<div id="campaign-gallery" class="campaign-slider">
@@ -171,7 +190,7 @@
 			</div>
 		</div>
 
-        <div class="campaign-item clearfix">
+        <div v-if="campaign && campaign.isPublished" class="campaign-item clearfix">
             <Reminder v-if="showReminder" :campaign="campaign" @cancel="showReminder = false; showActions = true" />
             <Direct v-if="showDirect" :campaign="campaign" @cancel="showDirect = false; showActions = true" />
             <Assurance v-if="showAssurance" :campaign="campaign" @cancel="showAssurance = false; showActions = true" />
@@ -223,6 +242,7 @@ function makePages() {
 export default {
     props: {
         campaign: Object,
+        isLoading: Boolean,
     },
     components: {
         Assurance,
@@ -247,7 +267,7 @@ export default {
     },
     watch: {
         campaign: function (_campaign) {
-            if (_campaign && _campaign.media) {
+            if (_campaign && _campaign.media && _campaign.isPublished) {
                 /* Wait a tick. */
                 setTimeout(() => {
                     $("#campaign-gallery").owlCarousel({

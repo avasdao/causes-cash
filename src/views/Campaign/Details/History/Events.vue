@@ -1,5 +1,5 @@
 <template>
-    <div class="col-lg-4">
+    <main class="col-lg-4">
         <div class="support support-campaign">
             <h3 class="support-campaign-title">
                 <span class="text-danger">LIVE</span> Events Timeline
@@ -66,7 +66,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

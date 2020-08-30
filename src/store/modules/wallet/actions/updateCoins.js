@@ -148,8 +148,15 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                 const satoshis = output.satoshis
                 // console.log('UPDATE COINS (satoshis)', satoshis)
 
+                /* Validate satoshis. */
+                if (satoshis === 0) {
+                    // FIXME: Is it okay to skip zero value outputs??
+                    return
+                }
+
                 /* Set script public key. */
                 const scriptPubKey = output.script
+                // console.log('UPDATE COINS (scriptPubKey)', scriptPubKey)
 
                 /* Validate script. */
                 if (!scriptPubKey) {
@@ -196,26 +203,20 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                         txid,
                         vout: index,
                         satoshis,
+                        chainid,
                         wif,
                         cashAddress: searchAddr,
                         legacyAddress: Nito.Address.toLegacyAddress(searchAddr),
                     }
                     // console.log('UPDATE COINS (coin)', coin)
 
-                    // const coins = getters.getCoinsBySessionId(sessionId)
-                    // console.log('COINS', sessionId, coins)
+                    /* Set coin id. */
+                    const coinid = `${coin.txid}:${coin.vout}`
 
                     /* Validate new coin. */
-                    if (coins && !coins[`${coin.txid}:${coin.vout}`]) {
-                        /* Create coin package. */
-                        const pkg = {
-                            // sessionId,
-                            chainid,
-                            coin,
-                        }
-
+                    if (coins && !coins[coinid]) {
                         /* Add new coin. */
-                        dispatch('addCoin', pkg)
+                        dispatch('addCoin', coin)
 
                         try {
                             /* Initialize coins. */

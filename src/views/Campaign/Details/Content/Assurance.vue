@@ -157,6 +157,7 @@ import { mapActions, mapGetters } from 'vuex'
 import Nito from 'nitojs'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
+import Swal from 'sweetalert2'
 
 export default {
     props: {
@@ -289,7 +290,6 @@ export default {
             const paymentUrl = `${this.pledgeAddress}?amount=${amount}`
 
             QRCode.toString(paymentUrl, params, (err, value) => {
-            // QRCode.toString(this.getAddress('causes'), params, (err, value) => {
                 if (err) {
                     return console.error('QR Code ERROR:', err)
                 }
@@ -308,14 +308,22 @@ export default {
             'addAssurance',
         ]),
 
+        ...mapActions('profile', [
+            'updateMeta',
+        ]),
+
         ...mapActions('utils', [
             'setClipboard',
             'toast',
         ]),
 
+        ...mapActions('wallet', [
+            'updateCoins',
+        ]),
+
         _setPledgeUSD(_satoshis) {
             /* Calculate USD. */
-            const usd = (_satoshis / 100000000) * this.usd
+            const usd = parseFloat(_satoshis / 10000000.0) * this.usd
 
             /* Set (formatted) value. */
             this.pledgeUSD = numeral(usd).format('$0,0.00')
@@ -397,10 +405,21 @@ export default {
                     }
 
                     /* Set message. */
-                    const message = `Your pledge has been accepted!`
+                    // const message = ``
 
                     /* Display notification. */
-                    this.toast(['Done!', message, 'success'])
+                    // this.toast(['Done!', message, 'success'])
+
+                    Swal.fire({
+                        title: 'Thank you!',
+                        text: 'Your generous pledge has been successfully accepted!',
+                        icon: 'info',
+                        // showConfirmButton: false,
+                        // allowOutsideClick: false,
+                        // allowEscapeKey: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                    })
                 } catch (err) {
                     console.error(err)
                 }

@@ -3,8 +3,8 @@
  *
  * Adds new coin details to its respective session.
  */
-const addCoin = ({ commit, getters }, _pkg) => {
-    console.info('Adding new coin...', _pkg) // eslint-disable-line no-console
+const addCoin = ({ commit, getters }, _coin) => {
+    console.info('Adding new coin...', _coin) // eslint-disable-line no-console
 
     /* Request indices. */
     const indices = getters.getIndices
@@ -16,7 +16,7 @@ const addCoin = ({ commit, getters }, _pkg) => {
     }
 
     /* Set chain id. */
-    const chainid = _pkg.chainid
+    const chainid = _coin.chainid
     // console.log('ADD NEW COIN (chainid):', chainid)
 
     /* Increment deposit account. */
@@ -48,12 +48,11 @@ const addCoin = ({ commit, getters }, _pkg) => {
         return
     }
 
-    /* Set coin. */
-    const coin = _pkg.coin
-    // console.log('ADD NEW COIN (coin):', coin)
+    /* Set coin id. */
+    const coinid = `${_coin.txid}:${_coin.vout}`
 
     /* Add coin to wallet. */
-    coins[`${coin.txid}:${coin.vout}`] = coin
+    coins[coinid] = _coin
 
     /* Commit updated indices`. */
     commit('setIndices', indices)

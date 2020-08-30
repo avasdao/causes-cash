@@ -3,11 +3,13 @@ import getAsset from './campaigns/getters/getAsset'
 import getCampaign from './campaigns/getters/getCampaign'
 import getCampaigns from './campaigns/getters/getCampaigns'
 import getFullfillment from './campaigns/getters/getFullfillment'
+import getSighashDigest from './campaigns/getters/getSighashDigest'
 import getSummary from './campaigns/getters/getSummary'
 
 /* Import modules (actions). */
 import addAssurance from './campaigns/actions/addAssurance'
 import addPayout from './campaigns/actions/addPayout'
+import buildPledgeAuth from './campaigns/actions/buildPledgeAuth'
 import updateAsset from './campaigns/actions/updateAsset'
 import updateCampaign from './campaigns/actions/updateCampaign'
 
@@ -32,6 +34,7 @@ const getters = {
     getCampaign,
     getCampaigns,
     getFullfillment,
+    getSighashDigest,
     getSummary,
 }
 
@@ -39,6 +42,7 @@ const getters = {
 const actions = {
     addAssurance,
     addPayout,
+    buildPledgeAuth,
     updateAsset,
     updateCampaign,
 }

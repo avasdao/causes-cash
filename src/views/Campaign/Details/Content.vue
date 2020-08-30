@@ -293,10 +293,26 @@ export default {
             'getAsset',
         ]),
 
+        ...mapGetters('profile', [
+            'getNickname',
+        ]),
+
         ...mapGetters('utils', [
             'getCategoryDisplay',
             'getMarkdown',
         ]),
+
+        /**
+         * Has Authorization
+         */
+        hasAuth() {
+            // TODO: Improve authorization scheme.
+            if (this.getNickname) {
+                return true
+            } else {
+                return false
+            }
+        },
 
         /**
          * Category
@@ -767,6 +783,12 @@ export default {
          * Add My Support
          */
         addMySupport() {
+            /* Validate user authorization. */
+            if (!this.hasAuth) {
+                /* Show error notif. */
+                return this.toast(['Oops!', 'Please sign in first to add your support', 'error'])
+            }
+
             /* Hide actions. */
             this.showActions = false
 

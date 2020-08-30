@@ -165,21 +165,14 @@
                 >
                     Apply to pledge
                 </a>
-
-                <!-- <a
-                    href="javascript://"
-                    class="btn-warning btn-block mt-3"
-                    @click="updateCoins"
-                >
-                    Update coins
-                </a> -->
             </div>
 
             <div v-if="pledgeAuth" class="col-12">
                 <textarea
                     class="pledge-auth mt-3"
-                    v-model="pledgeAuth">
-                </textarea>
+                    v-model="pledgeAuth"
+                    @click="copyAuth"
+                />
 
                 <a
                     href="javascript://"
@@ -493,18 +486,17 @@ export default {
         initBlockchain() {
             /* Initialize Nito blockchain. */
             this.blockchain = new Nito.Blockchain()
-            console.log('NITO BLOCKCHAIN', this.blockchain)
+            // console.log('NITO BLOCKCHAIN', this.blockchain)
 
             if (this.getAddress('causes')) {
                 /* Subscribe to address updates. */
-                const watching = this.blockchain
+                this.blockchain
                     .subscribe('address', this.getAddress('causes'))
-                console.log('CAUSES (watching):', watching)
             }
 
             /* Handle blockchain updates. */
             this.blockchain.on('update', (_msg) => {
-                console.log('DEPOSIT RECEIVED BLOCKCHAIN UPDATE (msg):', _msg)
+                console.log('FLIPSTARTER RECEIVED BLOCKCHAIN UPDATE (msg):', _msg)
 
                 /* Update coins. */
                 // FIXME: Why is this blocking the entire initial UI setup??
@@ -518,7 +510,7 @@ export default {
         async applyBalance() {
             /* Request accounts. */
             const accounts = this.getAccounts
-            console.log('ACCOUNTS', accounts)
+            // console.log('ACCOUNTS', accounts)
 
             /* Validate accounts. */
             if (!accounts) {
@@ -527,7 +519,7 @@ export default {
 
             /* Request coins. */
             const coins = this.getCoins
-            console.log('COINS', coins)
+            // console.log('COINS', coins)
 
             /* Validate coins. */
             if (!coins) {
@@ -535,27 +527,27 @@ export default {
             }
 
             /* Request metadata. */
-            const meta = await this.getMeta
-            console.log('FLIPSTARTER (meta):', meta)
+            // const meta = await this.getMeta
+            // console.log('FLIPSTARTER (meta):', meta)
 
             /* Filter spendable coins. */
             const spendable = Object.keys(coins).filter(coinid => {
                 return coins[coinid].status === 'active'
             })
-            console.log('SPENDABLE', spendable)
+            // console.log('SPENDABLE', spendable)
 
             /* Filter locked coins. */
             const locked = Object.keys(coins).filter(coinid => {
                 return coins[coinid].status === 'locked'
             })
-            console.log('LOCKED', locked)
+            // console.log('LOCKED', locked)
 
             /* Initialize pledge coin. */
             let pledgeCoin = null
 
             /* Set donation amount. */
             const donation = this.userPledge.donation.amount
-            console.log('DONATION', donation)
+            // console.log('DONATION', donation)
 
             /* Loop through all locked. */
             locked.forEach(coinid => {
@@ -575,7 +567,7 @@ export default {
                         pledgeCoin = coins[coinid]
                     }
                 })
-                console.log('PLEDGE COIN', pledgeCoin)
+                // console.log('PLEDGE COIN', pledgeCoin)
             }
 
             /* Validate pledge coin. */
@@ -593,17 +585,20 @@ export default {
                 /* Request pledge authorization. */
                 this.pledgeAuth = await this.buildPledgeAuth(pledgePkg)
 
-                /* Set message. */
-                const message = `Your coin has been locked!`
-
-                /* Display notification. */
-                this.toast(['Done!', message, 'success'])
-            } else {
-                // this.toast(['Oops!', '', 'error'])
+                /* Set clipboard. */
+                this.setClipboard(this.pledgeAuth)
 
                 Swal.fire({
+                    title: 'Success!',
+                    text: `Your pledged coin is now locked in your Causes wallet. Your pledge authorization has been copied to your clipboard. Next, paste your clipboard to the campaign's page as instructed.`,
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Done'
+                })
+            } else {
+                Swal.fire({
                     title: 'Wallet Error!',
-                    text: `Your wallet is missing the exact coin amount you specified in your pledge.`,
+                    text: `Your wallet is missing the exact coin amount you specified in your pledge. Scan the QR Code shown to send the exact pledge amount to your Causes wallet.`,
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Okay'
@@ -641,7 +636,7 @@ export default {
 
             const formattedBalance =
                 this.getFormattedValue(balance, marketPrice, 'USD')
-            console.log('NEW BALANCE IS', formattedBalance)
+            // console.log('NEW BALANCE IS', formattedBalance)
 
             /* Set wallet balance. */
             this.balance = formattedBalance
@@ -722,6 +717,9 @@ textarea {
     width: 100%;
     height: 100px;
     padding: 15px;
+}
+.pledge-auth {
+    cursor: grab;
 }
 
 .parsedJson {

@@ -168,6 +168,7 @@ export default {
     },
     data: () => {
         return {
+            blockchain: null,
             usd: null,
             satoshis: null,
 
@@ -180,6 +181,20 @@ export default {
             pledgeAuth: null,
         }
     },
+    watch: {
+        getCoins: async function (_coins) {
+            console.log('COINS HAS CHANGED', _coins)
+
+            if (_coins && this.userPledge) {
+                /* Update balance. */
+                // await this.updateBalance()
+
+                /* Apply balance. */
+                this.applyBalance()
+            }
+        },
+
+    },
     computed: {
         ...mapGetters([
             'getHelp',
@@ -190,7 +205,9 @@ export default {
         ]),
 
         ...mapGetters('wallet', [
+            'getAccounts',
             'getAddress',
+            'getCoins',
         ]),
 
         pledgeAddress() {
@@ -199,6 +216,52 @@ export default {
             } else {
                 return null
             }
+        },
+
+        /**
+         * User Pledge
+         */
+        userPledge() {
+            if (!this.pledgeDetails) {
+                return null
+            }
+
+            /* Decode details to base64. */
+            const b64 = Buffer.from(this.pledgeDetails, 'base64')
+
+            let json = null
+
+            try {
+                /* Parse json. */
+                json = JSON.parse(b64.toString())
+            } catch (err) {
+                console.error('JSON ERROR:', err)
+            }
+
+            /* Validate json. */
+            if (!json) {
+                try {
+                    /* Initialize counter. */
+                    let count = 0
+
+                    /* Initialize buffer. */
+                    const buf = Buffer.alloc(b64.length / 2)
+
+                    /* Convert from 16-bit to 8-bit. */
+                    // NOTE: The Flipstarter plugin encodes with 16-bit JavaScript.
+                    for (let i = 0; i < b64.length; i += 2) {
+                        buf[count++] = b64[i]
+                    }
+
+                    /* Parse json. */
+                    json = JSON.parse(buf.toString())
+                } catch (err) {
+                    console.error('JSON (CONVERTED) ERROR:', err)
+                }
+            }
+
+            /* Return json. */
+            return json
         },
 
         /**
@@ -306,6 +369,7 @@ export default {
     methods: {
         ...mapActions('campaigns', [
             'addAssurance',
+            'buildPledgeAuth',
         ]),
 
         ...mapActions('profile', [
@@ -323,7 +387,7 @@ export default {
 
         _setPledgeUSD(_satoshis) {
             /* Calculate USD. */
-            const usd = parseFloat(_satoshis / 10000000.0) * this.usd
+            const usd = parseFloat(_satoshis / 100000000.0) * this.usd
 
             /* Set (formatted) value. */
             this.pledgeUSD = numeral(usd).format('$0,0.00')
@@ -377,7 +441,7 @@ export default {
                 return
             }
 
-            /* Wait a tick. */
+            /* Wait a bit. */
             setTimeout(() => {
                 /* Initialize pledge authorization. */
                 let pledgeAuth = null
@@ -404,35 +468,138 @@ export default {
                         this.broadcast()
                     }
 
-                    /* Set message. */
-                    // const message = ``
-
-                    /* Display notification. */
-                    // this.toast(['Done!', message, 'success'])
-
                     Swal.fire({
                         title: 'Thank you!',
-                        text: 'Your generous pledge has been successfully accepted!',
-                        icon: 'info',
-                        // showConfirmButton: false,
-                        // allowOutsideClick: false,
-                        // allowEscapeKey: false,
-                        timer: 5000,
-                        timerProgressBar: true,
+                        text: 'Your generous pledge has been successfully accepted! Until this campaign completes, you can "unlock" and spend your coin at anytime from the Causes wallet.',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Done'
                     })
                 } catch (err) {
                     console.error(err)
                 }
+            }, 100)
+        },
 
-                // const previousTransactionHash = null
-                // const previousTransactionIndex = null
-                // const unlockScript = null
-                // const sequenceNumber = null
-                // const satoshis = null
-                // const alias = null
-                // const comment = null
-                // const createdAt = null
-            }, 10)
+        /**
+         * Initialize Blockchain
+         */
+        initBlockchain() {
+            /* Initialize Nito blockchain. */
+            this.blockchain = new Nito.Blockchain()
+            // console.log('NITO BLOCKCHAIN', this.blockchain)
+
+            if (this.getAddress('causes')) {
+                /* Subscribe to address updates. */
+                this.blockchain
+                    .subscribe('address', this.getAddress('causes'))
+            }
+
+            /* Handle blockchain updates. */
+            this.blockchain.on('update', (_msg) => {
+                console.log('ASSURANCE RECEIVED BLOCKCHAIN UPDATE (msg):', _msg)
+
+                /* Update coins. */
+                // FIXME: Why is this blocking the entire initial UI setup??
+                this.updateCoins()
+            })
+        },
+
+        /**
+         * Apply Balance
+         */
+        async applyBalance() {
+            /* Request accounts. */
+            const accounts = this.getAccounts
+            // console.log('ACCOUNTS', accounts)
+
+            /* Validate accounts. */
+            if (!accounts) {
+                return null
+            }
+
+            /* Request coins. */
+            const coins = this.getCoins
+            // console.log('COINS', coins)
+
+            /* Validate coins. */
+            if (!coins) {
+                return null
+            }
+
+            /* Request metadata. */
+            // const meta = await this.getMeta
+            // console.log('FLIPSTARTER (meta):', meta)
+
+            /* Filter spendable coins. */
+            const spendable = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'active'
+            })
+            // console.log('SPENDABLE', spendable)
+
+            /* Filter locked coins. */
+            const locked = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'locked'
+            })
+            // console.log('LOCKED', locked)
+
+            /* Initialize pledge coin. */
+            let pledgeCoin = null
+
+            /* Set donation amount. */
+            const donation = this.userPledge.donation.amount
+            // console.log('DONATION', donation)
+
+            /* Loop through all locked. */
+            locked.forEach(coinid => {
+                if (coins[coinid].satoshis === donation) {
+                    /* Set source coin. */
+                    pledgeCoin = coins[coinid]
+                }
+            })
+
+            /* Validate pledge coin. */
+            if (!pledgeCoin) {
+                /* Loop through all spendables. */
+                // FIXME FOR DEVELOPMENT ONLY
+                spendable.forEach(coinid => {
+                    if (coins[coinid].satoshis === donation) {
+                        /* Set source coin. */
+                        pledgeCoin = coins[coinid]
+                    }
+                })
+                // console.log('PLEDGE COIN', pledgeCoin)
+            }
+
+            /* Validate pledge coin. */
+            if (pledgeCoin) {
+                /* Set pledge. */
+                const source = 'flipstarter'
+
+                /* Build pledge package. */
+                const pledgePkg = {
+                    coin: pledgeCoin,
+                    userPledge: this.userPledge,
+                    source,
+                }
+
+                /* Request pledge authorization. */
+                this.pledgeAuth = await this.buildPledgeAuth(pledgePkg)
+
+                /* Set clipboard. */
+                // this.setClipboard(this.pledgeAuth)
+
+                /* Handle authorization. */
+                this.handleAuth()
+            } else {
+                // Swal.fire({
+                //     title: 'Wallet Error!',
+                //     text: `Your wallet is missing the exact coin amount you specified in your pledge. Scan the QR Code shown to send the exact pledge amount to your Causes wallet.`,
+                //     icon: 'error',
+                //     confirmButtonColor: '#3085d6',
+                //     confirmButtonText: 'Okay'
+                // })
+            }
         },
 
         async broadcast() {
@@ -520,16 +687,20 @@ export default {
 
     },
     created: async function () {
-        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        // console.info(`Market price (USD)`, this.usd)
-
         /* Initialize pledge range. */
         this.pledgeRange = 5 // FIXME
 
         /* Initialize pledge. */
         this.pledgeUSD = 1 // FIXME
+
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        // console.info(`Market price (USD)`, this.usd)
+
+        /* Update pledge. */
         this.onPledgeUpdate()
 
+        /* Set assurance id. */
+        // FIXME: Will we support more than one??
         const assuranceid = 0
 
         /* Validate assurance. */
@@ -538,9 +709,20 @@ export default {
             this.pledgeGoal = this.campaign.assurances[assuranceid].recipient.satoshis
             console.log('PLEDGE GOAL', this.pledgeGoal)
         }
+
+        /* Initialize blockchain. */
+        this.initBlockchain()
+
     },
     mounted: function () {
         //
+    },
+    beforeDestroy() {
+        /* Validate blockchain. */
+        if (this.blockchain) {
+            /* Unsubscribe from blockchain. */
+            this.blockchain.unsubscribe()
+        }
     },
 }
 </script>

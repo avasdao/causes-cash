@@ -463,7 +463,6 @@ export default {
     },
     methods: {
         ...mapActions('campaigns', [
-            'assembleSighashDigest',
             'buildPledgeAuth',
         ]),
 

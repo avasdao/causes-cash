@@ -67,7 +67,10 @@
                 <h3>{{title}}</h3>
 
                 <div class="campaign-description clearfix">
-                    <p v-html="summary" />
+                    <!-- <p v-html="summary" /> -->
+                    <p>
+                        {{summary}}
+                    </p>
                 </div>
 
                 <div class="campaign-author">
@@ -390,7 +393,8 @@ export default {
             /* Validate summary. */
             if (summary) {
                 /* Return summary (in markdown). */
-                return this.getMarkdown(summary)
+                // return this.getMarkdown(summary)
+                return summary
             } else {
                 return null
             }

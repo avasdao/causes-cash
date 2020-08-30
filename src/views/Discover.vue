@@ -92,7 +92,7 @@
                                         </h3>
 
                                         <div class="campaign-description">
-                                            {{featured.description}}
+                                            {{featured.summary}}
                                         </div>
 
                                         <div class="staff-picks-author">
@@ -117,31 +117,26 @@
                                                 <span :style="{ width: getCompletedPct(featured, true) + '%'}"></span>
                                             </div>
 
-                                            <div class="process-info">
-                                                <div class="process-pledged">
-                                                    <span>{{formatRequested(featured)}}</span>
-                                                    requested
+                                            <div class="row process-info">
+                                                <div class="col process-pledged">
+                                                    <span>{{fundingGoal(featured)}}</span>
+                                                    funding goal
                                                 </div>
 
-                                                <div class="process-pledged">
-                                                    <span>{{formatPledged(featured)}}</span>
+                                                <div class="col process-pledged">
+                                                    <span>{{fundingPledged(featured)}}</span>
                                                     pledged
                                                 </div>
 
-                                                <div class="process-funded">
-                                                    <span>{{getFormatFunded(featured)}}</span>
-                                                    funded
-                                                </div>
-
-                                                <div class="process-time">
-                                                    <span>{{featured.backers}}</span>
+                                                <div class="col process-time">
+                                                    <span>{{numSupporters(featured)}}</span>
                                                     backers
                                                 </div>
 
-                                                <!-- <div class="process-time">
-                                                    <span>{{featured.updatedAt}}</span>
-                                                    days ago
-                                                </div> -->
+                                                <div class="col process-funded">
+                                                    <span>{{remaining(featured).time}}</span>
+                                                    {{remaining(featured).suffix}}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -186,21 +181,24 @@
                                         </div>
 
                                         <div class="process">
-                                            <div class="process-info">
-                                                <div class="raised">
+                                            <div class="row process-info">
+                                                <!-- <div class="raised">
                                                     <span :style="{ width: getCompletedPct(cause, true) + '%'}"></span>
+                                                </div> -->
+
+                                                <div class="col process-pledged text-center">
+                                                    <strong>{{fundingGoal(cause)}}</strong>
+                                                    <br />goal
                                                 </div>
 
-                                                <div class="process-pledged">
-                                                    <span>{{formatPledged(cause)}}</span>pledged
+                                                <div class="col process-funded text-center">
+                                                    <strong>{{fundingPledged(cause)}}</strong>
+                                                    <br />pledged
                                                 </div>
 
-                                                <div class="process-funded">
-                                                    <span>{{getFormatFunded(cause)}}</span>funded
-                                                </div>
-
-                                                <div class="process-time">
-                                                    <span>{{cause.updatedAt}}</span>days ago
+                                                <div class="col process-time text-center">
+                                                    <strong>{{remaining(cause).time}}</strong>
+                                                    <br />{{remaining(cause).suffix}}
                                                 </div>
                                             </div>
                                         </div>
@@ -233,6 +231,8 @@
 import { mapGetters } from 'vuex'
 
 /* Import modules. */
+import moment from 'moment'
+import Nito from 'nitojs'
 import numeral from 'numeral'
 
 /* Import components. */
@@ -250,6 +250,8 @@ export default {
     },
     data: () => {
         return {
+            usd: null,
+
             causes: [],
             campaigns: [],
             featured: null,
@@ -326,6 +328,170 @@ export default {
         },
 
         /**
+         * Funding Goal
+         */
+        fundingGoal(_campaign) {
+            console.log('FUNDING GOAL', _campaign);
+            if (_campaign && _campaign.assurances) {
+                const assuranceid = 0
+
+                /* Set recipients. */
+                const recipient = _campaign.assurances[assuranceid].recipient
+
+                /* Validate recipients. */
+                if (!recipient) {
+                    return '$0.00'
+                }
+
+                const calc = (recipient.satoshis / 100000000 * this.usd)
+
+                return numeral(calc).format('$0,0[.]00')
+            }
+
+            return '$0.00'
+        },
+
+        /**
+         * Funding Pledged
+         */
+        fundingPledged(_campaign) {
+            if (_campaign && (_campaign.assurances || _campaign.payouts)) {
+                if (_campaign.assurances) {
+                    const assuranceid = 0
+
+                    /* Set pledges. */
+                    const pledges = _campaign.assurances[assuranceid].pledges
+
+                    /* Validate recipients. */
+                    if (!pledges) {
+                        return '$0.00'
+                    }
+
+                    /* Initialize total. */
+                    let pledgeTotal = 0
+
+                    /* Loop through ALL pledges. */
+                    Object.keys(pledges).forEach(pledgeid => {
+                        /* Add satoshis to total. */
+                        pledgeTotal += pledges[pledgeid].satoshis
+                    })
+
+                    /* Calculate USD total. */
+                    const totalUSD = (pledgeTotal / 100000000 * this.usd)
+
+                    /* Return formatted value. */
+                    return numeral(totalUSD).format('$0,0.00')
+                }
+
+                if (_campaign.payouts) {
+                    /* Set funders. */
+                    const funders = _campaign.payouts.funders
+                    // console.log('FUNDERS', funders);
+
+                    /* Validate recipients. */
+                    if (!funders) {
+                        return '$0.00'
+                    }
+
+                    /* Initialize total. */
+                    let funderTotal = 0
+
+                    /* Loop through ALL funders. */
+                    Object.keys(funders).forEach(funderid => {
+                        /* Add satoshis to total. */
+                        funderTotal += funders[funderid].monthlyPledgeAmt
+                    })
+                    // console.log('FUNDER TOTAL', funderTotal);
+
+                    /* Calculate USD total. */
+                    const totalUSD = (funderTotal / 1000000 * this.usd)
+                    // console.log('TOTAL USD', totalUSD);
+
+                    /* Return formatted value. */
+                    return numeral(totalUSD).format('$0,0.00')
+                }
+            }
+
+            return '$0.00'
+        },
+
+        numSupporters(_campiagn) {
+            if (_campiagn && (_campiagn.assurances || _campiagn.payouts)) {
+                if (_campiagn.assurances) {
+                    const assuranceid = 0
+
+                    /* Set pledges. */
+                    const pledges = _campiagn.assurances[assuranceid].pledges
+
+                    /* Validate recipients. */
+                    if (!pledges) {
+                        return 0
+                    }
+
+                    /* Return count. */
+                    return Object.keys(pledges).length
+                }
+
+                if (_campiagn.payouts) {
+                    /* Set funders. */
+                    const funders = _campiagn.payouts.funders
+
+                    /* Validate recipients. */
+                    if (!funders) {
+                        return 0
+                    }
+
+                    /* Return count. */
+                    // FIXME: Limit to `nextPayoutAt` > 0
+                    return Object.keys(funders).length
+                }
+            }
+
+            return '$0.00'
+        },
+
+        remaining(_campaign) {
+            if (_campaign && (_campaign.assurances || _campaign.payouts)) {
+                if (_campaign.assurances) {
+                    const assuranceid = 0
+
+                    /* Set remaining time. */
+                    const expiresAt = _campaign.assurances[assuranceid].expiresAt
+                    console.log('expiresAt', expiresAt, moment().unix());
+
+                    /* Set (remaining) time. */
+                    let time = expiresAt - moment().unix()
+
+                    /* Initialize suffix. */
+                    let suffix = null
+
+                    /* Calculate minimum value. */
+                    if (time > 86400) {
+                        time = parseInt(time / 60 / 60 / 24)
+                        suffix = 'days to go'
+                    } else if (time > 3600) {
+                        time = parseInt(time / 60 / 60)
+                        suffix = 'hours to go'
+                    } else if (time > 60) {
+                        time = parseInt(time / 60)
+                        suffix = 'mins to go'
+                    } else {
+                        suffix = 'ending now'
+                    }
+
+                    /* Return time time w/ suffix. */
+                    return { time, suffix }
+                }
+
+                if (_campaign.payouts) {
+                    return { time: 0, suffix: 'TODO' }
+                }
+            }
+
+            return { time: 'n/a', suffix: 'remaining' }
+        },
+
+        /**
          * Make Featured
          */
         async makeFeatured() {
@@ -346,7 +512,7 @@ export default {
 
             /* Set featured campaign. */
             // this.featured = this.getCampaign(campaignId)
-            this.featured = await this.getCampaign('bitcoinverde','bitcoin-verde-node-development')
+            this.featured = await this.getCampaign('bchplease','hush-your-money')
         },
 
         /**
@@ -477,11 +643,15 @@ export default {
         /* Initialize number of campaigns displayed. */
         this.numDisplayed = 9
 
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        // console.info(`Market price (USD)`, this.usd)
+
         /* Make a featured campaign. */
         await this.makeFeatured()
 
         /* Initialize all qualified campaigns. */
         this.campaigns = [
+            // 'hush-your-money-60aabe8b',
             'bch-pizza-0e8c00641daa',
             'bchd-node-development-8331b54814ea',
             'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
@@ -542,6 +712,7 @@ export default {
         // 'veracrypt-4158c2f0eda0',
         /* Request campaigns. */
         const campaigns = await Promise.all([
+            // this.getCampaign('bchplease', 'hush-your-money'),
             this.getCampaign('bchpizza', 'bch-for-pizza'),
             this.getCampaign('bitcoinverde', 'bitcoin-verde-node-development'),
             this.getCampaign('blockchainpoker', 'blockchain-poker'),
@@ -600,7 +771,18 @@ export default {
 }
 /* TODO: Add media queries. */
 
-.process-info div span {
+/* .process-info div span {
     margin-right: 60px !important;
+} */
+
+.process-info div, .process-info div span {
+    /* font-size: 0.9em !important; */
+    /* text-align: center !important; */
+    margin: 0;
+    padding: 0;
+}
+.process-info strong {
+    font-weight: 500;
+    font-size: 1.2em;
 }
 </style>

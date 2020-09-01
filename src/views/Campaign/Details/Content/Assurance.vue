@@ -90,7 +90,7 @@
                         </div>
 
                         <div class="col">
-                            <button class="btn btn-primary btn-block" @click="walletPay">
+                            <button class="btn btn-primary btn-block" @click="walletPledge">
                                 Use Wallet
                             </button>
                         </div>
@@ -158,6 +158,12 @@ import Nito from 'nitojs'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
 import Swal from 'sweetalert2'
+
+/* Set dust amount (satoshis). */
+const DUST = 546
+
+/* Set fee amount (satoshis). */
+const FEE = 270
 
 export default {
     props: {
@@ -382,6 +388,7 @@ export default {
         ]),
 
         ...mapActions('wallet', [
+            'preparePledge',
             'updateCoins',
         ]),
 
@@ -527,10 +534,6 @@ export default {
                 return null
             }
 
-            /* Request metadata. */
-            // const meta = await this.getMeta
-            // console.log('FLIPSTARTER (meta):', meta)
-
             /* Filter spendable coins. */
             const spendable = Object.keys(coins).filter(coinid => {
                 return coins[coinid].status === 'active'
@@ -661,28 +664,137 @@ export default {
         },
 
         /**
-         * Wallet Pay
+         * Wallet Pledge
          */
-        walletPay() {
-            this.toast(['Oops!', 'Your wallet balance is not enough', 'error'])
+        walletPledge() {
+            Swal.fire({
+                title: 'Please Wait!',
+                text: 'Your pledge is being prepared and locked in your Causes wallet. This should ONLY take a few moments...',
+                imageUrl: require('@/assets/identity-setup.png'), // 500 x 400
+                imageWidth: 500,
+                imageHeight: 300,
+                imageAlt: 'Processing identity photo.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+            })
 
-            // Swal.fire({
-            //     title: 'Are you sure?',
-            //     text: "You won't be able to revert this!",
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Yes, delete it!'
-            // }).then((result) => {
-            //     if (result.value) {
-            //         Swal.fire(
-            //             'Deleted!',
-            //             'Your file has been deleted.',
-            //             'success'
-            //         )
-            //     }
-            // })
+            /* Request accounts. */
+            const accounts = this.getAccounts
+            console.log('ACCOUNTS', accounts)
+
+            /* Validate accounts. */
+            if (!accounts) {
+                return null
+            }
+
+            /* Request coins. */
+            const coins = this.getCoins
+            console.log('COINS', coins)
+
+            /* Validate coins. */
+            if (!coins) {
+                return null
+            }
+
+            const spendable = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'active'
+            })
+            console.log('SPENDABLE', spendable)
+
+            const locked = Object.keys(coins).filter(coinid => {
+                return coins[coinid].status === 'locked'
+            })
+            console.log('LOCKED', locked)
+
+            /* Initialized locked flag. */
+            let isAlreadyLocked = false
+
+            /* Initialize source coin. */
+            let sourceCoin = null
+
+            /* Set donation amount. */
+            const donation = this.userPledge.donation.amount
+            console.log('DONATION AMOUNT', donation)
+
+            /* Loop through all locked. */
+            locked.forEach(coinid => {
+                if (coins[coinid].satoshis === donation) {
+                    /* Set flag. */
+                    isAlreadyLocked = true
+
+                    /* Set source coin. */
+                    sourceCoin = coins[coinid]
+                }
+            })
+
+            /* Loop through all spendables. */
+            // FIXME FOR DEVELOPMENT ONLY
+            spendable.forEach(coinid => {
+                if (coins[coinid].satoshis === donation) {
+                    /* Set flag. */
+                    isAlreadyLocked = true
+
+                    /* Set source coin. */
+                    sourceCoin = coins[coinid]
+                }
+            })
+
+            /* Validate pledge availability. */
+            if (!isAlreadyLocked) {
+                console.error('MAKE THE DEPOSIT')
+
+                // TODO Sort spendables by value low->high.
+
+                /* Handle all spendable coins. */
+                for (let i = 0; i < spendable.length; i++) {
+                    /* Set coin. */
+                    const coin = coins[spendable[i]]
+
+                    /* Validate coin value. */
+                    if (coin.satoshis > donation + DUST + FEE) {
+                        /* Set source coin. */
+                        sourceCoin = coin // FIXME: Search for minimum sufficient coin(s).
+                        console.log('SOURCE COIN', sourceCoin)
+
+                        break
+                    }
+                }
+
+                /* Validate source coin. */
+                if (sourceCoin) {
+                    const pkg = {
+                        sourceCoin,
+                        donation,
+                    }
+
+                    /* Prepare pledge. */
+                    this.preparePledge(pkg)
+                } else {
+                    Swal.fire({
+                        title: 'Wallet Error!',
+                        text: `Your wallet has insufficient funds for the amount you specified in your pledge. Please lower your pledge amount, OR scan the QR Code shown to send the exact pledge amount to your Causes wallet.`,
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Okay'
+                    })
+                    // throw new Error(`Could not find a source coin for [ ${donation} ]`)
+                }
+            } else {
+                console.error('RE-USE CURRENT DEPOSIT', sourceCoin)
+
+                // FIXME: We must be able to support identical pledge amounts
+                //        for independent campaigns (see issue #18)
+
+                /* Apply balance. */
+                this.applyBalance(sourceCoin)
+            }
+
+            /* Close the popup. */
+            // setTimeout(() => {
+            //     Swal.close()
+            // }, 5000)
+
         },
 
     },

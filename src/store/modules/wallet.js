@@ -16,6 +16,7 @@ import getMnemonic from './wallet/getters/getMnemonic'
 import addCoin from './wallet/actions/addCoin'
 import destroyWallet from './wallet/actions/destroyWallet'
 import initWallet from './wallet/actions/initWallet'
+import preparePledge from './wallet/actions/preparePledge'
 import updateCoin from './wallet/actions/updateCoin'
 import updateCoins from './wallet/actions/updateCoins'
 import updateOutbox from './wallet/actions/updateOutbox'
@@ -83,6 +84,7 @@ const actions = {
     addCoin,
     destroyWallet,
     initWallet,
+    preparePledge,
     updateCoin,
     updateCoins,
     updateOutbox,

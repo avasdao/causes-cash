@@ -213,6 +213,17 @@ export default {
             },
         }
     },
+    watch: {
+        getCoins: function (_coins) {
+            console.log('COINS HAS CHANGED', _coins)
+
+            if (_coins) {
+                /* Update balance. */
+                this.updateBalance()
+            }
+        },
+
+    },
     computed: {
         ...mapGetters([
             'getHelp',

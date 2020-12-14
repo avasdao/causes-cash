@@ -139,7 +139,7 @@ export default {
         balance: null,
         usd: null,
         fiatContribution: null,
-        satoshiContribution: null,
+        // satoshiContribution: null,
 
         alias: null,
         comment: null,
@@ -150,7 +150,7 @@ export default {
         pledgeMin: null,
         pledgeMax: null,
         pledgeAmountUSD: null,
-        walletBalanceUSD: null,
+        // walletBalanceUSD: null,
 
         // interval: null,
         // isPlaying: false,
@@ -169,12 +169,6 @@ export default {
             console.log('CAMPAIGN HAS CHANGED', _campaign)
 
             if (_campaign) {
-                /* Request BCH/USD market price. */
-                if (!this.usd) {
-                    this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-                    console.log('USD', this.usd)
-                }
-
                 this.initCampaign()
             }
         },
@@ -321,10 +315,16 @@ export default {
             })
         },
 
-        initCampaign() {
+        async initCampaign() {
             this.totalContractOutputValue = this.campaign.goal
             this.currentCommittedSatoshis = 0
             this.currentContributionCount = 0
+
+            /* Request BCH/USD market price. */
+            if (!this.usd) {
+                this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+                console.log('USD', this.usd)
+            }
 
             if (this.campaign.pledges) {
                 /* Initialize total funds. */
@@ -373,24 +373,24 @@ export default {
             console.log('CURRENT FLOOR', currentFloor, currentFloorUsd)
 
             // Calculate how far over (or under) committed this contribution makes the contract.
-            // const overCommitment = Math.round(
-            //   this.currentCommittedSatoshis +
-            //     totalSatoshis -
-            //     (this.totalContractOutputValue + this.currentMinerFee)
-            // );
-            // console.log('OVER COMMITMENT', overCommitment)
+            const currentCeiling = Math.round(
+              this.currentCommittedSatoshis +
+                this.donationAmount -
+                (this.totalContractOutputValue + this.currentMinerFee)
+            ) * -1
+            const currentCeilingUsd = Math.ceil((currentCeiling / 100000000.0) * this.usd)
+            console.log('CURRENT CEILING', currentCeiling, currentCeilingUsd)
 
-            // this.pledgeMin = 1.00
             this.pledgeMin = currentFloorUsd
-            this.pledgeMax = 5000.00
+            this.pledgeMax = currentCeilingUsd
 
             // this.pledgeAmountUSD = 10.00
             this.pledgeAmountUSD = currentFloorUsd
 
-            this.walletBalanceUSD = 3000.00
+            // this.walletBalanceUSD = 3000.00
 
             this.fiatContribution = '$0.00'
-            this.satoshiContribution = '0'
+            // this.satoshiContribution = '0'
 
         },
 
@@ -427,27 +427,27 @@ export default {
 
         min() {
             // NOTE: Verify campaign pledge remaining
-            this.pledgeAmountUSD = 1.00
+            this.pledgeAmountUSD = this.pledgeMin
         },
 
         quarter() {
             // NOTE: Verify campaign pledge remaining
-            this.pledgeAmountUSD = this.walletBalanceUSD * 0.25
+            this.pledgeAmountUSD = this.pledgeMax * 0.25
         },
 
         half() {
             // NOTE: Verify campaign pledge remaining
-            this.pledgeAmountUSD = this.walletBalanceUSD * 0.50
+            this.pledgeAmountUSD = this.pledgeMax * 0.50
         },
 
         threeQuarter() {
             // NOTE: Verify campaign pledge remaining
-            this.pledgeAmountUSD = this.walletBalanceUSD * 0.75
+            this.pledgeAmountUSD = this.pledgeMax * 0.75
         },
 
         max() {
             // NOTE: Verify campaign pledge remaining
-            this.pledgeAmountUSD = this.walletBalanceUSD
+            this.pledgeAmountUSD = this.pledgeMax
         },
 
         makePledge() {

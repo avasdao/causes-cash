@@ -68,7 +68,7 @@
                                 <span class="subheading">{{numShares(event.id)}}</span>
                             </v-row> -->
                             <v-row align="center" justify="end">
-                                <h3>{{timeAgo(event.timestamp)}}</h3>
+                                <h3>{{timeAgo(event.createdAt)}}</h3>
                             </v-row>
                         </v-list-item>
                     </v-card-actions>
@@ -243,7 +243,7 @@ export default {
         },
 
         bgColor(_event) {
-            if (_event.isRevoked) {
+            if (_event.isRevoked && _event.type === 'revoked_contribution') {
                 return '#cc3333'
             } else {
                 // return '#8dc351'

@@ -618,6 +618,7 @@ export default {
                 /* Add campaign id. */
                 // pledgeAuth.campaignid = this.campaign.id
                 pledgeAuth.campaignid = this.campaign.id
+                pledgeAuth.hostname = this.campaign.hostname
                 pledgeAuth.flipstarter = true
                 pledgeAuth.satoshis = pledgeCoin.satoshis
                 console.log('PLEDGE AUTH', pledgeAuth)

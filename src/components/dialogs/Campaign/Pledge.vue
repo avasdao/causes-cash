@@ -111,6 +111,10 @@
                     dark
                 ></v-text-field>
             </v-card-text>
+
+            <!-- debug:
+            <br />{{debugOutput}} -->
+
         </v-card>
     </main>
 </template>
@@ -154,6 +158,9 @@ export default {
         userType: null,
         userTypes: null,
 
+        isBitcoinWalletApi: null,
+        // debugOutput: null,
+
     }),
     watch: {
         campaign: async function (_campaign) {
@@ -167,13 +174,13 @@ export default {
         getCoins: async function (_coins) {
             console.log('COINS HAS CHANGED', _coins)
 
-            // if (this.hasAuth && _coins && this.userPledge) {
-            //     /* Update balance. */
-            //     await this.updateBalance()
-            //
-            //     /* Apply balance. */
-            //     this.applyBalance()
-            // }
+            if (_coins && this.userPledge) {
+                /* Update balance. */
+                await this.updateBalance()
+
+                /* Apply balance. */
+                this.applyBalance()
+            }
         },
 
     },
@@ -368,6 +375,29 @@ export default {
 
         },
 
+        initLinkApi() {
+            window._bitcoinWalletApi.receiveMessage = (_message) => {
+                console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
+                // this.debugOutput = JSON.stringify(_message, null, 2)
+
+                /* Validate message. */
+                if (_message) {
+                    /* Handle asset sending. */
+                    if (_message.command === 'sendAssets') {
+                        /* Handle canceled send. */
+                        if (_message.error && _message.error.type === 'CANCELED') {
+                            Swal.close()
+                        }
+
+                        // TODO: Add more callback handlers.
+                    }
+
+                    // Add more method handlers
+                }
+            }
+
+        },
+
         decrement () {
             this.pledgeAmountUSD--
         },
@@ -411,13 +441,13 @@ export default {
 
             Swal.fire({
                 title: 'Waiting for coins...',
-                text: 'Once your pledged coins are sent, your pledge will be prepared.',
+                text: 'Once your coins are viewable on the network, your pledge will be prepared and broadcasted.',
                 icon: 'info',
                 confirmButtonColor: '#cc3333',
                 confirmButtonText: 'Cancel',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                // showConfirmButton: false,
+                showConfirmButton: false,
             })
 
             if (window._bitcoinWalletApi) {
@@ -465,34 +495,24 @@ export default {
                     web4bch.bch.sendTransaction(txParams, (err, txid) => {
                         if (err) {
                             if (err.message.includes('User denied transaction signature')) {
-                                // return reject({
-                                //     type: 'CANCELED',
-                                //     data: err.message,
-                                // })
+                                // TODO: Add a special user message for this error type
+                                Swal.close()
+
                                 return console.error('DENIED:', err)
                             }
 
-                            // return reject({
-                            //     type: 'SEND_ERROR',
-                            //     data: err.message,
-                            // })
+
+                            /* Close any open alerts. */
+                            Swal.close()
+
                             return console.error('ERROR:', err)
                         } else {
-                            // resolve({txid})
                             console.log('TXID', txid)
                         }
                     })
 
                 } catch (err) {
                     console.error(err)
-
-                    if (this.pledgeAmount > 1000000000) {
-                        this.showingInsufficientSheet = true
-                        console.log('OPENING INSUFICIENT');
-                    } else {
-                        this.showingPledgeSheet = true
-                        console.log('OPENING PLEDGE');
-                    }
                 }
 
             }
@@ -606,7 +626,7 @@ export default {
 
                 Swal.fire({
                     title: 'Success!',
-                    text: `Your pledged coin is now locked in your Causes wallet. Your pledge authorization has been automatically submitted to the campaign page.`,
+                    text: `Your pledged coin is now locked in your Causes wallet. Your pledge authorization has been automatically submitted to the campaign page. It could take up to 3 minutes to update.`,
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Done',
@@ -754,8 +774,6 @@ export default {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
         console.log('USD', this.usd)
 
-        console.log('HAS AUTH', this.hasAuth);
-
         /* Validate user authorization. */
         if (this.hasAuth) {
             /* Initialize blockchain. */
@@ -766,6 +784,16 @@ export default {
 
             // this.applyBalance()
         }
+
+        if (window._bitcoinWalletApi) {
+            this.isBitcoinWalletApi = true
+
+            /* Initialize Bitcoin.com Link API. */
+            this.initLinkApi()
+        } else {
+            this.isBitcoinWalletApi = false
+        }
+
 
     },
     mounted: function () {

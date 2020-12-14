@@ -69,7 +69,7 @@ import Swal from 'sweetalert2'
 
 export default {
     props: {
-        isOpen: Boolean,
+        campaignid: String,
     },
     components: {
         // Events,
@@ -92,6 +92,7 @@ export default {
             console.log('CAMPAIGN HAS CHANGED', _campaign)
 
             if (_campaign) {
+                /* Close alert once ANY campaign is loaded. */
                 Swal.close()
             }
         },
@@ -110,6 +111,10 @@ export default {
         ...mapGetters('utils', [
             'getMarkdown'
         ]),
+
+        isOpen() {
+            return this.campaignid !== null
+        },
 
         goal() {
             if (!this.campaign) {

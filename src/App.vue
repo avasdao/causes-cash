@@ -94,7 +94,7 @@
 
         <CampaignDialog
             v-if="campaignDialog"
-            :isOpen="campaignDialog"
+            :campaignid="campaignDialog"
             @close="closeCampaign"
         />
 
@@ -225,7 +225,7 @@ export default {
 
         getCampaignDisplay: function (_campaignid) {
             console.log('CAMPAIGN DISPLAY CHANGED', _campaignid)
-            this.campaignDialog = !this.campaignDialog
+            this.campaignDialog = _campaignid
         },
 
         getPIFDisplay: function (_campaignid) {
@@ -357,8 +357,8 @@ export default {
         },
 
         closeCampaign() {
-            this.campaignDialog = false
-            // this.$store.commit('showCampaign', null)
+            this.campaignDialog = null
+            this.$store.commit('showCampaign', null)
         },
 
         closePIF() {

@@ -192,6 +192,7 @@ export default {
             },
 
             isBitcoinWalletApi: null,
+            // debugOutput: null,
         }
     },
     watch: {
@@ -616,6 +617,8 @@ export default {
         if (window._bitcoinWalletApi) {
             this.isBitcoinWalletApi = true
             // this.debugOutput = 'IS LINK API'
+
+            /* Initialize Bitcoin.com Link API. */
             this.initLinkApi()
         } else {
             this.isBitcoinWalletApi = false

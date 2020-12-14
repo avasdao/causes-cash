@@ -94,7 +94,7 @@
                 <v-text-field
                     class="my-3"
                     label="Your web link"
-                    value=""
+                    v-model="webLink"
                     hint="This will display a (http/https) link from your pledge"
                     dark
                 ></v-text-field>
@@ -106,7 +106,7 @@
                 <v-text-field
                     class="my-3"
                     label="Your SLP address"
-                    value=""
+                    v-model="slpAddress"
                     hint="May be used to offer rewards for supporters"
                     dark
                 ></v-text-field>
@@ -157,6 +157,8 @@ export default {
 
         userType: null,
         userTypes: null,
+        webLink: null,
+        slpAddress: null,
 
         isBitcoinWalletApi: null,
         // debugOutput: null,
@@ -167,6 +169,12 @@ export default {
             console.log('CAMPAIGN HAS CHANGED', _campaign)
 
             if (_campaign) {
+                /* Request BCH/USD market price. */
+                if (!this.usd) {
+                    this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+                    console.log('USD', this.usd)
+                }
+
                 this.initCampaign()
             }
         },
@@ -627,11 +635,15 @@ export default {
                 console.log('PLEDGE AUTHORIZATION', pledgeAuth)
 
                 /* Add campaign id. */
-                // pledgeAuth.campaignid = this.campaign.id
                 pledgeAuth.campaignid = this.campaign.id
                 pledgeAuth.hostname = this.campaign.hostname
-                pledgeAuth.flipstarter = true
                 pledgeAuth.satoshis = pledgeCoin.satoshis
+                pledgeAuth.userType = this.userType && this.userType.value
+                pledgeAuth.webLink = this.webLink
+                pledgeAuth.slpAddress = this.slpAddress
+
+                // FIXME: Detect campaign type.
+                pledgeAuth.flipstarter = true
                 console.log('PLEDGE AUTH', pledgeAuth)
 
                 this.addAssurance(pledgeAuth)

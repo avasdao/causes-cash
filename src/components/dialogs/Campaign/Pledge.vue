@@ -224,10 +224,6 @@ export default {
             return 'red'
         },
 
-        animationDuration () {
-            return `${60 / this.pledgeAmountUSD}s`
-        },
-
         displayAmountUSD() {
             return numeral(this.pledgeAmountUSD).format('0,0')
         },
@@ -238,11 +234,10 @@ export default {
             }
 
             // FIXME: Guard agains the `this.usd` price changing during `applyBalance` process
-            // FIXME: We MUST use bigInt lib to allow amount over 42 BCH
+            // FIXME: Do we need to use bigInt lib to allow amount over 42 BCH??
             const amount = parseInt(this.pledgeAmountUSD / this.usd * 100000000)
             console.log('DONATION AMOUNT', amount)
             return amount
-            // return 2431361
         },
 
         /**
@@ -324,11 +319,27 @@ export default {
             this.currentContributionCount = 0
 
             if (this.campaign.pledges) {
-                this.currentContributionCount = Object.keys(this.campaign.pledges).length
+                /* Initialize total funds. */
+                let totalFunds = 0
 
-                Object.keys(this.campaign.pledges).forEach(_pledgeid => {
-                    this.currentCommittedSatoshis += this.campaign.pledges[_pledgeid].satoshis
+                /* Loop through all pledges. */
+                Object.keys(this.campaign.pledges).forEach(pledgeid => {
+                    /* Filter out all revoked pledges. */
+                    if (!this.campaign.pledges[pledgeid].isRevoked) {
+                        /* Increment contribution count. */
+                        this.currentContributionCount++
+
+                        /* Add satoshis to total funds. */
+                        totalFunds += this.campaign.pledges[pledgeid].satoshis
+                    }
                 })
+
+                /* Set total committed number of satoshis. */
+                this.currentCommittedSatoshis = totalFunds
+
+                // Object.keys(this.campaign.pledges).forEach(_pledgeid => {
+                //     this.currentCommittedSatoshis += this.campaign.pledges[_pledgeid].satoshis
+                // })
             }
 
             const numRecipients = 1

@@ -192,13 +192,19 @@ export default {
                 return 0
             }
 
-            let total = 0
+            /* Initialize total funds. */
+            let totalFunds = 0
 
-            Object.keys(_campaign.pledges).forEach(_pledgeid => {
-                total += _campaign.pledges[_pledgeid].satoshis
+            Object.keys(_campaign.pledges).forEach(pledgeid => {
+                /* Filter out all revoked pledges. */
+                if (!_campaign.pledges[pledgeid].isRevoked) {
+                    /* Add satoshis to total funds. */
+                    totalFunds += _campaign.pledges[pledgeid].satoshis
+                }
             })
 
-            return total
+            /* Return total funds. */
+            return totalFunds
         },
 
         fundedDisplay(_campaign) {
@@ -235,7 +241,15 @@ export default {
                 return '0 pledges'
             }
 
-            return `${Object.keys(_campaign.pledges).length} pledges`
+            let totalPledges = 0
+
+            Object.keys(_campaign.pledges).forEach(pledgeid => {
+                if (!_campaign.pledges[pledgeid].isRevoked) {
+                    totalPledges++
+                }
+            })
+
+            return `${totalPledges} pledges`
         },
 
         expiresDisplay(_campaign) {

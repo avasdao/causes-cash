@@ -122,8 +122,6 @@
 </template>
 
 <script>
-/* global _bitcoinWalletApi */
-
 /* Initialize vuex. */
 // import { mapActions, mapGetters } from 'vuex'
 
@@ -209,40 +207,7 @@ export default {
                     },
                 }
 
-                _bitcoinWalletApi.receiveMessage = (_message) => {
-                    console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
-                    this.debugOutput = JSON.stringify(_message, null, 2)
-
-                  try {
-                    if (typeof _message === 'string') {
-                      _message = JSON.parse(_message);
-                    }
-                    const {
-                      messageId,
-                      data,
-                      error,
-                    } = _message;
-
-                    const messageQueue = {}
-                    const messageResolver = messageQueue[messageId];
-                    if (messageResolver) {
-                      const { resolve, timeout, reject } = messageResolver;
-                      timeout && clearTimeout(timeout);
-                      error ? reject(error) : resolve(data);
-                    }
-                  } catch (err) {
-                      console.error(err)
-                  }
-                }
-
                 window._bitcoinWalletApi.messageHandler(JSON.stringify(message));
-
-                // const messageQueue = {}
-                // const isBrowser = typeof window !== 'undefined';
-                // const safeWindow = isBrowser ? window : global;
-
-                // safeWindow._bitcoinWalletApi = safeWindow._bitcoinWalletApi ? safeWindow._bitcoinWalletApi : {};
-                // _receiveMessage;
 
             } else {
                 try {
@@ -329,32 +294,6 @@ export default {
                     messageId,
                     command,
                     data,
-                }
-
-                _bitcoinWalletApi.receiveMessage = (_message) => {
-                    console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
-                    this.debugOutput = JSON.stringify(_message, null, 2)
-
-                  try {
-                    if (typeof _message === 'string') {
-                      _message = JSON.parse(_message);
-                    }
-                    const {
-                      messageId,
-                      data,
-                      error,
-                    } = _message;
-
-                    const messageQueue = {}
-                    const messageResolver = messageQueue[messageId];
-                    if (messageResolver) {
-                      const { resolve, timeout, reject } = messageResolver;
-                      timeout && clearTimeout(timeout);
-                      error ? reject(error) : resolve(data);
-                    }
-                  } catch (err) {
-                      console.error(err)
-                  }
                 }
 
                 window._bitcoinWalletApi.messageHandler(JSON.stringify(message));

@@ -116,8 +116,6 @@
 </template>
 
 <script>
-/* global _bitcoinWalletApi */
-
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
@@ -169,13 +167,13 @@ export default {
         getCoins: async function (_coins) {
             console.log('COINS HAS CHANGED', _coins)
 
-            if (_coins && this.userPledge) {
-                /* Update balance. */
-                await this.updateBalance()
-
-                /* Apply balance. */
-                this.applyBalance()
-            }
+            // if (this.hasAuth && _coins && this.userPledge) {
+            //     /* Update balance. */
+            //     await this.updateBalance()
+            //
+            //     /* Apply balance. */
+            //     this.applyBalance()
+            // }
         },
 
     },
@@ -186,6 +184,7 @@ export default {
 
         ...mapGetters('profile', [
             'getMeta',
+            'getNickname',
         ]),
 
         ...mapGetters('utils', [
@@ -197,6 +196,18 @@ export default {
             'getAddress',
             'getCoins',
         ]),
+
+        /**
+         * Has Authorization
+         */
+        hasAuth() {
+            // TODO: Improve authorization scheme.
+            if (this.getNickname) {
+                return true
+            } else {
+                return false
+            }
+        },
 
         color () {
             if (this.pledgeAmountUSD < 50) return 'grey'
@@ -391,42 +402,25 @@ export default {
         },
 
         makePledge() {
+            if (!this.hasAuth) {
+                this.$emit('close')
+                return this.$store.commit('showProfile', true)
+            }
+
             console.log('DONATION AMOUNT', this.donationAmount)
 
+            Swal.fire({
+                title: 'Waiting for coins...',
+                text: 'Once your pledged coins are sent, your pledge will be prepared.',
+                icon: 'info',
+                confirmButtonColor: '#cc3333',
+                confirmButtonText: 'Cancel',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                // showConfirmButton: false,
+            })
+
             if (window._bitcoinWalletApi) {
-                /**
-                 * Message Handler
-                 *
-                 * Handles incoming messages from wallet api.
-                 */
-                _bitcoinWalletApi.receiveMessage = (_message) => {
-                    console.log('SOMETHING CAME BACK FROM THE WALLET', _message)
-                    this.debugOutput = JSON.stringify(_message, null, 2)
-
-                    try {
-                        if (typeof _message === 'string') {
-                            _message = JSON.parse(_message)
-                        }
-
-                        const {
-                            messageId,
-                            data,
-                            error,
-                        } = _message
-
-                        const messageQueue = {}
-                        const messageResolver = messageQueue[messageId]
-
-                        if (messageResolver) {
-                            const { resolve, timeout, reject } = messageResolver
-                            timeout && clearTimeout(timeout)
-                            error ? reject(error) : resolve(data)
-                        }
-                    } catch (err) {
-                        console.error(err)
-                    }
-                }
-
                 /* Set command. */
                 const command = 'sendAssets'
 
@@ -453,13 +447,6 @@ export default {
 
                 /* Call wallet api. */
                 window._bitcoinWalletApi.messageHandler(JSON.stringify(message))
-
-                // const messageQueue = {}
-                // const isBrowser = typeof window !== 'undefined';
-                // const safeWindow = isBrowser ? window : global;
-
-                // safeWindow._bitcoinWalletApi = safeWindow._bitcoinWalletApi ? safeWindow._bitcoinWalletApi : {};
-                // _receiveMessage;
 
             } else {
                 try {
@@ -517,6 +504,19 @@ export default {
          */
         async applyBalance() {
             console.log('APPLY BALANCE (donationAmount):', this.donationAmount);
+
+            Swal.fire({
+                title: 'Please Wait!',
+                text: 'Your pledge is being added to the network. This should ONLY take a few moments...',
+                imageUrl: require('@/assets/identity-setup-mobile.png'), // 500 x 320
+                imageWidth: 500,
+                imageHeight: 200,
+                imageAlt: 'Added new Causes pledge to network...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+            })
+
             /* Request accounts. */
             const accounts = this.getAccounts
             // console.log('ACCOUNTS', accounts)
@@ -609,7 +609,7 @@ export default {
                     text: `Your pledged coin is now locked in your Causes wallet. Your pledge authorization has been automatically submitted to the campaign page.`,
                     icon: 'success',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Done'
+                    confirmButtonText: 'Done',
                 })
             } else {
                 Swal.fire({
@@ -617,7 +617,7 @@ export default {
                     text: `Your wallet is missing the exact coin amount you specified in your pledge. Scan the QR Code shown to send the exact pledge amount to your Causes wallet.`,
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Okay'
+                    confirmButtonText: 'Okay',
                 })
             }
         },
@@ -754,16 +754,18 @@ export default {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
         console.log('USD', this.usd)
 
-        const causes = this.getAddress('causes')
-        console.log('CAUSES ADDRESS', causes)
+        console.log('HAS AUTH', this.hasAuth);
 
-        /* Initialize blockchain. */
-        this.initBlockchain()
+        /* Validate user authorization. */
+        if (this.hasAuth) {
+            /* Initialize blockchain. */
+            this.initBlockchain()
 
-        /* Update balance. */
-        this.updateBalance()
+            /* Update balance. */
+            this.updateBalance()
 
-        // this.applyBalance()
+            // this.applyBalance()
+        }
 
     },
     mounted: function () {

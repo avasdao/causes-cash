@@ -95,7 +95,7 @@
         <CampaignDialog
             v-if="campaignDialog"
             :isOpen="campaignDialog"
-            @close="campaignDialog = false"
+            @close="closeCampaign"
         />
 
         <CreateDialog
@@ -125,7 +125,7 @@
         <ProfileDialog
             v-if="profileDialog"
             :isOpen="profileDialog"
-            @close="profileDialog = false"
+            @close="closeProfile()"
         />
 
         <SearchDialog
@@ -236,6 +236,12 @@ export default {
             }
         },
 
+        getProfileDisplay: function (_showing) {
+            console.log('PROFILE DISPLAY CHANGED', _showing)
+
+            this.profileDialog = _showing
+        },
+
     },
     computed: {
         ...mapGetters([
@@ -244,6 +250,7 @@ export default {
             'getCurrentPage',
             'getHeaderPhoto',
             'getPIFDisplay',
+            'getProfileDisplay',
             'getSheetVisibility',
             'getTitleVisibility',
         ]),
@@ -349,8 +356,18 @@ export default {
             this.$store.commit('showAd', null)
         },
 
+        closeCampaign() {
+            this.campaignDialog = false
+            // this.$store.commit('showCampaign', null)
+        },
+
         closePIF() {
 
+        },
+
+        closeProfile() {
+            this.profileDialog = false
+            this.$store.commit('showProfile', false)
         },
 
         /**
@@ -437,7 +454,8 @@ export default {
         },
 
         loadProfile() {
-            this.profileDialog = !this.profileDialog
+            // this.profileDialog = !this.profileDialog
+            this.profileDialog = true
         },
 
         loadSearch() {

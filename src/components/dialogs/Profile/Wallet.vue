@@ -87,17 +87,16 @@
                             <td v-html="coinLabelDisplay(coin)"></td>
                             <td class="text-center">{{coinValueDisplay(coin)}}</td>
                             <td class="actions text-right">
-                                <a href="javascript://">
+                                <v-btn class="mx-1" rounded small outlined color="green" @click="openExplorer(coin.details)">
                                     View
-                                </a>
+                                </v-btn>
 
                                 <span v-if="coin.flags.spendable">
-                                    |
-                                    <a href="javascript://" @click="send(coin.details)">
+                                    <v-btn class="mx-1" rounded small outlined color="green" @click="send(coin.details)">
                                         Send
-                                    </a>
+                                    </v-btn>
 
-                                    <span v-if="coin.flags.shuffled">
+                                    <!-- <span v-if="coin.flags.shuffled">
                                         |
                                         <a href="javascript://">
                                             Re-shuffle
@@ -108,14 +107,17 @@
                                         <a href="javascript://">
                                             Shuffle
                                         </a>
-                                    </span>
+                                    </span> -->
                                 </span>
 
                                 <span v-if="coin.flags.locked">
-                                    |
-                                    <a href="javascript://" @click="unlock(coin.id)">
+                                    <v-btn v-if="isBitcoinWalletApi" class="mx-1" rounded small outlined color="red" @click="reclaim(coin)">
+                                        Cancel
+                                    </v-btn>
+
+                                    <v-btn v-if="!isBitcoinWalletApi" class="mx-1" rounded small outlined color="orange" @click="unlock(coin.id)">
                                         Unlock
-                                    </a>
+                                    </v-btn>
                                 </span>
                             </td>
                         </tr>
@@ -144,12 +146,13 @@
             </div>
         </div>
 
+        <!-- debug:
+        <br />{{debugOutput}} -->
+
     </v-card>
 </template>
 
 <script>
-/* global _bitcoinWalletApi */
-
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
@@ -187,6 +190,8 @@ export default {
                 satoshis: null,
                 notes: null,
             },
+
+            isBitcoinWalletApi: null,
         }
     },
     watch: {
@@ -256,8 +261,13 @@ export default {
                     /* Set id. */
                     const id = `${coin.txid}:${coin.vout}`
 
+                    let label = null
                     /* Set label. */
-                    const label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
+                    if (window._bitcoinWalletApi) {
+                        label = `${coin.txid.slice(0, 4)} ... ${coin.txid.slice(-4)} : ${coin.vout}`
+                    } else {
+                        label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
+                    }
 
                     /* Initialize flags. */
                     const flags = {}
@@ -376,6 +386,36 @@ export default {
                 /* Update balance. */
                 this.updateBalance()
             })
+        },
+
+        initLinkApi() {
+            window._bitcoinWalletApi.receiveMessage = (_message) => {
+                console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
+                // this.debugOutput = JSON.stringify(_message, null, 2)
+
+                if (_message && _message.data) {
+                    this.output.address = _message.data.address
+                }
+            }
+
+            const command = 'getAddress'
+            const messageId = command + (Date.now() + Math.random()).toString()
+            const data = {
+                protocol: 'BCH',
+            }
+
+            const message = {
+                messageId,
+                command,
+                data,
+            }
+
+            window._bitcoinWalletApi.messageHandler(JSON.stringify(message));
+
+        },
+
+        openExplorer(_details) {
+            window.open(`https://explorer.bitcoin.com/bch/tx/${_details.txid}`)
         },
 
         /**
@@ -556,59 +596,11 @@ export default {
          * Allows the user to reclaim funds from their Causes wallet
          * back into their Bitcoin.com / Badger wallet.
          */
-        reclaim() {
-            if (window._bitcoinWalletApi) {
-                const command = 'getAddress'
-                const messageId = command + (Date.now() + Math.random()).toString()
-                const data = {
-                    protocol: 'BCH',
-                }
-
-                const message = {
-                    messageId,
-                    command,
-                    data,
-                }
-
-                _bitcoinWalletApi.receiveMessage = (_message) => {
-                    console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
-                    this.debugOutput = JSON.stringify(_message, null, 2)
-
-                  try {
-                    if (typeof _message === 'string') {
-                      _message = JSON.parse(_message);
-                    }
-                    const {
-                      messageId,
-                      data,
-                      error,
-                    } = _message;
-
-                    const messageQueue = {}
-                    const messageResolver = messageQueue[messageId];
-                    if (messageResolver) {
-                      const { resolve, timeout, reject } = messageResolver;
-                      timeout && clearTimeout(timeout);
-                      error ? reject(error) : resolve(data);
-                    }
-                  } catch (err) {
-                      console.error(err)
-                  }
-                }
-
-                window._bitcoinWalletApi.messageHandler(JSON.stringify(message));
-            } else {
-                // const url = 'bitcoincash:?r=https://bitpay.com/i/JbouTMQLKY4BCnRecDdD7R'
-                // const data = {
-                //     paymentRequestUrl: url,
-                // }
-
-                const app = this.$f7
-                const title = 'Payment Error'
-                const msg = `This feature is ONLY available on mobile wallets.`
-                app.dialog.alert(msg, title)
-            }
-
+        async reclaim(_coin) {
+            // this.debugOutput = `Reclaiming ${_coinid}`
+            // this.debugOutput = JSON.stringify(_coin)
+            await this.unlock(_coin.id)
+            await this.send(_coin.details)
         },
 
     },
@@ -621,11 +613,33 @@ export default {
         /* Initialize mnemonic flag. */
         this.showMnemonic = false
 
+        if (window._bitcoinWalletApi) {
+            this.isBitcoinWalletApi = true
+            // this.debugOutput = 'IS LINK API'
+            this.initLinkApi()
+        } else {
+            this.isBitcoinWalletApi = false
+            // this.debugOutput = 'IS NOT LINK API'
+
+            try {
+                const web4bch = new window.Web4Bch(window.web4bch.currentProvider)
+                console.log('web4bch-2', web4bch)
+
+                const address = web4bch.bch.defaultAccount
+                console.log('ADDRESS', address)
+
+                this.output.address = address
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
         /* Initialize blockchain. */
         this.initBlockchain()
 
         /* Update balance. */
         this.updateBalance()
+
     },
     beforeDestroy() {
         console.log('WALLET IS BEING DESTROYED!!!');

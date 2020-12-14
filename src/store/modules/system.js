@@ -12,6 +12,7 @@ import getInbox from './system/getters/getInbox'
 import getLocale from './system/getters/getLocale'
 import getOutbox from './system/getters/getOutbox'
 import getPIFDisplay from './system/getters/getPIFDisplay'
+import getProfileDisplay from './system/getters/getProfileDisplay'
 import getSheetVisibility from './system/getters/getSheetVisibility'
 import getTitleVisibility from './system/getters/getTitleVisibility'
 
@@ -107,6 +108,8 @@ const state = {
 
     pifDisplay: null,
 
+    profileDisplay: null,
+
     /**
      * Schema Version
      *
@@ -134,6 +137,7 @@ const getters = {
     getLocale,
     getOutbox,
     getPIFDisplay,
+    getProfileDisplay,
     getSheetVisibility,
     getTitleVisibility,
 }
@@ -180,6 +184,11 @@ const mutations = {
     showPIF(state, _campaignid) {
         console.log('SHOWING PIF', _campaignid)
         state.pifDisplay = _campaignid
+    },
+    showProfile(state, _showing) {
+        console.log('SHOWING PROFILE', _showing)
+
+        state.profileDisplay = _showing
     },
 }
 

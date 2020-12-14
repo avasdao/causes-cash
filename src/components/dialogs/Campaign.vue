@@ -34,7 +34,11 @@
 
                 <p v-html="summary" />
 
-                <Pledge class="my-10" :campaign="campaign" />
+                <Pledge
+                    class="my-10"
+                    :campaign="campaign"
+                    @close="$emit('close')"
+                />
 
                 <p v-html="description" />
 
@@ -61,6 +65,7 @@ import { mapActions, mapGetters } from 'vuex'
 // import Financials from './Campaign/Financials'
 import Gallery from './Campaign/Gallery'
 import Pledge from './Campaign/Pledge'
+import Swal from 'sweetalert2'
 
 export default {
     props: {
@@ -82,6 +87,16 @@ export default {
         description: null,
         media: null,
     }),
+    watch: {
+        campaign: async function (_campaign) {
+            console.log('CAMPAIGN HAS CHANGED', _campaign)
+
+            if (_campaign) {
+                Swal.close()
+            }
+        },
+
+    },
     computed: {
         ...mapGetters([
             'getHelp',
@@ -145,10 +160,20 @@ export default {
             this.description = this.getMarkdown(this.campaign.description)
 
             this.media = this.campaign.media
+
+            Swal.close()
         }
     },
     mounted: function () {
-        //
+        Swal.fire({
+            title: 'Loading Campaign',
+            text: 'Please wait a moment...',
+            icon: 'info',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+        })
+
     },
 }
 </script>

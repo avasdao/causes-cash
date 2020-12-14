@@ -7,8 +7,9 @@ import createPersistedState from 'vuex-persistedstate'
 
 /* Import (local) modules. */
 import campaigns from './modules/campaigns'
+import discover from './modules/discover'
+import events from './modules/events'
 import profile from './modules/profile'
-import storage from './modules/storage'
 import system from './modules/system'
 import utils from './modules/utils'
 import wallet from './modules/wallet'
@@ -19,8 +20,9 @@ Vue.use(Vuex)
 /* Set modules. */
 const modules = {
     campaigns,
+    discover,
+    events,
     profile,
-    storage,
     system,
     utils,
     wallet,

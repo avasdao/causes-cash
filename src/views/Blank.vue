@@ -1,33 +1,25 @@
 <template>
-    <main>
-        <!-- content goes here -->
-        <i class="fa fa-question-circle-o" aria-hidden="true" @click="getHelp('campaigns/payment')"></i>
-    </main>
+    <v-container>
+        <h1>Blank Page</h1>
+
+        <v-skeleton-loader
+            class="my-3"
+            type="card-heading, list-item-avatar, divider, list-item-three-line, actions"
+            elevation=2
+            boilerplate
+        ></v-skeleton-loader>
+
+    </v-container>
 </template>
 
 <script>
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
-/* Import components. */
-// import Name from '@/components/Name.vue'
-
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
-
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
-
 export default {
-    components: {
+    data: () => ({
         //
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
+    }),
     computed: {
         ...mapGetters([
             'getHelp',
@@ -48,7 +40,7 @@ export default {
         //
     },
     mounted: function () {
-        // return this.toast(['Done!', 'Blank mounted successfully!', 'success'])
+        //
     },
 }
 </script>

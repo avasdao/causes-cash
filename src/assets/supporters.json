@@ -1,0 +1,92 @@
+[
+    {
+        "label": "Bitcoin.com",
+        "usd": "88,777.00",
+        "satoshis": "1234567890",
+        "iconUrl": "https://i.imgur.com/WUTIf5i.png"
+    },
+    {
+        "label": "Marc De Mesel",
+        "usd": "88,777.00",
+        "satoshis": "1234567890",
+        "iconUrl": "https://i.imgur.com/XhrbQxN.png"
+    },
+    {
+        "label": "General Protocols",
+        "usd": "13,370.00",
+        "satoshis": "1234567890",
+        "iconUrl": "https://i.imgur.com/Y9XvD2x.png"
+    },
+    {
+        "label": "SLP Foundation",
+        "usd": "13,370.00",
+        "satoshis": "1234567890",
+        "iconUrl": "https://i.imgur.com/zX5Ym5N.png"
+    },
+    {
+        "label": "SatoshiDice",
+        "usd": "13,370.00",
+        "satoshis": "1234567890",
+        "iconUrl": "https://i.imgur.com/OkCrVZn.png"
+    },
+    {
+        "label": "Roger Ver",
+        "usd": "88,777.00",
+        "satoshis": "1234567890",
+        "iconUrl": "https://i.imgur.com/onuEYzE.png"
+    },
+    {
+        "label": "Shomari",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": "https://i.imgur.com/HFW3J4y.png"
+    },
+    {
+        "label": "woosaiy",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    },
+    {
+        "label": "ErdoganTalk",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    },
+    {
+        "label": "George Donnelly",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    },
+    {
+        "label": "molecular",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    },
+    {
+        "label": "tula_s",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    },
+    {
+        "label": "emergent_reasons",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    },
+    {
+        "label": "scotty321",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    },
+    {
+        "label": "The00Dustin",
+        "usd": "1,337.00",
+        "satoshis": "1234567890",
+        "iconUrl": ""
+    }
+]

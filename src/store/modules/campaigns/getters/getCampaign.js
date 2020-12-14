@@ -13,8 +13,14 @@ const getCampaign = (state, getters, rootState, rootGetters) => async (_ownerSlu
     /* Retrieve API provider. */
     const API_PROVIDER = rootGetters.getApiProvider
 
+    let target = null
+
     /* Set target. */
-    const target = `${API_PROVIDER}/campaigns/${_ownerSlug}/${_campaignSlug}`
+    if(_campaignSlug) {
+        target = `${API_PROVIDER}/campaigns/${_ownerSlug}/${_campaignSlug}`
+    } else {
+        target = `${API_PROVIDER}/campaigns/${_ownerSlug}`
+    }
     // console.log('TARGET', target)
 
     /* Request campaign. */

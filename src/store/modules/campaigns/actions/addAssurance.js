@@ -13,8 +13,14 @@ const addAssurance = async ({ rootGetters }, _assurance) => {
     /* Retrieve API provider. */
     const API_PROVIDER = rootGetters.getApiProvider
 
+    let target = null
+
     /* Set api target. */
-    const target = `${API_PROVIDER}/assurances`
+    if (_assurance.flipstarter) {
+        target = `${API_PROVIDER}/assurances/flipstarter`
+    } else {
+        target = `${API_PROVIDER}/assurances`
+    }
 
     const result = await superagent
         .post(target)

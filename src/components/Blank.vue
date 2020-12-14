@@ -1,7 +1,6 @@
 <template>
     <main>
-        <!-- content goes here -->
-        <i class="fa fa-question-circle-o" aria-hidden="true" @click="getHelp('campaigns/payment')"></i>
+        <!-- Blank component -->
     </main>
 </template>
 
@@ -9,25 +8,10 @@
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
-/* Import components. */
-// import Name from '@/components/Name.vue'
-
-/* Import icons. */
-// import '@/compiled-icons/<icon-name>'
-
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
-
 export default {
-    components: {
+    data: () => ({
         //
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
+    }),
     computed: {
         ...mapGetters([
             'getHelp',
@@ -36,6 +20,7 @@ export default {
         // ...mapGetters('campaigns', [
         //     'getCampaign',
         // ]),
+
     },
     methods: {
         ...mapActions('utils', [
@@ -47,7 +32,7 @@ export default {
         //
     },
     mounted: function () {
-        // return this.toast(['Done!', 'Blank mounted successfully!', 'success'])
+        //
     },
 }
 </script>

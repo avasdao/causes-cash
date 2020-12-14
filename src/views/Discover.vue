@@ -1,788 +1,365 @@
 <template>
-    <main class="faq">
-        <Header />
+    <v-container>
 
-        <!-- <div class="page-title background-page"> -->
-        <div class="page-title" :style="{ 'background-image': 'url(' + bannerImg + ')' }">
-			<div class="container">
-				<h1>Discover Causes</h1>
+        <v-card color="#952175" dark class="mt-0 mb-5" @click="loadMyCoinParty()">
+            <!-- <div class="d-flex flex-no-wrap justify-space-between"> -->
+                <v-avatar class="mt-5 mr-5 ml-1 float-right" size="75" tile>
+                    <v-img src="https://i.imgur.com/ycNrWFC.png"></v-img>
+                </v-avatar>
 
-				<div class="breadcrumbs">
-					<ul>
-						<li>
-                            <router-link to="/">Home</router-link>
-                            <span>/</span>
-                        </li>
+                <div>
+                    <v-card-title class="headline">
+                        <h2>MyCoinParty</h2>
+                    </v-card-title>
 
-                        <li>
-                            Discover Causes
-                        </li>
-					</ul>
-				</div>
-			</div>
-		</div>
+                    <v-card-subtitle>
+                        <h2 class="mt-3">
+                            Bringing CashFusion+ to your <u>mobile</u> wallets
+                        </h2>
+                    </v-card-subtitle>
 
-        <section>
-            <div class="campaigns-action clearfix">
-                <div class="container">
-                    <div class="sort">
-                        <span>Sort by:</span>
+                    <v-card-subtitle class="mt-n5 ml-5">
+                        <strong>DECEMBER 18TH <small>THRU</small> 31ST</strong>
+                    </v-card-subtitle>
 
-                        <ul>
-                            <li class="active">
-                                <a href="javascript://">Recent Project</a>
-                            </li>
-
-                            <li>
-                                <a href="javascript://">Most Project</a>
-                            </li>
-                        </ul>
+                    <div class="ml-3 mt-5 mt-n3">
+                        <strong><small>Choose your adventure:</small></strong>
                     </div>
 
-                    <div class="filter">
-                        <span>Filter by:</span>
+                    <v-card-actions>
+                        <div class="mb-1 d-flex">
+                            <v-btn class="ml-5 mr-4" outlined rounded small>
+                                <span class="action-button">Fun &amp; Games</span>
+                            </v-btn>
 
-                        <form action="javascript://">
-                            <div class="field-select">
-                                <select name="s">
-                                    <option value="">All Stages</option>
-                                    <option value="">Pending</option>
-                                    <option value="">Cancel</option>
-                                    <option value="">Completed</option>
-                                </select>
-                            </div>
-
-                            <div class="field-select">
-                                <select name="s">
-                                    <option value="">All Category</option>
-                                    <option value="">Design & Art</option>
-                                    <option value="">Book</option>
-                                    <option value="">Perfomances</option>
-                                    <option value="">Technology</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- .campaigns-action -->
-            <div class="campaigns">
-                <div class="container">
-                    <div class="campaign-content">
-                        <div class="row">
-
-                            <!-- Start featured. -->
-                            <div v-if="featured" class="col-lg-12">
-                                <div class="campaign-big-item clearfix">
-                                    <a href="javascript://" class="campaign-big-image" @click="loadDetails(featured)">
-                                        <!-- <img src="@/assets/img/campaign-big-item.jpg" alt=""> -->
-                                        <img :src="featured.media.main" class="featured-img" alt="">
-                                    </a>
-
-                                    <div class="campaign-big-box">
-                                        <a href="javascript://" class="category" @click="loadCategory(featured)">
-                                            {{displayCategory(featured)}}
-                                        </a>
-
-                                        <h3 class="featured-title">
-                                            <a href="javascript://" @click="loadDetails(featured)">
-                                                {{featured.title}}
-                                            </a>
-                                        </h3>
-
-                                        <div class="campaign-description">
-                                            {{featured.summary}}
-                                        </div>
-
-                                        <div class="staff-picks-author">
-                                            <div class="author-profile">
-                                                <a class="author-avatar" :href="weblink(featured)" target="_blank">
-                                                    <img :src="avatar(featured)" alt="">
-                                                </a>
-                                                by
-                                                <a class="author-name" :href="featured.ownerLink" target="_blank">
-                                                    {{displayOwnerName(featured)}}
-                                                </a>
-                                            </div>
-
-                                            <div class="author-address">
-                                                <span class="ion-location"></span>
-                                                {{displayLocation(featured)}}
-                                            </div>
-                                        </div>
-
-                                        <div class="process">
-                                            <div class="raised">
-                                                <span :style="{ width: getCompletedPct(featured, true) + '%'}"></span>
-                                            </div>
-
-                                            <div class="row process-info">
-                                                <div class="col process-pledged">
-                                                    <span>{{fundingGoal(featured)}}</span>
-                                                    funding goal
-                                                </div>
-
-                                                <div class="col process-pledged">
-                                                    <span>{{fundingPledged(featured)}}</span>
-                                                    pledged
-                                                </div>
-
-                                                <div class="col process-time">
-                                                    <span>{{numSupporters(featured)}}</span>
-                                                    backers
-                                                </div>
-
-                                                <div class="col process-funded">
-                                                    <span>{{remaining(featured).time}}</span>
-                                                    {{remaining(featured).suffix}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End featured. -->
-
-                            <!-- Start causes. -->
-                            <div
-                                v-for="cause of causes"
-                                :key="cause.id"
-                                class="col-lg-4 col-md-6 col-sm-6 col-6 filterinteresting filterpopular filterlatest">
-                                <div class="campaign-item">
-                                    <!-- <a class="overlay" href="javascript://" @click="loadDetails(cause)">
-                                        <img :src="cause.coverImgUrl" alt="">
-                                        <span class="ion-ios-search-strong"></span>
-                                    </a> -->
-                                    <a class="category" href="javascript://" @click="loadDetails(cause)">
-                                        <img :src="displayImage(cause)" alt="">
-                                    </a>
-
-                                    <div class="campaign-box">
-                                        <a class="category" href="javascript://" @click="loadCategory(cause)">
-                                            {{displayCategory(cause)}}
-                                        </a>
-
-                                        <h3>
-                                            <a href="javascript://" @click="loadDetails(cause)">
-                                                {{cause.title}}
-                                            </a>
-                                        </h3>
-
-                                        <div class="campaign-description">
-                                            {{cause.summary}}
-                                        </div>
-
-                                        <div class="campaign-author">
-                                            <a class="author-icon" :href="weblink(cause)" target="_blank">
-                                                <img :src="avatar(cause)" alt="">
-                                                by {{displayOwnerName(cause)}}
-                                            </a>
-                                        </div>
-
-                                        <div class="process">
-                                            <div class="row process-info">
-                                                <!-- <div class="raised">
-                                                    <span :style="{ width: getCompletedPct(cause, true) + '%'}"></span>
-                                                </div> -->
-
-                                                <div class="col process-pledged text-center">
-                                                    <strong>{{fundingGoal(cause)}}</strong>
-                                                    <br />goal
-                                                </div>
-
-                                                <div class="col process-funded text-center">
-                                                    <strong>{{fundingPledged(cause)}}</strong>
-                                                    <br />pledged
-                                                </div>
-
-                                                <div class="col process-time text-center">
-                                                    <strong>{{remaining(cause).time}}</strong>
-                                                    <br />{{remaining(cause).suffix}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End causes. -->
-
+                            <v-btn outlined rounded small>
+                                <span class="action-button">Better Privacy</span>
+                            </v-btn>
                         </div>
-                    </div>
-
-                    <div
-                        v-if="causes.length < campaigns.length"
-                        class="latest-button text-center"
-                    >
-                        <a href="javascript://" @click="loadMore" class="btn-primary">
-                            Load More Causes
-                        </a>
-                    </div>
+                    </v-card-actions>
                 </div>
-            </div>
-        </section>
 
-        <Footer />
-    </main>
+            <!-- </div> -->
+        </v-card>
+
+        <!-- <div class="d-flex justify-end">
+            <div class="category-selection">
+                <v-select
+                    v-model="selected"
+                    :hint="selected.comment"
+                    :items="categories"
+                    item-text="state"
+                    item-value="abbr"
+                    label="Select a category"
+                    persistent-hint
+                    return-object
+                    single-line
+                ></v-select>
+            </div>
+        </div> -->
+
+        <v-card
+            v-for="campaign of campaigns"
+            :key="campaign.id"
+            class="mx-auto my-7"
+            max-width="400"
+            @click="loadDetails(campaign.id)"
+        >
+            <v-img
+                class="white--text align-end"
+                height="200px"
+                :src="campaign.media.main"
+            ></v-img>
+
+            <v-card-subtitle class="pb-0">
+                {{campaign.title}}
+            </v-card-subtitle>
+
+            <v-card-text class="text--primary">
+                <v-progress-linear
+                    :background-color="fundedColors(campaign)[0]"
+                    :color="fundedColors(campaign)[1]"
+                    :value="fundedPct(campaign)"
+                ></v-progress-linear>
+
+                <div>{{fundedDisplay(campaign)}}</div>
+
+                <div class="category">{{campaign.category}}</div>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-btn color="orange" text>
+                    {{pledgesDisplay(campaign)}}
+                </v-btn>
+
+                <v-spacer></v-spacer>
+
+                <v-btn color="orange" text>
+                    {{expiresDisplay(campaign)}}
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+
+        <div class="text-center my-10" v-if="hasMoreResults">
+            <v-progress-circular
+                :size="50"
+                indeterminate
+                color="#8dc351"
+            ></v-progress-circular>
+        </div>
+
+    </v-container>
 </template>
 
 <script>
 /* Initialize vuex. */
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import moment from 'moment'
 import Nito from 'nitojs'
 import numeral from 'numeral'
 
-/* Import components. */
-import Footer from '@/components/Footer.vue'
-import Header from '@/components/Header.vue'
-
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-const $ = window.jQuery
-
 export default {
     components: {
-        Footer,
-        Header,
+        //
     },
-    data: () => {
-        return {
-            usd: null,
+    data: () => ({
+        campaigns: null,
+        usd: null,
 
-            causes: [],
-            campaigns: [],
-            featured: null,
-            numDisplayed: null,
-        }
-    },
-    computed: {
-        ...mapGetters('campaigns', [
-            'getCampaign',
-        ]),
+        showAlert: null,
+        hasMoreResults: null,
 
-        ...mapGetters('utils', [
-            'getCategoryDisplay',
-            'getCompletedPct',
-            'getFormatFunded',
-            'getShuffledArray',
-        ]),
+        feed: null,
 
-        /**
-         * Banner Image
-         */
-        bannerImg() {
-            return 'https://i.imgur.com/3UPJZT6.jpg'
+        selected: {
+            state: '☆ In the Spotlight (20)',
+            abbr: 'spotlight',
+            comment: `↪ highest # of community votes`
         },
+        categories: [
+            { state: '☆ In the Spotlight (20)', abbr: 'spotlight', comment: `↪ highest # of community votes` },
+            { state: '☆ New & Noteworthy (11)', abbr: 'new', comment: `↪ recently added by a notable` },
+            { state: 'Adoption (1)', abbr: 'adoption', comment: `add a comment here..` },
+            { state: 'Community (3)', abbr: 'community', comment: `↪ working together for the commons` },
+            { state: 'Decentralized App (1)', abbr: 'dapp', comment: `add a comment here..` },
+            { state: 'Design & Art (0)', abbr: 'design-art', comment: `add a comment here..` },
+            { state: 'Education (1)', abbr: 'education', comment: `add a comment here..` },
+            { state: 'Film & Video (2)', abbr: 'film-video', comment: `add a comment here..` },
+            { state: 'Fun & Games (1)', abbr: 'fun-games', comment: `add a comment here..` },
+            { state: 'Hardware (1)', abbr: 'hardware', comment: `add a comment here..` },
+            { state: 'Health & Wellness (2)', abbr: 'health-wellness', comment: `add a comment here..` },
+            { state: 'Infrastructure (8)', abbr: 'infrastructure', comment: `add a comment here..` },
+            { state: 'Music (0)', abbr: 'music', comment: `add a comment here..` },
+            { state: 'Privacy (1)', abbr: 'privacy', comment: `add a comment here..` },
+            { state: 'Publishing (1)', abbr: 'publishing', comment: `add a comment here..` },
+            { state: 'Security (1)', abbr: 'security', comment: `add a comment here..` },
+            { state: 'Software (2)', abbr: 'software', comment: `add a comment here..` },
+            { state: 'World View (4)', abbr: 'world', comment: `add a comment here..` },
+            { state: 'Youth (1)', abbr: 'youth', comment: `add a comment here..` },
+        ],
+
+    }),
+    computed: {
+        ...mapGetters([
+            'getHelp',
+        ]),
+
+        ...mapGetters('discover', [
+            'getDiscover',
+        ]),
+
     },
     methods: {
+        ...mapActions('utils', [
+            'toast',
+        ]),
 
-        avatar(_campaign) {
-            if (_campaign.owner && _campaign.owner.avatar) {
-                return _campaign.owner.avatar
+        loadMyCoinParty() {
+            // if (window._bitcoinWalletApi) {
+            //     this.$store.commit('showAd', 'mycoinparty')
+            //     // this.$store.dispatch('showAd', 'mycoinparty')
+            // } else {
+            //     this.$store.commit('showAd', 'mycoinparty')
+            //     // window.open('https://mycoinparty.org')
+            // }
+        },
+
+        fundedTotal(_campaign) {
+            /* Validate campaign pledges. */
+            if (!_campaign.pledges) {
+                return 0
+            }
+
+            let total = 0
+
+            Object.keys(_campaign.pledges).forEach(_pledgeid => {
+                total += _campaign.pledges[_pledgeid].satoshis
+            })
+
+            return total
+        },
+
+        fundedDisplay(_campaign) {
+            const funded = this.fundedTotal(_campaign) / 100000000
+            const goal = _campaign.goal / 100000000
+            const pct = this.fundedTotal(_campaign) / _campaign.goal
+
+            return `${numeral(funded).format('0,0.00[00]')} of ${goal} BCH (${numeral(pct).format('0.00%')} completed)`
+        },
+
+        fundedColors(_campaign) {
+            const pct = this.fundedTotal(_campaign) / _campaign.goal
+
+            if (pct > 0.75) {
+                return ['green lighten-3', 'green lighten-1']
+            } else if (pct > 0.5) {
+                return ['blue lighten-3', 'blue lighten-1']
+            } else if (pct > 0.25) {
+                return ['amber lighten-3', 'amber lighten-1']
             } else {
-                return null
+                return ['red lighten-3', 'red lighten-1']
             }
         },
 
-        weblink(_campaign) {
-            if (_campaign.owner && _campaign.owner.link) {
-                return _campaign.owner.link
+        fundedPct(_campaign) {
+            const pct = _campaign.funded / _campaign.goal
+
+            return pct * 100
+        },
+
+        pledgesDisplay(_campaign) {
+            /* Validate campaign pledges. */
+            if (!_campaign.pledges) {
+                return '0 pledges'
+            }
+
+            return `${Object.keys(_campaign.pledges).length} pledges`
+        },
+
+        expiresDisplay(_campaign) {
+            if (_campaign.expires) {
+                return `${moment.unix(_campaign.expires).fromNow(true)} remaining`
             } else {
-                return null
+                return 'n/a'
             }
-        },
-
-        displayImage(_campaign) {
-            if (_campaign && _campaign.media.main) {
-                return _campaign.media.main
-            } else {
-                return null
-            }
-        },
-
-        displayCategory(_campaign) {
-            if (_campaign) {
-                return this.getCategoryDisplay(_campaign.category)
-            } else {
-                return null
-            }
-        },
-
-        displayOwnerName(_campaign) {
-            if (_campaign && (_campaign.owner.label || _campaign.owner.nickname)) {
-                return _campaign.owner.label || _campaign.owner.nickname
-            } else {
-                return null
-            }
-        },
-
-        displayLocation(_campaign) {
-            if (_campaign) {
-                return _campaign.location
-            } else {
-                return null
-            }
-        },
-
-        /**
-         * Funding Goal
-         */
-        fundingGoal(_campaign) {
-            console.log('FUNDING GOAL', _campaign);
-            if (_campaign && _campaign.assurances) {
-                const assuranceid = 0
-
-                /* Set recipients. */
-                const recipient = _campaign.assurances[assuranceid].recipient
-
-                /* Validate recipients. */
-                if (!recipient) {
-                    return '$0.00'
-                }
-
-                const calc = (recipient.satoshis / 100000000 * this.usd)
-
-                return numeral(calc).format('$0,0[.]00')
-            }
-
-            return '$0.00'
-        },
-
-        /**
-         * Funding Pledged
-         */
-        fundingPledged(_campaign) {
-            if (_campaign && (_campaign.assurances || _campaign.payouts)) {
-                if (_campaign.assurances) {
-                    const assuranceid = 0
-
-                    /* Set pledges. */
-                    const pledges = _campaign.assurances[assuranceid].pledges
-
-                    /* Validate recipients. */
-                    if (!pledges) {
-                        return '$0.00'
-                    }
-
-                    /* Initialize total. */
-                    let pledgeTotal = 0
-
-                    /* Loop through ALL pledges. */
-                    Object.keys(pledges).forEach(pledgeid => {
-                        /* Add satoshis to total. */
-                        pledgeTotal += pledges[pledgeid].satoshis
-                    })
-
-                    /* Calculate USD total. */
-                    const totalUSD = (pledgeTotal / 100000000 * this.usd)
-
-                    /* Return formatted value. */
-                    return numeral(totalUSD).format('$0,0.00')
-                }
-
-                if (_campaign.payouts) {
-                    /* Set funders. */
-                    const funders = _campaign.payouts.funders
-                    // console.log('FUNDERS', funders);
-
-                    /* Validate recipients. */
-                    if (!funders) {
-                        return '$0.00'
-                    }
-
-                    /* Initialize total. */
-                    let funderTotal = 0
-
-                    /* Loop through ALL funders. */
-                    Object.keys(funders).forEach(funderid => {
-                        /* Add satoshis to total. */
-                        funderTotal += funders[funderid].monthlyPledgeAmt
-                    })
-                    // console.log('FUNDER TOTAL', funderTotal);
-
-                    /* Calculate USD total. */
-                    const totalUSD = (funderTotal / 1000000 * this.usd)
-                    // console.log('TOTAL USD', totalUSD);
-
-                    /* Return formatted value. */
-                    return numeral(totalUSD).format('$0,0.00')
-                }
-            }
-
-            return '$0.00'
-        },
-
-        numSupporters(_campiagn) {
-            if (_campiagn && (_campiagn.assurances || _campiagn.payouts)) {
-                if (_campiagn.assurances) {
-                    const assuranceid = 0
-
-                    /* Set pledges. */
-                    const pledges = _campiagn.assurances[assuranceid].pledges
-
-                    /* Validate recipients. */
-                    if (!pledges) {
-                        return 0
-                    }
-
-                    /* Return count. */
-                    return Object.keys(pledges).length
-                }
-
-                if (_campiagn.payouts) {
-                    /* Set funders. */
-                    const funders = _campiagn.payouts.funders
-
-                    /* Validate recipients. */
-                    if (!funders) {
-                        return 0
-                    }
-
-                    /* Return count. */
-                    // FIXME: Limit to `nextPayoutAt` > 0
-                    return Object.keys(funders).length
-                }
-            }
-
-            return '$0.00'
-        },
-
-        remaining(_campaign) {
-            if (_campaign && (_campaign.assurances || _campaign.payouts)) {
-                if (_campaign.assurances) {
-                    const assuranceid = 0
-
-                    /* Set remaining time. */
-                    const expiresAt = _campaign.assurances[assuranceid].expiresAt
-                    console.log('expiresAt', expiresAt, moment().unix());
-
-                    /* Set (remaining) time. */
-                    let time = expiresAt - moment().unix()
-
-                    /* Initialize suffix. */
-                    let suffix = null
-
-                    /* Calculate minimum value. */
-                    if (time > 86400) {
-                        time = parseInt(time / 60 / 60 / 24)
-                        suffix = 'days to go'
-                    } else if (time > 3600) {
-                        time = parseInt(time / 60 / 60)
-                        suffix = 'hours to go'
-                    } else if (time > 60) {
-                        time = parseInt(time / 60)
-                        suffix = 'mins to go'
-                    } else {
-                        suffix = 'ending now'
-                    }
-
-                    /* Return time time w/ suffix. */
-                    return { time, suffix }
-                }
-
-                if (_campaign.payouts) {
-                    return { time: 0, suffix: 'TODO' }
-                }
-            }
-
-            return { time: 'n/a', suffix: 'remaining' }
-        },
-
-        /**
-         * Make Featured
-         */
-        async makeFeatured() {
-            /* Initialize featured candidates. */
-            // const candidates = [
-            //     'bitcoin-verde-node-development-14214ea4cd41',
-            //     'bchd-node-development-8331b54814ea',
-            //     'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
-            //     'knuth-platform-development-158ef2f48aa0',
-            //     'nito-exchange-443db3869688',
-            // ]
-
-            /* Choose a "random" campaign id. */
-            // NOTE: Randomly selected.
-            // const campaignId = candidates[
-            //     Math.floor(Math.random() * candidates.length)
-            // ]
-
-            /* Set featured campaign. */
-            // this.featured = this.getCampaign(campaignId)
-            this.featured = await this.getCampaign('bchplease','hush-your-money')
-        },
-
-        /**
-         * Load Category
-         */
-        loadCategory(_cause) {
-            /* Set category. */
-            const category = _cause.category
-
-            alert('goto ' + category)
         },
 
         /**
          * Load Details
          */
-        loadDetails(_cause) {
-            // console.log('CAUSE', _cause)
-
-            /* Set campaign id. */
-            const id = _cause.id
-
-            /* Validate id. */
-            if (!id) {
-                return alert('Invalid ID!')
-            }
-
-            /* Set slug. */
-            const slug = _cause.slug
-
-            /* Validate slug. */
-            if (!slug) {
-                return alert('Invalid slug!')
-            }
-
-            /* Set owner. */
-            const owner = _cause.owner
-
-            /* Validate author id. */
-            if (!owner) {
-                return alert('Invalid owner!')
-            }
-
-            /* Set extended slug. */
-            const extSlug = `${slug}-${id.slice(id.lastIndexOf('-') + 1)}`
-
-            /* Load details. */
-            this.$router.push(`@${owner.slug}/${extSlug}`)
+        loadDetails(_campaignid) {
+            this.$store.commit('showCampaign', _campaignid)
+            // this.$store.dispatch('showCampaign', _campaignid)
         },
 
-        /**
-         * Load More
-         */
-        loadMore() {
-            /* Set number of (currently) displayed. */
-            const numDisplayed = this.causes.length
+        calculateMinerFee(RECIPIENT_COUNT, CONTRIBUTION_COUNT) {
+            // Aim for two satoshis per byte to get a clear margin for error and priority on fullfillment.
+            const TARGET_FEE_RATE = 2;
 
-            /* Set total number of campaigns. */
-            const numCampaigns = this.campaigns.length
+            // Define byte weights for different transaction parts.
+            const TRANSACTION_METADATA_BYTES = 10;
+            const AVERAGE_BYTE_PER_RECIPIENT = 69;
+            const AVERAGE_BYTE_PER_CONTRIBUTION = 296;
 
-            /* Initialize number to display. */
-            let numToDisplay = 0
+            // Calculate the miner fee necessary to cover a fullfillment transaction with the next (+1) contribution.
+            const MINER_FEE =
+                (TRANSACTION_METADATA_BYTES +
+                    AVERAGE_BYTE_PER_RECIPIENT * RECIPIENT_COUNT +
+                    AVERAGE_BYTE_PER_CONTRIBUTION * (CONTRIBUTION_COUNT + 1)
+                ) * TARGET_FEE_RATE;
 
-            /* Set number of campaigns to display. */
-            if (numCampaigns - numDisplayed > 3) {
-                numToDisplay = 3
-            } else {
-                numToDisplay = numCampaigns - numDisplayed
-            }
-
-            /* Add campaigns to causes. */
-            for (let i = 0; i < numToDisplay; i++) {
-                /* Add campaign to cause. */
-                this.causes.push(this.getCampaign(this.campaigns[numDisplayed + i]))
-            }
-
+            // Return the calculated miner fee.
+            return MINER_FEE;
         },
 
-        /**
-         * Format Requested
-         */
-        formatRequested(_cause) {
-            /* Set requested amount. */
-            const requested = _cause.requested
-
-            /* Initialize dollar value. */
-            let dollar = null
-
-            /* Calculate dollar value. */
-            if (_cause.currency === 'BCH') {
-                dollar = requested * 244.18
-            } else {
-                dollar = requested
-            }
-
-            /* Format pledge. */
-            const formatted = numeral(dollar).format('$0,0.00')
-
-            /* Return formatted. */
-            return formatted
-        },
-
-        /**
-         * Format Pledged
-         */
-        formatPledged(_cause) {
-            /* Set pledged amount. */
-            const pledged = _cause.pledged
-
-            /* Initialize dollar value. */
-            let dollar = null
-
-            /* Calculate dollar value. */
-            if (_cause.currency === 'BCH') {
-                dollar = pledged * 244.18
-            } else {
-                dollar = pledged
-            }
-
-            /* Format pledge. */
-            const formatted = numeral(dollar).format('$0,0.00')
-
-            /* Return formatted. */
-            return formatted
-        },
+        // // Define a helper function we need to calculate the floor.
+        // inputPercentModifier(_campaign) {
+        //     const inputPercent = 0.75
+        //
+        //     const commitmentsPerTransaction = 650
+        //
+        //     // Calculate how many % of the total fundraiser the smallest acceptable contribution is at the moment.
+        //     const remainingValue =
+        //         this.currentMinerFee +
+        //         (this.totalContractOutputValue - this.currentCommittedSatoshis)
+        //
+        //     // this.contract.assembleTransaction().byteLength
+        //     const currentTransactionSize = 42
+        //
+        //     const minPercent =
+        //         0 +
+        //         (
+        //             remainingValue
+        //             / (commitmentsPerTransaction - this.currentContributionCount)
+        //             + 546 / SATS_PER_BCH
+        //         ) /
+        //         remainingValue
+        //
+        //     const maxPercent =
+        //         1
+        //         - ((currentTransactionSize + 1650 + 49) * 1.0)
+        //         / (remainingValue * SATS_PER_BCH)
+        //
+        //     // ...
+        //
+        //     const minValue = Math.log(minPercent * 100)
+        //     const maxValue = Math.log(maxPercent * 100)
+        //
+        //     // Return a percentage number on a non-linear scale with higher resolution in the lower boundaries.
+        //     return (
+        //         Math.exp(
+        //             minValue
+        //             + (inputPercent * (maxValue - minValue))
+        //             / 100
+        //         )
+        //         / 100
+        //     )
+        // },
 
     },
     created: async function () {
-        /* Initialize number of campaigns displayed. */
-        this.numDisplayed = 9
+        /* Set has more results flag. */
+        this.hasMoreResults = true
 
-        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        // console.info(`Market price (USD)`, this.usd)
-
-        /* Make a featured campaign. */
-        await this.makeFeatured()
-
-        /* Initialize all qualified campaigns. */
-        this.campaigns = [
-            // 'hush-your-money-60aabe8b',
-            'bch-pizza-0e8c00641daa',
-            'bchd-node-development-8331b54814ea',
-            'bitcoin-cash-protocol-development-fundraiser-43eda61596e7',
-            'bitcoin-verde-node-development-14214ea4cd41',
-            'blockchain-poker-52c6e99fff12',
-            'coins-4-clothes-93e037309d77',
-            'crescent-cash-303ceda57eba',
-            'knuth-platform-development-158ef2f48aa0',
-            'memo-6ecee5eb74e2',
-            'naomi-brockwell-tv-fcc6e720c27f',
-            'nito-cash-07dd70f04162',
-            'nito-exchange-443db3869688',
-            'read-cash-fund-44c7d3cfe560',
-            'veracrypt-4158c2f0eda0',
-        ]
-
-        /**
-         * Remove Item Once
-         */
-        // function _removeItemOnce(arr, value) {
-        //     const index = arr.indexOf(value)
-        //
-        //     if (index > -1) {
-        //         arr.splice(index, 1);
-        //     }
-        //
-        //     return arr
-        // }
-
-        /* Set (featured) extended slug. */
-        // const extSlug = `${this.featured.slug}-${this.featured.id
-        //     .slice(this.featured.id.lastIndexOf('-') + 1)}`
-
-        /* Remove featured campaign. */
-        // _removeItemOnce(this.campaigns, extSlug)
-
-        /* Shuffle campaigns (array). */
-        // this.getShuffledArray(this.campaigns)
-
-        /* Initialize number of campaigns to display. */
-        let numToDisplay = 0
-
-        /* Set number of campaigns to display. */
-        if (this.campaigns.length > 9) {
-            numToDisplay = 9
-        } else {
-            numToDisplay = this.campaigns.length
-        }
-        console.log('numToDisplay', numToDisplay);
-
-        /* Add campaigns to causes. */
-        // for (let i = 0; i < numToDisplay; i++) {
-        //     /* Add campaign to cause. */
-        //     this.causes.push(this.getCampaign(this.campaigns[i]))
-        // }
-
-        // 'read-cash-fund-44c7d3cfe560',
-        // 'veracrypt-4158c2f0eda0',
         /* Request campaigns. */
-        const campaigns = await Promise.all([
-            // this.getCampaign('bchplease', 'hush-your-money'),
-            this.getCampaign('bchpizza', 'bch-for-pizza'),
-            this.getCampaign('bitcoinverde', 'bitcoin-verde-node-development'),
-            this.getCampaign('blockchainpoker', 'blockchain-poker'),
-            this.getCampaign('bchd', 'bchd-node-development'),
-            this.getCampaign('coins4clothes', 'coins-4-clothes'),
-            this.getCampaign('bitcoinabc', 'bitcoin-cash-protocol-development-fundraiser'),
-            this.getCampaign('pokkst', 'crescent-cash'),
-            this.getCampaign('knuth', 'knuth-platform-development'),
-            this.getCampaign('memo', 'memo'),
-            this.getCampaign('bchn', 'bitcoin-cash-node-initiative'),
-            this.getCampaign('naomibrockwell', 'naomi-brockwell-tv'),
-            this.getCampaign('eatbch', 'help-us-deliver-food-for-one-month'),
-            this.getCampaign('bchplease', 'nito-cash'),
-        ])
-        .catch(err => console.error(err))
-        // console.log('RETRIEVED CAMPAIGNS', campaigns)
+        this.campaigns = await this.getDiscover('all', 0)
+        console.log('DISCOVER', this.campaigns)
 
-        /* Load campaigns. */
-        campaigns.forEach(campaign => {
-            this.causes.push(campaign)
-        })
+        /* Set has more results flag. */
+        this.hasMoreResults = false
+
+        // FIXME: Pull real-time price from api.telr.io
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+
+        /* Initialize alert flag. */
+        // this.showAlert = true
 
     },
     mounted: function () {
-        /* Animated completion bar. */
-        $('.raised > span').each(function () {
-			$(this)
-				.data('origWidth', $(this).width())
-				.width(0)
-				.animate({
-					width: $(this).data('origWidth')
-				}, 1200);
-		})
-
+        //
     },
 }
 </script>
 
-<style scoped>
-.campaign-item img {
-    border: 1px solid rgba(180, 180, 180, 0.2);
-    padding: 2px;
-    cursor: pointer;
+<style>
+.headline h2 {
+    font-size: 1.4em;
 }
 
-.featured-title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+.action-button {
+    font-size: 0.9em;
 }
 
-.featured-img {
-    border: 1px solid rgba(180, 180, 180, 0.2);
-    width: 570px;
-    height: 350px;
+.category {
+    font-size: 0.7em;
+    /* font-style: italic; */
+    color: rgba(90, 90, 90, 0.8);
 }
-/* TODO: Add media queries. */
 
-/* .process-info div span {
-    margin-right: 60px !important;
-} */
-
-.process-info div, .process-info div span {
-    /* font-size: 0.9em !important; */
-    /* text-align: center !important; */
-    margin: 0;
-    padding: 0;
-}
-.process-info strong {
-    font-weight: 500;
-    font-size: 1.2em;
+.category-selection {
+    width: 70vw;
+    margin-top: -25px;
 }
 </style>

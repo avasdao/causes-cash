@@ -1,32 +1,329 @@
 <template>
-    <router-view/>
+    <v-app class="viewport">
+        <v-app-bar
+            app
+            color="#2f4858"
+            dark
+            extended
+            :src="getHeaderPhoto"
+            :fade-img-on-scroll="getTitleVisibility"
+            shrink-on-scroll
+            transition="fade-transition"
+        >
+            <template v-slot:extension v-if="getTitleVisibility">
+                <v-icon class="mr-2" v-text="displayIcon"></v-icon>
+                {{displayTitle}}
+            </template>
+
+            <div class="d-flex" v-if="getTitleVisibility">
+                <v-img
+                alt="Causes Cash Logo"
+                class="shrink mr-2"
+                contain
+                :src="require('@/assets/logo.png')"
+                transition="scale-transition"
+                width="15"
+                />
+                <h3 class="d-inline-flex header-title">Causes <span class="ml-1 cash-text">Cash</span></h3>
+            </div>
+
+            <v-spacer></v-spacer>
+
+            <v-btn icon @click="loadSearch">
+                <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+
+            <v-btn icon @click="loadProfile">
+                <v-icon>mdi-face-profile</v-icon>
+            </v-btn>
+
+            <v-btn icon @click="toggleMenu">
+                <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+        </v-app-bar>
+
+        <v-main :style="{ backgroundColor: bgColor }">
+            <router-view />
+        </v-main>
+
+        <v-bottom-navigation
+            app
+            :value="selectedNavTab"
+            color="teal"
+            grow
+        >
+            <!-- <v-btn class="btn-navbar" @click="loadInfluence">
+                <span>Influence</span>
+
+                <v-icon>mdi-account-voice</v-icon>
+
+                <v-badge
+                    color="pink"
+                    content="2"
+                ></v-badge>
+            </v-btn> -->
+
+            <v-btn class="btn-navbar" @click="loadDiscover">
+                <span>Discover</span>
+
+                <v-icon>mdi-compass</v-icon>
+            </v-btn>
+
+            <v-btn class="btn-navbar" @click="loadEvents">
+                <span>Events</span>
+
+                <v-icon>mdi-calendar-clock</v-icon>
+
+                <!-- <v-badge
+                    color="pink"
+                    content="10+"
+                ></v-badge> -->
+            </v-btn>
+        </v-bottom-navigation>
+
+        <v-bottom-sheet v-model="sheetHandler" :persistent="isPersistent">
+            <MainMenu v-if="1 == 1" @selected="_handleSheet" />
+            <UnderConstruction v-if="1 == 2" />
+        </v-bottom-sheet>
+
+        <AdDialog
+            v-if="adDialog"
+            :isOpen="adDialog"
+            @close="closeAd()"
+        />
+
+        <CampaignDialog
+            v-if="campaignDialog"
+            :isOpen="campaignDialog"
+            @close="campaignDialog = false"
+        />
+
+        <CreateDialog
+            v-if="createDialog"
+            :isOpen="createDialog"
+            @close="createDialog = false"
+        />
+
+        <FlipstarterDialog
+            v-if="flipstarterDialog"
+            :isOpen="flipstarterDialog"
+            @close="flipstarterDialog = false"
+        />
+
+        <HelpDialog
+            v-if="helpDialog"
+            :isOpen="helpDialog"
+            @close="helpDialog = false"
+        />
+
+        <PIFDialog
+            v-if="pifDialog"
+            :isOpen="pifDialog"
+            @close="pifDialog = false; $store.commit('showPIF', null)"
+        />
+
+        <ProfileDialog
+            v-if="profileDialog"
+            :isOpen="profileDialog"
+            @close="profileDialog = false"
+        />
+
+        <SearchDialog
+            v-if="searchDialog"
+            :isOpen="searchDialog"
+            @close="searchDialog = false"
+        />
+
+    </v-app>
 </template>
 
 <script>
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-const $ = window.jQuery
+/* Import (core) components. */
+// import goTo from 'vuetify/es5/services/goto'
+
+/* Import dialogs. */
+import AdDialog from '@/components/dialogs/Ad'
+import CampaignDialog from '@/components/dialogs/Campaign'
+import CreateDialog from '@/components/dialogs/Create'
+import FlipstarterDialog from '@/components/dialogs/Flipstarter'
+import HelpDialog from '@/components/dialogs/Help'
+import PIFDialog from '@/components/dialogs/PIF'
+import ProfileDialog from '@/components/dialogs/Profile'
+import SearchDialog from '@/components/dialogs/Search'
+
+/* Import sheets. */
+import MainMenu from '@/components/sheets/MainMenu'
+import UnderConstruction from '@/components/sheets/UnderConstruction'
 
 export default {
+    components: {
+        AdDialog,
+        CampaignDialog,
+        CreateDialog,
+        FlipstarterDialog,
+        HelpDialog,
+        PIFDialog,
+        ProfileDialog,
+        SearchDialog,
+
+        MainMenu,
+        // SelectCampaign,
+        UnderConstruction,
+    },
+    data: () => ({
+        isShowingDiscover: null,
+        isShowingEvents: null,
+        isShowingInfluence: null,
+
+        isPersistent: null,
+        sheetHandler: null,
+
+        // crumbs: null,
+
+        // toggle_multiple: [0, 1, 2],
+        adDialog: false,
+        campaignDialog: false,
+        createDialog: false,
+        flipstarterDialog: false,
+        helpDialog: false,
+        pifDialog: false,
+        profileDialog: false,
+        searchDialog: false,
+
+        bgColor: null,
+
+    }),
+    watch: {
+        getSheetVisibility: function (_isShowing) {
+            console.log('SHEET SHOWING CHANGED', _isShowing)
+
+            if (typeof _isShowing !== 'undefined') {
+                /* Update local handler. */
+                this.sheetHandler = _isShowing
+            }
+        },
+
+        sheetHandler: function (_isShowing) {
+            console.log('SHEET HANDLER CHANGED', _isShowing)
+
+            if (typeof _isShowing !== 'undefined') {
+                /* Toggle sheet flag. */
+                this.$store.commit('setSheetVisibility', _isShowing)
+            }
+        },
+
+        getAdDisplay: function (_adid) {
+            console.log('AD DISPLAY CHANGED', _adid)
+
+            if (_adid !== null) {
+                this.adDialog = !this.adDialog
+            }
+        },
+
+        getCampaignDisplay: function (_campaignid) {
+            console.log('CAMPAIGN DISPLAY CHANGED', _campaignid)
+            this.campaignDialog = !this.campaignDialog
+        },
+
+        getPIFDisplay: function (_campaignid) {
+            console.log('PIF DISPLAY CHANGED', _campaignid)
+
+            if (_campaignid !== null) {
+                this.pifDialog = !this.pifDialog
+            }
+        },
+
+    },
     computed: {
-        ...mapGetters('storage', [
-            'getIPFS',
-            'getOrbitDB',
+        ...mapGetters([
+            'getAdDisplay',
+            'getCampaignDisplay',
+            'getCurrentPage',
+            'getHeaderPhoto',
+            'getPIFDisplay',
+            'getSheetVisibility',
+            'getTitleVisibility',
         ]),
 
-        ...mapGetters([
-            'getFlags',
-            'getLocale',
-        ]),
+        // ...mapGetters('campaigns', [
+        //     'getCampaign',
+        // ]),
+
+        selectedNavTab() {
+            switch(this.getCurrentPage) {
+            case 'discover':
+                return 1
+            case 'events':
+                return 0
+            case 'influence':
+                return 2
+            default:
+                return 1
+            }
+        },
+
+        displayIcon() {
+            switch(this.getCurrentPage) {
+            case 'about':
+                return 'mdi-account-voice'
+            case 'create':
+                return 'mdi-account-voice'
+            case 'details':
+                return 'mdi-account-voice'
+            case 'discover':
+                return 'mdi-compass'
+            case 'events':
+                return 'mdi-calendar-clock'
+            case 'influence':
+                return 'mdi-account-voice'
+            case 'help':
+                return 'mdi-help-circle'
+            case 'pif':
+                return 'mdi-gift'
+            case 'treasury':
+                return 'mdi-piggy-bank'
+            default:
+                return 'Unknown Page'
+            }
+        },
+
+        displayTitle() {
+            switch(this.getCurrentPage) {
+            case 'about':
+                return 'About Causes Cash'
+            case 'create':
+                return 'Create a Campaign'
+            case 'details':
+                return 'Campaign Details'
+            case 'discover':
+                // return 'New & Noteworthy'
+                return 'Discover'
+            case 'events':
+                return 'Events'
+            case 'help':
+                return 'Help & Support'
+            case 'influence':
+                return 'My Influence'
+            case 'pif':
+                return 'Pay It Forward'
+            case 'treasury':
+                return 'PIF Treasury'
+            default:
+                return 'Unknown Page'
+            }
+        },
     },
     methods: {
         ...mapActions([
-            'updateAssetSource',
             'updateFlags',
             'updateLocale',
+        ]),
+
+        ...mapActions('utils', [
+            'toast',
         ]),
 
         /**
@@ -47,472 +344,184 @@ export default {
             }
         },
 
-        initCoinManager() {
-            setInterval(() => {
-                console.log('COIN MANAGER')
-            }, 5000)
+        closeAd() {
+            this.adDialog = false
+            this.$store.commit('showAd', null)
+        },
+
+        closePIF() {
+
         },
 
         /**
-         * Test IPFS Connection
+         * Toggle Menu
          */
-        async testIPFS(_node) {
-            console.log('Starting IPFS test...')
-            const data = await _node
-                .cat('QmcPfKi3LTi8aTU6Zt6zNXmwSyVG8p5tzRhJHNfC8yyynX')
-                .catch(err => {
-                    console.error(err)
-                })
+        toggleMenu() {
+            console.log('toggle menu');
+            /* Toggle sheet flag. */
+            this.$store.commit('setSheetVisibility')
+        },
 
-            // data is returned as a Buffer, conver it back to a string
-            console.log(data.toString())
+        /**
+         * Handle Sheet
+         */
+        _handleSheet(_selection) {
+            console.log('Sheet selection', _selection)
 
-            return
-        }
+            switch(_selection) {
+            case 'create':
+                this.createDialog = !this.createDialog
 
+                /* Set auto-hide nav flag. */
+                // this.$store.commit('setHeaderPhoto', require('@/assets/headers/discover.jpg'))
 
-        // function readURL(input, thumbimage) {
-        //     if (input.files && input.files[0]) {
-        //         const reader = new FileReader()
+                /* Validate path. */
+                // if (this.$route.path !== '/create') {
+                //     this.$router.push('/create')
+                // }
+
+                // this.$store.commit('setCurrentPage', 'create')
+                break
+            case 'flipstarter':
+                this.flipstarterDialog = !this.flipstarterDialog
+                break
+            case 'help':
+                this.toast(['Oops!', 'This feature is under development...', 'error'])
+                // this.helpDialog = !this.helpDialog
+                break
+            }
+
+            /* Set sheet flag. */
+            this.$store.commit('setSheetVisibility', false)
+        },
+
+        loadDiscover() {
+            /* Set auto-hide nav flag. */
+            this.$store.commit('setTitleVisibility', true)
+            this.$store.commit('setHeaderPhoto', require('@/assets/headers/discover.jpg'))
+
+            /* Validate path. */
+            if (this.$route.path !== '/discover') {
+                this.$router.push('/discover')
+            }
+
+            this.$store.commit('setCurrentPage', 'discover')
+        },
+
+        loadEvents() {
+            /* Set auto-hide nav flag. */
+            this.$store.commit('setTitleVisibility', true)
+            this.$store.commit('setHeaderPhoto', require('@/assets/headers/events.jpg'))
+
+            /* Validate path. */
+            if (this.$route.path !== '/events') {
+                this.$router.push('/events')
+            }
+
+            // goTo(0)
+
+            this.$store.commit('setCurrentPage', 'events')
+        },
+
+        loadInfluence() {
+            /* Set auto-hide nav flag. */
+            this.$store.commit('setTitleVisibility', true)
+            this.$store.commit('setHeaderPhoto', require('@/assets/headers/influence.jpg'))
+
+            /* Validate path. */
+            if (this.$route.path !== '/influence') {
+                this.$router.push('/influence')
+            }
+
+            this.$store.commit('setCurrentPage', 'influence')
+        },
+
+        loadProfile() {
+            this.profileDialog = !this.profileDialog
+        },
+
+        loadSearch() {
+            this.searchDialog = !this.searchDialog
+        },
+
+        // loadHelp() {
+        //     this.$store.commit('setTitleVisibility', true)
         //
-        //         reader.onload = function (e) {
-        //             $("#thumbimage").attr('src', e.target.result)
-        //         }
-        //
-        //         reader.readAsDataURL(input.files[0])
-        //     } else { // Sử dụng cho IE
-        //         $("#thumbimage").attr('src', input.value)
+        //     if (this.$route.path !== '/help') {
+        //         this.$router.push('/help')
         //     }
         //
-        //     $("#thumbimage").show()
-        //     $('.filename').text($("#uploadfile").val())
-        //     $('.choicefile').css('background', '#C4C4C4')
-        //     $('.choicefile').css('cursor', 'default')
-        //     $(".removeimg").show()
-        //     $(".choicefile").hide()
-        // }
-
-        // function readURL1(input, thumbimage) {
-        //     if (input.files && input.files[0]) {
-        //         const reader = new FileReader()
-        //
-        //         reader.onload = function (e) {
-        //             $("#thumbimage1").attr('src', e.target.result)
-        //         }
-        //
-        //         reader.readAsDataURL(input.files[0])
-        //     } else { // Sử dụng cho IE
-        //         $("#thumbimage1").attr('src', input.value)
-        //     }
-        //
-        //     $("#thumbimage1").show()
-        //     $('.filename1').text($("#uploadfile").val())
-        //     $('.choicefile1').css('background', '#C4C4C4')
-        //     $('.choicefile1').css('cursor', 'default')
-        //     $(".removeimg1").show()
-        //     $(".choicefile1").hide()
-        // }
-
-        // function readURL2(input, thumbimage) {
-        //     if (input.files && input.files[0]) {
-        //         const reader = new FileReader()
-        //
-        //         reader.onload = function (e) {
-        //             $("#thumbimage2").attr('src', e.target.result)
-        //         }
-        //
-        //         reader.readAsDataURL(input.files[0])
-        //     } else  { // Sử dụng cho IE
-        //         $("#thumbimage2").attr('src', input.value)
-        //     }
-        //
-        //     $("#thumbimage2").show()
-        //     $('.filename2').text($("#uploadfile").val())
-        //     $('.choicefile2').css('background', '#C4C4C4')
-        //     $('.choicefile2').css('cursor', 'default')
-        //     $(".removeimg2").show()
-        //     $(".choicefile2").hide()
+        //     this.$store.commit('setCurrentPage', 'help')
+        //     this.$store.commit('setHeaderPhoto', require('@/assets/headers/help.jpg'))
         // }
 
     },
-    created: async function () {
+    created: function () {
         console.log('Initializing application...')
 
         /* Initialize application. */
         this.initApp()
 
-        /* Initialize coin manager. */
-        // this.initCoinManager()
+        /* Initialize current navigation tab. */
+        this.$store.commit('setCurrentPage', 'discover')
+        this.$store.commit('setHeaderPhoto', require('@/assets/headers/discover.jpg')) // Discover
 
-        /* Initialize asset source. */
-        this.updateAssetSource()
+        /* Initialize Discover. */
+        this.isShowingDiscover = true
 
-        /* Initialize IPFS connection. */
-        // const node = await this.getIPFS
+        /* Initialize sheet persistence. */
+        this.isPersistent = false
 
-        /* Test IPFS connection. */
-        // await this.testIPFS(node)
-
-        /* Initialize OrbitDB connection. */
-        // await this.getOrbitDB
-
+        this.bgColor = 'rgba(170, 204, 170, 0.9)'
     },
-    mounted: async function () {
-        /* Initialize WOW. */
-        new window.WOW({
-            animateClass: 'animated',
-            offset: 100,
-            // callback: function (box) {
-            //     console.log('WOW: animating <' + box.tagName.toLowerCase() + '>')
-            // }
-        }).init()
-
-        $(".choicefile").bind('click', function () {
-            $("#uploadfile").click()
-        })
-        $(".removeimg").on('click', function () {
-            $("#thumbimage").attr('src', '').hide()
-            $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this)" />')
-            $(".removeimg").hide()
-            $(".choicefile").show()
-            $(".choicefile").bind('click', function () {
-                $("#uploadfile").click()
-            })
-            $('.choicefile').css('background','#C4C4C4')
-            $('.choicefile').css('cursor', 'pointer')
-            $(".filename").text("")
-        })
-
-        $(".choicefile1").bind('click', function () {
-            $("#uploadfile1").click()
-        })
-        $(".removeimg1").on('click', function () {
-            $("#thumbimage1").attr('src', '').hide()
-            $("#myfileupload1").html('<input type="file" id="uploadfile1"  onchange="readURL1(this)" />')
-            $(".removeimg1").hide()
-            $(".choicefile1").show()
-            $(".choicefile1").bind('click', function () {
-                $("#uploadfile1").click()
-            })
-            $('.choicefile1').css('background','#C4C4C4')
-            $('.choicefile1').css('cursor', 'pointer')
-            $(".filename1").text("")
-        })
-
-        $(".choicefile2").bind('click', function () {
-            $("#uploadfile2").click()
-        })
-        $(".removeimg2").on('click', function () {
-            $("#thumbimage2").attr('src', '').hide()
-            $("#myfileupload2").html('<input type="file" id="uploadfile2"  onchange="readURL2(this)" />')
-            $(".removeimg2").hide()
-            $(".choicefile2").show()
-            $(".choicefile2").bind('click', function () {
-                $("#uploadfile2").click()
-            })
-            $('.choicefile2').css('background','#C4C4C4')
-            $('.choicefile2').css('cursor', 'pointer')
-            $(".filename2").text("")
-        })
-
-		/*  [ Menu Moblie ]
-        - - - - - - - - - - - - - - - - - - - - */
-		const toggles = document.querySelectorAll(".c-hamburger")
-
-        for (var i = toggles.length - 1; i >= 0; i--) {
-            const toggle = toggles[i]
-            toggleHandler(toggle)
-        }
-
-        function toggleHandler(toggle) {
-            toggle.addEventListener( "click", function(e) {
-                e.preventDefault();
-                (this.classList.contains("is-active") === true) ? this.classList.remove("is-active") : this.classList.add("is-active")
-            })
-        }
-
-		/*  [ Back Top ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.back-top').on('click', function (e) {
-            e.preventDefault()
-            $('html,body').animate({
-                scrollTop: 0
-            }, 700)
-        })
-
-        /*  [ Tab Controls ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('.menu-category li.mc-option').on('click', function (e) {
-            e.preventDefault()
-			var tab_id = $(this).attr('data-tab')
-			$('.menu-category li.mc-option').removeClass('active')
-			$('.popular-project .pp-item').removeClass('active')
-			$(this).addClass('active')
-			$("#"+tab_id).addClass('active')
-		})
-
-        $('.tabs-controls li').on('click', function (e) {
-            e.preventDefault()
-			var tab_id = $(this).attr('data-tab')
-			$('.tabs-controls li').removeClass('active')
-			$('.campaign-content .tabs').removeClass('active')
-			$(this).addClass('active')
-			$("#"+tab_id).addClass('active')
-		})
-
-		/*  [ Menu Category ]
-        - - - - - - - - - - - - - - - - - - - - */
-		$('.menu-category li.mc-option').on('click', function () {
-			// var tab_id = $(this).attr('data-hash')
-			$('.menu-category li.mc-option').removeClass('active')
-			$(this).addClass('active')
-		})
-		$('.menu-category li.cat-more a').on('click', function () {
-			var url = $(this).attr('href')
-			window.location.href = url;
-		})
-
-		/*  [ Main Menu ]
-        - - - - - - - - - - - - - - - - - - - - */
-		$( '.c-hamburger' ).on( 'click', function () {
-            $( this ).parents( '.main-menu' ).toggleClass('open')
-            $( 'body' ).toggleClass( 'menu-open' )
-        })
-        $( 'html' ).on( 'click', function(e) {
-            if( $( e.target ).closest( '.main-menu.open' ).length == 0 ) {
-                $( '.main-menu' ).removeClass( 'open' )
-                $( 'body' ).removeClass( 'menu-open' )
-                $( '.c-hamburger' ).removeClass('is-active')
-            }
-        })
-
-        /*  [ Header Fixed ]
-        - - - - - - - - - - - - - - - - - - - - */
-        if ($(window).width() < 992) {
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 0) {
-					$('#header').addClass('fixed')
-                } else {
-					$('#header').removeClass('fixed')
-                }
-            })
-        }
-
-        /*  [ Sub Menu ]
-    	- - - - - - - - - - - - - - - - - - - - */
-        $( '.main-menu ul > li' ).on('click', function () {
-			$( this ).find('.sub-menu').slideToggle()
-		})
-
-        $('#start-tag').magicSuggest({
-            placeholder: '',
-            maxEntryLength: 50,
-        })
-        $('.process-model li.pm-option').on('click', function (e) {
-            e.preventDefault()
-			var tab_id = $(this).attr('data-tab')
-			$('.process-model li.pm-option').removeClass('active')
-			$('.tab-content .tab-pane').removeClass('active')
-			$('.process-model li').removeClass()
-			$(this).addClass('active')
-			$("#"+tab_id).addClass('active')
-			$(this).prevAll().addClass("visited")
-		})
-		$('.process-model li:nth-child(1)').removeClass('visited')
-        $('.pane-tab li').on('click', function () {
-			var tab_id = $(this).attr('data-tab')
-			$('.pane-tab li').removeClass('active')
-			$('#story .pane-box').removeClass('active')
-			$(this).addClass('active')
-			$("#"+tab_id).addClass('active')
-		})
-		$('.create-perk').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().fadeOut(0)
-			$(this).parent().parent().find('.start-form').fadeIn()
-		})
-		$('.connect-fb').on('click', function (e) {
-			e.preventDefault()
-			$(this).fadeOut(0)
-			$(this).parent().find('.fb-content').fadeIn()
-		})
-		$('.fb-content a').on('click', function (e) {
-			e.preventDefault()
-			$(this).parent().fadeOut(0)
-			$(this).parent().parent().find('.connect-fb').fadeIn()
-		})
-		$('.add-reward').on('click', function (e) {
-			e.preventDefault()
-			$("#import").append($("#itemform").html())
-		})
-		$("#import").bind("DOMSubtreeModified", function () {
-			$('.reward-delete').on('click', function (e) {
-				e.preventDefault()
-				$(this).parent().parent().fadeOut(0)
-			})
-		})
-
-
-        // $( '.grid' ).each( function () {
-        //     var $grid = $('.grid').isotope({
-        //         itemSelector: '.filterinteresting',
-        //         layoutMode: 'fitRows',
-        //         getSortData: {
-        //             name: '.name',
-        //             symbol: '.symbol',
-        //             number: '.number parseInt',
-        //             category: '[data-category]',
-        //             weight: function( itemElem ) {
-        //                 var weight = $( itemElem ).find('.weight').text()
-        //                 return parseFloat( weight.replace( /[\(\)]/g, '') )
-        //             }
-        //         }
-        //     })
+    mounted: function () {
         //
-        //     // filter functions
-        //     var filterFns = {
-        //         // show if number is greater than 50
-        //         numberGreaterThan50: function () {
-        //             var number = $(this).find('.number').text()
-        //             return parseInt( number, 10 ) > 50
-        //         },
-        //         // show if name ends with -ium
-        //         ium: function () {
-        //             var name = $(this).find('.name').text()
-        //             return name.match( /ium$/ )
-        //         }
-        //     }
-        //
-        //     // bind filter button click
-        //     $('.filter-theme').on( 'click', 'button', function () {
-        //         var filterValue = $( this ).attr('data-filter')
-        //
-        //         // use filterFn if matches value
-        //         filterValue = filterFns[ filterValue ] || filterValue;
-        //         $grid.isotope({ filter: filterValue })
-        //     })
-        //
-        //     // change is-checked class on buttons
-        //     $('.campaign-tabs').each( function( i, buttonGroup ) {
-        //         var $buttonGroup = $( buttonGroup )
-        //
-        //         $buttonGroup.on( 'click', 'button', function () {
-        //             $buttonGroup.find('.is-checked').removeClass('is-checked')
-        //             $( this ).addClass('is-checked')
-        //         })
-        //     })
-        // })
-
-
     },
 }
-
 </script>
 
 <style>
-section .container {
-    margin-bottom: 100px;
+.viewport {
+    max-width: 480px;
+    margin: 0 auto;
 }
 
-.fa-question-circle-o {
-    cursor: pointer;
+.header-title {
+    font-size: 1.1em;
 }
 
-.input-error {
-    color: rgba(255, 0, 0, 1.0);
-    margin: 5px 0 0 20px
+.need-help {
+    display: flex;
+    justify-content: flex-end;
+    /* padding: 5px 8px 2px 0; */
+}
+.need-help .v-btn__content {
+    margin-top: -5px;
+    margin-right: -7px;
+
+    font-size: 0.8em;
+    font-weight: 500;
+    text-decoration: none;
+    color: rgba(180, 30, 30, 0.4);
 }
 
-button {
-    cursor: pointer;
+.btn-navbar {
+    /* border: 1pt solid purple; */
+    /* padding: 10px !important; */
+    height: 56px !important;
 }
 
-.btn-danger {
-    background-color: #dc3545;
-    padding: 0 20px;
-    border-radius: 2px 2px 2px 2px;
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    height: 46px;
-    line-height: 46px;
-    border: none;
-    display: inline-block;
-}
-/* .btn-danger:hover{
-    background: #08aded;
-    background-color: #0094d2;
-} */
-.btn-outline-danger {
-    background-color: #ffffff;
-    padding: 0 20px;
-    border-radius: 2px 2px 2px 2px;
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    height: 46px;
-    line-height: 46px;
-    border: 1pt solid #dc3545;
-    display: inline-block;
-}
-.btn-warning {
-    background-color: #ffc108;
-    padding: 0 20px;
-    border-radius: 2px 2px 2px 2px;
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    height: 46px;
-    line-height: 46px;
-    border: none;
-    display: inline-block;
-}
-/* .btn-danger:hover{
-    background: #08aded;
-    background-color: #0094d2;
-} */
-.btn-outline-warning {
-    background-color: #ffffff;
-    padding: 0 20px;
-    border-radius: 2px 2px 2px 2px;
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    height: 46px;
-    line-height: 46px;
-    border: 1pt solid #ffc108;
-    display: inline-block;
+.app-buttons {
+    margin-top: 7px !important;
+    margin-right: -8px;
 }
 
-/* Markdown handling */
-.markdown a, .campaigns a {
-    display: inline-block;
+.fab {
+    bottom: 100px !important;
 }
-.markdown-ul, .markdown-ol {
-    margin: 20px 40px;
+
+.cash-text {
+    color: rgba(141, 195, 81, 1.0);
 }
-.markdown table th, .markdown table td {
-    border: 1pt solid #c8c8c8;
-    padding: 5px;
-}
-.markdown h1, .markdown h2 {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1pt solid #c8c8c8;
-}
-.markdown h1 {
-    font-size: 2.5em;
-}
-.markdown h2 {
-    font-size: 1.5em;
-}
-.markdown h3 {
-    margin-bottom: 10px;
-}
-.markdown p {
-    margin: 15px 0;
-}
-.markdown .pane-box{
-    display: none;
-}
-.markdown .pane-box.active{
-    display: block;
-}
+
 </style>

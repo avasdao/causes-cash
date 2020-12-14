@@ -148,11 +148,16 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
     }
 
     /* Update metadata. */
-    const metaUpdate = await dispatch('profile/updateMeta', meta, { root: true })
-    console.log('FLIPSTARTER (metaUpdate):', metaUpdate)
+    dispatch('profile/updateMeta', meta, { root: true })
+    // const metaUpdate = dispatch('profile/updateMeta', meta, { root: true })
+    // console.log('FLIPSTARTER (metaUpdate):', metaUpdate)
 
     /* Return encoded pledge. */
-    return encodedPledge
+    if (_pkg.json) {
+        return assuranceOutput
+    } else {
+        return encodedPledge
+    }
 }
 
 /* Export module. */

@@ -1,25 +1,13 @@
-/* Import modules. */
 import Vue from 'vue'
-import VueSVGIcon from 'vue-svgicon'
+import App from './App.vue'
 
-/* Import (local) modules. */
 import router from './router'
 import store from './store'
 
-/* Import (3rd-party) plugins. */
-// require('./plugins/bugsnag')
 import vuetify from './plugins/vuetify'
 
-/* Import main application. */
-import App from './App.vue'
-
-/* Initialize SVG icons. */
-Vue.use(VueSVGIcon)
-
-/* Set production flag. */
 Vue.config.productionTip = false
 
-/* Initialize Vue. */
 new Vue({
     router,
     store,

@@ -25,9 +25,6 @@ export default {
     methods: {
         ...mapActions([
             'updateAssetSource',
-        ]),
-
-        ...mapActions([
             'updateFlags',
             'updateLocale',
         ]),

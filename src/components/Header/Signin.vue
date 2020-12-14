@@ -53,10 +53,6 @@ import scrypt from 'scrypt-js'
 import superagent from 'superagent'
 import Swal from 'sweetalert2'
 
-/* Import JQuery. */
-// FIXME: Remove ALL jQuery dependencies.
-// const $ = window.jQuery
-
 export default {
     components: {
         // Email,
@@ -274,6 +270,7 @@ export default {
             /* Show notification. */
             this.toast(['Success!', `You've been signed out successfully`, 'success'])
         },
+
     },
     created: function () {
         //

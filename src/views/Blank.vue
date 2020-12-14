@@ -36,6 +36,7 @@ export default {
         // ...mapGetters('campaigns', [
         //     'getCampaign',
         // ]),
+
     },
     methods: {
         ...mapActions('utils', [

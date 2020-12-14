@@ -185,7 +185,7 @@
                 <p class="copyright">
                     &copy; {{curYear}}
                     <a href="https://bchplease.org" target="_blank">
-                        Bitcoin Cash Please.
+                        Bitcoin Please.
                     </a>
                     All rights reserved.
                     <br />

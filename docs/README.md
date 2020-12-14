@@ -1,4 +1,4 @@
-# Welcome to the Documentation<br>for Bitcoin Causes :-)
+# Welcome to the Documentation<br>for Causes Cash
 
 ![Bitcoin Causes Poster](https://causes.cash/poster.jpg?1582376269)
 

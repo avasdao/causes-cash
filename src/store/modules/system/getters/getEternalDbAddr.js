@@ -1,7 +1,7 @@
 /**
  * Get Eternal Database Address
  *
- * The Bitcoin Cash Please eternal database allows our applications
+ * The Bitcoin Please eternal database allows our applications
  * maintain a decentralized state, through use of an Ethereum
  * smart contract.
  *

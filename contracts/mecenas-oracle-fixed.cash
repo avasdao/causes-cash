@@ -2,7 +2,7 @@ pragma cashscript ^0.4.0;
 
 /*******************************************************************************
  *
- * Copyright (c) 2020 Bitcoin Cash Please
+ * Copyright (c) 2020 Bitcoin Please
  * Released under the MIT License.
  *
  * Mecenas Oracle (Fixed Blocks)

@@ -73,6 +73,7 @@
 
             <v-card-subtitle class="pb-0">
                 {{campaign.title}}
+                <span class="category ml-1">{{campaign.category}}</span>
             </v-card-subtitle>
 
             <v-card-text class="text--primary">
@@ -84,10 +85,15 @@
 
                 <div>{{fundedDisplay(campaign)}}</div>
 
-                <div class="category">{{campaign.category}}</div>
+                <div class="min-pledge">
+                    Minimum pledge:
+                    <strong class="red--text min-pledge-amount">
+                        {{minPledge(campaign)}}
+                    </strong>
+                </div>
             </v-card-text>
 
-            <v-card-actions>
+            <v-card-actions class="mt-n5">
                 <v-btn color="orange" text>
                     {{pledgesDisplay(campaign)}}
                 </v-btn>
@@ -119,6 +125,8 @@ import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
 import Nito from 'nitojs'
 import numeral from 'numeral'
+
+const SATS_PER_BCH = 100000000
 
 export default {
     components: {
@@ -177,13 +185,58 @@ export default {
         ]),
 
         loadMyCoinParty() {
-            // if (window._bitcoinWalletApi) {
-            //     this.$store.commit('showAd', 'mycoinparty')
-            //     // this.$store.dispatch('showAd', 'mycoinparty')
-            // } else {
-            //     this.$store.commit('showAd', 'mycoinparty')
-            //     // window.open('https://mycoinparty.org')
-            // }
+            if (window._bitcoinWalletApi) {
+                this.$store.commit('showAd', 'mycoinparty')
+                // this.$store.dispatch('showAd', 'mycoinparty')
+            } else {
+                this.$store.commit('showAd', 'mycoinparty')
+                // window.open('https://mycoinparty.org')
+            }
+        },
+
+        minPledge(_campaign) {
+            // console.log('MIN PLEDGE', _campaign)
+
+            /* Initialize total funds. */
+            let totalFunds = 0
+
+            let currentContributionCount = 0
+
+            if (_campaign.pledges) {
+                /* Loop through all pledges. */
+                Object.keys(_campaign.pledges).forEach(pledgeid => {
+                    /* Filter out all revoked pledges. */
+                    if (!_campaign.pledges[pledgeid].isRevoked) {
+                        /* Increment contribution count. */
+                        currentContributionCount++
+
+                        /* Add satoshis to total funds. */
+                        totalFunds += _campaign.pledges[pledgeid].satoshis
+                    }
+                })
+            }
+
+            const numRecipients = 1
+            const currentMinerFee = this
+                .calculateMinerFee(numRecipients, currentContributionCount)
+
+            const currentFloor = Math.ceil(
+                (
+                    _campaign.goal
+                    + currentMinerFee
+                    - totalFunds
+                )
+                * this.inputPercentModifier(
+                    currentMinerFee,
+                    _campaign.goal,
+                    totalFunds,
+                    currentContributionCount
+                )
+            )
+            const currentFloorUsd = Math.ceil((currentFloor / 100000000.0) * this.usd)
+            // console.log('CURRENT FLOOR', currentFloor, currentFloorUsd)
+
+            return numeral(currentFloorUsd).format('$0,0.00')
         },
 
         fundedTotal(_campaign) {
@@ -288,49 +341,54 @@ export default {
             return MINER_FEE;
         },
 
-        // // Define a helper function we need to calculate the floor.
-        // inputPercentModifier(_campaign) {
-        //     const inputPercent = 0.75
-        //
-        //     const commitmentsPerTransaction = 650
-        //
-        //     // Calculate how many % of the total fundraiser the smallest acceptable contribution is at the moment.
-        //     const remainingValue =
-        //         this.currentMinerFee +
-        //         (this.totalContractOutputValue - this.currentCommittedSatoshis)
-        //
-        //     // this.contract.assembleTransaction().byteLength
-        //     const currentTransactionSize = 42
-        //
-        //     const minPercent =
-        //         0 +
-        //         (
-        //             remainingValue
-        //             / (commitmentsPerTransaction - this.currentContributionCount)
-        //             + 546 / SATS_PER_BCH
-        //         ) /
-        //         remainingValue
-        //
-        //     const maxPercent =
-        //         1
-        //         - ((currentTransactionSize + 1650 + 49) * 1.0)
-        //         / (remainingValue * SATS_PER_BCH)
-        //
-        //     // ...
-        //
-        //     const minValue = Math.log(minPercent * 100)
-        //     const maxValue = Math.log(maxPercent * 100)
-        //
-        //     // Return a percentage number on a non-linear scale with higher resolution in the lower boundaries.
-        //     return (
-        //         Math.exp(
-        //             minValue
-        //             + (inputPercent * (maxValue - minValue))
-        //             / 100
-        //         )
-        //         / 100
-        //     )
-        // },
+        // Define a helper function we need to calculate the floor.
+        inputPercentModifier(
+            _currentMinerFee,
+            _totalContractOutputValue,
+            _currentCommittedSatoshis,
+            _currentContributionCount
+        ) {
+            const inputPercent = 0.75
+
+            const commitmentsPerTransaction = 650
+
+            // Calculate how many % of the total fundraiser the smallest acceptable contribution is at the moment.
+            const remainingValue =
+                _currentMinerFee +
+                (_totalContractOutputValue - _currentCommittedSatoshis)
+
+            // this.contract.assembleTransaction().byteLength
+            const currentTransactionSize = 42
+
+            const minPercent =
+                0 +
+                (
+                    remainingValue
+                    / (commitmentsPerTransaction - _currentContributionCount)
+                    + 546 / SATS_PER_BCH
+                ) /
+                remainingValue
+
+            const maxPercent =
+                1
+                - ((currentTransactionSize + 1650 + 49) * 1.0)
+                / (remainingValue * SATS_PER_BCH)
+
+            // ...
+
+            const minValue = Math.log(minPercent * 100)
+            const maxValue = Math.log(maxPercent * 100)
+
+            // Return a percentage number on a non-linear scale with higher resolution in the lower boundaries.
+            return (
+                Math.exp(
+                    minValue
+                    + (inputPercent * (maxValue - minValue))
+                    / 100
+                )
+                / 100
+            )
+        },
 
     },
     created: async function () {
@@ -369,7 +427,14 @@ export default {
 .category {
     font-size: 0.7em;
     /* font-style: italic; */
+    color: rgba(90, 90, 255, 0.8);
+}
+.min-pledge {
+    font-size: 0.9em;
     color: rgba(90, 90, 90, 0.8);
+}
+.min-pledge-amount {
+    font-size: 1.1em;
 }
 
 .category-selection {

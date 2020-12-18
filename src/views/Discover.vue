@@ -185,13 +185,7 @@ export default {
         ]),
 
         loadMyCoinParty() {
-            if (window._bitcoinWalletApi) {
-                this.$store.commit('showAd', 'mycoinparty')
-                // this.$store.dispatch('showAd', 'mycoinparty')
-            } else {
-                this.$store.commit('showAd', 'mycoinparty')
-                // window.open('https://mycoinparty.org')
-            }
+            this.$store.commit('showAd', 'mycoinparty')
         },
 
         minPledge(_campaign) {

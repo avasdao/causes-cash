@@ -157,6 +157,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
+import bitcoincomLink from 'bitcoincom-link'
 import Nito from 'nitojs'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
@@ -262,9 +263,16 @@ export default {
                     /* Set id. */
                     const id = `${coin.txid}:${coin.vout}`
 
-                    let label = null
                     /* Set label. */
-                    if (window._bitcoinWalletApi) {
+                    let label = null
+
+                    const providerStatuses = bitcoincomLink.getWalletProviderStatus()
+                    if (
+                        providerStatuses && (
+                        providerStatuses.badger === 'LOGGED_IN'
+                        || providerStatuses.android === 'AVAILABLE'
+                        || providerStatuses.ios === 'AVAILABLE'
+                    )) {
                         label = `${coin.txid.slice(0, 4)} ... ${coin.txid.slice(-4)} : ${coin.vout}`
                     } else {
                         label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
@@ -390,29 +398,43 @@ export default {
         },
 
         initLinkApi() {
-            window._bitcoinWalletApi.receiveMessage = (_message) => {
-                console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
-                // this.debugOutput = JSON.stringify(_message, null, 2)
-
-                if (_message && _message.data) {
-                    this.output.address = _message.data.address
-                }
-            }
-
-            const command = 'getAddress'
-            const messageId = command + (Date.now() + Math.random()).toString()
-            const data = {
+            bitcoincomLink.getAddress({
                 protocol: 'BCH',
-            }
+            })
+            .then(data => {
+                const {
+                    address,
+                    label,
+                } = data
 
-            const message = {
-                messageId,
-                command,
-                data,
-            }
+                console.log('User address: ' + address);
+                console.log('User address label (Optional): ' + label);
 
-            window._bitcoinWalletApi.messageHandler(JSON.stringify(message));
+                this.output.address = address
+            })
+            .catch((type, description, data) => {
+                console.log('ERROR (type):', type)
+                console.log('ERROR (description):', description)
+                console.log('ERROR (data):', data)
 
+                switch(type) {
+                case 'NO_PROVIDER':
+                    console.log('No provider available.')
+                    break
+                case 'PROTOCOL_ERROR':
+                    console.log('The provided protocol is not supported by this wallet.')
+                    break
+                case 'SEND_ERROR':
+                    console.log('There was an error when broadcasting this transaction to the network.')
+                    break
+                case 'MALFORMED_INPUT':
+                    console.log('The input provided is not valid.')
+                    break
+                case 'CANCELED':
+                    console.log('The user has canceled this transaction request.')
+                    break
+                }
+            })
         },
 
         openExplorer(_details) {
@@ -614,27 +636,14 @@ export default {
         /* Initialize mnemonic flag. */
         this.showMnemonic = false
 
-        if (window._bitcoinWalletApi) {
-            this.isBitcoinWalletApi = true
-            // this.debugOutput = 'IS LINK API'
-
-            /* Initialize Bitcoin.com Link API. */
+        const providerStatuses = bitcoincomLink.getWalletProviderStatus()
+        if (
+            providerStatuses && (
+            providerStatuses.badger === 'LOGGED_IN'
+            || providerStatuses.android === 'AVAILABLE'
+            || providerStatuses.ios === 'AVAILABLE'
+        )) {
             this.initLinkApi()
-        } else {
-            this.isBitcoinWalletApi = false
-            // this.debugOutput = 'IS NOT LINK API'
-
-            try {
-                const web4bch = new window.Web4Bch(window.web4bch.currentProvider)
-                console.log('web4bch-2', web4bch)
-
-                const address = web4bch.bch.defaultAccount
-                console.log('ADDRESS', address)
-
-                this.output.address = address
-            } catch (err) {
-                console.error(err)
-            }
         }
 
         /* Initialize blockchain. */

@@ -3513,6 +3513,14 @@ bitcoin-ops@^1.3.0, bitcoin-ops@^1.4.0:
   resolved "https://registry.yarnpkg.com/bitcoin-ops/-/bitcoin-ops-1.4.1.tgz#e45de620398e22fd4ca6023de43974ff42240278"
   integrity sha512-pef6gxZFztEhaE9RY9HmWVmiIHqCb2OyS4HPKkpc6CIiiOa3Qmuoylxc5P2EkU3w+5eTSifI9SEZC88idAIGow==
 
+bitcoincom-link@^0.1.10-ping02:
+  version "0.1.10-ping02"
+  resolved "https://registry.yarnpkg.com/bitcoincom-link/-/bitcoincom-link-0.1.10-ping02.tgz#55cb2014184fb2983d4a8ab0eb1a5aa0b51c2ce3"
+  integrity sha512-Ws9Lx9nGSAZzJ8kiYmNaFUqAQiF41yh/8L6Ihrfi33igxV4b39kN4QKvJad+bLq8QCoQ5x7t9kk4e81MqRCUmg==
+  dependencies:
+    bignumber.js "^9.0.0"
+    page-metadata-parser "^1.1.4"
+
 bitcoinjs-lib@5.1.10:
   version "5.1.10"
   resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-5.1.10.tgz#91ec7cde308007008b22ed9117c5f26970cbad54"
@@ -12413,6 +12421,11 @@ package-json@^6.3.0:
     registry-auth-token "^4.0.0"
     registry-url "^5.0.0"
     semver "^6.2.0"
+
+page-metadata-parser@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/page-metadata-parser/-/page-metadata-parser-1.1.4.tgz#52cea38eb6d084d1808a10abb659ee8e9233bd4d"
+  integrity sha512-TbPNw7GddbHs4c2DyYinFvh51BVsaMfdrweeylzGlg8qeuzALGxq2NF+6jbmeKc7DnU2BZRDOuWNnEjDwUSqRQ==
 
 pako@~1.0.5:
   version "1.0.11"

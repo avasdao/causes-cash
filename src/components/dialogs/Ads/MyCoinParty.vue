@@ -91,7 +91,7 @@
 
                     <div class="white--text">
                         <h5>Early Bird Special Bonus</h5>
-                        <h2 class="text-info mb-1">x3</h2>
+                        <h2 class="text-info mb-1">x2</h2>
                         <small>( <strong class="text-danger white--text">{{displayRemainingStage}}</strong> blocks until <strong class="text-danger">x2</strong> bonus )</small>
                     </div>
 
@@ -219,12 +219,13 @@
 </template>
 
 <script>
-/* global _bitcoinWalletApi BigInt */
+/* global BigInt */
 
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
+import bitcoincomLink from 'bitcoincom-link'
 import Nito from 'nitojs'
 import numeral from 'numeral'
 import Swal from 'sweetalert2'
@@ -427,116 +428,57 @@ export default {
                 return
             }
 
-            if (window._bitcoinWalletApi) {
-                const command = 'sendAssets'
-                const messageId = command + (Date.now() + Math.random()).toString()
-                const data = {
+            const providerStatuses = bitcoincomLink.getWalletProviderStatus()
+            if (
+                providerStatuses && (
+                providerStatuses.badger === 'LOGGED_IN'
+                || providerStatuses.android === 'AVAILABLE'
+                || providerStatuses.ios === 'AVAILABLE'
+            )) {
+                const pkg = {
                     to: MCP_VENDING_ADDRESS,
                     protocol: 'BCH',
                     value: (this.usdSpent / this.usd).toFixed(8),
-                }
-
-                const message = {
-                    messageId,
-                    command,
-                    data,
                     websiteMetadata: {
                         title: `MyCoinParty (MCP) Tickets`,
                         description: `Thanks SOOO much for your support! You'll receive approx ${this.displayEstimatedTickets} tickets to this wallet very shortly.`,
                     },
                 }
+                console.log('SEND ASSETS (pkg):', pkg)
 
-                _bitcoinWalletApi.receiveMessage = (_message) => {
-                    console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
-                    // this.debugOutput = JSON.stringify(_message, null, 2)
-
-                  try {
-                    if (typeof _message === 'string') {
-                      _message = JSON.parse(_message);
-                    }
+                bitcoincomLink.sendAssets(pkg)
+                .then(data => {
                     const {
-                      messageId,
-                      data,
-                      error,
-                    } = _message;
+                        txid,
+                    } = data
 
-                    const messageQueue = {}
-                    const messageResolver = messageQueue[messageId];
-                    if (messageResolver) {
-                      const { resolve, timeout, reject } = messageResolver;
-                      timeout && clearTimeout(timeout);
-                      error ? reject(error) : resolve(data);
+                    console.log('Completed transaction id: ' + txid)
+                })
+                .catch((type, description, data) => {
+                    console.log('ERROR (type):', type)
+                    console.log('ERROR (description):', description)
+                    console.log('ERROR (data):', data)
+
+                    switch(type) {
+                    case 'NO_PROVIDER':
+                        console.log('No provider available.')
+                        break
+                    case 'PROTOCOL_ERROR':
+                        console.log('The provided protocol is not supported by this wallet.')
+                        break
+                    case 'SEND_ERROR':
+                        console.log('There was an error when broadcasting this transaction to the network.')
+                        break
+                    case 'MALFORMED_INPUT':
+                        console.log('The input provided is not valid.')
+                        break
+                    case 'CANCELED':
+                        console.log('The user has canceled this transaction request.')
+                        break
                     }
-                  } catch (err) {
-                      console.error(err)
-                  }
-                }
-
-                window._bitcoinWalletApi.messageHandler(JSON.stringify(message));
-
-                // const messageQueue = {}
-                // const isBrowser = typeof window !== 'undefined';
-                // const safeWindow = isBrowser ? window : global;
-
-                // safeWindow._bitcoinWalletApi = safeWindow._bitcoinWalletApi ? safeWindow._bitcoinWalletApi : {};
-                // _receiveMessage;
-
-            } else {
-                try {
-
-                    // console.log('WINDOW', window);
-                    // console.log('web4bch-1', window.web4bch)
-                    // console.log('currentProvider', window.web4bch.currentProvider)
-                    const web4bch = new window.Web4Bch(window.web4bch.currentProvider)
-                    console.log('web4bch-2', web4bch)
-                    // console.log('web4bch.currentProvider', web4bch.currentProvider)
-                    // console.log('web4bch.balance', web4bch.balance)
-                    // console.log('DEFAULT ACCOUNT', web4bch.bch.defaultAccount)
-
-                    const _fromFixed = (_numberStr, _decimals) => {
-                        return Number((Number(_numberStr) * Math.pow(10, _decimals)).toString().split('.')[0])
-                    }
-
-                    const to = MCP_VENDING_ADDRESS
-                    const value = (this.usdSpent / this.usd).toFixed(8)
-                    const txParams = {
-                        to,
-                        from: web4bch.bch.defaultAccount,
-                    }
-                    txParams.value = _fromFixed(value, 8).toString()
-                    console.log('VALUES', value, txParams.value);
-
-                    web4bch.bch.sendTransaction(txParams, (err, txid) => {
-                        if (err) {
-                            // const app = this.$f7
-                            // const title = 'ERROR'
-                            // const msg = JSON.stringify(err)
-                            // app.dialog.alert(msg, title)
-
-                            if (err.message.includes('User denied transaction signature')) {
-                                // return reject({
-                                //     type: 'CANCELED',
-                                //     data: err.message,
-                                // })
-                                return console.error('DENIED:', err)
-                            }
-
-                            // return reject({
-                            //     type: 'SEND_ERROR',
-                            //     data: err.message,
-                            // })
-                            return console.error('ERROR:', err)
-                        } else {
-                            // resolve({txid})
-                            console.log('TXID', txid)
-                        }
-                    })
-
-                } catch (err) {
-                    console.error(err)
-                }
-
+                })
             }
+
         },
 
     },
@@ -601,10 +543,10 @@ export default {
         console.log('TOTAL TICKETS', this.totalTickets)
 
         // FIXME: This MUST be dynamically tied to the current block height.
-        this.stageBonus = 3
+        this.stageBonus = 2
         console.log('STAGE BONUS', this.stageBonus)
 
-        this.nextStage = 666377 // 12/17 (end-of-day)
+        this.nextStage = 667385 // 12/14 (end-of-day)
         console.log('NEXT STAGE', this.nextStage)
 
         // this.finalBlock = 667710

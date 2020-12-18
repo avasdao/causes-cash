@@ -107,6 +107,7 @@
                     class="my-3"
                     label="Your SLP address"
                     v-model="slpAddress"
+                    @focus="setSlpAddress"
                     hint="May be used to offer rewards for supporters"
                     dark
                 ></v-text-field>
@@ -124,6 +125,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
+import bitcoincomLink from 'bitcoincom-link'
 import Nito from 'nitojs'
 import numeral from 'numeral'
 import Swal from 'sweetalert2'
@@ -395,26 +397,43 @@ export default {
         },
 
         initLinkApi() {
-            window._bitcoinWalletApi.receiveMessage = (_message) => {
-                console.log('SOMETHING CAME BACK FROM THE WALLET', _message);
-                // this.debugOutput = JSON.stringify(_message, null, 2)
+            bitcoincomLink.getAddress({
+                protocol: 'SLP',
+            })
+            .then(data => {
+                const {
+                    address,
+                    label,
+                } = data
 
-                /* Validate message. */
-                if (_message) {
-                    /* Handle asset sending. */
-                    if (_message.command === 'sendAssets') {
-                        /* Handle canceled send. */
-                        if (_message.error && _message.error.type === 'CANCELED') {
-                            Swal.close()
-                        }
+                console.log('User address: ' + address);
+                console.log('User address label (Optional): ' + label);
 
-                        // TODO: Add more callback handlers.
-                    }
+                this.slpAddress = address
+            })
+            .catch((type, description, data) => {
+                console.log('ERROR (type):', type)
+                console.log('ERROR (description):', description)
+                console.log('ERROR (data):', data)
 
-                    // Add more method handlers
+                switch(type) {
+                case 'NO_PROVIDER':
+                    console.log('No provider available.')
+                    break
+                case 'PROTOCOL_ERROR':
+                    console.log('The provided protocol is not supported by this wallet.')
+                    break
+                case 'SEND_ERROR':
+                    console.log('There was an error when broadcasting this transaction to the network.')
+                    break
+                case 'MALFORMED_INPUT':
+                    console.log('The input provided is not valid.')
+                    break
+                case 'CANCELED':
+                    console.log('The user has canceled this transaction request.')
+                    break
                 }
-            }
-
+            })
         },
 
         decrement () {
@@ -469,72 +488,129 @@ export default {
                 showConfirmButton: false,
             })
 
-            if (window._bitcoinWalletApi) {
-                /* Set command. */
-                const command = 'sendAssets'
-
-                /* Set message id. */
-                const messageId = command + (Date.now() + Math.random()).toString()
-
-                /* Set data. */
-                const data = {
+            const providerStatuses = bitcoincomLink.getWalletProviderStatus()
+            console.log('providerStatuses', providerStatuses);
+            if (
+                providerStatuses && (
+                providerStatuses.badger === 'LOGGED_IN'
+                || providerStatuses.android === 'AVAILABLE'
+                || providerStatuses.ios === 'AVAILABLE'
+            )) {
+                const pkg = {
                     to: this.getAddress('causes'),
                     protocol: 'BCH',
                     value: parseFloat(this.donationAmount / 100000000.0).toString(),
-                }
-
-                /* Build message. */
-                const message = {
-                    messageId,
-                    command,
-                    data,
                     websiteMetadata: {
                         title: `New Contribution`,
                         description: `Please Note: Unless this campaign reaches its goal, your funds will never leave your wallet; and you can cancel your pledge at anytime.`,
                     },
                 }
+                console.log('SEND ASSETS (pkg):', pkg)
 
-                /* Call wallet api. */
-                window._bitcoinWalletApi.messageHandler(JSON.stringify(message))
+                bitcoincomLink.sendAssets(pkg)
+                .then(data => {
+                    const {
+                        txid,
+                    } = data
 
-            } else {
-                try {
-                    const web4bch = new window.Web4Bch(window.web4bch.currentProvider)
-                    console.log('web4bch-2', web4bch)
+                    console.log('Completed transaction id: ' + txid)
+                })
+                .catch((type, description, data) => {
+                    console.log('ERROR (type):', type)
+                    console.log('ERROR (description):', description)
+                    console.log('ERROR (data):', data)
 
-                    const to = this.getAddress('causes')
-                    const value = this.donationAmount / 100000000.0
-                    const txParams = {
-                        to,
-                        from: web4bch.bch.defaultAccount,
+                    /* Validate message. */
+                    if (type && type.type === 'CANCELED') {
+                        Swal.close()
                     }
-                    txParams.value = this.donationAmount.toString()
-                    console.log('MATCH VALUES', value, txParams.value)
 
-                    web4bch.bch.sendTransaction(txParams, (err, txid) => {
-                        if (err) {
-                            if (err.message.includes('User denied transaction signature')) {
-                                // TODO: Add a special user message for this error type
-                                Swal.close()
-
-                                return console.error('DENIED:', err)
-                            }
-
-
-                            /* Close any open alerts. */
-                            Swal.close()
-
-                            return console.error('ERROR:', err)
-                        } else {
-                            console.log('TXID', txid)
-                        }
-                    })
-
-                } catch (err) {
-                    console.error(err)
-                }
-
+                    switch(type) {
+                    case 'NO_PROVIDER':
+                        console.log('No provider available.')
+                        break
+                    case 'PROTOCOL_ERROR':
+                        console.log('The provided protocol is not supported by this wallet.')
+                        break
+                    case 'SEND_ERROR':
+                        console.log('There was an error when broadcasting this transaction to the network.')
+                        break
+                    case 'MALFORMED_INPUT':
+                        console.log('The input provided is not valid.')
+                        break
+                    case 'CANCELED':
+                        console.log('The user has canceled this transaction request.')
+                        break
+                    }
+                })
             }
+
+            // if (window._bitcoinWalletApi) {
+            //     /* Set command. */
+            //     const command = 'sendAssets'
+            //
+            //     /* Set message id. */
+            //     const messageId = command + (Date.now() + Math.random()).toString()
+            //
+            //     /* Set data. */
+            //     const data = {
+            //         to: this.getAddress('causes'),
+            //         protocol: 'BCH',
+            //         value: parseFloat(this.donationAmount / 100000000.0).toString(),
+            //     }
+            //
+            //     /* Build message. */
+            //     const message = {
+            //         messageId,
+            //         command,
+            //         data,
+                    // websiteMetadata: {
+                    //     title: `New Contribution`,
+                    //     description: `Please Note: Unless this campaign reaches its goal, your funds will never leave your wallet; and you can cancel your pledge at anytime.`,
+                    // },
+            //     }
+            //
+            //     /* Call wallet api. */
+            //     window._bitcoinWalletApi.messageHandler(JSON.stringify(message))
+            //
+            // } else {
+            //     try {
+            //         const web4bch = new window.Web4Bch(window.web4bch.currentProvider)
+            //         console.log('web4bch-2', web4bch)
+            //
+            //         const to = this.getAddress('causes')
+            //         const value = this.donationAmount / 100000000.0
+            //         const txParams = {
+            //             to,
+            //             from: web4bch.bch.defaultAccount,
+            //         }
+            //         txParams.value = this.donationAmount.toString()
+            //         console.log('MATCH VALUES', value, txParams.value)
+            //
+            //         web4bch.bch.sendTransaction(txParams, (err, txid) => {
+            //             if (err) {
+            //                 if (err.message.includes('User denied transaction signature')) {
+            //                     // TODO: Add a special user message for this error type
+            //                     Swal.close()
+            //
+            //                     return console.error('DENIED:', err)
+            //                 }
+            //
+            //
+            //                 /* Close any open alerts. */
+            //                 Swal.close()
+            //
+            //                 return console.error('ERROR:', err)
+            //             } else {
+            //                 console.log('TXID', txid)
+            //             }
+            //         })
+            //
+            //     } catch (err) {
+            //         console.error(err)
+            //     }
+            //
+            // }
 
         },
 
@@ -766,6 +842,12 @@ export default {
             )
         },
 
+        setSlpAddress() {
+            if (!this.slpAddress) {
+                this.initLinkApi()
+            }
+        },
+
     },
     created: async function () {
         console.log('PLEDGE CAMPAIGN', this.campaign)
@@ -808,16 +890,6 @@ export default {
 
             // this.applyBalance()
         }
-
-        if (window._bitcoinWalletApi) {
-            this.isBitcoinWalletApi = true
-
-            /* Initialize Bitcoin.com Link API. */
-            this.initLinkApi()
-        } else {
-            this.isBitcoinWalletApi = false
-        }
-
 
     },
     mounted: function () {

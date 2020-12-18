@@ -1,6 +1,6 @@
 {
-  "name": "causes-cash-app",
-  "version": "20.11.22",
+  "name": "causes-cash",
+  "version": "20.12.18",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build-for-local": "vue-cli-service build",
@@ -16,6 +16,7 @@
   "author": "Bitcoin Please",
   "license": "MIT",
   "dependencies": {
+    "bitcoincom-link": "0.1.10-ping02",
     "cashscript": "0.5.4",
     "core-js": "3.6.5",
     "dompurify": "2.1.1",

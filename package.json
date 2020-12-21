@@ -11,11 +11,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/bchplease/app.causes.cash.git"
+    "url": "https://gitlab.com/bchplease/causes.cash.git"
   },
   "author": "Bitcoin Please",
   "license": "MIT",
   "dependencies": {
+    "@bugsnag/js": "7.5.4",
+    "@bugsnag/plugin-vue": "7.5.4",
     "bitcoincom-link": "0.1.10-ping02",
     "cashscript": "0.5.4",
     "core-js": "3.6.5",

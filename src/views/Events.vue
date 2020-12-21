@@ -36,7 +36,7 @@
                     </v-card-title>
 
                     <v-card-subtitle>
-                        {{event.title}}
+                        {{event.campaignTitle || event.title}}
                     </v-card-subtitle>
 
                     <v-card-text class="headline font-weight-bold">

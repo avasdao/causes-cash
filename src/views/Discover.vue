@@ -393,6 +393,11 @@ export default {
         this.campaigns = await this.getDiscover('all', 0)
         console.log('DISCOVER', this.campaigns)
 
+        /* Sort by most recent pledge. */
+        this.campaigns.sort((a, b) => {
+            return b.lastPledge - a.lastPledge
+        })
+
         /* Set has more results flag. */
         this.hasMoreResults = false
 

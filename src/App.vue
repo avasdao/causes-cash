@@ -141,9 +141,6 @@
 /* Initialize vuex. */
 import { mapActions, mapGetters } from 'vuex'
 
-/* Import (core) components. */
-// import goTo from 'vuetify/es5/services/goto'
-
 /* Import dialogs. */
 import AdDialog from '@/components/dialogs/Ad'
 import CampaignDialog from '@/components/dialogs/Campaign'

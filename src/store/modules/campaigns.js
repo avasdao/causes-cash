@@ -8,6 +8,7 @@ import getSummary from './campaigns/getters/getSummary'
 
 /* Import modules (actions). */
 import addAssurance from './campaigns/actions/addAssurance'
+import addCampaign from './campaigns/actions/addCampaign'
 import addPayout from './campaigns/actions/addPayout'
 import buildPledgeAuth from './campaigns/actions/buildPledgeAuth'
 import updateAsset from './campaigns/actions/updateAsset'
@@ -41,6 +42,7 @@ const getters = {
 /* Actions. */
 const actions = {
     addAssurance,
+    addCampaign,
     addPayout,
     buildPledgeAuth,
     updateAsset,

@@ -2,10 +2,10 @@
 import superagent from 'superagent'
 
 /**
- * Add Assurance
+ * Add Campaign
  */
-const addAssurance = async ({ rootGetters }, _campaign) => {
-    console.log('ADD CAMPAIGN:', _campaign)
+const addCampaign = async ({ rootGetters }, _campaign) => {
+    // console.log('ADD CAMPAIGN:', _campaign)
 
     /* Retrieve API provider. */
     const API_PROVIDER = rootGetters.getApiProvider
@@ -29,4 +29,4 @@ const addAssurance = async ({ rootGetters }, _campaign) => {
 }
 
 /* Export module. */
-export default addAssurance
+export default addCampaign

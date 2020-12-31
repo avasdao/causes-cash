@@ -546,11 +546,10 @@ export default {
         this.stageBonus = 2
         console.log('STAGE BONUS', this.stageBonus)
 
-        this.nextStage = 667385 // 12/14 (end-of-day)
+        this.nextStage = 669119 // 1/4 (end-of-day)
         console.log('NEXT STAGE', this.nextStage)
 
-        // this.finalBlock = 667710
-        this.finalBlock = 668543 // 12/31 (end-of-day)
+        this.finalBlock = 673007 // 1/31 (end-of-day)
         console.log('FINAL BLOCK', this.finalBlock)
 
         this.remainingStage = this.nextStage - this.currentBlock

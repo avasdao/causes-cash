@@ -19,7 +19,7 @@
                     </v-card-subtitle>
 
                     <v-card-subtitle class="mt-n5 ml-5">
-                        <strong>DECEMBER 18TH <small>THRU</small> 31ST</strong>
+                        <strong>DEC 18TH <small>THRU</small> JAN 7TH</strong>
                     </v-card-subtitle>
 
                     <div class="ml-3 mt-5 mt-n3">

@@ -90,9 +90,9 @@
                     <hr />
 
                     <div class="white--text">
-                        <h5>Early Bird Special Bonus</h5>
-                        <h2 class="text-info mb-1">x2</h2>
-                        <small>( <strong class="text-danger white--text">{{displayRemainingStage}}</strong> blocks until <strong class="text-danger">x2</strong> bonus )</small>
+                        <h5>Sound Money Bonus</h5>
+                        <h2 class="text-info mb-1">x10</h2>
+                        <!-- <small>( <strong class="text-danger white--text">{{displayRemainingStage}}</strong> blocks until <strong class="text-danger">x2</strong> bonus )</small> -->
                     </div>
 
                     <hr />
@@ -543,7 +543,7 @@ export default {
         console.log('TOTAL TICKETS', this.totalTickets)
 
         // FIXME: This MUST be dynamically tied to the current block height.
-        this.stageBonus = 2
+        this.stageBonus = 10
         console.log('STAGE BONUS', this.stageBonus)
 
         this.nextStage = 671235 // ~1/20 (end-of-day)

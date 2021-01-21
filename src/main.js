@@ -11,12 +11,9 @@ import vuetify from './plugins/vuetify'
 /* Start Bugsnag. */
 Bugsnag.start({
     apiKey: 'b4769a75bb09dd366e419ff17a64b384',
-    plugins: [new BugsnagPluginVue()]
+    // appVersion: require('../package.json').version,
+    plugins: [new BugsnagPluginVue(Vue)],
 })
-
-/* Install VUE error handler. */
-Bugsnag.getPlugin('vue')
-    .installVueErrorHandler(Vue)
 
 Vue.config.productionTip = false
 

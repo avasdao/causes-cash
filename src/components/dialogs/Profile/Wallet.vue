@@ -359,6 +359,7 @@ export default {
     },
     methods: {
         ...mapActions('utils', [
+            'report',
             'setClipboard',
             'toast',
         ]),
@@ -417,6 +418,10 @@ export default {
                 console.log('ERROR (description):', description)
                 console.log('ERROR (data):', data)
 
+                /* Report error description. */
+                this.report(new Error(description))
+
+                /* Handle type. */
                 switch(type) {
                 case 'NO_PROVIDER':
                     console.log('No provider available.')
@@ -472,10 +477,15 @@ export default {
          * Update Balance
          */
         async updateBalance() {
-            // /* Retreive wallet balance. */
+            /* Retreive wallet balance. */
             // this.balance = await this
             //     .getBalance('USD')
-            //     .catch(err => console.error(err))
+            //     .catch(err => {
+            //         console.error(err) // eslint-disable-line no-console
+            //
+            //         /* Report error. */
+            //         this.report(err)
+            //     })
             // console.log('DEPOSIT (balance):', this.balance)
 
             /* Initialize wallet balance. */
@@ -529,7 +539,12 @@ export default {
 
             const results = await Nito.Transaction
                 .sendCoin(_coin, receivers, autoFee)
-                .catch(err => console.error(err))
+                .catch(err => {
+                    console.error(err) // eslint-disable-line no-console
+
+                    /* Report error. */
+                    this.report(err)
+                })
             console.log('OUTBOX SEND COIN (results):', results)
 
             if (results) {

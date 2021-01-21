@@ -359,6 +359,7 @@ export default {
     },
     methods: {
         ...mapActions('utils', [
+            'report',
             'toast',
         ]),
 
@@ -459,6 +460,10 @@ export default {
                     console.log('ERROR (description):', description)
                     console.log('ERROR (data):', data)
 
+                    /* Report error description. */
+                    this.report(new Error(description))
+
+                    /* Handle type. */
                     switch(type) {
                     case 'NO_PROVIDER':
                         console.log('No provider available.')

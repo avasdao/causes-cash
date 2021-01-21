@@ -24,6 +24,7 @@ export default {
     },
     methods: {
         ...mapActions('utils', [
+            'report',
             'toast',
         ]),
 

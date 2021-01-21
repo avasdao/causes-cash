@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import crypto from 'crypto'
 import superagent from 'superagent'
 
@@ -66,7 +67,12 @@ const updateMeta = async ({ commit, getters, rootGetters }, _meta) => {
     return await superagent
         .put(target)
         .send(signedPkg)
-        .catch(err => console.error(err)) // eslint-disable-line no-console
+        .catch(err => {
+            console.error(err) // eslint-disable-line no-console
+
+            /* Notify error. */
+            Bugsnag.notify(err)
+        })
 }
 
 /* Export module. */

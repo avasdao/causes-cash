@@ -67,12 +67,7 @@ const updateMeta = async ({ commit, getters, rootGetters }, _meta) => {
     return await superagent
         .put(target)
         .send(signedPkg)
-        .catch(err => {
-            console.error(err) // eslint-disable-line no-console
-
-            /* Notify error. */
-            Bugsnag.notify(err)
-        })
+        .catch(Bugsnag.notify)
 }
 
 /* Export module. */

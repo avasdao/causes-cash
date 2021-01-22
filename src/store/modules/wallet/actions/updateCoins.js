@@ -1,4 +1,5 @@
 /* Import components. */
+import Bugsnag from '@bugsnag/js'
 import Nito from 'nitojs'
 
 /**
@@ -229,6 +230,9 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                             coins.play()
                         } catch (err) {
                             console.error(err) // eslint-disable-line no-console
+
+                            /* Report error. */
+                            Bugsnag.notify(err)
                         }
                     } else {
                         // console.error('Coin already exists in the purse.')

@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import superagent from 'superagent'
 
 /**
@@ -36,7 +37,10 @@ const updateAsset = ({ commit }, _asset) => {
             .get(targetUrl)
             .end((err, res) => {
                 if (err) {
-                    return console.error(err) // eslint-disable-line no-console
+                    console.error(err) // eslint-disable-line no-console
+
+                    /* Report error. */
+                    return Bugsnag.notify(err)
                 }
 
                 /* Set response body. */
@@ -53,6 +57,7 @@ const updateAsset = ({ commit }, _asset) => {
                 /* Commit asset resource. */
                 commit('setAsset', asset)
             })
+            .catch(Bugsnag.notify)
     }
 
     /* Validate body. */

@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <v-sheet
+            <!-- <v-sheet
                 class="v-sheet--offset mx-auto mt-5 mb-3"
                 color="light-blue"
                 elevation="12"
@@ -36,15 +36,15 @@
                     line-width="2"
                     padding="16"
                 ></v-sparkline>
-            </v-sheet>
+            </v-sheet> -->
 
-            <div class="subheading font-weight-light grey--text">
+            <!-- <div class="subheading font-weight-light grey--text">
                 Showing the last 7 days
-            </div>
+            </div> -->
 
             <v-divider class="my-2"></v-divider>
 
-            <div>
+            <!-- <div>
                 <v-icon class="mr-2" small>
                     mdi-clock
                 </v-icon>
@@ -52,7 +52,7 @@
                 <span class="caption grey--text font-weight-light">
                     last profile activity was 26 minutes ago
                 </span>
-            </div>
+            </div> -->
 
             <v-btn color="red accent-2" block x-large @click="signOut" class="mt-10">
                 <span class="white--text">Sign Out</span>

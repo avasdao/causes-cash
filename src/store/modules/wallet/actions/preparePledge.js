@@ -72,12 +72,7 @@ const preparePledge = async ({ getters, dispatch }, _pkg) => {
 
     const results = await Nito.Transaction
         .sendCoin(coin, receivers, autoFee)
-        .catch(err => {
-            console.error(err) // eslint-disable-line no-console
-
-            /* Notify error. */
-            Bugsnag.notify(err)
-        })
+        .catch(Bugsnag.notify)
     console.log('PLEDGE COIN (results):', results)
 
     /* Validate results. */

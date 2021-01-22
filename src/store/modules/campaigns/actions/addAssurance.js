@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import superagent from 'superagent'
 
 /**
@@ -25,6 +26,7 @@ const addAssurance = async ({ rootGetters }, _assurance) => {
     const result = await superagent
         .post(target)
         .send(signedPkg)
+        .catch(Bugsnag.notify)
     // console.log('RESULT', result)
 
     /* Return result. */

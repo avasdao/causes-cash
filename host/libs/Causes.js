@@ -1,4 +1,5 @@
 /* Import core modules. */
+import Bugsnag from '@bugsnag/js'
 const debug = require('debug')('causes')
 // const IPFS = require('ipfs')
 const IPFSClient = require('ipfs-http-client')
@@ -79,9 +80,7 @@ class NitoExchangeHost {
         /* Initialize OrbitDB instance. */
         this.orbitdb = await OrbitDB
             .createInstance(this.node)
-            .catch(err => {
-                console.error(err) // eslint-disable-line no-console
-            })
+            .catch(Bugsnag.notify)
 
         return
     }
@@ -105,9 +104,7 @@ class NitoExchangeHost {
         /* Initialize private (key-value) database. */
         this.privateDb = await this.orbitdb
             .keyvalue('nito.exchange.cloud', options)
-            .catch(err => {
-                console.error(err) // eslint-disable-line no-console
-            })
+            .catch(Bugsnag.notify)
 
         /* Handle database (when ready). */
         this.privateDb.events.on('ready', (_dbname, _heads) => {
@@ -191,9 +188,7 @@ class NitoExchangeHost {
 
         await this.privateDb
             .put('testVal', testVal)
-            .catch(err => {
-                console.error(err) // eslint-disable-line no-console
-            })
+            .catch(Bugsnag.notify)
         debug('\tWrote `testVal` to database')
 
         /* Reading `testVal`. */
@@ -219,9 +214,7 @@ class NitoExchangeHost {
 
         await this.privateDb
             .put(_key, _value, { pin })
-            .catch(err => {
-                console.error(err) // eslint-disable-line no-console
-            })
+            .catch(Bugsnag.notify)
 
     }
 

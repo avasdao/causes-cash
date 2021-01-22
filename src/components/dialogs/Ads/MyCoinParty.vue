@@ -391,7 +391,7 @@ export default {
                 console.error(err) // eslint-disable-line no-console
 
                 /* Bugsnag alert. */
-                throw new Error(err)
+                this.report(err)
             }
 
             /* Set title. */
@@ -460,8 +460,11 @@ export default {
                     console.log('ERROR (description):', description)
                     console.log('ERROR (data):', data)
 
+                    /* Build package. */
+                    const pkg = { type, description, data }
+
                     /* Report error description. */
-                    this.report(new Error(description))
+                    this.report(new Error(JSON.stringify(pkg)))
 
                     /* Handle type. */
                     switch(type) {

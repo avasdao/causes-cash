@@ -1,3 +1,6 @@
+/* Import modules. */
+import Bugsnag from '@bugsnag/js'
+
 /**
  * Set Clipboard
  */
@@ -25,8 +28,8 @@ const setClipboard = ({}, _params) => { // eslint-disable-line no-empty-pattern
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
 
-        /* Bugsnag alert. */
-        throw new Error(err)
+        /* Report error. */
+        Bugsnag.notify(err)
     }
 }
 

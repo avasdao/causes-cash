@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import superagent from 'superagent'
 
 /**
@@ -15,7 +16,9 @@ const getEvents = (state, getters, rootState, rootGetters) => async (_timestamp)
     // console.log('TARGET', target)
 
     /* Request campaigns. */
-    const result = await superagent.get(target)
+    const result = await superagent
+        .get(target)
+        .catch(Bugsnag.notify)
     // console.log('RESULT', result)
 
     /* Validate result. */

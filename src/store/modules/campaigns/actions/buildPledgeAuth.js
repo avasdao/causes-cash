@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import moment from 'moment'
 import Nito from 'nitojs'
 
@@ -118,6 +119,7 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
 
     /* Initialize meta. */
     let meta = await rootGetters['profile/getMeta']
+        .catch(Bugsnag.notify)
     console.log('MAKE PLEDGE (meta):', meta)
 
     /* Validate metadata. */

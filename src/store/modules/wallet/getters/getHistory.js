@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import Nito from 'nitojs'
 
 /**
@@ -175,8 +176,8 @@ const getHistory = async (state, getters) => {
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
 
-        /* Bugsnag alert. */
-        throw new Error(err)
+        /* Report error. */
+        Bugsnag.notify(err)
     }
 }
 

@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import msgpack from 'msgpack-lite'
 
 /**
@@ -19,6 +20,10 @@ const setAssets = (state, _source) => {
         }
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
+
+        /* Report error. */
+        Bugsnag.notify(err)
+
         assets = state.assets
     }
 

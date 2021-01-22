@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import crypto from 'crypto'
 import msgpack from 'msgpack-lite'
 import Nito from 'nitojs'
@@ -62,7 +63,9 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         const target = `${API_PROVIDER}/profiles/${address}`
 
         /* Set contract path. */
-        const response = await superagent.get(target)
+        const response = await superagent
+            .get(target)
+            .catch(Bugsnag.notify)
         // console.log('GET META (response):', response)
 
         /* Validate resopnse. */
@@ -88,9 +91,11 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
             } catch (err) {
                 console.error(err) // eslint-disable-line no-console
 
+                /* Report error. */
+                Bugsnag.notify(err)
+
                 /* Return error message. */
                 return err
-                // return err.message
             }
         } else {
             return null

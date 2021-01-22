@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import msgpack from 'msgpack-lite'
 
 /**
@@ -20,6 +21,10 @@ const getAssetSource = (state, _assetType) => {
         assets = msgpack.decode(Buffer.from(state.assets, 'hex'))
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
+
+        /* Report error. */
+        Bugsnag.notify(err)
+
         assets = state.assets // DEPRECATED in June '20
     }
 

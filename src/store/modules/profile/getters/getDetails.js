@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import Nito from 'nitojs'
 import superagent from 'superagent'
 
@@ -28,7 +29,9 @@ const getDetails = async (state, getter, rootState, rootGetters) => {
     /* Retrieve API provider. */
     const API_PROVIDER = rootGetters.getApiProvider
 
-    const results = await superagent.get(`${API_PROVIDER}/profiles/${address}`)
+    const results = await superagent
+        .get(`${API_PROVIDER}/profiles/${address}`)
+        .catch(Bugsnag.notify)
     // console.log('GET DETAILS (profile):', results)
 
     if (results && results.body) {

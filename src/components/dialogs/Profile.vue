@@ -49,12 +49,23 @@
             <v-container v-if="!hasAuth">
                 <div class="mb-5">
                     <h3 class="red--text no-registration">
-                        NO REGISTRATION REQUIRED
+                        NO ONLINE REGISTRATION REQUIRED
                     </h3>
 
-                    <div class="notice grey--text">
-                        <strong>Please note:</strong> Your security is our #1 concern.
-                        <strong>100%</strong> of your account data is managed locally by your web browser and/or encrypted in the cloud.
+                    <div class="notice grey--text mt-2">
+                        <h3>Your security is our #1 concern!</h3>
+
+                        <p class="mt-2">
+                            The email and password you provide below is strictly used to secure your Causes Cash wallet.
+                        </p>
+
+                        <p class="mt-2">
+                            <strong>100% of your account data is managed locally by your mobile app or web browser.</strong>
+                        </p>
+
+                        <p class="mt-2">
+                            For your convenience, metadata (eg. Campaign details) is encrypted in the Causes Cash cloud.
+                        </p>
                     </div>
                 </div>
 
@@ -85,8 +96,12 @@
                     Sign In
                 </v-btn>
 
-                <div class="ma-5">
-                    Progress: {{scryptProgress}}
+                <div class="ma-5" v-if="scryptProgress">
+                    <strong>{{scryptProgress}}% complete...</strong>
+
+                    <p v-if="scryptProgress == '99'">
+                        Initializing wallet, just a moment...
+                    </p>
                 </div>
 
             </v-container>
@@ -157,6 +172,7 @@ export default {
         ]),
 
         ...mapActions('utils', [
+            'report',
             'toast',
         ]),
 
@@ -272,7 +288,12 @@ console.log('ENDING SCRIPT');
                 .post(target)
                 .send(signedMessage)
                 .end((err, res) => {
-                    if (err) return console.error(err) // eslint-disable-line no-console
+                    if (err) {
+                        console.error(err) // eslint-disable-line no-console
+
+                        /* Report error. */
+                        return this.report(err)
+                    }
 
                     console.log('SIGN IN (response):', res)
                 })
@@ -308,7 +329,7 @@ console.log('ENDING SCRIPT');
 }
 
 .notice {
-    font-size: 0.8em;
-    line-height: 16px;
+    font-size: 0.9em;
+    line-height: 20px;
 }
 </style>

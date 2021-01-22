@@ -1,4 +1,5 @@
 /* Import modules. */
+import Bugsnag from '@bugsnag/js'
 import superagent from 'superagent'
 
 /**
@@ -22,6 +23,7 @@ const addCampaign = async ({ rootGetters }, _campaign) => {
     const result = await superagent
         .post(target)
         .send(_campaign)
+        .catch(Bugsnag.notify)
     // console.log('RESULT', result)
 
     /* Return result. */

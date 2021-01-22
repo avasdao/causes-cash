@@ -363,15 +363,33 @@ export default {
             console.log('this.currentCommittedSatoshis', this.currentCommittedSatoshis);
             console.log('this.inputPercentModifier()', this.inputPercentModifier());
 
-            // Calculate the current floor
-            const currentFloor = Math.ceil(
-                (
-                    this.totalContractOutputValue
-                    + this.currentMinerFee
-                    - this.currentCommittedSatoshis
+            /* Initialize current floor. */
+            let currentFloor = null
+
+            /* Validate campaign category. */
+            if (this.campaign.category === 'flipstarter') {
+                // Calculate the current floor
+                currentFloor = Math.ceil(
+                    (
+                        this.totalContractOutputValue
+                        + this.currentMinerFee
+                        - this.currentCommittedSatoshis
+                    )
+                    * this.inputPercentModifier()
                 )
-                * this.inputPercentModifier()
-            )
+            }
+
+            /* Validate campaign category. */
+            if (this.campaign.category === 'flipstarter-too') {
+                // Calculate the current floor
+                currentFloor = (1.0 / this.usd) * 100000000.0
+            }
+
+            /* Validate current floor. */
+            if (!currentFloor) {
+                return this.toast(['Oops!', 'Campaign failure.', 'error'])
+            }
+
             const currentFloorUsd = Math.ceil((currentFloor / 100000000.0) * this.usd)
             console.log('CURRENT FLOOR', currentFloor, currentFloorUsd)
 

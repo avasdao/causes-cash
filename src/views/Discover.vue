@@ -214,19 +214,37 @@ export default {
             const currentMinerFee = this
                 .calculateMinerFee(numRecipients, currentContributionCount)
 
-            const currentFloor = Math.ceil(
-                (
-                    _campaign.goal
-                    + currentMinerFee
-                    - totalFunds
+            /* Initialize current floor. */
+            let currentFloor = null
+
+            /* Validate campaign category. */
+            if (_campaign.category === 'flipstarter') {
+                currentFloor = Math.ceil(
+                    (
+                        _campaign.goal
+                        + currentMinerFee
+                        - totalFunds
+                    )
+                    * this.inputPercentModifier(
+                        currentMinerFee,
+                        _campaign.goal,
+                        totalFunds,
+                        currentContributionCount
+                    )
                 )
-                * this.inputPercentModifier(
-                    currentMinerFee,
-                    _campaign.goal,
-                    totalFunds,
-                    currentContributionCount
-                )
-            )
+            }
+
+            /* Validate campaign category. */
+            if (_campaign.category === 'flipstarter-too') {
+                // Calculate the current floor
+                currentFloor = (1.0 / this.usd) * 100000000.0
+            }
+
+            /* Validate current floor. */
+            if (!currentFloor) {
+                return
+            }
+
             const currentFloorUsd = Math.ceil((currentFloor / 100000000.0) * this.usd)
             // console.log('CURRENT FLOOR', currentFloor, currentFloorUsd)
 

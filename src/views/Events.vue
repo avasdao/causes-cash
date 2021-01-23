@@ -199,6 +199,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import moment from 'moment'
+import Nito from 'nitojs'
 import numeral from 'numeral'
 
 export default {
@@ -256,12 +257,13 @@ export default {
         },
 
     },
-    created: function () {
+    created: async function () {
         /* Initialize events. */
         this.init()
 
-        // FIXME: Pull real-time price from api.telr.io
-        this.usd = 300
+        /* Request BCH/USD market price. */
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        console.log('USD', this.usd)
 
     },
     mounted: function () {

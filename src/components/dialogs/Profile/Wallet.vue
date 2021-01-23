@@ -1,39 +1,142 @@
 <template>
     <v-card class="mx-auto" max-width="480" flat>
-        <div class="account-content dashboard pt-0">
-            <!-- <h3 class="account-title">Cash Wallet</h3> -->
+        <v-container>
 
-            <div class="qr-code float-right d-none d-md-block m-3" v-html="qr" @click="copyAddress" />
+            <div class="account-content dashboard pt-0">
+                <!-- <h3 class="account-title">Cash Wallet</h3> -->
 
-            <v-container>
+                <div class="qr-code float-right d-none d-md-block m-3" v-html="qr" @click="copyAddress" />
+
+                <v-container>
+                    <h3>Your Deposit Address</h3>
+
+                    <h3>
+                        <a :href="'https://explorer.bitcoin.com/bch/address/' + getAddress('deposit')" target="_blank" style="text-decoration:none;">
+                            {{addressDisplay('deposit')}}
+                        </a>
+                    </h3>
+                </v-container>
+
+                <div class="qr-code text-center d-md-none my-3" v-html="qr" @click="copyAddress" />
+
+                <h3>Your Balance</h3>
+
                 <div>
-                    <strong>Address</strong>
+                    {{balanceDisplay}}
                 </div>
 
-                <div>
-                    <small>
-                        <a :href="'https://explorer.bitcoin.com/bch/address/' + getAddress('deposit')" target="_blank">{{addressDisplay('deposit')}}</a>
-                    </small>
-                </div>
-            </v-container>
+            </div>
 
-            <div class="row my-3">
-                <div class="col-1">
-                    <!-- offset fix -->
+            <hr v-if="coinsTable.length" class="my-5" />
+
+            <div v-if="coinsTable.length">
+                <h3 class="account-title">My Available Coins</h3>
+
+                <div v-if="coinsTable">
+                    <div v-for="coin of coinsTable" :key="coin.id">
+                        <div class="row mb-n5">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-7"><strong>Label</strong></div>
+                            <div class="col-3 text-right"><strong>Value</strong></div>
+                        </div>
+                        <div class="row mt-n5">
+                            <div class="col-2" v-html="coin.status"></div>
+                            <div class="col-7" v-html="coinLabelDisplay(coin)"></div>
+                            <div class="col-3 text-right">{{coinValueDisplay(coin)}}</div>
+                        </div>
+
+                        <v-container class="mt-n5">
+                            <v-row no-gutters>
+                                <v-col cols="4" class="px-1">
+                                    <v-btn
+                                        block
+                                        small
+                                        color="primary"
+                                        @click="openExplorer(coin.details)"
+                                    >
+                                        View
+                                    </v-btn>
+                                </v-col>
+
+                                <v-col v-if="coin.flags.spendable" cols="4" class="px-1">
+                                    <v-btn
+                                        block
+                                        small
+                                        color="primary"
+                                        @click="send(coin.details)"
+                                    >
+                                        Send
+                                    </v-btn>
+                                </v-col>
+
+                                <v-col v-if="coin.flags.spendable" cols="4" class="px-1">
+                                    <v-btn
+                                        dark
+                                        block
+                                        small
+                                        color="pink"
+                                        @click="pledge(coin.details)"
+                                    >
+                                        Pledge
+                                    </v-btn>
+                                </v-col>
+
+                            </v-row>
+                        </v-container>
+
+                        <div v-if="coin.flags.locked" class="row">
+                            <div class="col-6">
+                                <v-btn v-if="isBitcoinWalletApi" class="mx-1" rounded small outlined color="red" @click="reclaim(coin)">
+                                    Cancel
+                                </v-btn>
+                            </div>
+
+                            <div class="col-6">
+                                <v-btn v-if="!isBitcoinWalletApi" class="mx-1" rounded small outlined color="orange" @click="unlock(coin.id)">
+                                    Unlock
+                                </v-btn>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div class="col-10">
-                    <div class="qr-code text-center d-md-none" v-html="qr" @click="copyAddress" />
+            </div>
+
+            <hr class="my-5" />
+
+            <v-text-field
+                placeholder="Enter your destination address"
+                filled
+                v-model="output.address"
+            ></v-text-field>
+
+            <div class="row p-2">
+                <div class="col-8">
+                    <v-btn
+                        block
+                        color="warning"
+                        @click="updateCoins"
+                    >
+                        Re-sync Wallet Coins
+                    </v-btn>
                 </div>
 
-                <div class="col-1">
-                    <!-- offset fix -->
+                <div class="col-4">
+                    <!-- <v-btn
+                        block
+                        @click="updateCoins"
+                    >
+                        Update Coins
+                    </v-btn> -->
                 </div>
             </div>
 
             <div class="row my-3">
                 <div class="col-offset-1 col-10">
-                    <strong>Mnemonic</strong>
+                    <h3>Mnemonic</h3>
                 </div>
 
                 <div v-if="showMnemonic" class="col-10 col-md-8 mnemonic" @click="toggleMnemonic">
@@ -41,7 +144,7 @@
                 </div>
 
                 <div v-else class="col-10 col-md-8 mnemonic" @click="toggleMnemonic">
-                    [ <span class="text-danger">show</span> ]
+                    <v-btn color="error">show</v-btn>
                 </div>
 
                 <div class="col-1">
@@ -49,105 +152,10 @@
                 </div>
             </div>
 
-            <div class="row my-3">
-                <div class="col-1">
-                    <!-- offset fix -->
-                </div>
+            <!-- debug:
+            <br />{{debugOutput}} -->
 
-                <div class="col-2">
-                    <strong>Balance</strong>
-                </div>
-
-                <div class="col-8">
-                    {{balanceDisplay}}
-                </div>
-
-                <div class="col-1">
-                    <!-- offset fix -->
-                </div>
-            </div>
-        </div>
-
-        <div class="account-content dashboard">
-            <h3 class="account-title">My Available Coins</h3>
-
-            <div v-if="coinsTable" class="account-content account-table my-available-coins p-3">
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Label</th>
-                            <th class="text-center">Value (sats)</th>
-                            <th class="text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="coin of coinsTable" :key="coin.id">
-                            <td v-html="coin.status"></td>
-                            <td v-html="coinLabelDisplay(coin)"></td>
-                            <td class="text-center">{{coinValueDisplay(coin)}}</td>
-                            <td class="actions text-right">
-                                <v-btn class="mx-1" rounded small outlined color="green" @click="openExplorer(coin.details)">
-                                    View
-                                </v-btn>
-
-                                <span v-if="coin.flags.spendable">
-                                    <v-btn class="mx-1" rounded small outlined color="green" @click="send(coin.details)">
-                                        Send
-                                    </v-btn>
-
-                                    <!-- <span v-if="coin.flags.shuffled">
-                                        |
-                                        <a href="javascript://">
-                                            Re-shuffle
-                                        </a>
-                                    </span>
-                                    <span v-else>
-                                        |
-                                        <a href="javascript://">
-                                            Shuffle
-                                        </a>
-                                    </span> -->
-                                </span>
-
-                                <span v-if="coin.flags.locked">
-                                    <v-btn v-if="isBitcoinWalletApi" class="mx-1" rounded small outlined color="red" @click="reclaim(coin)">
-                                        Cancel
-                                    </v-btn>
-
-                                    <v-btn v-if="!isBitcoinWalletApi" class="mx-1" rounded small outlined color="orange" @click="unlock(coin.id)">
-                                        Unlock
-                                    </v-btn>
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="row p-2">
-                <div class="col">
-                    <input
-                        class="form-control form-control-lg"
-                        type="text"
-                        placeholder="Enter your destination address"
-                        v-model="output.address"
-                    >
-                </div>
-
-                <div class="col">
-                    <button
-                        class="btn btn-warning btn-block"
-                        @click="updateCoins"
-                    >
-                        Update Coins
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- debug:
-        <br />{{debugOutput}} -->
+        </v-container>
 
     </v-card>
 </template>
@@ -264,19 +272,7 @@ export default {
                     const id = `${coin.txid}:${coin.vout}`
 
                     /* Set label. */
-                    let label = null
-
-                    const providerStatuses = bitcoincomLink.getWalletProviderStatus()
-                    if (
-                        providerStatuses && (
-                        providerStatuses.badger === 'LOGGED_IN'
-                        || providerStatuses.android === 'AVAILABLE'
-                        || providerStatuses.ios === 'AVAILABLE'
-                    )) {
-                        label = `${coin.txid.slice(0, 4)} ... ${coin.txid.slice(-4)} : ${coin.vout}`
-                    } else {
-                        label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
-                    }
+                    const label = `${coin.txid.slice(0, 8)} ... ${coin.txid.slice(-8)} : ${coin.vout}`
 
                     /* Initialize flags. */
                     const flags = {}
@@ -335,8 +331,8 @@ export default {
             /* Initialize scanner parameters. */
             const params = {
                 type: 'svg',
-                width: 225,
-                height: 225,
+                width: 300,
+                height: 300,
                 color: {
                     dark: '#000',
                     light: '#fff'
@@ -461,12 +457,22 @@ export default {
         },
 
         addressDisplay(_type) {
-            console.log('this.getAddress(_type)', _type, this.getAddress(_type))
+            // console.log('this.getAddress(_type)', _type, this.getAddress(_type))
+
+            /* Initialize address. */
+            let address = null
+
             if (this.getAddress(_type).indexOf('bitcoincash:') !== -1) {
-                return this.getAddress(_type).slice(12)
+                address = this.getAddress(_type).slice(12)
             } else {
-                return this.getAddress(_type)
+                address = this.getAddress(_type)
             }
+
+            /* Shorten address. */
+            address = address.slice(0, 12) + ' ... ' + address.slice(-12)
+
+            /* Return address. */
+            return address
         },
 
         /**
@@ -580,6 +586,13 @@ export default {
                 this.toast(['Oops!', message, 'error'])
             }
 
+        },
+
+        /**
+         * Pledge
+         */
+        pledge(_details) {
+            console.log('PLEDGE', _details)
         },
 
         /**

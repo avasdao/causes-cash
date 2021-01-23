@@ -19,7 +19,7 @@
 
                 <div class="qr-code text-center d-md-none my-3" v-html="qr" @click="copyAddress" />
 
-                <h3>Your Balance</h3>
+                <h3>Your Wallet Balance</h3>
 
                 <div>
                     {{balanceDisplay}}

@@ -1,6 +1,136 @@
 <template>
     <main>
-        <v-card class="mx-auto" max-width="600" shaped color="#2f4858">
+        <div v-if="!this.hasAuth" @click="signin">
+            <v-card
+                class="mx-auto"
+                max-width="600"
+                shaped
+                color="#2f4858"
+                :disabled="!this.hasAuth"
+            >
+                <v-card-text>
+                    <h2 class="my-5 white--text">My Pledge Details</h2>
+
+                    <v-row class="mb-4" justify="space-between">
+                        <v-col class="text-left">
+                            <span class="subheading font-weight-light white--text mr-1">$</span>
+                            <span
+                                class="display-3 font-weight-light white--text"
+                                v-text="displayAmountUSD"
+                            ></span>
+
+                            <span class="subheading font-weight-light white--text mr-1">.00</span>
+                            <span class="subheading font-weight-light white--text mr-1">USD</span>
+                        </v-col>
+                    </v-row>
+
+                    <v-slider
+                        v-model="pledgeAmountUSD"
+                        :color="color"
+                        track-color="grey"
+                        always-dirty
+                        :min="pledgeMin"
+                        :max="pledgeMax"
+                    >
+                        <template v-slot:prepend>
+                            <v-icon :color="color" @click="decrement">
+                                mdi-minus
+                            </v-icon>
+                        </template>
+
+                        <template v-slot:append>
+                            <v-icon :color="color" @click="increment">
+                                mdi-plus
+                            </v-icon>
+                        </template>
+                    </v-slider>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn rounded color="#8dc351" @click="min()">Min</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn rounded dark outlined @click="quarter()">25%</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn rounded dark outlined @click="half()">50%</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn rounded dark outlined @click="threeQuarter()">75%</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn rounded color="#8dc351" @click="max()">Max</v-btn>
+                    <v-spacer></v-spacer>
+                </v-card-actions>
+
+                <v-container>
+                    <v-btn x-large block dark color="#8dc351" class="my-5" @click="makePledge">
+                        Make My Pledge
+                    </v-btn>
+                </v-container>
+
+                <v-card-text>
+                    <h3 class="white--text">(Optional) Pledge Details</h3>
+
+                    <v-select
+                        class="my-3"
+                        v-model="userType"
+                        :hint="userType.comment"
+                        :items="userTypes"
+                        item-text="label"
+                        item-value="value"
+                        label="Select a user type"
+                        dark
+                        return-object
+                        single-line
+                    ></v-select>
+
+                    <v-text-field
+                        class="my-3"
+                        label="Your nickname or label"
+                        v-model="alias"
+                        hint="Enter an identity for your pledge"
+                        dark
+                    ></v-text-field>
+
+                    <v-text-field
+                        class="my-3"
+                        label="Your pledge comment"
+                        v-model="comment"
+                        hint="NOTE: Your comment will be displayed in public"
+                        dark
+                    ></v-text-field>
+
+                    <v-text-field
+                        class="my-3"
+                        label="Your web link"
+                        v-model="webLink"
+                        hint="This will display a (http/https) link from your pledge"
+                        dark
+                    ></v-text-field>
+                </v-card-text>
+
+                <v-card-text class="mt-n10">
+                    <h3 class="my-5 white--text">(Optional) SLP / Token Details</h3>
+
+                    <v-text-field
+                        class="my-3"
+                        label="Your SLP address"
+                        v-model="slpAddress"
+                        @focus="setSlpAddress"
+                        hint="May be used to offer rewards for supporters"
+                        dark
+                    ></v-text-field>
+                </v-card-text>
+
+            </v-card>
+        </div>
+
+        <v-card
+             v-if="this.hasAuth"
+            class="mx-auto"
+            max-width="600"
+            shaped
+            color="#2f4858"
+            :disabled="!this.hasAuth"
+        >
             <v-card-text>
                 <h2 class="my-5 white--text">My Pledge Details</h2>
 
@@ -113,9 +243,6 @@
                 ></v-text-field>
             </v-card-text>
 
-            <!-- debug:
-            <br />{{debugOutput}} -->
-
         </v-card>
     </main>
 </template>
@@ -139,31 +266,26 @@ export default {
     data: () => ({
         blockchain: null,
         balance: null,
+        balanceTimer: null,
         usd: null,
         fiatContribution: null,
-        // satoshiContribution: null,
 
         alias: null,
         comment: null,
 
         pledgeDetails: null,
-        // pledgeAuth: null,
 
         pledgeMin: null,
         pledgeMax: null,
         pledgeAmountUSD: null,
-        // walletBalanceUSD: null,
-
-        // interval: null,
-        // isPlaying: false,
 
         userType: null,
         userTypes: null,
         webLink: null,
         slpAddress: null,
 
+        hasSubmitted: null,
         isBitcoinWalletApi: null,
-        // debugOutput: null,
 
     }),
     watch: {
@@ -178,9 +300,9 @@ export default {
         getCoins: async function (_coins) {
             console.log('COINS HAS CHANGED', _coins)
 
-            if (_coins && this.userPledge) {
+            if (_coins && !this.hasSubmitted) {
                 /* Update balance. */
-                await this.updateBalance()
+                this.updateBalance()
 
                 /* Apply balance. */
                 this.applyBalance()
@@ -248,6 +370,7 @@ export default {
          * User Pledge
          */
         userPledge() {
+            /* Validate campaign. */
             if (!this.campaign) {
                 return null
             }
@@ -495,6 +618,13 @@ export default {
             this.pledgeAmountUSD = this.pledgeMax
         },
 
+        signin() {
+            this.toast(['Oops!', 'Please sign in first', 'error'])
+
+            this.$emit('close')
+            return this.$store.commit('showProfile', true)
+        },
+
         makePledge() {
             if (!this.hasAuth) {
                 this.$emit('close')
@@ -651,7 +781,7 @@ export default {
          * Apply Balance
          */
         async applyBalance() {
-            console.log('APPLY BALANCE (donationAmount):', this.donationAmount);
+            console.log('APPLY BALANCE (donationAmount):', this.donationAmount)
 
             Swal.fire({
                 title: 'Please Wait!',
@@ -773,12 +903,15 @@ export default {
                     confirmButtonText: 'Okay',
                 })
             }
+
+            /* Set submitted flag. */
+            this.hasSubmitted = true
         },
 
         /**
          * Update Balance
          */
-        async updateBalance() {
+        updateBalance() {
             /* Initialize wallet balance. */
             let balance = 0
 
@@ -787,7 +920,7 @@ export default {
                 /* Initialize coins. */
                 const coins = this.getCoins
 
-                Object.keys(coins).forEach(async coinId => {
+                Object.keys(coins).forEach(coinId => {
                     /* Initialize coin. */
                     const coin = coins[coinId]
                     // console.log('COINS (coin):', coin)
@@ -799,12 +932,8 @@ export default {
                 })
             }
 
-            /* Retrieve market price. */
-            const marketPrice = await Nito.Markets.getTicker('BCH', 'USD')
-            console.info(`Market price (USD)`, marketPrice) // eslint-disable-line no-console
-
             const formattedBalance =
-                this.getFormattedValue(balance, marketPrice, 'USD')
+                this.getFormattedValue(balance, this.usd, 'USD')
             // console.log('NEW BALANCE IS', formattedBalance)
 
             /* Set wallet balance. */
@@ -885,6 +1014,9 @@ export default {
     created: async function () {
         console.log('PLEDGE CAMPAIGN', this.campaign)
 
+        /* Initialize submitted flag. */
+        this.hasSubmitted = false
+
         this.userType = {
             label: `I'm a Bitcoin user`,
             value: 'user',
@@ -918,9 +1050,13 @@ export default {
             /* Initialize blockchain. */
             this.initBlockchain()
 
-            /* Update balance. */
-            this.updateBalance()
+            /* Initialize balance timer. */
+            this.balanceTimer = setInterval(() => {
+                /* Update coins. */
+                this.updateCoins()
+            }, 15000) // 15 second interval
 
+            /* Apply balance. */
             // this.applyBalance()
         }
 
@@ -930,6 +1066,11 @@ export default {
             this.initCampaign()
         }
 
+    },
+    beforeDestroy() {
+        if (this.balanceTimer) {
+            clearInterval(this.balanceTimer)
+        }
     },
 }
 </script>

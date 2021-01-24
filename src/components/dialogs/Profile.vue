@@ -64,7 +64,7 @@
                         </p>
 
                         <p class="mt-2">
-                            For your convenience, metadata (eg. Campaign details) is encrypted in the Causes Cash cloud.
+                            For your convenience, metadata (eg. campaign details) is encrypted in the Causes Cash cloud.
                         </p>
                     </div>
                 </div>

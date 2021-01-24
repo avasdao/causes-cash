@@ -21,26 +21,26 @@
                 </v-icon> -->
 
                 <span class="title font-weight-light">
-                    {{event.alias}}
+                    <h3>{{event.alias || 'Anonymous'}}</h3>
                 </span>
             </v-card-title>
 
             <v-card-subtitle>
-                {{event.campaignTitle || event.title}}
+                <h3>{{event.campaignTitle || event.title}}</h3>
             </v-card-subtitle>
 
-            <v-card-text class="headline font-weight-bold">
+            <v-card-text v-if="event.comment" class="headline font-weight-bold">
                 {{event.comment}}
             </v-card-text>
 
-            <v-container>
+            <v-container class="mt-n5">
                 <v-row>
                     <v-col cols="7">
                         <h2>{{fiatVal(event.satoshis)}}</h2>
                     </v-col>
 
                     <v-col cols="5" class="text-right">
-                        <h3>{{timeAgo(event.createdAt)}}</h3>
+                        <h4>{{timeAgo(event.timestamp)}}</h4>
                     </v-col>
                 </v-row>
             </v-container>

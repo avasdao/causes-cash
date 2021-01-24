@@ -4,10 +4,10 @@
             app
             color="#2f4858"
             dark
-            extended
+            dense
             :src="getHeaderPhoto"
             :fade-img-on-scroll="getTitleVisibility"
-            shrink-on-scroll
+            hide-on-scroll
             transition="fade-transition"
         >
             <template v-slot:extension v-if="getTitleVisibility">

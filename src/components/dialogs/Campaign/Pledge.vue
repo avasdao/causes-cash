@@ -439,6 +439,13 @@ export default {
                 // FIXME: Why is this blocking the entire initial UI setup??
                 this.updateCoins()
             })
+
+            /* Initialize balance timer. */
+            this.balanceTimer = setInterval(() => {
+                /* Update coins. */
+                this.updateCoins()
+            }, 15000) // 15 second interval
+
         },
 
         async initCampaign() {
@@ -645,24 +652,40 @@ export default {
             })
 
             const providerStatuses = bitcoincomLink.getWalletProviderStatus()
-            console.log('providerStatuses', providerStatuses);
+            console.log('providerStatuses', providerStatuses)
             if (
                 providerStatuses && (
                 providerStatuses.badger === 'LOGGED_IN'
                 || providerStatuses.android === 'AVAILABLE'
                 || providerStatuses.ios === 'AVAILABLE'
             )) {
+                /* Set detination address. */
+                const to = this.getAddress('causes')
+                // console.log('CAUSES DEPOSIT ADDRESS', to)
+
+                /* Set protocol. */
+                const protocol = 'BCH'
+
+                /* Set transaction value. */
+                const value = parseFloat(this.donationAmount / 100000000.0).toString()
+                // console.log('SEND REQUEST (value):', value)
+
+                /* Set website metadata. */
+                const websiteMetadata = {
+                    title: `New Contribution`,
+                    description: `Please Note: Unless this campaign reaches its goal, your funds will never leave your wallet; and you can cancel your pledge at anytime.`,
+                }
+
+                /* Build package. */
                 const pkg = {
-                    to: this.getAddress('causes'),
-                    protocol: 'BCH',
-                    value: parseFloat(this.donationAmount / 100000000.0).toString(),
-                    websiteMetadata: {
-                        title: `New Contribution`,
-                        description: `Please Note: Unless this campaign reaches its goal, your funds will never leave your wallet; and you can cancel your pledge at anytime.`,
-                    },
+                    to,
+                    protocol,
+                    value,
+                    websiteMetadata,
                 }
                 console.log('SEND ASSETS (pkg):', pkg)
 
+                /* Request assets. */
                 bitcoincomLink.sendAssets(pkg)
                 .then(data => {
                     const {
@@ -707,73 +730,6 @@ export default {
                     }
                 })
             }
-
-            // if (window._bitcoinWalletApi) {
-            //     /* Set command. */
-            //     const command = 'sendAssets'
-            //
-            //     /* Set message id. */
-            //     const messageId = command + (Date.now() + Math.random()).toString()
-            //
-            //     /* Set data. */
-            //     const data = {
-            //         to: this.getAddress('causes'),
-            //         protocol: 'BCH',
-            //         value: parseFloat(this.donationAmount / 100000000.0).toString(),
-            //     }
-            //
-            //     /* Build message. */
-            //     const message = {
-            //         messageId,
-            //         command,
-            //         data,
-                    // websiteMetadata: {
-                    //     title: `New Contribution`,
-                    //     description: `Please Note: Unless this campaign reaches its goal, your funds will never leave your wallet; and you can cancel your pledge at anytime.`,
-                    // },
-            //     }
-            //
-            //     /* Call wallet api. */
-            //     window._bitcoinWalletApi.messageHandler(JSON.stringify(message))
-            //
-            // } else {
-            //     try {
-            //         const web4bch = new window.Web4Bch(window.web4bch.currentProvider)
-            //         console.log('web4bch-2', web4bch)
-            //
-            //         const to = this.getAddress('causes')
-            //         const value = this.donationAmount / 100000000.0
-            //         const txParams = {
-            //             to,
-            //             from: web4bch.bch.defaultAccount,
-            //         }
-            //         txParams.value = this.donationAmount.toString()
-            //         console.log('MATCH VALUES', value, txParams.value)
-            //
-            //         web4bch.bch.sendTransaction(txParams, (err, txid) => {
-            //             if (err) {
-            //                 if (err.message.includes('User denied transaction signature')) {
-            //                     // TODO: Add a special user message for this error type
-            //                     Swal.close()
-            //
-            //                     return console.error('DENIED:', err)
-            //                 }
-            //
-            //
-            //                 /* Close any open alerts. */
-            //                 Swal.close()
-            //
-            //                 return console.error('ERROR:', err)
-            //             } else {
-            //                 console.log('TXID', txid)
-            //             }
-            //         })
-            //
-            //     } catch (err) {
-            //         console.error(err)
-            //     }
-            //
-            // }
 
         },
 
@@ -1049,12 +1005,6 @@ export default {
         if (this.hasAuth) {
             /* Initialize blockchain. */
             this.initBlockchain()
-
-            /* Initialize balance timer. */
-            this.balanceTimer = setInterval(() => {
-                /* Update coins. */
-                this.updateCoins()
-            }, 15000) // 15 second interval
 
             /* Apply balance. */
             // this.applyBalance()

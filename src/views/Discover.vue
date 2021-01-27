@@ -14,26 +14,34 @@
 
                     <v-card-subtitle>
                         <h2 class="mt-3">
-                            Bringing CashFusion+ to your <u>mobile</u> wallets
+                            Introducing Unstoppable Bitcoin Apps
                         </h2>
                     </v-card-subtitle>
 
-                    <v-card-subtitle class="mt-n5 ml-5">
+                    <!-- <v-card-subtitle class="mt-n5 ml-5">
                         <strong>DEC 18TH <small>THRU</small> JAN 31ST</strong>
-                    </v-card-subtitle>
+                    </v-card-subtitle> -->
 
                     <div class="ml-3 mt-5 mt-n3">
-                        <strong><small>Choose your adventure:</small></strong>
+                        <strong><small>VOTE FOR YOUR FAVORITE</small></strong>
                     </div>
 
                     <v-card-actions>
                         <div class="mb-1 d-flex">
-                            <v-btn class="ml-5 mr-4" outlined rounded small>
-                                <span class="action-button">Fun &amp; Games</span>
+                            <v-btn class="mr-2" outlined rounded small>
+                                <span class="action-button">Dating</span>
                             </v-btn>
 
-                            <v-btn outlined rounded small>
-                                <span class="action-button">Better Privacy</span>
+                            <v-btn class="mr-2" outlined rounded small>
+                                <span class="action-button">Trade</span>
+                            </v-btn>
+
+                            <v-btn class="mr-2" outlined rounded small>
+                                <span class="action-button">Gaming</span>
+                            </v-btn>
+
+                            <v-btn class="mr-2" outlined rounded small>
+                                <span class="action-button">Movies</span>
                             </v-btn>
                         </div>
                     </v-card-actions>

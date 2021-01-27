@@ -1,14 +1,13 @@
 <template>
     <v-card class="mx-auto" max-width="480" flat>
-        <v-container>
-
+        <v-container v-if="!showPledge">
             <div class="account-content dashboard pt-0">
                 <!-- <h3 class="account-title">Cash Wallet</h3> -->
 
                 <div class="qr-code float-right d-none d-md-block m-3" v-html="qr" @click="copyAddress" />
 
                 <v-container>
-                    <h3>Your Deposit Address</h3>
+                    <h3>Bitcoin (BCH) Deposit Address</h3>
 
                     <h3>
                         <a :href="'https://explorer.bitcoin.com/bch/address/' + getAddress('deposit')" target="_blank" style="text-decoration:none;">
@@ -19,7 +18,7 @@
 
                 <div class="qr-code text-center d-md-none my-3" v-html="qr" @click="copyAddress" />
 
-                <h3>Your Wallet Balance</h3>
+                <h3>Current Balance</h3>
 
                 <div>
                     {{balanceDisplay}}
@@ -27,23 +26,41 @@
 
             </div>
 
-            <hr v-if="coinsTable.length" class="my-5" />
+            <v-text-field
+                v-if="coinsTable.length"
+                class="mt-5"
+                label="Destination address"
+                placeholder="Enter a destination address"
+                filled
+                v-model="output.address"
+            ></v-text-field>
 
             <div v-if="coinsTable.length">
-                <h3 class="account-title">My Available Coins</h3>
+                <h3 class="account-title">Active Coins</h3>
 
                 <div v-if="coinsTable">
-                    <div v-for="coin of coinsTable" :key="coin.id">
-                        <div class="row mb-n5">
-                            <div class="col-2">&nbsp;</div>
-                            <div class="col-7"><strong>Label</strong></div>
-                            <div class="col-3 text-right"><strong>Value</strong></div>
-                        </div>
-                        <div class="row mt-n5">
-                            <div class="col-2" v-html="coin.status"></div>
-                            <div class="col-7" v-html="coinLabelDisplay(coin)"></div>
-                            <div class="col-3 text-right">{{coinValueDisplay(coin)}}</div>
-                        </div>
+                    <div class="row">
+                        <div class="col-8 text-center"><strong>Coin ID</strong></div>
+                        <div class="col-4 text-center"><strong>Value (sats)</strong></div>
+                    </div>
+
+                    <v-sheet
+                        v-for="coin of coinsTable" :key="coin.id"
+                        color="grey lighten-4"
+                        elevation="3"
+                        rounded
+                    >
+                        <v-row>
+                            <v-col cols="8" class="text-center">
+                                <v-icon small color="success" v-if="coin.status === 'active'">mdi-check-bold</v-icon>
+                                <v-icon small color="red" v-if="coin.status === 'locked'">mdi-lock</v-icon>
+                                {{coin.label}}
+                            </v-col>
+                            <v-col cols="4" class="text-center">
+                                {{coinValueDisplay(coin)}}
+                                <small>{{coinUsdValueDisplay(coin)}}</small>
+                            </v-col>
+                        </v-row>
 
                         <v-container class="mt-n5">
                             <v-row no-gutters>
@@ -54,7 +71,7 @@
                                         color="primary"
                                         @click="openExplorer(coin.details)"
                                     >
-                                        View
+                                        Details
                                     </v-btn>
                                 </v-col>
 
@@ -98,22 +115,12 @@
                             </div>
 
                         </div>
-
-                    </div>
-
+                    </v-sheet>
                 </div>
 
             </div>
 
-            <hr class="my-5" />
-
-            <v-text-field
-                placeholder="Enter your destination address"
-                filled
-                v-model="output.address"
-            ></v-text-field>
-
-            <div class="row p-2">
+            <div class="row mt-5 p-2">
                 <div class="col-8">
                     <v-btn
                         block
@@ -136,7 +143,7 @@
 
             <div class="row my-3">
                 <div class="col-offset-1 col-10">
-                    <h3>Mnemonic</h3>
+                    <h3>(Mnemonic) Seed Phrase</h3>
                 </div>
 
                 <div v-if="showMnemonic" class="col-10 col-md-8 mnemonic" @click="toggleMnemonic">
@@ -152,8 +159,27 @@
                 </div>
             </div>
 
-            <!-- debug:
-            <br />{{debugOutput}} -->
+        </v-container>
+
+        <v-container v-if="showPledge">
+            <h2>Coin Pledge</h2>
+
+            <p>
+                Select the campaign below to pledge this coin value.
+            </p>
+
+            <v-btn
+                block
+                large
+                color="red"
+                @click="showPledge = null"
+            >
+                Cancel
+            </v-btn>
+
+            <pre>
+                {{showPledge}}
+            </pre>
 
         </v-container>
 
@@ -188,11 +214,11 @@ export default {
     },
     data: () => {
         return {
+            usd: null,
             ownerSlug: null,
 
             blockchain: null,
             balance: null,
-            showMnemonic: null,
 
             output: {
                 address: null,
@@ -201,7 +227,9 @@ export default {
             },
 
             isBitcoinWalletApi: null,
-            // debugOutput: null,
+
+            showMnemonic: null,
+            showPledge: null,
         }
     },
     watch: {
@@ -283,14 +311,17 @@ export default {
 
                     switch(coin.status) {
                     case 'active':
-                        status = '<icon class="fa fa-check"></icon>'
+                        // status = '<icon class="fa fa-check"></icon>'
+                        status = coin.status
                         flags.spendable = true
                         break
                     case 'locked':
-                        status = '<icon class="fa fa-lock text-danger"></icon>'
+                        // status = '<icon class="fa fa-lock text-danger"></icon>'
+                        status = coin.status
                         flags.locked = true
                         break
                     default:
+                        // status = ''
                         status = ''
                     }
 
@@ -445,17 +476,6 @@ export default {
             window.open(`https://explorer.bitcoin.com/bch/tx/${_details.txid}`)
         },
 
-        /**
-         * Coin Label Display
-         */
-        coinLabelDisplay(_coin) {
-            if (_coin.flags.locked) {
-                return `${_coin.label} <small class="text-danger">LOCKED</small>`
-            } else {
-                return _coin.label
-            }
-        },
-
         addressDisplay(_type) {
             // console.log('this.getAddress(_type)', _type, this.getAddress(_type))
 
@@ -480,6 +500,18 @@ export default {
          */
         coinValueDisplay(_coin) {
             return numeral(_coin.satoshis).format('0,0')
+        },
+
+        /**
+         * Coin (USD) Value Display
+         */
+        coinUsdValueDisplay(_coin) {
+            if (this.usd) {
+                console.log('CALC', (_coin.satoshis / 100000000.0) * this.usd)
+                return numeral((_coin.satoshis / 100000000.0) * this.usd).format('$0,0.00')
+            } else {
+                return '$0.00'
+            }
         },
 
         /**
@@ -593,6 +625,8 @@ export default {
          */
         pledge(_details) {
             console.log('PLEDGE', _details)
+
+            this.showPledge = _details
         },
 
         /**
@@ -651,14 +685,12 @@ export default {
          * back into their Bitcoin.com / Badger wallet.
          */
         async reclaim(_coin) {
-            // this.debugOutput = `Reclaiming ${_coinid}`
-            // this.debugOutput = JSON.stringify(_coin)
             await this.unlock(_coin.id)
             await this.send(_coin.details)
         },
 
     },
-    created: function () {
+    created: async function () {
         console.log('COINS', this.getCoins)
 
         /* Set owner slug. */
@@ -666,6 +698,13 @@ export default {
 
         /* Initialize mnemonic flag. */
         this.showMnemonic = false
+
+        /* Initialize pledge flag. */
+        this.showPledge = false
+
+        /* Request BCH/USD market price. */
+        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        console.log('USD', this.usd)
 
         const providerStatuses = bitcoincomLink.getWalletProviderStatus()
         if (

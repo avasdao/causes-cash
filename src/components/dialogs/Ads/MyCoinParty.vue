@@ -13,37 +13,45 @@
                     <div class="inner-column">
                         <h2 class="mb-5 text-center">Welcome to MyCoinParty!</h2>
 
-                        <p class="mb-0">
-                            Our team has been working tirelessly since January of this year creating and delivering greater value to Bitcoin's BCH community;
-                            <a href="https://causes.cash" target="_blank"><strong>Causes Cash</strong></a> has been our most public project to date, but we aim to use this final month of 2020 to showcase our hard-work by leveraging our
-                            <a href="https://nitojs.org" target="_blank"><strong>NitoJS Library and SDK</strong></a> to finally bring
-                            <a href="https://cashfusion.org" target="_blank"><strong>CashFusion</strong></a> to one of the first and most popular multi-crypto mobile wallets,
+                        <p>
+                            Bitcoin Please team is working around the clock creating and delivering greater value to Bitcoin's BCH community.
+                        </p>
+
+                        <p>
+                            <a href="https://causes.cash" target="_blank"><strong>Causes Cash</strong></a> was one of the most successful projects introduced in 2020.
+                            Contributors are now able to pledge to Flipstarters using the Bitcoin.com mobile wallet app.
+                        </p>
+
+                        <p>
+                            In 2021, we aim to introduce <a href="https://bitcoinapps.info" target="_blank"><strong>Unstoppable Bitcoin Apps</strong></a> built with
+                            <a href="https://nitojs.org" target="_blank"><strong>NitoJS</strong></a> and delivered using a fork of one of the first and most popular multi-crypto mobile wallets,
                             <a href="https://edge.app" target="_blank"><strong>Edge (formerly Airbitz)</strong></a>.
                         </p>
 
                         <div class="text-center my-5">
                             <h2 class="text-danger">
-                                <strong>Bitcoin.com HushYourMoney</strong>
-                                <br />is coming in Q1 2021
+                                <strong>UNSTOPPABLE Bitcoin Apps</strong>
+                                <br />are coming in Q1 2021
                             </h2>
                         </div>
 
-                        <a href="https://lbry.tv/$/embed/BCHDevCon3-Hush-Your-Money-Presentation/7d2adb31d4db8ceb7dd0fac6108549d9cdaf07f8?r=CY4YhquVZJapZKiP4HHjMq7W3Yae9anX" target="_blank">
+                        <a href="https://lbry.tv/$/embed/The-Unstoppable-Web-(Bitcoin-Apps)-Final-Presentation-for-the-CoinParty-Hackathon-18-Jan-2021/6e73d7f7563065a11de3d64db0d435bd6d1865c5?r=B43Cs25RQLRbJ3VfLZANQQrdthFH5p6X" target="_blank">
                             <v-img
+                                class="img-banner"
                                 center
                                 width="100%"
-                                src="https://i.imgur.com/PlSi1tM.png"
+                                src="https://i.imgur.com/UTY2Zbg.png"
                             ></v-img>
                         </a>
 
                         <div class="text-center mt-1 mb-3">
-                            <a href="https://github.com/BCHDEVCON3/hush-your-money" target="_blank">
-                                <small><em>check out our BCHDevCon3 GitHub repository</em></small>
+                            <a href="https://gitlab.com/bchplease/bitcoin-apps" target="_blank" class="banner-text">
+                                <small><em>check out the Bitcoin Apps GitLab repository</em></small>
                             </a>
                         </div>
 
                         <p>
-                            Through no affiliation, but in the spirit of the <a href="https://coinparty.org" target="_blank"><strong>BU CoinParty</strong></a>, we've forked our own little 2-week hackathon event to bring you a behind-the-scenes look at what it takes to build the next <strong>"killer app"</strong> in the world of crypto.
+                            Using the Bitcoin Files Protocol (BFP) and a new markup language called Bitcoin Markup Language (BML), application developers can now HOST & DELIVER their HTML, JavaScript and CSS directly from the Bitcoin BCH blockchain.
                         </p>
 
                         <p>
@@ -144,7 +152,7 @@
                         <p>
                             <strong>We LOVE giving gifts!</strong>
 
-                            For your support during our 2-week showcase, we've got some awesome goodies along with a once-in-a-lifetime governance vote to offer you:
+                            For your support during our showcase, we've got some awesome goodies along with a once-in-a-lifetime governance vote to offer you:
                         </p>
 
                         <ul class="list-style-one mb-5">
@@ -152,9 +160,9 @@
                                 Airdrop 2.1M Nito Cloud (NITO) tokens
                             </li>
 
-                            <li>
+                            <!-- <li>
                                 Exclusive LIVE stream contests &amp; rewards
-                            </li>
+                            </li> -->
 
                             <li>
                                 Vote on the 2021 Roadmap for Dark Edge
@@ -189,18 +197,18 @@
 
                         <small class="text-danger"><strong>* NOTE:</strong> at least ONE MCP ticket is required to qualify for the NITO token airdrop</small>
 
-                        <h3 class="mt-4">Exclusive LIVE stream contests & rewards</h3>
-
-                        <p class="mb-5">
-                            Ticket holders will be able to participate in daily vlog contests and giveaways.
-                        </p>
-
-                        <h3>Vote on the 2021 Roadmap for Dark Edge</h3>
+                        <h3 class="mt-4">Vote on the 2021 Roadmap for Dark Edge</h3>
 
                         <p class="mb-5">
                             Governance is important!
-                            So we're offering to 2x your MCP tickets for all participants in our Roadmap governance voting.
+                            We're offering up to 2x your MCP tickets for all participants in our Roadmap governance voting.
                         </p>
+
+                        <!-- <h3>Exclusive LIVE stream contests & rewards</h3> -->
+
+                        <!-- <p class="mb-5">
+                            Ticket holders will be able to participate in daily vlog contests and giveaways.
+                        </p> -->
 
                         <h3>Future Bitcoin Please airdrops</h3>
 
@@ -525,9 +533,16 @@ export default {
             // const address = tx.slp.detail.outputs[0].address
             // console.log('CONFIRMED TICKET TRANSACTION (address)', address)
 
-            const amount = BigInt(tx.slp.detail.outputs[0].amount * (10 * 10**8))
+            /* Set amount. */
+            const amount = tx.slp.detail.outputs[0].amount
+
+            const amountBI = BigInt((amount * 10000).toFixed(0)) * BigInt(10000)
+            // const amountBI = BigInt(amount) * BigInt(100000000)
+            // const amountBI = BigInt(amount) * BigInt(10 * 10**8)
+
             // console.log('CONFIRMED TICKET TRANSACTION (amount)', amount)
-            this.totalTickets += amount
+            // this.totalTickets += amount
+            this.totalTickets += amountBI
         })
 
         // NOTE: Unconfirmed
@@ -538,9 +553,16 @@ export default {
             const address = tx.slp.detail.outputs[0].address
             console.log('UNCONFIRMED TICKET TRANSACTION (address)', address)
 
-            const amount = BigInt(tx.slp.detail.outputs[0].amount * (10 * 10**8))
-            console.log('UNCONFIRMED TICKET TRANSACTION (amount)', amount)
-            this.totalTickets += amount
+            /* Set amount. */
+            const amount = tx.slp.detail.outputs[0].amount
+
+            // const amountBI = BigInt((amount * 10000).toFixed(0)) * BigInt(10000)
+            // const amountBI = BigInt(amount) * BigInt(100000000)
+            const amountBI = BigInt(amount) * BigInt(10 * 10**8)
+
+            // console.log('UNCONFIRMED TICKET TRANSACTION (amount)', amount)
+            // this.totalTickets += amount
+            this.totalTickets += amountBI
         })
 
         // this.currentBlock = 664875
@@ -590,5 +612,13 @@ div h5 {
 
 hr {
     margin: 10px 0;
+}
+
+.img-banner {
+    border-radius: 5px;
+}
+.banner-text {
+    text-decoration: none;
+    font-weight: bold;
 }
 </style>

@@ -72,8 +72,8 @@ export default {
         //
     },
     data: () => ({
-        events: null,
         usd: null,
+        events: null,
     }),
     computed: {
         ...mapGetters([
@@ -91,8 +91,11 @@ export default {
         ]),
 
         async init() {
+            /* Initialize last timestamp. */
+            const lastTimestamp = moment().unix()
+
             /* Request events. */
-            this.events = await this.getEvents(0)
+            this.events = await this.getEvents(lastTimestamp)
             console.log('EVENTS', this.events)
         },
 
@@ -132,13 +135,23 @@ export default {
 
     },
     mounted: function () {
-        window.onscroll = () => {
+        window.onscroll = async () => {
             const bottomOfWindow =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight
 
             if (bottomOfWindow) {
                 console.log('i think we hit the bottom')
+
+                /* Initialize last timestamp. */
+                const lastTimestamp = this.events[this.events.length - 1].timestamp
+                console.log('LAST TIMESTAMP', lastTimestamp)
+
+                /* Request events. */
+                const events = await this.getEvents(lastTimestamp)
+                console.log('NEW EVENTS', events)
+
+                this.events.push(...events)
             }
         }
 

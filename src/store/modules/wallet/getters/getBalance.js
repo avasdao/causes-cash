@@ -17,7 +17,7 @@ const getBalanceBySessionId = (
 
     /* Retrieve accounts. */
     const accounts = getters.getAccounts
-    console.log('GET BALANCE (accounts)', accounts)
+    // console.log('GET BALANCE (accounts)', accounts)
 
     /* Validate accounts. */
     if (accounts === null) {
@@ -28,7 +28,7 @@ const getBalanceBySessionId = (
     const addresses = accounts.map(obj => {
         return obj.address
     })
-    console.log('GET BALANCE (all accounts)', addresses)
+    // console.log('GET BALANCE (all accounts)', addresses)
 
     /* Validate search accounts. */
     if (!addresses && addresses.length) {

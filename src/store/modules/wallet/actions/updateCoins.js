@@ -73,7 +73,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
 
     /* Retrieve metadata. */
     const meta = await rootGetters['profile/getMeta']
-    console.log('UPDATE COINS (meta):', meta)
+    // console.log('UPDATE COINS (meta):', meta)
 
     /* Update status. */
     updateStatus(coins, meta, dispatch)

@@ -308,11 +308,11 @@ export default {
             /* Set derived key length (in bytes). */
             const dkLen = 32
 
-console.log('STARTING SCRIPT');
+// console.log('STARTING SCRIPT');
             /* Compute master seed. */
             const masterSeed = await scrypt
                 .scrypt(password, salt, N, r, p, dkLen, _updateInterface)
-console.log('ENDING SCRIPT');
+// console.log('ENDING SCRIPT');
 
             /* Update master seed. */
             this.updateMasterSeed(masterSeed)
@@ -346,7 +346,7 @@ console.log('ENDING SCRIPT');
 
             /* Calculate auth signature. */
             const signedMessage = this.getSignedMessage(JSON.stringify(msg))
-            console.log('SIGNED MESSAGE', signedMessage)
+            // console.log('SIGNED MESSAGE', signedMessage)
 
             superagent
                 .post(target)
@@ -359,7 +359,7 @@ console.log('ENDING SCRIPT');
                         return this.report(err)
                     }
 
-                    console.log('SIGN IN (response):', res)
+                    console.info('Sign-in (response):', res) // eslint-disable-line no-console
                 })
 
             return true
@@ -385,7 +385,7 @@ console.log('ENDING SCRIPT');
                 .toString(36)
                 .toUpperCase()
                 .slice(2)
-            console.log('PASSWORD', this.password)
+            // console.log('PASSWORD', this.password)
 
             /* Validate email. */
             if (!this.isValidEmail()) {
@@ -432,11 +432,11 @@ console.log('ENDING SCRIPT');
             /* Set derived key length (in bytes). */
             const dkLen = 32
 
-console.log('STARTING SCRIPT');
+// console.log('STARTING SCRIPT');
             /* Compute master seed. */
             const masterSeed = await scrypt
                 .scrypt(password, salt, N, r, p, dkLen, _updateInterface)
-console.log('ENDING SCRIPT');
+// console.log('ENDING SCRIPT');
 
             /* Update master seed. */
             this.updateMasterSeed(masterSeed)
@@ -473,7 +473,7 @@ console.log('ENDING SCRIPT');
 
             /* Calculate auth signature. */
             const signedMessage = this.getSignedMessage(JSON.stringify(msg))
-            console.log('SIGNED MESSAGE', signedMessage)
+            // console.log('SIGNED MESSAGE', signedMessage)
 
             superagent
                 .post(target)
@@ -486,7 +486,7 @@ console.log('ENDING SCRIPT');
                         return this.report(err)
                     }
 
-                    console.log('SIGN IN (response):', res)
+                    console.info('Sign-in (response):', res) // eslint-disable-line no-console
                 })
 
             return true
@@ -498,7 +498,7 @@ console.log('ENDING SCRIPT');
          */
         async signin() {
             const isAuthorized = await this._authorize()
-            console.log('isAuthorized', isAuthorized)
+            // console.log('isAuthorized', isAuthorized)
             return isAuthorized
         },
 
@@ -506,17 +506,17 @@ console.log('ENDING SCRIPT');
          * Skip Sign In
          */
         skipSignin() {
-            console.log('SKIPPING SIGNIN')
+            // console.log('SKIPPING SIGNIN')
 
             /* Toggle skipping (option). */
             this.isSkipping = true
         },
 
         async autoSignin() {
-            console.log('GENERATING AUTO-SIGNIN')
+            // console.log('GENERATING AUTO-SIGNIN')
 
             const skipped = await this._skip()
-            console.log('skipped', skipped)
+            // console.log('skipped', skipped)
             return skipped
         },
 

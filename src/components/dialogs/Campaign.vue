@@ -89,7 +89,7 @@ export default {
     }),
     watch: {
         campaign: async function (_campaign) {
-            console.log('CAMPAIGN HAS CHANGED', _campaign)
+            // console.log('CAMPAIGN HAS CHANGED', _campaign)
 
             if (_campaign) {
                 /* Close alert once ANY campaign is loaded. */
@@ -151,12 +151,12 @@ export default {
         /* Initialize owner flag. */
         this.isOwner = 'no'
 
-        console.log('CAMPAIGN DISPLAY', this.getCampaignDisplay)
+        // console.log('CAMPAIGN DISPLAY', this.getCampaignDisplay)
         // const campaign = this.getCampaign()
 
         if (this.getCampaignDisplay) {
             this.campaign = await this.getCampaign(this.getCampaignDisplay)
-            console.log('CAMPAIGN', this.campaign)
+            // console.log('CAMPAIGN', this.campaign)
 
             this.title = this.campaign.title
 

@@ -194,25 +194,25 @@ gulp.task('qunit', () => {
             })
                 .then(result => {
                     if( result.stats.failed > 0 ) {
-                        console.log(`${'!'} ${filename} [${result.stats.passed}/${result.stats.total}] in ${result.stats.runtime}ms`.red);
+                        // console.log(`${'!'} ${filename} [${result.stats.passed}/${result.stats.total}] in ${result.stats.runtime}ms`.red);
                         // qunit.printResultSummary(result, console);
-                        qunit.printFailedTests(result, console);
+                        qunit.printFailedTests(result, console)
                     }
                     else {
-                        console.log(`${'✔'} ${filename} [${result.stats.passed}/${result.stats.total}] in ${result.stats.runtime}ms`.green);
+                        // console.log(`${'✔'} ${filename} [${result.stats.passed}/${result.stats.total}] in ${result.stats.runtime}ms`.green);
                     }
 
-                    totalTests += result.stats.total;
-                    failingTests += result.stats.failed;
+                    totalTests += result.stats.total
+                    failingTests += result.stats.failed
 
                     resolve();
                 })
                 .catch(error => {
-                    console.error(error);
-                    reject();
-                });
+                    console.error(error) // eslint-disable-line no-console
+                    reject()
+                })
         } )
-    } ) );
+    } ) )
 
     return new Promise( ( resolve, reject ) => {
 
@@ -221,7 +221,7 @@ gulp.task('qunit', () => {
                     reject( new Error(`${failingTests}/${totalTests} tests failed`.red) );
                 }
                 else {
-                    console.log(`${'✔'} Passed ${totalTests} tests`.green.bold);
+                    // console.log(`${'✔'} Passed ${totalTests} tests`.green.bold);
                     resolve();
                 }
             } )

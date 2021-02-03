@@ -96,7 +96,7 @@ export default {
 
             /* Request events. */
             this.events = await this.getEvents(lastTimestamp)
-            console.log('EVENTS', this.events)
+            // console.log('EVENTS', this.events)
         },
 
         fiatVal(_satoshis) {
@@ -131,26 +131,37 @@ export default {
 
         /* Request BCH/USD market price. */
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        console.log('USD', this.usd)
+        // console.log('USD', this.usd)
 
     },
     mounted: function () {
+        /**
+         * Handle Window Scroll
+         *
+         * NOTE: Required to enable infinite scrolling.
+         */
         window.onscroll = async () => {
+            /* Calculate bottom of window. */
             const bottomOfWindow =
                 document.documentElement.scrollTop + window.innerHeight ===
                 document.documentElement.offsetHeight
 
+            /* Validate bottom of window. */
             if (bottomOfWindow) {
-                console.log('i think we hit the bottom')
+                /* Validate events. */
+                if (!this.events) {
+                    return
+                }
 
                 /* Initialize last timestamp. */
                 const lastTimestamp = this.events[this.events.length - 1].timestamp
-                console.log('LAST TIMESTAMP', lastTimestamp)
+                // console.log('LAST TIMESTAMP', lastTimestamp)
 
                 /* Request events. */
                 const events = await this.getEvents(lastTimestamp)
-                console.log('NEW EVENTS', events)
+                // console.log('NEW EVENTS', events)
 
+                /* Add new events. */
                 this.events.push(...events)
             }
         }

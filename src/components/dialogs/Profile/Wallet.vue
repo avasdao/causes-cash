@@ -234,7 +234,7 @@ export default {
     },
     watch: {
         getCoins: function (_coins) {
-            console.log('COINS HAS CHANGED', _coins)
+            // console.log('COINS HAS CHANGED', _coins)
 
             if (_coins) {
                 /* Update balance. */
@@ -289,7 +289,7 @@ export default {
             if (this.getCoins) {
                 /* Initialize coins. */
                 const coins = this.getCoins
-                console.log('COINS TABLE (coins):', coins)
+                // console.log('COINS TABLE (coins):', coins)
 
                 Object.keys(coins).forEach(async coinId => {
                     /* Initialize coin. */
@@ -347,7 +347,7 @@ export default {
 
             }
 
-            console.log('TABLE DATA:', tableData)
+            // console.log('TABLE DATA:', tableData)
             return tableData
         },
 
@@ -372,7 +372,7 @@ export default {
 
             QRCode.toString(this.getAddress('deposit'), params, (err, value) => {
                 if (err) {
-                    return console.error('QR Code ERROR:', err)
+                    return console.error('QR Code ERROR:', err) // eslint-disable-line no-console
                 }
 
                 /* Set (string) value. */
@@ -403,18 +403,17 @@ export default {
         initBlockchain() {
             /* Initialize Nito blockchain. */
             this.blockchain = new Nito.Blockchain()
-            console.log('NITO BLOCKCHAIN', this.blockchain)
+            // console.log('NITO BLOCKCHAIN', this.blockchain)
 
             if (this.getAddress('deposit')) {
                 /* Subscribe to address updates. */
-                const watching = this.blockchain
+                this.blockchain
                     .subscribe('address', this.getAddress('deposit'))
-                console.log('DEPOSIT (watching):', watching)
             }
 
             /* Handle blockchain updates. */
             this.blockchain.on('update', (_msg) => {
-                console.log('DEPOSIT RECEIVED BLOCKCHAIN UPDATE (msg):', _msg)
+                console.info('Blockchain update (msg):', _msg) // eslint-disable-line no-console
 
                 /* Update coins. */
                 // FIXME: Why is this blocking the entire initial UI setup??
@@ -432,18 +431,18 @@ export default {
             .then(data => {
                 const {
                     address,
-                    label,
+                    // label,
                 } = data
 
-                console.log('User address: ' + address);
-                console.log('User address label (Optional): ' + label);
+                // console.log('User address: ' + address);
+                // console.log('User address label (Optional): ' + label);
 
                 this.output.address = address
             })
             .catch((type, description, data) => {
-                console.log('ERROR (type):', type)
-                console.log('ERROR (description):', description)
-                console.log('ERROR (data):', data)
+                // console.log('ERROR (type):', type)
+                // console.log('ERROR (description):', description)
+                // console.log('ERROR (data):', data)
 
                 /* Build package. */
                 const pkg = { type, description, data }
@@ -454,19 +453,19 @@ export default {
                 /* Handle type. */
                 switch(type) {
                 case 'NO_PROVIDER':
-                    console.log('No provider available.')
+                    console.info('No provider available.') // eslint-disable-line no-console
                     break
                 case 'PROTOCOL_ERROR':
-                    console.log('The provided protocol is not supported by this wallet.')
+                    console.info('The provided protocol is not supported by this wallet.') // eslint-disable-line no-console
                     break
                 case 'SEND_ERROR':
-                    console.log('There was an error when broadcasting this transaction to the network.')
+                    console.info('There was an error when broadcasting this transaction to the network.') // eslint-disable-line no-console
                     break
                 case 'MALFORMED_INPUT':
-                    console.log('The input provided is not valid.')
+                    console.info('The input provided is not valid.') // eslint-disable-line no-console
                     break
                 case 'CANCELED':
-                    console.log('The user has canceled this transaction request.')
+                    console.info('The user has canceled this transaction request.') // eslint-disable-line no-console
                     break
                 }
             })
@@ -507,7 +506,7 @@ export default {
          */
         coinUsdValueDisplay(_coin) {
             if (this.usd) {
-                console.log('CALC', (_coin.satoshis / 100000000.0) * this.usd)
+                // console.log('CALC', (_coin.satoshis / 100000000.0) * this.usd)
                 return numeral((_coin.satoshis / 100000000.0) * this.usd).format('$0,0.00')
             } else {
                 return '$0.00'
@@ -555,14 +554,14 @@ export default {
 
             const formattedBalance =
                 this.getFormattedValue(balance, marketPrice, 'USD')
-            console.log('NEW BALANCE IS', formattedBalance)
+            // console.log('NEW BALANCE IS', formattedBalance)
 
             /* Set wallet balance. */
             this.balance = formattedBalance
         },
 
         async send(_coin) {
-            console.log('SENDING COIN', _coin)
+            // console.log('SENDING COIN', _coin)
             if (!this.output.address) {
                 return this.toast(['Oops!', 'Invalid destination address, please try again', 'error'])
             }
@@ -586,7 +585,7 @@ export default {
                     /* Report error. */
                     this.report(err)
                 })
-            console.log('OUTBOX SEND COIN (results):', results)
+            // console.log('OUTBOX SEND COIN (results):', results)
 
             if (results) {
                 /* Update outbox. */
@@ -626,7 +625,13 @@ export default {
         pledge(_details) {
             console.log('PLEDGE', _details)
 
-            this.showPledge = _details
+            /* Set message. */
+            const message = `This feature is not yet available.`
+
+            /* Display notification. */
+            this.toast(['Oops!', message, 'error'])
+
+            // this.showPledge = _details
         },
 
         /**
@@ -656,7 +661,7 @@ export default {
         async unlock(_coinid) {
             /* Request metadata. */
             const meta = await this.getMeta
-            console.log('WALLET (meta):', meta)
+            // console.log('WALLET (meta):', meta)
 
             /* Initialize coins. */
             const coins = this.getCoins
@@ -691,7 +696,7 @@ export default {
 
     },
     created: async function () {
-        console.log('COINS', this.getCoins)
+        // console.log('COINS', this.getCoins)
 
         /* Set owner slug. */
         // this.ownerSlug = this.$route.params.pathMatch.toLowerCase()
@@ -704,7 +709,7 @@ export default {
 
         /* Request BCH/USD market price. */
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        console.log('USD', this.usd)
+        // console.log('USD', this.usd)
 
         const providerStatuses = bitcoincomLink.getWalletProviderStatus()
         if (
@@ -724,7 +729,7 @@ export default {
 
     },
     beforeDestroy() {
-        console.log('WALLET IS BEING DESTROYED!!!');
+        // console.log('WALLET IS BEING DESTROYED!!!');
         /* Validate blockchain. */
         if (this.blockchain) {
             /* Unsubscribe from blockchain. */

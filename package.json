@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "21.1.21",
+  "version": "21.2.3",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build-for-local": "vue-cli-service build",

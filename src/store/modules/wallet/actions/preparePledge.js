@@ -20,30 +20,30 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
  * for locking by the pledge authorization that follows.
  */
 const preparePledge = async ({ getters, dispatch }, _pkg) => {
-    console.log('PLEDGE COIN:', _pkg)
+    // console.log('PLEDGE COIN:', _pkg)
 
     /* Set (source) coin. */
     const coin = _pkg.sourceCoin
-    console.log('COIN', coin)
+    // console.log('COIN', coin)
 
     if (!coin) {
-        return console.error('NO source coin!')
+        return console.error('NO source coin!') // eslint-disable-line no-console
     }
 
     /* Set donation. */
     const donation = _pkg.donation
-    console.log('DONATION', donation)
+    // console.log('DONATION', donation)
 
     if (!donation) {
-        return console.error('NO donation amount!')
+        return console.error('NO donation amount!') // eslint-disable-line no-console
     }
 
     /* Set Causes address. */
     const causesAddress = getters.getAddress('causes')
-    console.log('CAUSES ADDRESS', causesAddress)
+    // console.log('CAUSES ADDRESS', causesAddress)
 
     if (!causesAddress) {
-        return console.error('NO output address!')
+        return console.error('NO output address!') // eslint-disable-line no-console
     }
 
     /* Build receivers. */
@@ -56,7 +56,7 @@ const preparePledge = async ({ getters, dispatch }, _pkg) => {
     if ((coin.satoshis - donation) > (DUST + FEE)) {
         /* Set change address. */
         const changeAddress = getters.getAddress('change')
-        console.log('CHANGE ADDRESS', changeAddress)
+        // console.log('CHANGE ADDRESS', changeAddress)
 
         receivers.push(
             {
@@ -65,7 +65,7 @@ const preparePledge = async ({ getters, dispatch }, _pkg) => {
             }
         )
     }
-    console.log('RECEIVERS', receivers)
+    // console.log('RECEIVERS', receivers)
 
     /* Set auto fee (flag). */
     const autoFee = false
@@ -73,7 +73,7 @@ const preparePledge = async ({ getters, dispatch }, _pkg) => {
     const results = await Nito.Transaction
         .sendCoin(coin, receivers, autoFee)
         .catch(Bugsnag.notify)
-    console.log('PLEDGE COIN (results):', results)
+    // console.log('PLEDGE COIN (results):', results)
 
     /* Validate results. */
     if (results) {

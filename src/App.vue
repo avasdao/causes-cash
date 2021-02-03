@@ -195,7 +195,7 @@ export default {
     }),
     watch: {
         getSheetVisibility: function (_isShowing) {
-            console.log('SHEET SHOWING CHANGED', _isShowing)
+            // console.log('SHEET SHOWING CHANGED', _isShowing)
 
             if (typeof _isShowing !== 'undefined') {
                 /* Update local handler. */
@@ -204,7 +204,7 @@ export default {
         },
 
         sheetHandler: function (_isShowing) {
-            console.log('SHEET HANDLER CHANGED', _isShowing)
+            // console.log('SHEET HANDLER CHANGED', _isShowing)
 
             if (typeof _isShowing !== 'undefined') {
                 /* Toggle sheet flag. */
@@ -213,7 +213,7 @@ export default {
         },
 
         getAdDisplay: function (_adid) {
-            console.log('AD DISPLAY CHANGED', _adid)
+            // console.log('AD DISPLAY CHANGED', _adid)
 
             if (_adid !== null) {
                 this.adDialog = !this.adDialog
@@ -221,12 +221,12 @@ export default {
         },
 
         getCampaignDisplay: function (_campaignid) {
-            console.log('CAMPAIGN DISPLAY CHANGED', _campaignid)
+            // console.log('CAMPAIGN DISPLAY CHANGED', _campaignid)
             this.campaignDialog = _campaignid
         },
 
         getPIFDisplay: function (_campaignid) {
-            console.log('PIF DISPLAY CHANGED', _campaignid)
+            // console.log('PIF DISPLAY CHANGED', _campaignid)
 
             if (_campaignid !== null) {
                 this.pifDialog = !this.pifDialog
@@ -234,7 +234,7 @@ export default {
         },
 
         getProfileDisplay: function (_showing) {
-            console.log('PROFILE DISPLAY CHANGED', _showing)
+            // console.log('PROFILE DISPLAY CHANGED', _showing)
 
             this.profileDialog = _showing
         },
@@ -371,7 +371,7 @@ export default {
          * Toggle Menu
          */
         toggleMenu() {
-            console.log('toggle menu');
+            // console.log('toggle menu');
             /* Toggle sheet flag. */
             this.$store.commit('setSheetVisibility')
         },
@@ -380,7 +380,7 @@ export default {
          * Handle Sheet
          */
         _handleSheet(_selection) {
-            console.log('Sheet selection', _selection)
+            // console.log('Sheet selection', _selection)
 
             switch(_selection) {
             case 'create':
@@ -472,7 +472,7 @@ export default {
 
     },
     created: function () {
-        console.log('Initializing application...')
+        console.info('Initializing application...') // eslint-disable-line no-console
 
         /* Initialize application. */
         this.initApp()

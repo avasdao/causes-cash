@@ -166,7 +166,7 @@ const mutations = {
         state.titleVisibility = _isShowing
     },
     setSheetVisibility(state, _isShowing) {
-        console.log('SETTING SHEET', _isShowing);
+        // console.log('SETTING SHEET', _isShowing);
         if (typeof _isShowing !== 'undefined') {
             state.sheetVisibility = _isShowing
         } else {
@@ -174,19 +174,19 @@ const mutations = {
         }
     },
     showAd(state, _adid) {
-        console.log('SHOWING AD', _adid)
+        // console.log('SHOWING AD', _adid)
         state.adDisplay = _adid
     },
     showCampaign(state, _campaignid) {
-        console.log('SHOWING CAMPAIGN', _campaignid)
+        // console.log('SHOWING CAMPAIGN', _campaignid)
         state.campaignDisplay = _campaignid
     },
     showPIF(state, _campaignid) {
-        console.log('SHOWING PIF', _campaignid)
+        // console.log('SHOWING PIF', _campaignid)
         state.pifDisplay = _campaignid
     },
     showProfile(state, _showing) {
-        console.log('SHOWING PROFILE', _showing)
+        // console.log('SHOWING PROFILE', _showing)
 
         state.profileDisplay = _showing
     },

@@ -8,7 +8,7 @@ import getCoins from './wallet/getters/getCoins'
 import getDerivationPath from './wallet/getters/getDerivationPath'
 import getDustAmount from './wallet/getters/getDustAmount'
 import getHDNode from './wallet/getters/getHDNode'
-import getHistory from './wallet/getters/getHistory'
+// import getHistory from './wallet/getters/getHistory'
 import getIndices from './wallet/getters/getIndices'
 import getMnemonic from './wallet/getters/getMnemonic'
 
@@ -74,7 +74,7 @@ const getters = {
     getDerivationPath,
     getDustAmount,
     getHDNode,
-    getHistory,
+    // getHistory,
     getIndices,
     getMnemonic,
 }

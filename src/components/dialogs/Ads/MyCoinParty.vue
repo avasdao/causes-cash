@@ -453,7 +453,7 @@ export default {
                         description: `Thanks SOOO much for your support! You'll receive approx ${this.displayEstimatedTickets} tickets to this wallet very shortly.`,
                     },
                 }
-                console.log('SEND ASSETS (pkg):', pkg)
+                // console.log('SEND ASSETS (pkg):', pkg)
 
                 bitcoincomLink.sendAssets(pkg)
                 .then(data => {
@@ -461,12 +461,12 @@ export default {
                         txid,
                     } = data
 
-                    console.log('Completed transaction id: ' + txid)
+                    console.info('Completed transaction id:', txid) // eslint-disable-line no-console
                 })
                 .catch((type, description, data) => {
-                    console.log('ERROR (type):', type)
-                    console.log('ERROR (description):', description)
-                    console.log('ERROR (data):', data)
+                    // console.log('ERROR (type):', type)
+                    // console.log('ERROR (description):', description)
+                    // console.log('ERROR (data):', data)
 
                     /* Build package. */
                     const pkg = { type, description, data }
@@ -477,19 +477,19 @@ export default {
                     /* Handle type. */
                     switch(type) {
                     case 'NO_PROVIDER':
-                        console.log('No provider available.')
+                        console.info('No provider available.') // eslint-disable-line no-console
                         break
                     case 'PROTOCOL_ERROR':
-                        console.log('The provided protocol is not supported by this wallet.')
+                        console.info('The provided protocol is not supported by this wallet.') // eslint-disable-line no-console
                         break
                     case 'SEND_ERROR':
-                        console.log('There was an error when broadcasting this transaction to the network.')
+                        console.info('There was an error when broadcasting this transaction to the network.') // eslint-disable-line no-console
                         break
                     case 'MALFORMED_INPUT':
-                        console.log('The input provided is not valid.')
+                        console.info('The input provided is not valid.') // eslint-disable-line no-console
                         break
                     case 'CANCELED':
-                        console.log('The user has canceled this transaction request.')
+                        console.info('The user has canceled this transaction request.') // eslint-disable-line no-console
                         break
                     }
                 })
@@ -500,7 +500,7 @@ export default {
     },
     created: async function () {
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        console.log('USD', this.usd)
+        // console.log('USD', this.usd)
 
         const request = {
             v: 3,
@@ -521,6 +521,11 @@ export default {
 
         this.ticketActivity = await Nito.SLP.Query.request(request)
         // console.log('TICKET ACTIVITY (all)', this.ticketActivity)
+
+        /* Validate ticket activity. */
+        if (!this.ticketActivity || !this.ticketActivity.c) {
+            return
+        }
 
         /* Initialize total ticket count. */
         this.totalTickets = BigInt(0)
@@ -550,8 +555,8 @@ export default {
             const tx = this.ticketActivity.u[txNum]
             // console.log('TICKET TRANSACTION', tx)
 
-            const address = tx.slp.detail.outputs[0].address
-            console.log('UNCONFIRMED TICKET TRANSACTION (address)', address)
+            // const address = tx.slp.detail.outputs[0].address
+            // console.log('UNCONFIRMED TICKET TRANSACTION (address)', address)
 
             /* Set amount. */
             const amount = tx.slp.detail.outputs[0].amount
@@ -567,26 +572,26 @@ export default {
 
         // this.currentBlock = 664875
         this.currentBlock = await Nito.Blockchain.Query.getBlockHeight()
-        console.log('CURRENT BLOCK', this.currentBlock)
+        // console.log('CURRENT BLOCK', this.currentBlock)
 
         // this.totalTickets = BigInt(30575416667)
-        console.log('TOTAL TICKETS', this.totalTickets)
+        // console.log('TOTAL TICKETS', this.totalTickets)
 
         // FIXME: This MUST be dynamically tied to the current block height.
         this.stageBonus = 10
-        console.log('STAGE BONUS', this.stageBonus)
+        // console.log('STAGE BONUS', this.stageBonus)
 
         this.nextStage = 671235 // ~1/20 (end-of-day)
-        console.log('NEXT STAGE', this.nextStage)
+        // console.log('NEXT STAGE', this.nextStage)
 
         this.finalBlock = 673000 // 1/31 (end-of-day)
-        console.log('FINAL BLOCK', this.finalBlock)
+        // console.log('FINAL BLOCK', this.finalBlock)
 
         this.remainingStage = this.nextStage - this.currentBlock
-        console.log('REMAINING STAGE', this.remainingStage)
+        // console.log('REMAINING STAGE', this.remainingStage)
 
         this.remainingBlocks = this.finalBlock - this.currentBlock
-        console.log('REMAINING BLOCKS', this.remainingBlocks)
+        // console.log('REMAINING BLOCKS', this.remainingBlocks)
 
         // this.usdSpent = 0
     },

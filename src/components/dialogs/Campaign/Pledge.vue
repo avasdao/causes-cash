@@ -290,7 +290,7 @@ export default {
     }),
     watch: {
         campaign: async function (_campaign) {
-            console.log('CAMPAIGN HAS CHANGED', _campaign)
+            // console.log('CAMPAIGN HAS CHANGED', _campaign)
 
             if (_campaign) {
                 this.initCampaign()
@@ -298,7 +298,7 @@ export default {
         },
 
         getCoins: async function (_coins) {
-            console.log('COINS HAS CHANGED', _coins)
+            // console.log('COINS HAS CHANGED', _coins)
 
             if (_coins && !this.hasSubmitted) {
                 /* Update balance. */
@@ -362,7 +362,7 @@ export default {
             // FIXME: Guard agains the `this.usd` price changing during `applyBalance` process
             // FIXME: Do we need to use bigInt lib to allow amount over 42 BCH??
             const amount = parseInt(this.pledgeAmountUSD / this.usd * 100000000)
-            console.log('DONATION AMOUNT', amount)
+            // console.log('DONATION AMOUNT', amount)
             return amount
         },
 
@@ -391,7 +391,7 @@ export default {
                 },
                 expires: this.campaign.expires
             }
-            console.log('USER PLEDGE DETAILS', pledge);
+            // console.log('USER PLEDGE DETAILS', pledge);
 
             /* Return json. */
             return pledge
@@ -433,7 +433,7 @@ export default {
 
             /* Handle blockchain updates. */
             this.blockchain.on('update', (_msg) => {
-                console.log('PLEDGE RECEIVED BLOCKCHAIN UPDATE (msg):', _msg)
+                console.info('Blockchain update (msg):', _msg) // eslint-disable-line no-console
 
                 /* Update coins. */
                 // FIXME: Why is this blocking the entire initial UI setup??
@@ -456,7 +456,7 @@ export default {
             /* Request BCH/USD market price. */
             if (!this.usd) {
                 this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-                console.log('USD', this.usd)
+                // console.log('USD', this.usd)
             }
 
             if (this.campaign.pledges) {
@@ -487,11 +487,11 @@ export default {
             this.currentMinerFee = this
                 .calculateMinerFee(numRecipients, this.currentContributionCount)
 
-            console.log('this.currentContributionCount', this.currentContributionCount);
-            console.log('this.currentMinerFee', this.currentMinerFee);
-            console.log('this.totalContractOutputValue', this.totalContractOutputValue);
-            console.log('this.currentCommittedSatoshis', this.currentCommittedSatoshis);
-            console.log('this.inputPercentModifier()', this.inputPercentModifier());
+            // console.log('this.currentContributionCount', this.currentContributionCount);
+            // console.log('this.currentMinerFee', this.currentMinerFee);
+            // console.log('this.totalContractOutputValue', this.totalContractOutputValue);
+            // console.log('this.currentCommittedSatoshis', this.currentCommittedSatoshis);
+            // console.log('this.inputPercentModifier()', this.inputPercentModifier());
 
             /* Initialize current floor. */
             let currentFloor = null
@@ -521,7 +521,7 @@ export default {
             }
 
             const currentFloorUsd = Math.ceil((currentFloor / 100000000.0) * this.usd)
-            console.log('CURRENT FLOOR', currentFloor, currentFloorUsd)
+            // console.log('CURRENT FLOOR', currentFloor, currentFloorUsd)
 
             // Calculate how far over (or under) committed this contribution makes the contract.
             const currentCeiling = Math.round(
@@ -530,7 +530,7 @@ export default {
                 (this.totalContractOutputValue + this.currentMinerFee)
             ) * -1
             const currentCeilingUsd = Math.ceil((currentCeiling / 100000000.0) * this.usd)
-            console.log('CURRENT CEILING', currentCeiling, currentCeilingUsd)
+            // console.log('CURRENT CEILING', currentCeiling, currentCeilingUsd)
 
             this.pledgeMin = currentFloorUsd
             this.pledgeMax = currentCeilingUsd
@@ -552,18 +552,18 @@ export default {
             .then(data => {
                 const {
                     address,
-                    label,
+                    // label,
                 } = data
 
-                console.log('User address: ' + address);
-                console.log('User address label (Optional): ' + label);
+                // console.log('User address: ' + address);
+                // console.log('User address label (Optional): ' + label);
 
                 this.slpAddress = address
             })
             .catch((type, description, data) => {
-                console.log('ERROR (type):', type)
-                console.log('ERROR (description):', description)
-                console.log('ERROR (data):', data)
+                // console.log('ERROR (type):', type)
+                // console.log('ERROR (description):', description)
+                // console.log('ERROR (data):', data)
 
                 /* Build package. */
                 const pkg = { type, description, data }
@@ -574,19 +574,19 @@ export default {
                 /* Handle type. */
                 switch(type) {
                 case 'NO_PROVIDER':
-                    console.log('No provider available.')
+                    console.info('No provider available.') // eslint-disable-line no-console
                     break
                 case 'PROTOCOL_ERROR':
-                    console.log('The provided protocol is not supported by this wallet.')
+                    console.info('The provided protocol is not supported by this wallet.') // eslint-disable-line no-console
                     break
                 case 'SEND_ERROR':
-                    console.log('There was an error when broadcasting this transaction to the network.')
+                    console.info('There was an error when broadcasting this transaction to the network.') // eslint-disable-line no-console
                     break
                 case 'MALFORMED_INPUT':
-                    console.log('The input provided is not valid.')
+                    console.info('The input provided is not valid.') // eslint-disable-line no-console
                     break
                 case 'CANCELED':
-                    console.log('The user has canceled this transaction request.')
+                    console.info('The user has canceled this transaction request.') // eslint-disable-line no-console
                     break
                 }
             })
@@ -638,7 +638,7 @@ export default {
                 return this.$store.commit('showProfile', true)
             }
 
-            console.log('DONATION AMOUNT', this.donationAmount)
+            // console.log('DONATION AMOUNT', this.donationAmount)
 
             Swal.fire({
                 title: 'Waiting for coins...',
@@ -652,7 +652,7 @@ export default {
             })
 
             const providerStatuses = bitcoincomLink.getWalletProviderStatus()
-            console.log('providerStatuses', providerStatuses)
+            // console.log('providerStatuses', providerStatuses)
             if (
                 providerStatuses && (
                 providerStatuses.badger === 'LOGGED_IN'
@@ -683,7 +683,7 @@ export default {
                     value,
                     websiteMetadata,
                 }
-                console.log('SEND ASSETS (pkg):', pkg)
+                // console.log('SEND ASSETS (pkg):', pkg)
 
                 /* Request assets. */
                 bitcoincomLink.sendAssets(pkg)
@@ -692,12 +692,12 @@ export default {
                         txid,
                     } = data
 
-                    console.log('Completed transaction id: ' + txid)
+                    console.info('Completed transaction id: ' + txid) // eslint-disable-line no-console
                 })
                 .catch((type, description, data) => {
-                    console.log('ERROR (type):', type)
-                    console.log('ERROR (description):', description)
-                    console.log('ERROR (data):', data)
+                    // console.log('ERROR (type):', type)
+                    // console.log('ERROR (description):', description)
+                    // console.log('ERROR (data):', data)
 
                     /* Build package. */
                     const pkg = { type, description, data }
@@ -713,19 +713,19 @@ export default {
                     /* Handle type. */
                     switch(type) {
                     case 'NO_PROVIDER':
-                        console.log('No provider available.')
+                        console.info('No provider available.') // eslint-disable-line no-console
                         break
                     case 'PROTOCOL_ERROR':
-                        console.log('The provided protocol is not supported by this wallet.')
+                        console.info('The provided protocol is not supported by this wallet.') // eslint-disable-line no-console
                         break
                     case 'SEND_ERROR':
-                        console.log('There was an error when broadcasting this transaction to the network.')
+                        console.info('There was an error when broadcasting this transaction to the network.') // eslint-disable-line no-console
                         break
                     case 'MALFORMED_INPUT':
-                        console.log('The input provided is not valid.')
+                        console.info('The input provided is not valid.') // eslint-disable-line no-console
                         break
                     case 'CANCELED':
-                        console.log('The user has canceled this transaction request.')
+                        console.info('The user has canceled this transaction request.') // eslint-disable-line no-console
                         break
                     }
                 })
@@ -737,7 +737,7 @@ export default {
          * Apply Balance
          */
         async applyBalance() {
-            console.log('APPLY BALANCE (donationAmount):', this.donationAmount)
+            // console.log('APPLY BALANCE (donationAmount):', this.donationAmount)
 
             Swal.fire({
                 title: 'Please Wait!',
@@ -793,7 +793,7 @@ export default {
                 if (coins[coinid].satoshis === this.donationAmount) {
                     /* Set source coin. */
                     pledgeCoin = coins[coinid]
-                    console.log('PLEDGE COIN (locked):', pledgeCoin)
+                    // console.log('PLEDGE COIN (locked):', pledgeCoin)
                 }
             })
 
@@ -805,7 +805,7 @@ export default {
                     if (coins[coinid].satoshis === this.donationAmount) {
                         /* Set source coin. */
                         pledgeCoin = coins[coinid]
-                        console.log('PLEDGE COIN (spendables):', pledgeCoin)
+                        // console.log('PLEDGE COIN (spendables):', pledgeCoin)
                     }
                 })
                 // console.log('PLEDGE COIN', pledgeCoin)
@@ -823,11 +823,11 @@ export default {
                     source,
                     json: true,
                 }
-                console.log('PLEDGE PKG', pledgePkg)
+                // console.log('PLEDGE PKG', pledgePkg)
 
                 /* Request pledge authorization. */
                 const pledgeAuth = await this.buildPledgeAuth(pledgePkg)
-                console.log('PLEDGE AUTHORIZATION', pledgeAuth)
+                // console.log('PLEDGE AUTHORIZATION', pledgeAuth)
 
                 /* Add campaign id. */
                 pledgeAuth.campaignid = this.campaign.id
@@ -839,7 +839,7 @@ export default {
 
                 // FIXME: Detect campaign type.
                 pledgeAuth.flipstarter = true
-                console.log('PLEDGE AUTH', pledgeAuth)
+                // console.log('PLEDGE AUTH', pledgeAuth)
 
                 this.addAssurance(pledgeAuth)
 
@@ -968,7 +968,7 @@ export default {
 
     },
     created: async function () {
-        console.log('PLEDGE CAMPAIGN', this.campaign)
+        // console.log('PLEDGE CAMPAIGN', this.campaign)
 
         /* Initialize submitted flag. */
         this.hasSubmitted = false
@@ -999,7 +999,7 @@ export default {
 
         /* Request BCH/USD market price. */
         this.usd = await Nito.Markets.getTicker('BCH', 'USD')
-        console.log('USD', this.usd)
+        // console.log('USD', this.usd)
 
         /* Validate user authorization. */
         if (this.hasAuth) {

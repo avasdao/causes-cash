@@ -6,7 +6,7 @@
 const getCoinById = (state, getters) => (_coinId) => {
     /* Set coin id. */
     const coinId = _coinId
-    console.log('GET COIN BY ID (coinid)', coinId)
+    // console.log('GET COIN BY ID (coinid)', coinId)
 
     /* Validate sessions. */
     if (!getters.getSessions) {
@@ -15,7 +15,7 @@ const getCoinById = (state, getters) => (_coinId) => {
 
     /* Initialize sessions. */
     const sessions = getters.getSessions
-    console.log('GET COIN BY ID (sessions):', sessions)
+    // console.log('GET COIN BY ID (sessions):', sessions)
 
     /* Initialize coin. */
     let coin = null

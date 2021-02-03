@@ -120,7 +120,7 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
     /* Initialize meta. */
     let meta = await rootGetters['profile/getMeta']
         .catch(Bugsnag.notify)
-    console.log('MAKE PLEDGE (meta):', meta)
+    // console.log('MAKE PLEDGE (meta):', meta)
 
     /* Validate metadata. */
     // NOTE: Added to schema on 2020.7.27

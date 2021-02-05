@@ -4,8 +4,11 @@ import Nito from 'nitojs'
 
 /**
  * Update Status
+ *
+ * Process all coins
  */
 const updateStatus = (_coins, _meta, dispatch) => {
+    /* Handle coins. */
     Object.keys(_coins).forEach(async coinid => {
         /* Set txid. */
         const txid = coinid.split(':')[0]
@@ -14,6 +17,9 @@ const updateStatus = (_coins, _meta, dispatch) => {
         /* Set vout. */
         const vout = coinid.split(':')[1]
         // console.log('UPDATE STATUS (vout)', vout)
+
+        // TODO: We should ONLY process active coins by comparing
+        //       its metadata status.
 
         /* Query spent status. */
         const isSpent = await Nito.Blockchain.Query.isSpent(txid, vout)
@@ -38,6 +44,7 @@ const updateStatus = (_coins, _meta, dispatch) => {
                 return
             }
 
+            /* Validate coin against its metadata. */
             if (_meta.coins[coinid].lock && _meta.coins[coinid].lock.isActive === true) {
                 /* Set coin. */
                 const coin = _coins[coinid]
@@ -99,13 +106,14 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
     /* Compile addresses. */
     // FIXME: We do not use for-each with callback here because of async.
     for (let i = 0; i < addresses.length; i++) {
+        /* Set address. */
         const address = addresses[i]
 
-        /* Retrieve address details. */
+        /* Request address details. */
         const details = await Nito.Address.details(address)
         // console.log('UPDATE COINS (address details)', details)
 
-        /* Validate details. */
+        /* Validate address details. */
         if (!details) {
             return
         }
@@ -138,8 +146,18 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
             const txDetails = await Nito.Transaction.details(txid)
             // console.log('UPDATE COINS (tx details)', txDetails)
 
+            /* Validate transaction details. */
+            if (!txDetails) {
+                return
+            }
+
             /* Set outputs. */
             const outputs = txDetails.outputs
+
+            /* Validate outputs. */
+            if (!outputs) {
+                return
+            }
 
             /* Handle all transaction outputs. */
             outputs.forEach((output, index) => {
@@ -159,14 +177,14 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                 const scriptPubKey = output.script
                 // console.log('UPDATE COINS (scriptPubKey)', scriptPubKey)
 
-                /* Validate script. */
+                /* Validate script public key. */
                 if (!scriptPubKey) {
                     return
                 }
 
                 /* Set cash addresses. */
-                const cashAddrs = Nito.Address.toCashAddress(scriptPubKey)
-                // console.log('UPDATE COINS (cashAddrs)', cashAddrs)
+                const cashAddress = Nito.Address.toCashAddress(scriptPubKey)
+                // console.log('UPDATE COINS (cashAddress)', cashAddress)
 
                 /* Initialize WIF. */
                 let chainid = null
@@ -188,7 +206,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                 }
 
                 /* Validate search address. */
-                if (cashAddrs.includes(searchAddr)) {
+                if (cashAddress === searchAddr) {
                     /**
                      * Coin
                      *
@@ -223,6 +241,9 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                             /* Initialize coins. */
                             const coins = new Audio(require('@/assets/audio/coins.wav'))
 
+                            /* Set volume to lower level. */
+                            coins.volume = 0.2
+
                             /* Play coins. */
                             // WARNING: This action may fail on several browsers;
                             //          so it's best to do this last to avoid any
@@ -234,8 +255,6 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                             /* Report error. */
                             Bugsnag.notify(err)
                         }
-                    } else {
-                        // console.error('Coin already exists in the purse.')
                     }
                 }
             })

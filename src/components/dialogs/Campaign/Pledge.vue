@@ -266,7 +266,7 @@ export default {
     data: () => ({
         blockchain: null,
         balance: null,
-        balanceTimer: null,
+        coinsTimer: null,
         usd: null,
         fiatContribution: null,
 
@@ -441,7 +441,7 @@ export default {
             })
 
             /* Initialize balance timer. */
-            this.balanceTimer = setInterval(() => {
+            this.coinsTimer = setInterval(() => {
                 /* Update coins. */
                 this.updateCoins()
             }, 15000) // 15 second interval
@@ -1018,8 +1018,8 @@ export default {
 
     },
     beforeDestroy() {
-        if (this.balanceTimer) {
-            clearInterval(this.balanceTimer)
+        if (this.coinsTimer) {
+            clearInterval(this.coinsTimer)
         }
     },
 }

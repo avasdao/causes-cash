@@ -2,7 +2,7 @@
     <main>
         <h2>In the Spotlight</h2>
 
-        <h4 class="mt-0">{{yesterday}}'s payout was <span class="light-green--text">$4.98</span> <small>0.0309 BCH</small></h4>
+        <h4 class="mt-0">{{yesterday}}'s payout was <span class="pink--text">$4.98 <small>0.0309 BCH</small></span></h4>
 
         <h4 class="mt-0">txid → <a href="javascript://">0581e1f3592d ... 00252b4cb99d</a></h4>
 

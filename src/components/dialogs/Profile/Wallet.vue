@@ -21,7 +21,7 @@
                 <h3>Current Balance</h3>
 
                 <div>
-                    {{balanceDisplay}}
+                    {{displayBalance}}
                 </div>
 
             </div>
@@ -263,7 +263,7 @@ export default {
             'getMnemonic',
         ]),
 
-        balanceDisplay() {
+        displayBalance() {
             if (!this.balance) {
                 return 'loading...'
             }

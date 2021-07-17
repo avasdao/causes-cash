@@ -1,9 +1,7 @@
 <template>
     <v-card
-        class="my-10 mx-auto"
         max-width="400"
         color="#2f4858"
-        shaped
         @click="loadPIF"
     >
         <v-card-title>
@@ -28,39 +26,31 @@
         </v-sheet>
 
         <v-card-text>
-            <div class="title font-weight-light mb-2 white--text">
-                something here
+            <div class="title font-weight-light mb-2 white--text text-center">
+                84 Community Projects
             </div>
 
-            <div class="subheading font-weight-light white--text">
-                Showing the last 30 days
+            <div class="subheading font-weight-light white--text text-center">
+                 Payouts: <strong>$13.37</strong> yesterday | <strong>$133.37</strong> in february
             </div>
 
             <v-divider class="my-2"></v-divider>
 
             <v-row no-gutters>
                 <v-col>
-                    <v-icon
-                        class="mr-2"
-                        dark
-                        small
-                    >
+                    <v-icon class="mr-2" dark small>
                         mdi-clock
                     </v-icon>
 
                     <span class="caption white--text font-weight-light">
-                        My last campaign payout was <strong>6 mins ago</strong>
+                        My last payout was sent <strong>6 mins ago</strong>
                     </span>
                 </v-col>
             </v-row>
 
             <v-row no-gutters>
                 <v-col>
-                    <v-icon
-                        class="mr-2"
-                        dark
-                        small
-                    >
+                    <v-icon class="mr-2" dark small>
                         mdi-cash-usd
                     </v-icon>
 
@@ -71,13 +61,13 @@
             </v-row>
         </v-card-text>
 
-        <v-container>
+        <!-- <v-container>
             <v-btn large block color="primary">Manage My Influence</v-btn>
 
             <div class="text-center">
                 <small class="white--text">* read disclaimer before sponsoring</small>
             </div>
-        </v-container>
+        </v-container> -->
     </v-card>
 </template>
 

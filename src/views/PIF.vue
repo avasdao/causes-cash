@@ -8,7 +8,7 @@
             </p> -->
 
             <v-alert
-                class="mt-5"
+                class="my-5"
                 v-model="showAlert"
                 color="info"
                 border="left"
@@ -21,7 +21,7 @@
                 Daily payouts are made to the <strong>TOP100 Bitcoin projects</strong> based on votes cast <em>(tokens burned)</em> by the PIF community.
             </v-alert>
 
-            <Spotlights class="mt-10" />
+            <Spotlights />
 
             <Pledge v-if="getNickname" class="mt-10" />
 
@@ -127,7 +127,7 @@ export default {
         this.$store.commit('setCurrentPage', 'pif')
 
         /* Initialize alert flag. */
-        this.showAlert = true
+        this.showAlert = false
 
     },
     mounted: function () {

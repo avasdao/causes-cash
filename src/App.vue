@@ -52,16 +52,16 @@
             color="teal"
             grow
         >
-            <!-- <v-btn class="btn-navbar" @click="loadInfluence">
+            <v-btn class="btn-navbar" @click="loadInfluence">
                 <span>Influence</span>
 
                 <v-icon>mdi-account-voice</v-icon>
 
-                <v-badge
+                <!-- <v-badge
                     color="pink"
                     content="2"
-                ></v-badge>
-            </v-btn> -->
+                ></v-badge> -->
+            </v-btn>
 
             <v-btn class="btn-navbar" @click="loadDiscover">
                 <span>Discover</span>

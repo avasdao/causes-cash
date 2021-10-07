@@ -1,6 +1,8 @@
 {
   "name": "causes-cash",
-  "version": "21.2.7",
+  "version": "21.10.6",
+  "license": "MIT",
+  "author": "Bitcoin Please",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build-for-local": "vue-cli-service build",
@@ -13,8 +15,6 @@
     "type": "git",
     "url": "https://gitlab.com/bchplease/causes.cash.git"
   },
-  "author": "Bitcoin Please",
-  "license": "MIT",
   "dependencies": {
     "@bugsnag/js": "7.6.0",
     "@bugsnag/plugin-vue": "7.6.0",
@@ -25,7 +25,7 @@
     "ethers": "5.0.17",
     "moment": "2.29.1",
     "msgpack-lite": "0.1.26",
-    "nitojs": "gitlab:bchplease/nitojs",
+    "nitojs": "https://gitlab.com/bchplease/nitojs",
     "numeral": "2.0.6",
     "qrcode": "1.4.4",
     "scrypt-js": "3.0.1",

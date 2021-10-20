@@ -6,7 +6,11 @@ import store from './store'
 
 import Bugsnag from '@bugsnag/js'
 import BugsnagPluginVue from '@bugsnag/plugin-vue'
+
 import vuetify from './plugins/vuetify'
+
+/* Import tailwind. */
+import 'tailwindcss/tailwind.css'
 
 /* Start Bugsnag. */
 Bugsnag.start({

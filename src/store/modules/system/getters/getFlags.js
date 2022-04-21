@@ -1,6 +1,5 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
-import msgpack from 'msgpack-lite'
 
 /**
  * Get Flags
@@ -16,7 +15,7 @@ const getFlags = (state) => {
 
     /* Initialize accounts. */
     try {
-        flags = msgpack.decode(Buffer.from(state.flags, 'hex'))
+        flags = state.flags
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
 

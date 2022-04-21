@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "21.10.19",
+  "version": "22.4.21",
   "license": "MIT",
   "author": "Bitcoin Please",
   "scripts": {
@@ -20,11 +20,10 @@
     "@bugsnag/plugin-vue": "7.6.0",
     "bitcoincom-link": "0.1.10-ping02",
     "cashscript": "0.5.4",
-    "core-js": "3.6.5",
+    "core-js": "3.22.1",
     "dompurify": "2.1.1",
     "ethers": "5.0.17",
     "moment": "2.29.1",
-    "msgpack-lite": "0.1.26",
     "nitojs": "https://gitlab.com/bchplease/nitojs",
     "numeral": "2.0.6",
     "qrcode": "1.4.4",

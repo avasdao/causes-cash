@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Set Asset
  *
@@ -37,7 +34,7 @@ const setAsset = (state, _asset) => {
     }
 
     /* Update the asset resource. */
-    state.assets[ownerSlug][id] = msgpack.encode(body).toString('hex')
+    state.assets[ownerSlug][id] = body
 }
 
 /* Export module. */

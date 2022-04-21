@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
 * Get Asset
 */
@@ -24,7 +21,7 @@ const getAsset = (state) => (_ownerSlug, _assetId) => {
     }
 
     /* Set asset. */
-    const asset = msgpack.decode(Buffer.from(owner[_assetId], 'hex'))
+    const asset = owner[_assetId]
     // console.log('GET ASSET (asset):', asset)
 
     /* Return asset. */

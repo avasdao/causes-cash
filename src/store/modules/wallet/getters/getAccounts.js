@@ -1,5 +1,4 @@
 /* Import modules. */
-import msgpack from 'msgpack-lite'
 import Nito from 'nitojs'
 
 /**
@@ -49,7 +48,7 @@ const getAccounts = (state, getters) => {
     const accounts = []
 
     /* Initialize account indices. */
-    const acctIndexes = msgpack.decode(Buffer.from(state.indices, 'hex'))
+    const acctIndexes = state.indices
 
     /* Loop through ALL (deposit) indices (inclusive). */
     for (let i = 0; i <= acctIndexes.deposit; i++) {

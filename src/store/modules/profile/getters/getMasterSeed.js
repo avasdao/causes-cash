@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Master Seed
  */
@@ -14,7 +11,7 @@ const getMasterSeed = (state) => {
     try {
         return Buffer.from(state.masterSeed, 'hex')
     } catch (err) {
-        return msgpack.decode(Buffer.from(state.masterSeed)) // DEPRECATED on 2020.7.6
+        throw new Error('Could NOT read your master seed.')
     }
 }
 

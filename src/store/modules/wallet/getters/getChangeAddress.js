@@ -1,5 +1,4 @@
 /* Import modules. */
-import msgpack from 'msgpack-lite'
 import Nito from 'nitojs'
 
 /**
@@ -19,7 +18,7 @@ const getChangeAddress = (state, getters) => (_wallet) => {
     }
 
     /* Initialize accounts. */
-    const accounts = msgpack.decode(Buffer.from(state.account, 'hex'))
+    const accounts = state.account
 
     /* Validate (wallet) accounts. */
     if (!getters.getAccountsByWallet(_wallet)) {
@@ -54,7 +53,7 @@ const getChangeAddress = (state, getters) => (_wallet) => {
     /* Set accounts. */
     // FIXME: How can we handle this using the "traditional" dispatch??
     //        Caution against non-instant updates via dispatch.
-    state.account = msgpack.encode(accounts)
+    state.account = accounts
 
     /* Initialize HD node. */
     const hdNode = getters.getHDNode

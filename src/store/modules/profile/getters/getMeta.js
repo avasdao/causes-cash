@@ -1,7 +1,6 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
 import crypto from 'crypto'
-import msgpack from 'msgpack-lite'
 import Nito from 'nitojs'
 import superagent from 'superagent'
 
@@ -102,7 +101,7 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         }
     } else {
         /* Return metadata. */
-        return msgpack.decode(Buffer.from(state.meta, 'hex'))
+        return state.meta
     }
 }
 

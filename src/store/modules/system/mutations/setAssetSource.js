@@ -1,6 +1,5 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
-import msgpack from 'msgpack-lite'
 
 /**
  * Set Assets
@@ -16,7 +15,7 @@ const setAssets = (state, _source) => {
     try {
         /* Validate assets. */
         if (state.assets) {
-            assets = msgpack.decode(Buffer.from(state.assets, 'hex'))
+            assets = state.assets
         }
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
@@ -35,7 +34,7 @@ const setAssets = (state, _source) => {
     // console.log('SYSTEM ASSETS (updated):', updated)
 
     /* Set updated (merged) assets. */
-    state.assets = msgpack.encode(updated).toString('hex')
+    state.assets = updated
 }
 
 /* Export module. */

@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Set Outbox
  *
@@ -8,7 +5,7 @@ import msgpack from 'msgpack-lite'
  */
 const setOutbox = (state, _outbox) => {
     /* Set outbox. */
-    state.outbox = msgpack.encode(_outbox).toString('hex')
+    state.outbox = _outbox
 }
 
 /* Export module. */

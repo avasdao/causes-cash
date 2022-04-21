@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Nickname
  */
@@ -11,7 +8,7 @@ const getNickname = (state) => {
     }
 
     /* Return nickname. */
-    return msgpack.decode(Buffer.from(state.nickname, 'hex'))
+    return state.nickname
 }
 
 /* Export module. */

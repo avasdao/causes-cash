@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Outbox
  */
@@ -11,7 +8,7 @@ const getOutbox = (state) => {
     }
 
     /* Initialize outbox. */
-    const outbox = msgpack.decode(Buffer.from(state.outbox, 'hex'))
+    const outbox = state.outbox
 
     /* Return outbox. */
     return outbox

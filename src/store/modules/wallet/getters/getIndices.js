@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Indices
  */
@@ -11,7 +8,7 @@ const getIndices = (state) => {
     }
 
     /* Initialize indices. */
-    const indices = msgpack.decode(Buffer.from(state.indices, 'hex'))
+    const indices = state.indices
 
     /* Return indices. */
     return indices

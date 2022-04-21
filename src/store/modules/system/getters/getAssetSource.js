@@ -1,6 +1,5 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
-import msgpack from 'msgpack-lite'
 
 /**
  * Get Asset Source
@@ -18,7 +17,7 @@ const getAssetSource = (state, _assetType) => {
 
     /* Set assets. */
     try {
-        assets = msgpack.decode(Buffer.from(state.assets, 'hex'))
+        assets = state.assets
     } catch (err) {
         console.error(err) // eslint-disable-line no-console
 

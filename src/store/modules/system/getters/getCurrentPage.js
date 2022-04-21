@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Current Page
  */
@@ -11,7 +8,7 @@ const getCurrentPage = (state) => {
     }
 
     /* Set current page. */
-    const currentPage = msgpack.decode(Buffer.from(state.currentPage, 'hex'))
+    const currentPage = state.currentPage
 
     /* Validate current page. */
     if (currentPage) {

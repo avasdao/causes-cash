@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Set Nickname
  *
@@ -8,7 +5,7 @@ import msgpack from 'msgpack-lite'
  */
 const setNickname = (state, _nickname) => {
     /* Set nickname. */
-    state.nickname = msgpack.encode(_nickname).toString('hex')
+    state.nickname = _nickname
 }
 
 /* Export module. */

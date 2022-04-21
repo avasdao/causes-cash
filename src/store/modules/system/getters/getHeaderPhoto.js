@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Header Photo
  */
@@ -11,7 +8,7 @@ const getHeaderPhoto = (state) => {
     }
 
     /* Set header photo. */
-    const headerPhoto = msgpack.decode(Buffer.from(state.headerPhoto, 'hex'))
+    const headerPhoto = state.headerPhoto
 
     /* Return header photo. */
     return headerPhoto

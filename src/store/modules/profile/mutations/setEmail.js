@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Set Email Address
  *
@@ -8,7 +5,7 @@ import msgpack from 'msgpack-lite'
  */
 const setEmail = (state, _email) => {
     /* Set email. */
-    state.email = msgpack.encode(_email).toString('hex')
+    state.email = _email
 }
 
 /* Export module. */

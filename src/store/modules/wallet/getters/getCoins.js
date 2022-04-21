@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Coins
  */
@@ -11,7 +8,7 @@ const getCoins = (state) => {
     }
 
     /* Initialize coins. */
-    const coins = msgpack.decode(Buffer.from(state.coins, 'hex'))
+    const coins = state.coins
 
     /* Return coins. */
     return coins

@@ -1,6 +1,3 @@
-/* Import modules. */
-import msgpack from 'msgpack-lite'
-
 /**
  * Get Email Address
  */
@@ -11,7 +8,7 @@ const getEmail = (state) => {
     }
 
     /* Return email. */
-    return msgpack.decode(Buffer.from(state.email, 'hex'))
+    return state.email
 }
 
 /* Export module. */

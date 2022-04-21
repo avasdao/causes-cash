@@ -6,7 +6,7 @@
 const getApiProvider = () => {
     /* Return url endpoint. */
     if (process.env.NODE_ENV === 'development') {
-        return 'http://localhost:6767/v1'
+        return 'http://localhost:3000/v1'
     } else {
         return 'https://api.causes.cash/v1'
     }

@@ -1,0 +1,10 @@
+env:
+    node: true
+parserOptions:
+    ecmaVersion: 9
+    sourceType: module
+rules:
+    indent:
+        - error
+        - 4
+    'no-console': off

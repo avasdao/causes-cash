@@ -8,20 +8,8 @@ const express = require('express')
 const HOST = '127.0.0.1'
 const PORT = 3000
 
-/**
- * Initialize database
- */
-const initDb = function () {
-    const fs = require('fs')
-    const dir = './data'
-
-    if (!fs.existsSync(dir)) {
-        console.log('Creating new data directory..')
-
-        fs.mkdirSync(dir)
-    }
-}
-initDb()
+require('./initDb')()
+// initDb()
 
 /* Initialize application. */
 const app = express()

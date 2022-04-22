@@ -15,7 +15,7 @@
         <h2 class="mt-5">Public Nodes <small class="pink--text">INFRASTRUCTURE</small></h2>
 
         <p class="mt-n1 mb-2 text-center">
-            <small>as of 2020.12, operational expenses are <strong>~$500/mo</strong></small>
+            <small>as of 2022.4, operational expenses are <strong>~$500/mo</strong></small>
         </p>
 
         <p>
@@ -23,7 +23,7 @@
         </p>
 
         <div class="mt-3">
-            <h3>Bitcoin Cash Node</h3>
+            <h3 class="font-bold">Bitcoin Cash Node</h3>
 
             <h5><a href="https://bchn.devops.cash" target="_blank">https://bchn.devops.cash</a></h5>
             <small><ul>
@@ -32,55 +32,34 @@
                 <li><strong>Testnet4</strong> — <a href="http://testnet4.devops.cash" target="_blank">http://testnet4.devops.cash</a></li>
                 <li><strong>Scalenet</strong> — <a href="http://scalenet.devops.cash" target="_blank">http://scalenet.devops.cash</a></li>
             </ul></small>
-            <!-- <small>Mainnet, Testnet, Testnet4 and Scalenet</small> -->
         </div>
 
         <div class="mt-3">
-            <h3>Fulcrum</h3>
+            <h3 class="font-bold">SmartBCH</h3>
+
+            <h5><a href="https://smartbch.devops.cash" target="_blank">https://smartbch.devops.cash</a></h5>
+            <small><ul>
+                <li><strong>Mainnet</strong> — <a href="http://smartbch.devops.cash/mainnet" target="_blank">http://smartbch.devops.cash/mainnet</a></li>
+                <li><strong>Testnet</strong> — <a href="http://smartbch.devops.cash/testnet" target="_blank">http://smartbch.devops.cash/testnet</a></li>
+            </ul></small>
+        </div>
+
+        <div class="mt-3">
+            <h3 class="font-bold">Fulcrum</h3>
 
             <h5><a href="http://fulcrum.devops.cash" target="_blank">http://fulcrum.devops.cash</a></h5>
         </div>
 
         <div class="mt-3">
-            <h3>BitDB</h3>
+            <h3 class="font-bold">BitDB</h3>
 
             <h5><a href="https://bitdb.devops.cash" target="_blank">https://bitdb.devops.cash</a></h5>
         </div>
 
         <div class="mt-3">
-            <h3>BitSocket</h3>
+            <h3 class="font-bold">BitSocket</h3>
 
             <h5><a href="https://bitsocket.devops.cash" target="_blank">https://bitsocket.devops.cash</a></h5>
-        </div>
-
-        <div class="mt-3">
-            <h3>SLPDB</h3>
-
-            <h5><a href="https://slpdb.devops.cash" target="_blank">https://slpdb.devops.cash</a></h5>
-        </div>
-
-        <div class="mt-3">
-            <h3>SLPSocket</h3>
-
-            <h5><a href="https://slpsocket.devops.cash" target="_blank">https://slpsocket.devops.cash</a></h5>
-        </div>
-
-        <div class="mt-3">
-            <h3>rest.bitcoin.com <small class="pink--text">BACKUP</small></h3>
-
-            <h5><a href="https://rest.devops.cash" target="_blank">https://rest.devops.cash</a></h5>
-        </div>
-
-        <div class="mt-3">
-            <h3>CashShuffle <small class="pink--text">BACKUP</small></h3>
-
-            <h5><a href="http://cashshuffle.devops.cash" target="_blank">http://cashshuffle.devops.cash</a></h5>
-        </div>
-
-        <div class="mt-3">
-            <h3>CashFusion <small class="pink--text">BACKUP</small></h3>
-
-            <h5><a href="http://cashfusion.devops.cash" target="_blank">http://cashfusion.devops.cash</a></h5>
         </div>
 
         <div class="my-10">

@@ -52,17 +52,6 @@
             color="teal"
             grow
         >
-            <v-btn class="btn-navbar" @click="loadInfluence">
-                <span>Influence</span>
-
-                <v-icon>mdi-account-voice</v-icon>
-
-                <!-- <v-badge
-                    color="pink"
-                    content="2"
-                ></v-badge> -->
-            </v-btn>
-
             <v-btn class="btn-navbar" @click="loadDiscover">
                 <span>Discover</span>
 
@@ -173,7 +162,6 @@ export default {
     data: () => ({
         isShowingDiscover: null,
         isShowingEvents: null,
-        isShowingInfluence: null,
 
         isPersistent: null,
         sheetHandler: null,
@@ -309,8 +297,6 @@ export default {
                 return 'Events'
             case 'help':
                 return 'Help & Support'
-            case 'influence':
-                return 'My Influence'
             case 'pif':
                 return 'Pay It Forward'
             case 'treasury':
@@ -435,19 +421,6 @@ export default {
             // goTo(0)
 
             this.$store.commit('setCurrentPage', 'events')
-        },
-
-        loadInfluence() {
-            /* Set auto-hide nav flag. */
-            this.$store.commit('setTitleVisibility', true)
-            this.$store.commit('setHeaderPhoto', require('@/assets/headers/influence.jpg'))
-
-            /* Validate path. */
-            if (this.$route.path !== '/influence') {
-                this.$router.push('/influence')
-            }
-
-            this.$store.commit('setCurrentPage', 'influence')
         },
 
         loadProfile() {

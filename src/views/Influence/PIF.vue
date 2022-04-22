@@ -61,13 +61,6 @@
             </v-row>
         </v-card-text>
 
-        <!-- <v-container>
-            <v-btn large block color="primary">Manage My Influence</v-btn>
-
-            <div class="text-center">
-                <small class="white--text">* read disclaimer before sponsoring</small>
-            </div>
-        </v-container> -->
     </v-card>
 </template>
 

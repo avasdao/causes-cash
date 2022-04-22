@@ -291,16 +291,11 @@ export default {
             case 'details':
                 return 'Campaign Details'
             case 'discover':
-                // return 'New & Noteworthy'
                 return 'Discover'
             case 'events':
                 return 'Events'
             case 'help':
                 return 'Help & Support'
-            case 'pif':
-                return 'Pay It Forward'
-            case 'treasury':
-                return 'PIF Treasury'
             default:
                 return 'Unknown Page'
             }

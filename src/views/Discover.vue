@@ -1,71 +1,6 @@
 <template>
     <v-container>
 
-        <v-card color="#952175" dark class="mt-0 mb-5" @click="loadMyCoinParty()">
-            <!-- <div class="d-flex flex-no-wrap justify-space-between"> -->
-                <v-avatar class="mt-5 mr-5 ml-1 float-right" size="75" tile>
-                    <v-img src="https://i.imgur.com/ycNrWFC.png"></v-img>
-                </v-avatar>
-
-                <div>
-                    <v-card-title class="headline">
-                        <h2>MyCoinParty</h2>
-                    </v-card-title>
-
-                    <v-card-subtitle>
-                        <h2 class="mt-3">
-                            Introducing Unstoppable Bitcoin Apps
-                        </h2>
-                    </v-card-subtitle>
-
-                    <!-- <v-card-subtitle class="mt-n5 ml-5">
-                        <strong>DEC 18TH <small>THRU</small> JAN 31ST</strong>
-                    </v-card-subtitle> -->
-
-                    <div class="ml-3 mt-5 mt-n3">
-                        <strong><small>VOTE FOR YOUR FAVORITE</small></strong>
-                    </div>
-
-                    <v-card-actions>
-                        <div class="mb-1 d-flex">
-                            <v-btn class="mr-2" outlined rounded small>
-                                <span class="action-button">Dating</span>
-                            </v-btn>
-
-                            <v-btn class="mr-2" outlined rounded small>
-                                <span class="action-button">Trade</span>
-                            </v-btn>
-
-                            <v-btn class="mr-2" outlined rounded small>
-                                <span class="action-button">Gaming</span>
-                            </v-btn>
-
-                            <v-btn class="mr-2" outlined rounded small>
-                                <span class="action-button">Movies</span>
-                            </v-btn>
-                        </div>
-                    </v-card-actions>
-                </div>
-
-            <!-- </div> -->
-        </v-card>
-
-        <!-- <div class="d-flex justify-end">
-            <div class="category-selection">
-                <v-select
-                    v-model="selected"
-                    :hint="selected.comment"
-                    :items="categories"
-                    item-text="state"
-                    item-value="abbr"
-                    label="Select a category"
-                    persistent-hint
-                    return-object
-                    single-line
-                ></v-select>
-            </div>
-        </div> -->
-
         <v-card
             v-for="campaign of campaigns"
             :key="campaign.id"
@@ -191,10 +126,6 @@ export default {
         ...mapActions('utils', [
             'toast',
         ]),
-
-        loadMyCoinParty() {
-            this.$store.commit('showAd', 'mycoinparty')
-        },
 
         minPledge(_campaign) {
             // console.log('MIN PLEDGE', _campaign)

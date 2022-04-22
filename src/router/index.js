@@ -2,11 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Admin from '../views/Admin.vue'
-import Main from '../views/Main.vue'
-
 import Discover from '../views/Discover.vue'
 import Events from '../views/Events.vue'
-import Treasury from '../views/Treasury.vue'
+import Main from '../views/Main.vue'
 
 Vue.use(VueRouter)
 
@@ -26,10 +24,6 @@ const routes = [
     {
         path: '/events',
         component: Events
-    },
-    {
-        path: '/treasury',
-        component: Treasury
     },
 ]
 

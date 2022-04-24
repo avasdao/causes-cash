@@ -1,5 +1,5 @@
 <template>
-    <v-container class="bg-indigo-500">
+    <v-container class="bg-indigo-500 pb-20">
 
         <v-card
             v-for="campaign of campaigns"

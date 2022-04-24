@@ -1,0 +1,17 @@
+{
+  "name": "causes-bin",
+  "version": "22.4.24",
+  "license": "MIT",
+  "description": "Causes Cash Daemons",
+  "author": "Bitcoin Please <support@bchplease.org>",
+  "dependencies": {
+    "eventsource": "2.0.0",
+    "moment": "2.29.3",
+    "nitojs": "https://gitea.hos.im/nito/nitojs.git",
+    "numeral": "2.0.6",
+    "pouchdb": "7.3.0",
+    "puppeteer": "13.6.0",
+    "superagent": "7.1.2",
+    "uuid": "8.3.2"
+  }
+}

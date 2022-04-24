@@ -531,12 +531,12 @@ const handleDups = async () => {
 
 })()
 
-return load('hacksmart.org', true)
+return load('westpalmbch.us', true)
 
 // return handleDups()
 
 const campaignList = [
-    'flipstarter.yoshilivo.com',
+    'hacksmart.org',
 ]
 campaignList.forEach(campaignUrl => {
     load(campaignUrl, false)

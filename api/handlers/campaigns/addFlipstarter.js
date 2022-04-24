@@ -5,7 +5,7 @@ const moment = require('moment')
 const Slack = require('../slack')
 const url = require('url')
 const util = require('util')
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 
 /* Initialize databases. */
 const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/campaigns`)

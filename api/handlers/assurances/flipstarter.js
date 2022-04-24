@@ -4,7 +4,7 @@ const moment = require('moment')
 const Nito = require('nitojs')
 const Slack = require('../slack')
 const util = require('util')
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 
 /* Initialize databases. */
 const queueDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/queue`)

@@ -1,7 +1,7 @@
 const BITBOX = require('bitbox-sdk').BITBOX
 const CashID = require('cashid')
 const PouchDB = require('pouchdb')
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 const moment = require('moment')
 // const superagent = require('superagent')
 

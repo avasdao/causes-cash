@@ -7,8 +7,8 @@ const util = require('util')
 const uuidv4 = require('uuid/v4')
 
 /* Initialize databases. */
-const queueDb = new PouchDB('data/queue')
-const profilesDb = new PouchDB('data/profiles')
+const queueDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/queue`)
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
 
 /**
  * Calculate Miner Fee

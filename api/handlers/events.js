@@ -4,7 +4,7 @@ const PouchDB = require('pouchdb')
 const util = require('util')
 
 /* Initialize databases. */
-const eventsDb = new PouchDB('data/events')
+const eventsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/events`)
 
 /* Initialize results limit. */
 const RESULTS_LIMIT = 20

@@ -3,7 +3,7 @@ const Nito = require('nitojs')
 const PouchDB = require('pouchdb')
 
 /* Initialize database. */
-const authDb = new PouchDB('data/profiles_auth')
+const authDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles_auth`)
 
 /**
  * Message Authorization

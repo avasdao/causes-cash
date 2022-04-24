@@ -4,10 +4,10 @@ const moment = require('moment')
 const util = require('util')
 
 /* Initialize databases. */
-const assurancesDb = new PouchDB('data/assurances')
-const campaignsDb = new PouchDB('data/campaigns')
-const directDb = new PouchDB('data/direct')
-const payoutsDb = new PouchDB('data/payouts')
+const assurancesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/assurances`)
+const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/campaigns`)
+const directDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/direct`)
+const payoutsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/payouts`)
 
 /**
  * Dashboard

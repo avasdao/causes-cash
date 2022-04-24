@@ -3,7 +3,7 @@ const PouchDB = require('pouchdb')
 const util = require('util')
 
 /* Initialize databases. */
-const assurancesDb = new PouchDB('data/assurances')
+const assurancesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/assurances`)
 
 /**
  * Get (Assurance) List

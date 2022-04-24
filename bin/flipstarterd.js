@@ -12,9 +12,9 @@ const util = require('util')
 const uuidv4 = require('uuid/v4')
 
 /* Initialize databases. */
-const campaignsDb = new PouchDB('data/campaigns')
-const eventsDb = new PouchDB('data/events')
-const queueDb = new PouchDB('data/queue')
+const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/campaigns`)
+const eventsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/events`)
+const queueDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/queue`)
 
 /* Initialize (static) sequence number. */
 const SEQUENCE_NUMBER = 4294967295

@@ -12,9 +12,9 @@ const BITBOX = require('bitbox-sdk').BITBOX
 const bitbox = new BITBOX()
 
 /* Initialize databases. */
-const assurancesDb = new PouchDB('data/assurances')
-const campaignsDb = new PouchDB('data/campaigns')
-const profilesDb = new PouchDB('data/profiles')
+const assurancesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/assurances`)
+const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/campaigns`)
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
 
 // /* Initialize privacy transactions arrays. */
 // let fusionTxs = []

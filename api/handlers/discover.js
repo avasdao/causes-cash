@@ -5,10 +5,8 @@ const Nito = require('nitojs')
 const util = require('util')
 
 /* Initialize databases. */
-const assurancesDb = new PouchDB('data/assurances')
-const eventsDb = new PouchDB('data/events')
-const flipstartersDb = new PouchDB('data/flipstarters')
-const payoutsDb = new PouchDB('data/payouts')
+const eventsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/events`)
+const flipstartersDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/flipstarters`)
 
 /* Initialize results limit. */
 const RESULTS_LIMIT = 20

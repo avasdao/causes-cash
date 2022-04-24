@@ -6,8 +6,8 @@ const util = require('util')
 const uuidv4 = require('uuid/v4')
 
 /* Initialize databases. */
-const assurancesDb = new PouchDB('data/assurances')
-const profilesDb = new PouchDB('data/profiles')
+const assurancesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/assurances`)
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
 
 /**
  * Calculate Miner Fee

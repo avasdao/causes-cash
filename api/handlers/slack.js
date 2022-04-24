@@ -16,16 +16,6 @@ const Slack = async function (_txt, _json) {
     /* Set url. */
     const url = 'https://slack.com/api/chat.postMessage'
 
-    // const url = 'https://slack.com/api/conversations.open'
-    // BOT POST RESPONSE {
-    //     "ok": true,
-    //     "no_op": true,
-    //     "already_open": true,
-    //     "channel": {
-    //         "id": "D01F06QTRFC"
-    //     }
-    // }
-
     const users = 'UVB8TA16X' // Shomari
 
     /* Set group channel. */
@@ -71,18 +61,14 @@ const Slack = async function (_txt, _json) {
             .set('Content-type', 'application/json;charset=utf-8')
             .set('Authorization', `Bearer ${token}`)
             .end((err, json) => {
-                // console.log('\nBOT POST RESPONSE', JSON.stringify(json.body, null, 4))
-
-                /* Return the json body. */
-                // return res.json(json.body)
+                if (err) {
+                    console.error(err)
+                } else {
+                    console.log('\nBOT POST RESPONSE', JSON.stringify(json.body, null, 4))
+                }
             })
     } catch (err) {
         console.error('BOT POST ERROR', err)
-
-        /* Return the error. */
-        // return res.json({
-        //     error: err
-        // })
     }
 
 }

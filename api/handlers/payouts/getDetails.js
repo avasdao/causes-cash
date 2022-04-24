@@ -2,7 +2,7 @@
 const PouchDB = require('pouchdb')
 
 /* Initialize databases. */
-const payoutsDb = new PouchDB('data/payouts')
+const payoutsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/payouts`)
 
 /**
  * Get (Assurance) Details

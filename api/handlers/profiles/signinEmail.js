@@ -4,8 +4,8 @@ const moment = require('moment')
 const uuidv4 = require('uuid/v4')
 
 /* Initialize databases. */
-const detailsDb = new PouchDB('data/profiles_details')
-const profilesDb = new PouchDB('data/profiles')
+const detailsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles_details`)
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
 
 /**
  * Signin Email

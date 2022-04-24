@@ -4,7 +4,7 @@ const PouchDB = require('pouchdb')
 const util = require('util')
 
 /* Initialize databases. */
-const profilesDb = new PouchDB('data/profiles')
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
 
 /**
  * Get (Profile) Details

@@ -8,9 +8,6 @@ const express = require('express')
 const HOST = '127.0.0.1'
 const PORT = 3000
 
-require('./initDb')()
-// initDb()
-
 /* Initialize application. */
 const app = express()
 
@@ -110,5 +107,6 @@ console.info('-----------------------------')
 console.info('  - NODE_ENV        :', process.env.NODE_ENV)
 console.info('  - MNEMONIC        :', process.env.MNEMONIC)
 console.info('  - API_ENDPOINT    :', process.env.API_ENDPOINT)
+console.info('  - COUCHDB_AUTH    :', process.env.COUCHDB_AUTH)
 console.info('  - SLACK_BOT_TOKEN :', process.env.SLACK_BOT_TOKEN)
 console.info()

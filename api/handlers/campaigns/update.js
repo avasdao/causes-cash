@@ -6,9 +6,9 @@ const util = require('util')
 const uuidv4 = require('uuid/v4')
 
 /* Initialize databases. */
-const campaignsDb = new PouchDB('data/campaigns')
-const historyDb = new PouchDB('data/api_history')
-const profilesDb = new PouchDB('data/profiles')
+const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/campaigns`)
+const historyDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/api_history`)
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
 
 /**
  * Update Campaign

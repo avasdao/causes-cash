@@ -19,9 +19,9 @@ const cashid = new CashID('api.causes.cash', '/v1/cashid')
 PouchDB.plugin(require('pouchdb-find'))
 
 /* Initialize databases. */
-const dbProfiles = new PouchDB('data/profiles')
-const dbDetails = new PouchDB('data/profiles_details')
-const dbSessions = new PouchDB('data/sessions')
+const dbProfiles = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
+const dbDetails = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles_details`)
+const dbSessions = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/sessions`)
 
 /**
  * Add New Profile

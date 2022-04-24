@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="bg-indigo-500">
 
         <v-card
             v-for="campaign of campaigns"
@@ -348,7 +348,7 @@ export default {
 
         /* Request campaigns. */
         this.campaigns = await this.getDiscover('all', 0)
-        console.log('DISCOVER', this.campaigns)
+        // console.log('DISCOVER', this.campaigns)
 
         /* Sort by most recent pledge. */
         this.campaigns.sort((a, b) => {

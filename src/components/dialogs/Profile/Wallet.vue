@@ -623,7 +623,7 @@ export default {
          * Pledge
          */
         pledge(_details) {
-            console.log('PLEDGE', _details)
+            console.log('PLEDGE (details):', _details) // eslint-disable-line no-console
 
             /* Set message. */
             const message = `This feature is not yet available.`

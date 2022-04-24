@@ -39,7 +39,7 @@ const getChangeAddress = (state, getters) => (_wallet) => {
 
     /* Set derivation path. */
     const path = `${getters.getDerivationPath('BCH')}/${change}/${changeIndex}`
-    console.log('GET CHANGE ADDRESS (path)', path)
+    // console.log('GET CHANGE ADDRESS (path)', path)
 
     /* Add change index to active accounts (pool). */
     walletAccount[changeIndex] = {

@@ -1,5 +1,5 @@
 <template>
-    <v-app class="viewport">
+    <v-app class="max-w-xl mx-auto">
         <v-app-bar
             app
             color="#2f4858"
@@ -9,6 +9,7 @@
             :fade-img-on-scroll="getTitleVisibility"
             hide-on-scroll
             transition="fade-transition"
+            class="max-w-xl mx-auto"
         >
             <template v-slot:extension v-if="getTitleVisibility">
                 <v-icon class="mr-2" v-text="displayIcon"></v-icon>
@@ -34,7 +35,7 @@
             </v-btn>
 
             <v-btn icon @click="loadProfile">
-                <v-icon>mdi-face-profile</v-icon>
+                <v-icon>mdi-face-man-profile</v-icon>
             </v-btn>
 
             <v-btn icon @click="toggleMenu">
@@ -42,33 +43,30 @@
             </v-btn>
         </v-app-bar>
 
-        <v-main :style="{ backgroundColor: bgColor }">
+        <v-main>
             <router-view />
         </v-main>
 
-        <v-bottom-navigation
-            app
-            :value="selectedNavTab"
-            color="teal"
-            grow
+        <v-container
+            class="max-w-xl fixed bottom-0 flex bg-gray-700 gap-4"
         >
-            <v-btn class="btn-navbar" @click="loadDiscover">
-                <span>Discover</span>
+            <v-btn class="btn-navbar grow gap-4" @click="loadDiscover">
+                <span class="text-xl">Discover</span>
 
-                <v-icon>mdi-compass</v-icon>
+                <v-icon class="ml-3">mdi-compass</v-icon>
             </v-btn>
 
-            <v-btn class="btn-navbar" @click="loadEvents">
-                <span>Events</span>
+            <v-btn class="btn-navbar grow" @click="loadEvents">
+                <span class="text-xl">Events</span>
 
-                <v-icon>mdi-calendar-clock</v-icon>
+                <v-icon class="ml-3">mdi-calendar-clock</v-icon>
 
                 <!-- <v-badge
                     color="pink"
                     content="10+"
                 ></v-badge> -->
             </v-btn>
-        </v-bottom-navigation>
+        </v-container>
 
         <v-bottom-sheet v-model="sheetHandler" :persistent="isPersistent">
             <MainMenu v-if="1 == 1" @selected="_handleSheet" />
@@ -464,11 +462,6 @@ export default {
 </script>
 
 <style>
-.viewport {
-    max-width: 480px;
-    margin: 0 auto;
-}
-
 .header-title {
     font-size: 1.1em;
 }
@@ -489,8 +482,6 @@ export default {
 }
 
 .btn-navbar {
-    /* border: 1pt solid purple; */
-    /* padding: 10px !important; */
     height: 56px !important;
 }
 

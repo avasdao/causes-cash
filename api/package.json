@@ -1,6 +1,6 @@
 {
   "name": "causes-api",
-  "version": "22.4.21",
+  "version": "22.4.23",
   "license": "MIT",
   "description": "Causes Cash API",
   "author": "Bitcoin Please <support@bchplease.org>",
@@ -10,19 +10,19 @@
   },
   "dependencies": {
     "bitbox-sdk": "8.11.2",
-    "bitcore-mnemonic": "8.20.4",
+    "bitcore-mnemonic": "8.25.25",
     "cashid": "0.3.3",
-    "cashscript": "0.5.4",
-    "cheerio": "1.0.0-rc.3",
-    "crypto-js": "3.1.9-1",
-    "express": "4.17.1",
-    "moment": "2.24.0",
-    "nitojs": "gitlab:bchplease/nitojs",
+    "cashscript": "0.6.5",
+    "cheerio": "1.0.0-rc.10",
+    "crypto-js": "4.1.1",
+    "express": "4.17.3",
+    "moment": "2.29.3",
+    "nitojs": "https://gitea.hos.im/nito/nitojs.git",
     "numeral": "2.0.6",
-    "pouchdb": "7.1.1",
-    "pouchdb-find": "7.1.1",
-    "puppeteer": "5.3.1",
-    "superagent": "5.1.3",
-    "uuid": "3.4.0"
+    "pouchdb": "7.3.0",
+    "pouchdb-find": "7.3.0",
+    "puppeteer": "13.6.0",
+    "superagent": "7.1.2",
+    "uuid": "8.3.2"
   }
 }

@@ -531,7 +531,7 @@ const handleDups = async () => {
 
 })()
 
-return load('westpalmbch.us', true)
+return load('fund.kth.cash', true)
 
 // return handleDups()
 

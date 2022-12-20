@@ -1,4 +1,4 @@
-# Causes Cash
+# Welcome to the Documentation<br>for Causes Cash
 
 ![Bitcoin Causes Poster](https://causes.cash/poster.jpg?1582376269)
 
@@ -12,13 +12,13 @@ Open Source — __https://gitlab.com/bchplease/causes.cash__
 
 [![Join us on Slack](https://i.imgur.com/dzi0IWb.jpg)](https://join.slack.com/t/bchplease/shared_invite/zt-e7jj03j5-vJbe47kNrPBjTgTXwLNRkA)
 
-## Donate to YOUR "good" cause
+### Causes Cash is an uncensorable funding platform for radical creators and unstoppable service providers.
 
-Everyone has their favorite team _(sports, politics, religion)._ Why should crypto be any different? Pick your favorite team / project and put your money where your mouth is.
+---
 
 ## Giving the community what it wants
 
-Infrastructure is the foundation upon which we BUIDL .. But then what? What are we actually BUIDLing? We need fresh faces. We should welcome the un-intiated. We just need more users all across the world using Bitcoin as their daily driver for cash transactions. How do we do that? We need to #MakeBitcoinCashAgain
+Infrastructure is the foundation upon which we BUIDL .. But then what? What are we actually BUIDLing? We need fresh faces. We should welcome the unintiated. We just need more users all across the world using Bitcoin as their daily driver for cash transactions. How do we do that? We need to #MakeBitcoinCashAgain
 
 ##### Who gives a damn about developers? Can volunteer funding work?
 

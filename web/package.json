@@ -2,7 +2,7 @@
   "name": "causes-cash",
   "version": "22.4.23",
   "license": "MIT",
-  "author": "Bitcoin Please",
+  "author": "Ava's DAO",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build-for-local": "vue-cli-service build",
@@ -24,7 +24,7 @@
     "dompurify": "2.3.6",
     "ethers": "5.6.4",
     "moment": "2.29.3",
-    "nitojs": "https://gitea.hos.im/nito/nitojs.git",
+    "nitojs": "https://github.com/nyusternie/nitojs.git",
     "numeral": "2.0.6",
     "qrcode": "1.5.0",
     "scrypt-js": "3.0.1",

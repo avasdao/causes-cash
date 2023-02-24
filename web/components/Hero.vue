@@ -12,14 +12,19 @@
                     <div class="absolute inset-0 bg-gradient-to-r from-purple-800 to-indigo-700 mix-blend-multiply"></div>
                 </div>
 
-                <div class="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
+                <div class="relative px-4 py-8 sm:px-6 sm:py-12 lg:py-16 lg:px-8">
                     <h1 class="text-center font-extrabold tracking-tight text-4xl">
-                        <span class="block text-white sm:text-5xl lg:text-7xl" uppercase>Causes Cash</span>
-                        <span class="block text-indigo-200">Peer-to-Peer Crowdfunding</span>
+                        <span class="block text-white sm:text-5xl lg:text-8xl">
+                            Causes Cash
+                        </span>
+
+                        <span class="block text-indigo-200">
+                            Peer-to-Peer Crowdfunding
+                        </span>
                     </h1>
 
-                    <p class="mt-6 max-w-lg mx-auto text-center text-xl text-indigo-200 sm:max-w-3xl">
-                        Creators will enjoy the MOST effective platform to <span class="font-bold">Build</span>, <span class="font-bold">Collect</span> and <span class="font-bold">Manage</span> support for your Nexa projects.
+                    <p class="mt-6 max-w-lg mx-auto text-center text-2xl text-indigo-200 sm:max-w-3xl">
+                        Creators ALL ❤️ our first-class <span class="text-yellow-400 font-bold">Crowdfunding Experience (CX)</span> on the MOST effective platform to <span class="font-bold">Build</span>, <span class="font-bold">Collect</span> and <span class="font-bold">Manage</span> support for your next BIG project.
                     </p>
 
                     <div class="mt-10 max-w-sm mx-auto lg:max-w-none lg:flex lg:justify-center">

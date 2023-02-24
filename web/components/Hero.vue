@@ -29,13 +29,13 @@
 
                     <div class="mt-10 max-w-sm mx-auto lg:max-w-none lg:flex lg:justify-center">
                         <div class="space-y-4 lg:space-y-0 lg:mx-auto lg:inline-grid lg:grid-cols-2 lg:gap-5">
-                            <router-link to="/launchpad" class="flex items-center justify-center px-4 py-3 border border-transparent text-xl sm:text-2xl font-medium rounded-md shadow-sm text-indigo-700 bg-white hover:bg-indigo-50 sm:px-8">
+                            <NuxtLink to="/launchpad" class="flex items-center justify-center px-4 py-3 border border-transparent text-xl sm:text-2xl font-medium rounded-md shadow-sm text-indigo-700 bg-white hover:bg-indigo-50 sm:px-8">
                                 Start a Campaign
-                            </router-link>
+                            </NuxtLink>
 
-                            <router-link to="/help" class="flex items-center justify-center px-4 py-3 border border-transparent text-xl sm:text-2xl font-medium rounded-md shadow-sm text-white bg-indigo-500 bg-opacity-60 hover:bg-opacity-70 sm:px-8">
+                            <NuxtLink to="https://docs.causes.cash/pledging" target="_blank" class="flex items-center justify-center px-4 py-3 border border-transparent text-xl sm:text-2xl font-medium rounded-md shadow-sm text-white bg-indigo-500 bg-opacity-60 hover:bg-opacity-70 sm:px-8">
                                 How-To Pledge
-                            </router-link>
+                            </NuxtLink>
                         </div>
                     </div>
                 </div>

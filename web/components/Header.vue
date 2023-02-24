@@ -3,7 +3,7 @@
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
             <div class="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
                 <div class="flex items-center">
-                    <router-link to="/" class="flex flex-col items-center">
+                    <NuxtLink to="/" class="flex flex-col items-center">
                         <span class="sr-only">Causes Cash</span>
 
                         <img class="h-12 lg:h-16 w-auto" src="~/assets/logo.png" alt="" />
@@ -11,20 +11,20 @@
                         <h1 class="text-4xl font-bold bg-clip-text text-transparent tracking-tighter bg-gradient-to-r from-green-400 to-lime-300">
                             Causes<span class="mx-1 text-5xl text-lime-200">.</span>Cash
                         </h1>
-                    </router-link>
+                    </NuxtLink>
 
                     <div class="hidden ml-10 space-x-8 lg:flex items-center">
-                        <router-link to="/reports" class="text-2xl font-medium text-white hover:text-indigo-50" key="Reporting">
+                        <NuxtLink to="/reports" class="text-2xl font-medium text-white hover:text-indigo-50" key="Reporting">
                             Report Cards
-                        </router-link>
+                        </NuxtLink>
 
-                        <router-link to="/spotlight" class="text-2xl font-medium text-white hover:text-indigo-50" key="Spotlight">
+                        <NuxtLink to="/spotlight" class="text-2xl font-medium text-white hover:text-indigo-50" key="Spotlight">
                             Spotlight
-                        </router-link>
+                        </NuxtLink>
 
-                        <router-link to="/help" class="text-base font-medium text-white hover:text-indigo-50" key="Support">
+                        <NuxtLink to="/help" class="text-base font-medium text-white hover:text-indigo-50" key="Support">
                             Need help?
-                        </router-link>
+                        </NuxtLink>
                     </div>
                 </div>
 

@@ -2,12 +2,24 @@
     <main>
         <Header />
 
-        <h1 class="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-sky-400">
-            Causes Cash
-        </h1>
+        <section class="bg-white overflow-x-hidden">
+            <Hero class="pt-12 lg:pt-18" />
 
-        <div class="bg-gradient-to-r from-green-500 to-sky-400">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis ea aliquam cum excepturi. Officiis, quod earum. Culpa odio labore beatae aperiam. Commodi, similique deleniti. Magni eius reiciendis quis harum in.
-        </div>
+            <!-- <Sponsors class="hidden" /> -->
+
+            <!-- <Spotlight class="pt-16 lg:pt-24" /> -->
+
+            <!-- <Benefits class="" /> -->
+
+            <!-- <Reporting class="hidden py-16 lg:py-24" /> -->
+
+            <!-- <Metrics class="hidden" /> -->
+
+            <!-- <Contributors class="hidden py-24 lg:py-32" /> -->
+
+            <!-- <CTA class="hidden my-20" /> -->
+
+            <!-- <Recent class="hidden py-16 lg:py-24" /> -->
+        </section>
     </main>
 </template>

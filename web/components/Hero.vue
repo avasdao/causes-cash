@@ -14,12 +14,12 @@
 
                 <div class="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
                     <h1 class="text-center font-extrabold tracking-tight text-4xl">
-                        <span class="block text-white sm:text-5xl lg:text-7xl">SMARTSTARTER</span>
+                        <span class="block text-white sm:text-5xl lg:text-7xl" uppercase>Causes Cash</span>
                         <span class="block text-indigo-200">Peer-to-Peer Crowdfunding</span>
                     </h1>
 
                     <p class="mt-6 max-w-lg mx-auto text-center text-xl text-indigo-200 sm:max-w-3xl">
-                        The most effective way to <span class="font-bold">Build</span>, <span class="font-bold">Collect</span> and <span class="font-bold">Manage</span> support for your next project.
+                        Creators will enjoy the MOST effective platform to <span class="font-bold">Build</span>, <span class="font-bold">Collect</span> and <span class="font-bold">Manage</span> support for your Nexa projects.
                     </p>
 
                     <div class="mt-10 max-w-sm mx-auto lg:max-w-none lg:flex lg:justify-center">
@@ -38,30 +38,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    methods: {
-        launchpad() {
-            console.log('this is the launchpad');
-        }
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

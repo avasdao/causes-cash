@@ -15,7 +15,7 @@
 
                     <div class="hidden ml-10 space-x-8 lg:flex items-center">
                         <router-link to="/reports" class="text-2xl font-medium text-white hover:text-indigo-50" key="Reporting">
-                            Reporting
+                            Report Cards
                         </router-link>
 
                         <router-link to="/spotlight" class="text-2xl font-medium text-white hover:text-indigo-50" key="Spotlight">

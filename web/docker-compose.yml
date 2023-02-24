@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    image: causes-cash
+    container_name: causes-cash
+    restart: always
+    ports:
+      - '127.0.0.1:3000:3000'
+    # environment:
+    #   - CMC_API_KEY=${CMC_API_KEY} # change this to match your system's ENV

@@ -1,29 +1,29 @@
 <template>
-    <main class="bg-indigo-600">
+    <main class="bg-gradient-to-r from-lime-600 to-green-600 border-b-4 border-lime-700">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
             <div class="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
                 <div class="flex items-center">
-                    <router-link to="/">
-                        <span class="sr-only">Smartstarter</span>
+                    <router-link to="/" class="flex flex-col items-center">
+                        <span class="sr-only">Causes Cash</span>
 
-                        <img class="h-12 lg:h-16 w-auto" :src="require('@/assets/logo.png')" alt="" />
+                        <img class="h-12 lg:h-16 w-auto" src="~/assets/logo.png" alt="" />
+
+                        <h1 class="text-4xl font-bold bg-clip-text text-transparent tracking-tighter bg-gradient-to-r from-green-400 to-lime-300">
+                            Causes<span class="mx-1 text-5xl text-lime-200">.</span>Cash
+                        </h1>
                     </router-link>
 
-                    <div class="hidden ml-10 space-x-8 lg:block">
-                        <router-link to="/reports" class="hidden text-base font-medium text-white hover:text-indigo-50" key="Reporting">
+                    <div class="hidden ml-10 space-x-8 lg:flex items-center">
+                        <router-link to="/reports" class="text-2xl font-medium text-white hover:text-indigo-50" key="Reporting">
                             Reporting
                         </router-link>
 
-                        <a href="https://pif.cash" target="_blank" class="hidden text-base font-medium text-white hover:text-indigo-50" key="Pay It Forwrad">
-                            Pay It Forward
-                        </a>
-
-                        <router-link to="/spotlight" class="hidden text-base font-medium text-white hover:text-indigo-50" key="Spotlight">
+                        <router-link to="/spotlight" class="text-2xl font-medium text-white hover:text-indigo-50" key="Spotlight">
                             Spotlight
                         </router-link>
 
                         <router-link to="/help" class="text-base font-medium text-white hover:text-indigo-50" key="Support">
-                            Do you need help?
+                            Need help?
                         </router-link>
                     </div>
                 </div>
@@ -33,8 +33,10 @@
                         Sign in
                     </a>
 
-                    <a href="https://smartbch.builders" target="_blank" class="inline-block bg-blue-500 py-2 px-4 border-4 border-blue-300 rounded-md text-base font-bold text-gray-50 hover:bg-blue-300 hover:border-blue-500">
-                        👉 SmartBCH BUIDLers
+                    <a href="https://smartbch.builders" target="_blank" class="inline-block bg-lime-600 py-2 px-4 border-4 border-lime-300 rounded-xl hover:bg-lime-700 hover:border-lime-500">
+                        <span class="text-2xl font-bold text-gray-50 tracking-tighter">
+                            👉 Nexa Is Boostrapping 👀
+                        </span>
                     </a>
                 </div>
             </div>

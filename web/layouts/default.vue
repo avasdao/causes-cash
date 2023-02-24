@@ -33,7 +33,11 @@ useHead({
     <main class="w-screen overflow-x-hidden">
         <Header />
 
-        <slot />
+        <section class="max-w-7xl mx-auto py-3">
+            <slot />
+        </section>
+
+        <Footer />
     </main>
 </template>
 

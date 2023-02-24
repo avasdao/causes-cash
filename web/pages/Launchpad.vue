@@ -8,8 +8,8 @@
 
                 <p class="mt-3 text-lg text-gray-500">
                     Create a NEW campaign in under 5 Minutes.
-                    Just complete the required information below and submit click.
-                    You can then add more details later.
+                    Simply provide the required information requested below, then click submit.
+                    You'll be able to add MUCH more details later.
                 </p>
             </div>
 

@@ -1,5 +1,5 @@
 <template>
-    <main class="p-3 bg-gray-100 space-y-8 divide-y divide-gray-200">
+    <main class="max-w-5xl mx-auto my-5 p-5 bg-gradient-to-r from-gray-100 to-gray-200 space-y-8 divide-y divide-gray-200 border-4 border-gray-400 rounded-xl shadow-md">
         <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
             <div>
                 <div>
@@ -165,7 +165,9 @@
             <div class="divide-y divide-gray-200 pt-8 space-y-6 sm:pt-10 sm:space-y-5">
                 <div>
                     <h3 class="text-lg leading-6 font-medium text-gray-900">Notifications</h3>
-                    <p class="mt-1 max-w-2xl text-sm text-gray-500">We'll always let you know about important changes, but you pick what else you want to hear about.</p>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        We&apostophe;ll always let you know about important changes, but you pick what else you want to hear about.
+                    </p>
                 </div>
                 <div class="space-y-6 sm:space-y-5 divide-y divide-gray-200">
                     <div class="pt-6 sm:pt-5">
@@ -259,68 +261,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Initialize vuex. */
-import { mapActions, mapGetters } from 'vuex'
-
-export default {
-    data: () => ({
-        flipstartersDb: null,
-    }),
-    computed: {
-        ...mapGetters([
-            'getHelp',
-        ]),
-
-        // ...mapGetters('campaigns', [
-        //     'getCampaign',
-        // ]),
-
-    },
-    methods: {
-        ...mapActions('utils', [
-            'report',
-            'toast',
-        ]),
-
-        // addCampaign() {
-        //     const pkg = {
-        //         _id: '8e7f1c4a-534f-4eac-b343-61d93c439a58',
-        //         slug: 'hacksmart-where-the-smart-money-is-a-48-hour-hybrid-smartbch-hackathon-in-london-online',
-        //         title: `HackSmart! - Where the Smart Money Is! A 48 Hour Hybrid SmartBCH Hackathon in London & Online`,
-        //         category: 'flipstarter',
-        //         summary: `HackSmart! Is a 48 hour hybrid hackathon in May 2022 in London to introduce talented blockchain developers to the power of SmartBCH. Attendees can connect with peers and hangout in a fun in-person & remote work environment, while building exciting projects!`,
-        //         description: ``,
-        //         hostname: 'hacksmart.org',
-        //         recipient: 'bitcoincash:qzuhvsf4g0z4wafj9yw3w400y5ukzrz39sgelxhdya',
-        //         goal: 42500000000,
-        //         media: {
-        //             main: 'https://github.com/coinriot/assets/blob/main/hacksmart/HackSmart%20Flipstarter%20Banner%20Small.png?raw=true'
-        //         },
-        //         pledges: null,
-        //         isPublished: true,
-        //         starts: 1646697600,
-        //         expires: 1649376000,
-        //         createdAt: 1646697600,
-        //         updatedAt: 1646697600,
-        //     }
-        //     console.log('PKG', pkg)
-        //
-        // },
-
-    },
-    created: function () {
-        /* Initialize database. */
-        // this.initDb()
-
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>
-
-<style scoped>
-/*  */
-</style>

@@ -17,7 +17,8 @@ export default defineEventHandler(async (event) => {
         client: headers['user-agent'],
         referer: headers['referer'],
         host: headers['host'],
-        ip: headers['x-forwarded-for'],
+        ip: headers['x-real-ip'],
+        ip_fwd: headers['x-forwarded-for'],
         url: event.node.req.url,
     }
 

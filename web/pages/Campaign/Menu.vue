@@ -65,9 +65,10 @@ export default {
             /* Handle contributors. */
             this.contributors.forEach(_contributor => {
                 // NOTE: We filter out donation under 1 satoshi
-                if (_contributor.pledgeAmount.gt(10000000000n)) {
-                    contributors.push(_contributor)
-                }
+// FIXME Big integer literals are not available in the configured target environment ("es2019")
+                // if (_contributor.pledgeAmount.gt(10000000000n)) {
+                //     contributors.push(_contributor)
+                // }
             })
 
             /* Return count of contributors. */

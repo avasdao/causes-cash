@@ -70,9 +70,10 @@ export default {
             /* Handle contributors. */
             this.contributors.forEach(_contributor => {
                 // NOTE: We filter out donation under 1 satoshi
-                if (_contributor.pledgeAmount.gt(10000000000n)) {
-                    contributors.push(_contributor)
-                }
+// FIXME Big integer literals are not available in the configured target environment ("es2019")
+                // if (_contributor.pledgeAmount.gt(10000000000n)) {
+                //     contributors.push(_contributor)
+                // }
             })
 
             /* Return contributors. */
@@ -83,7 +84,8 @@ export default {
     methods: {
         displayBCH(_wei) {
             /* Calculate satoshis. */
-            const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
+// FIXME Big integer literals are not available in the configured target environment ("es2019")
+            // const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
 
             /* Calculate BCH. */
             const bch = parseFloat(satoshis / 100000000.0)
@@ -94,7 +96,8 @@ export default {
 
         displayUSD(_wei) {
             /* Calculate satoshis. */
-            const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
+// FIXME Big integer literals are not available in the configured target environment ("es2019")
+            // const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
 
             /* Calculate BCH. */
             const bch = parseFloat(satoshis / 100000000.0)

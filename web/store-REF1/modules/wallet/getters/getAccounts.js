@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Load (Derivation) Path
@@ -16,7 +16,7 @@ const loadPath = (_getters, _accounts, _chainid, _acctIdx) => {
     const childNode = hdNode.deriveChild(path)
 
     /* Set account (address). */
-    const address = Nito.Address.toCashAddress(childNode)
+    const address = Nexa.Address.toCashAddress(childNode)
     // console.log('GET ACCOUNTS (address)', address)
 
     /* Set WIF. */

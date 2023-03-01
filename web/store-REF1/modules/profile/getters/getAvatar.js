@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Get Avatar
@@ -15,7 +15,7 @@ const getAvatar = (state, getter) => {
     // console.log('AVATAR (email):', email)
 
     /* Encode email address. */
-    const encoded = Nito.Crypto.hash(email, 'md5', true)
+    const encoded = Nexa.Crypto.hash(email, 'md5', true)
     // console.log('AVATAR (encoded):', encoded)
 
     /* Set avatar (url). */

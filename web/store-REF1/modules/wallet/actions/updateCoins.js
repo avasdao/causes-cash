@@ -1,6 +1,6 @@
 /* Import components. */
 import Bugsnag from '@bugsnag/js'
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Update Status
@@ -22,7 +22,7 @@ const updateStatus = (_coins, _meta, dispatch) => {
         //       its metadata status.
 
         /* Query spent status. */
-        const isSpent = await Nito.Blockchain.Query.isSpent(txid, vout)
+        const isSpent = await Nexa.Blockchain.Query.isSpent(txid, vout)
         // console.log('UPDATE STATUS (isSpent)', isSpent, txid, vout)
 
         /* Validate spent. */
@@ -110,7 +110,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
         const address = addresses[i]
 
         /* Request address details. */
-        const details = await Nito.Address.details(address)
+        const details = await Nexa.Address.details(address)
         // console.log('UPDATE COINS (address details)', details)
 
         /* Validate address details. */
@@ -126,7 +126,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
 
         searchDetails.push({
             transactions,
-            legacyAddress: Nito.Address.toLegacyAddress(address),
+            legacyAddress: Nexa.Address.toLegacyAddress(address),
             cashAddress: address,
 
         })
@@ -143,7 +143,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
 
         txs.forEach(async txid => {
             /* Retrieve transaction details. */
-            const txDetails = await Nito.Transaction.details(txid)
+            const txDetails = await Nexa.Transaction.details(txid)
             // console.log('UPDATE COINS (tx details)', txDetails)
 
             /* Validate transaction details. */
@@ -183,7 +183,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                 }
 
                 /* Set cash addresses. */
-                const cashAddress = Nito.Address.toCashAddress(scriptPubKey)
+                const cashAddress = Nexa.Address.toCashAddress(scriptPubKey)
                 // console.log('UPDATE COINS (cashAddress)', cashAddress)
 
                 /* Initialize WIF. */
@@ -225,7 +225,7 @@ const updateCoins = async ({ dispatch, getters, rootGetters }) => {
                         chainid,
                         wif,
                         cashAddress: searchAddr,
-                        legacyAddress: Nito.Address.toLegacyAddress(searchAddr),
+                        legacyAddress: Nexa.Address.toLegacyAddress(searchAddr),
                     }
                     // console.log('UPDATE COINS (coin)', coin)
 

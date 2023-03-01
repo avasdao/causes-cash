@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Get Change Address
@@ -63,7 +63,7 @@ const getChangeAddress = (state, getters) => (_wallet) => {
     // console.log('CHILD NODE', childNode)
 
     /* Initialize address. */
-    const address = Nito.Address.toCashAddress(childNode)
+    const address = Nexa.Address.toCashAddress(childNode)
     // console.log('WALLET ADDRESS', address)
 
     /* Return address. */

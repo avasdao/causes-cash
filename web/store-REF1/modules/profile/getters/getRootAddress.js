@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Get Address
@@ -34,7 +34,7 @@ const getAddress = (state, getters, rootState, rootGetters) => {
     const childNode = hdNode.deriveChild(path)
 
     /* Set (profile) address. */
-    const address = Nito.Address.toCashAddress(childNode)
+    const address = Nexa.Address.toCashAddress(childNode)
 
     /* Return profile address. */
     return address

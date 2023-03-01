@@ -1,7 +1,7 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
 import moment from 'moment'
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /* Set maximum integer value. */
 const INT_MAX = 4294967295 // NOTE: 0xFFFFFFFF | 32-bit max int
@@ -28,7 +28,7 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
     }
 
     /* Initialize verification key. */
-    const verificationKey = Nito.Purse.fromWIF(coin.wif)
+    const verificationKey = Nexa.Purse.fromWIF(coin.wif)
     // console.log('verificationKey', verificationKey, coin.wif)
 
     /* Set public key. */
@@ -36,7 +36,7 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
     // console.log('\nPublic key:', publicKey)
 
     /* Set cash address. */
-    const cashAddress = Nito.Address.toCashAddress(verificationKey)
+    const cashAddress = Nexa.Address.toCashAddress(verificationKey)
     // console.log('FLIPSTARTER (pledge address)', cashAddress)
 
     const alias = userPledge.data.alias
@@ -53,7 +53,7 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
 
     /* Set previous transaction output value. */
     const previousTransactionOutputValue = Buffer.from(
-        Nito.Utils.encodeNumber(coin.satoshis), 'hex')
+        Nexa.Utils.encodeNumber(coin.satoshis), 'hex')
 
     /* Set previous transaction output index (vout). */
     const previousTransactionOutputIndex = Buffer.allocUnsafe(4)
@@ -61,7 +61,7 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
 
     /* Set input lock script. */
     const inputLockScript = Buffer.from(
-        Nito.Address.toPubKeyHash(cashAddress), 'hex')
+        Nexa.Address.toPubKeyHash(cashAddress), 'hex')
 
     /* Request commitment message. */
     const verificationMessage = getters.getSighashDigest(
@@ -74,7 +74,7 @@ const buildPledgeAuth = async ({ getters, rootGetters, dispatch }, _pkg) => {
     // console.log('verificationMessage', verificationMessage.toString('hex'))
 
     /* Sign commitment message. */
-    const pledgeSig = Nito.Account.sign(verificationMessage, verificationKey)
+    const pledgeSig = Nexa.Account.sign(verificationMessage, verificationKey)
     // console.log('PLEDGE SIGNATURE', pledgeSig.toString())
 
     /* Set previous out transaction hash. */

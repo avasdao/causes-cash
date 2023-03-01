@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 const DUST_LIMIT = 546
 const MAX_LIMIT = 2099999997690000
@@ -11,7 +11,7 @@ const MAX_LIMIT = 2099999997690000
  */
 const _addOutput = (_outputs, _satoshis, _address) => {
     // Check if the provided address is properly encoded.
-    if (!Nito.Address.isCashAddress(_address)) {
+    if (!Nexa.Address.isCashAddress(_address)) {
         throw `Cannot add output, provided address '${_address}' does not use the valid CashAddr encoding.`
     }
 
@@ -41,11 +41,11 @@ const _addOutput = (_outputs, _satoshis, _address) => {
     }
 
     /* Set value. */
-    const value = Nito.Utils.encodeNumber(_satoshis)
+    const value = Nexa.Utils.encodeNumber(_satoshis)
 
     /* Derive the locking script from the address. */
     const locking_script = Buffer.from(
-        Nito.Address.toPubKeyHash(_address), 'hex')
+        Nexa.Address.toPubKeyHash(_address), 'hex')
 
     /* Structure the output. */
     const output = {
@@ -69,7 +69,7 @@ const _serializeInput = (
     _sequenceNumber
 ) => {
     /* Calculate unlock script length. */
-    const unlockScriptLength = Nito.Utils.varInt(_unlockScript.byteLength)
+    const unlockScriptLength = Nexa.Utils.varInt(_unlockScript.byteLength)
 
     /* Return the serialized input structure, as a buffer. */
     return Buffer.concat([
@@ -93,7 +93,7 @@ const _serializeOutputs = (_outputs) => {
         const output = _outputs[currentOutput]
 
         // Create a lockscript length statement.
-        const lockscriptLength = Nito.Utils
+        const lockscriptLength = Nexa.Utils
             .varInt(output.locking_script.byteLength)
 
         // Return the serialized output.
@@ -126,7 +126,7 @@ const _serializePledges = (_pledges) => {
         sequenceNumber.writeUInt32LE(_pledge.sequenceNumber)
 
         /* Set previous transaction hash. */
-        const previousTransactionHash = Nito.Utils
+        const previousTransactionHash = Nexa.Utils
             .reverseBuffer(Buffer.from(_pledge.previousTransactionHash, 'hex'))
 
         /* Initialize output index. */
@@ -171,7 +171,7 @@ const getFullfillment = () => (_campaign) => {
     const version = Buffer.from('02000000', 'hex')
 
     // Create the input counter and input data buffers.
-    const inputCount = Nito.Utils.varInt(pledges.length)
+    const inputCount = Nexa.Utils.varInt(pledges.length)
 
     /* Generate inputs. */
     const inputs = _serializePledges(pledges)
@@ -181,7 +181,7 @@ const getFullfillment = () => (_campaign) => {
     const outputs = []
 
     // Create the output counter and output data buffer.
-    const outputCount = Nito.Utils
+    const outputCount = Nexa.Utils
         .varInt(Object.keys(recipients).length)
 
     /* Handle all recipients. */

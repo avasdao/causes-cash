@@ -1,6 +1,6 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /* Set dust amount (satoshis). */
 const DUST = 546
@@ -70,7 +70,7 @@ const preparePledge = async ({ getters, dispatch }, _pkg) => {
     /* Set auto fee (flag). */
     const autoFee = false
 
-    const results = await Nito.Transaction
+    const results = await Nexa.Transaction
         .sendCoin(coin, receivers, autoFee)
         .catch(Bugsnag.notify)
     // console.log('PLEDGE COIN (results):', results)

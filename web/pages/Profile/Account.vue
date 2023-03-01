@@ -90,10 +90,9 @@
 /* Import modules. */
 import { ethers } from 'ethers'
 // import { ElectrumClient } from 'electrum-cash'
-import EventSource from 'eventsource'
+// import EventSource from 'eventsource'
 import makeBlockie from 'ethereum-blockies-base64'
-import Nito from 'nitojs'
-// import superagent from 'superagent'
+import Nexa from 'nexajs'
 
 /* Import library to manage bitcoin cash data structures. */
 import {
@@ -377,7 +376,7 @@ export default {
             const source = ENDPOINT + query
 
             /* Initialize BitSocket. */
-            this.bitsocket = new EventSource(source)
+            // this.bitsocket = new EventSource(source)
 
             /* Handle connection opening. */
             this.bitsocket.onopen = () => {

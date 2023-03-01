@@ -178,7 +178,6 @@ import { mapActions, mapGetters } from 'vuex'
 
 /* Import components. */
 import scrypt from 'scrypt-js'
-import superagent from 'superagent'
 
 /* Import (local) components. */
 import Dashboard from './Profile/Dashboard'

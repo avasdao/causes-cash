@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Assemble Signature Hash Digest
@@ -18,12 +18,12 @@ const getSighashDigest = () => (
     let value = null
 
     /* Set value. */
-    value = Nito.Utils
+    value = Nexa.Utils
         .encodeNumber(userPledge.outputs[0].value)
     // console.log('Encoded value:', value)
 
     /* Set locking script. */
-    const locking_script = Nito.Address
+    const locking_script = Nexa.Address
         .toPubKeyHash(userPledge.outputs[0].address)
     // console.log('Campaign (locking_script):', locking_script)
 
@@ -39,7 +39,7 @@ const getSighashDigest = () => (
 
         // Add the output lockscript.
         transactionOutpoints.push(
-            Nito.Utils.varBuf(thisOutputs[currentOutput].locking_script)
+            Nexa.Utils.varBuf(thisOutputs[currentOutput].locking_script)
         )
     }
     // console.log('Transaction outpoints:', transactionOutpoints)
@@ -55,7 +55,7 @@ const getSighashDigest = () => (
 
     /* Set outpoint. */
     const outpoint = Buffer.concat([
-        Nito.Utils.reverseBuffer(previousTransactionHash),
+        Nexa.Utils.reverseBuffer(previousTransactionHash),
         previousTransactionOutputIndex,
     ])
 
@@ -72,7 +72,7 @@ const getSighashDigest = () => (
     const nSequence = Buffer.from('FFFFFFFF', 'hex')
 
     /* Set hash outputs. */
-    const hashOutputs = Nito.Crypto
+    const hashOutputs = Nexa.Crypto
         .hash(Buffer.concat(transactionOutpoints), 'sha256sha256')
 
     /* Set locktime. */
@@ -97,7 +97,7 @@ const getSighashDigest = () => (
     // console.log('sighashMessage', sighashMessage.toString('hex'));
 
     /* Create signature hash digest (of message). */
-    const sighashDigest = Nito.Crypto.hash(sighashMessage, 'sha256sha256')
+    const sighashDigest = Nexa.Crypto.hash(sighashMessage, 'sha256sha256')
     // console.log('sighashDigest', sighashDigest.toString('hex'));
 
     /* Return signature hash digest. */

@@ -1,6 +1,6 @@
 /* Import modules. */
 import moment from 'moment'
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Get Signed Message
@@ -40,7 +40,7 @@ const getSignedMessage = (state, getters, rootState, rootGetters) => (_message) 
     const childNode = hdNode.deriveChild(path)
 
     /* Set (profile) address. */
-    const address = Nito.Address.toCashAddress(childNode)
+    const address = Nexa.Address.toCashAddress(childNode)
 
     /* Set WIF. */
     const wif = childNode.privateKey.toWIF()
@@ -49,7 +49,7 @@ const getSignedMessage = (state, getters, rootState, rootGetters) => (_message) 
     const nonce = moment().unix()
 
     /* Request signature. */
-    const signature = Nito.Message.sign(`${_message}:${nonce}`, wif)
+    const signature = Nexa.Message.sign(`${_message}:${nonce}`, wif)
     // console.log('GET SIGNED MESSAGE (signature):', signature)
 
     /* Build package. */

@@ -39,7 +39,7 @@ const initWallet = ({ commit }) => {
      * Deposit     : m/44'/145'/0'/0/<index>
      * Change      : m/44'/145'/0'/1/<index>
      * Causes Cash : m/44'/145'/0'/6767/<index>
-     * Nito Cash   : m/44'/145'/0'/7867/<index>
+     * Nexa Cash   : m/44'/145'/0'/7867/<index>
      */
     const indicesModel = {
         deposit: 0,

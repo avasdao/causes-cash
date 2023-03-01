@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
 * Get Balance by Session Id
@@ -46,7 +46,7 @@ const getBalanceBySessionId = (
 
         /* Retrieve (address) balances. */
         // TODO Use wallet.coins to track balance (faster!)
-        const balances = await Nito.Address.balance(address)
+        const balances = await Nexa.Address.balance(address)
 
         /* Validate balances. */
         if (!balances) {
@@ -62,7 +62,7 @@ const getBalanceBySessionId = (
     }
 
     /* Retrieve market price. */
-    const marketPrice = await Nito.Markets.getTicker(baseCurrency, _quoteCurrency)
+    const marketPrice = await Nexa.Markets.getTicker(baseCurrency, _quoteCurrency)
     console.info(`Market price (${_quoteCurrency})`, marketPrice) // eslint-disable-line no-console
 
     /* Validate market price. */

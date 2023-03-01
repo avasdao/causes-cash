@@ -1,6 +1,5 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
-import superagent from 'superagent'
 
 /**
 * Get Campaigns

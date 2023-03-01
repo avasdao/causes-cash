@@ -1,6 +1,6 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Get (Wallet) History
@@ -38,7 +38,7 @@ const getHistory = async (state, getters) => {
         /* Initialize child node. */
         // const childNode = hdNode.derivePath(`${getters.getDerivationPath('BCH')}/${change}/0`)
 
-        // const address = Nito.Address.toCashAddress(childNode)
+        // const address = Nexa.Address.toCashAddress(childNode)
         // console.log('ADDRESS', address)
 
         // NOTE: Array with maximum of 20 legacy or cash addresses.
@@ -49,11 +49,11 @@ const getHistory = async (state, getters) => {
         // }
 
         /* Retrieve unspent transaction outputs. */
-        const utxo = await Nito.Address.utxo(addresses)
+        const utxo = await Nexa.Address.utxo(addresses)
         console.log('UTXOS', utxo)
 
         /* Retrieve transaction details. */
-        const addrDetails = await Nito.Address.details(addresses)
+        const addrDetails = await Nexa.Address.details(addresses)
         console.log('ADDRESS(ES) DETAILS', addrDetails)
 
         /* Loop through ALL uxtos. */
@@ -77,7 +77,7 @@ const getHistory = async (state, getters) => {
                 }
 
                 /* Retrieve transaction details. */
-                const details = await Nito.Transaction.details(txHash)
+                const details = await Nexa.Transaction.details(txHash)
                 console.log('TX DETAILS', details)
 
                 /* Set (transaction) hash. */

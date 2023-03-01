@@ -89,7 +89,6 @@
 
 /* Import modules. */
 import { ethers } from 'ethers'
-import superagent from 'superagent'
 
 import QrScanner from 'qr-scanner'
 QrScanner.WORKER_PATH = './js/qr-scanner-worker.min.js'

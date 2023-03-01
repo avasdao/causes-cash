@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nito from 'nitojs'
+import Nexa from 'nexajs'
 
 /**
  * Get Mnemonic
@@ -40,7 +40,7 @@ const getMnemonic = (state, getters, rootState, rootGetters) => {
     }
 
     /* Initialize mnemonic. */
-    const mnemonic = Nito.Crypto.mnemonic(masterSeed, language)
+    const mnemonic = Nexa.Crypto.mnemonic(masterSeed, language)
     // console.log('MNEMONIC', mnemonic)
 
     /* Return mnemonic. */

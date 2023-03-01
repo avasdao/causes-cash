@@ -1,8 +1,7 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
 import crypto from 'crypto'
-import Nito from 'nitojs'
-import superagent from 'superagent'
+import Nexa from 'nexajs'
 
 /**
  * Decrypt
@@ -53,7 +52,7 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         const childNode = hdNode.deriveChild(path)
 
         /* Set (profile) address. */
-        const address = Nito.Address.toCashAddress(childNode)
+        const address = Nexa.Address.toCashAddress(childNode)
 
         /* Retrieve API provider. */
         const API_PROVIDER = rootGetters.getApiProvider

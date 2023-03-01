@@ -1,7 +1,6 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
 import crypto from 'crypto'
-import superagent from 'superagent'
 
 /**
  * Encrypt

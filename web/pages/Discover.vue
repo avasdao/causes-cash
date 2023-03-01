@@ -61,12 +61,9 @@
 </template>
 
 <script>
-/* Initialize vuex. */
-import { mapActions, mapGetters } from 'vuex'
-
 /* Import modules. */
 import moment from 'moment'
-import Nito from 'nitojs'
+// import Nito from 'nitojs'
 import numeral from 'numeral'
 
 const SATS_PER_BCH = 100000000
@@ -112,21 +109,7 @@ export default {
         ],
 
     }),
-    computed: {
-        ...mapGetters([
-            'getHelp',
-        ]),
-
-        ...mapGetters('discover', [
-            'getDiscover',
-        ]),
-
-    },
     methods: {
-        ...mapActions('utils', [
-            'toast',
-        ]),
-
         minPledge(_campaign) {
             // console.log('MIN PLEDGE', _campaign)
 
@@ -359,7 +342,7 @@ export default {
         this.hasMoreResults = false
 
         // FIXME: Pull real-time price from api.telr.io
-        this.usd = await Nito.Markets.getTicker('BCH', 'USD')
+        // this.usd = await Nito.Markets.getTicker('BCH', 'USD')
 
         /* Initialize alert flag. */
         // this.showAlert = true

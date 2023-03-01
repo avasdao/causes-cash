@@ -2,20 +2,20 @@
     <main>
         <Hero class="pt-12 lg:pt-18" />
 
-        <!-- <Sponsors class="hidden" /> -->
+        <!-- <Sponsors /> -->
 
-        <!-- <Spotlight class="pt-16 lg:pt-24" /> -->
+        <Spotlight class="pt-16 lg:pt-24" />
 
-        <!-- <Benefits class="" /> -->
+        <Benefits class="" />
 
-        <!-- <Reporting class="hidden py-16 lg:py-24" /> -->
+        <Reporting class="py-16 lg:py-24" />
 
-        <!-- <Metrics class="hidden" /> -->
+        <Recent class="py-16 lg:py-24" />
 
-        <!-- <Contributors class="hidden py-24 lg:py-32" /> -->
+        <Metrics class="" />
 
-        <!-- <CTA class="hidden my-20" /> -->
+        <Contributors class="py-24 lg:py-32" />
 
-        <!-- <Recent class="hidden py-16 lg:py-24" /> -->
+        <CTA class="my-20" />
     </main>
 </template>

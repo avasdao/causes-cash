@@ -12,7 +12,8 @@
 
         <section class="mt-5 px-3 flex justify-between">
             <span class="text-sm text-gray-400">
-                &copy; 2022-{{new Date().getFullYear()}} <NuxtLink to="https://avasdao.org" target="_blank" class="text-rose-400 font-medium hover:underline">Ava's DAO</NuxtLink>. All rights reserved.
+                &copy; 2022-{{new Date().getFullYear()}} <NuxtLink to="https://avasdao.org" target="_blank" class="text-rose-400 font-medium hover:underline">Ava's DAO</NuxtLink>.
+                <span class="block sm:inline">All rights reserved.</span>
             </span>
 
             <div class="flex flex-row items-center gap-2">

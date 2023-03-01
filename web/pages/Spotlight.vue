@@ -7,7 +7,7 @@ const campaigns = ref([])
 
 campaigns.value.push({
     id: '95e75ff5-c90f-4d1f-8e69-044c19ccaca1',
-    title: `Causes Cash: Nexa P2P Crowdfunding`,
+    title: `Causes Cash: Nexa-powered P2P Crowdfunding`,
     url: 'https://causes.cash/bootstrap',
     manager: {
         name: `0xShomari`,

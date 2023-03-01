@@ -7,38 +7,44 @@ const campaigns = ref([])
 
 campaigns.value.push({
     id: '95e75ff5-c90f-4d1f-8e69-044c19ccaca1',
-    title: `Causes Cash`,
+    title: `Causes Cash: Nexa P2P Crowdfunding`,
+    url: 'https://causes.cash/bootstrap',
     publisher: {
         name: `0xShomari`,
-        url: 'https://causes.cash/bootstrap',
+        url: 'https://twitter.com/0xShomari',
         avatar: 'https://pbs.twimg.com/profile_images/617458563/profile5_400x400.jpg',
     },
     poster: 'https://i.ibb.co/4dnGnRj/unsplash-hand-red.jpg',
     createdAt: 'Feb 28 2023',
+    expiresAt: 'Mar 15 2023',
 })
 
 campaigns.value.push({
     id: '904ccf9d-583a-463b-837b-96a2632a0581',
     title: `Nexa CashFusion`,
+    url: 'https://docs.causes.cash/blog/nexa-cashfusion',
     publisher: {
         name: `Ava Nakamoto`,
-        url: 'https://docs.causes.cash/blog/nexa-cashfusion',
+        url: 'https://twitter.com/0xShomari',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
     poster: 'https://i.ibb.co/CK8hJqP/image.png',
-    createdAt: 'Mar 10 2023',
+    createdAt: 'Mar 15 2023',
+    expiresAt: 'Apr 15 2023',
 })
 
 campaigns.value.push({
     id: 'da0e504b-ffd0-42ef-afdd-22f6c1153471',
     title: `Nexa Ledger (Live) Wallet`,
+    url: 'https://docs.causes.cash/blog/nexa-ledger-live-wallet',
     publisher: {
         name: `Satoshi Nakamoto`,
-        url: 'https://docs.causes.cash/blog/nexa-ledger-live-wallet',
+        url: 'https://twitter.com/0xShomari',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
     poster: 'https://i.ibb.co/9V3YHj1/image.png',
-    createdAt: 'Mar 12 2023',
+    createdAt: 'Apr 15 2023',
+    expiresAt: 'May 15 2023',
 })
 
 // TBD
@@ -48,7 +54,7 @@ campaigns.value.push({
     <main class="bg-white py-12 sm:py-16">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
                     Spotlight Campaigns
                 </h2>
 
@@ -73,9 +79,9 @@ campaigns.value.push({
 
                     <div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
 
-                    <div class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                        <time datetime="2020-03-16" class="mr-8">
-                            {{campaign.createdAt}}
+                    <section class="flex flex-wrap justify-between items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
+                        <time datetime="2020-03-16" class="mr-8 text-xl">
+                            {{campaign.expiresAt}}
                         </time>
 
                         <div class="-ml-4 flex items-center gap-x-4">
@@ -89,12 +95,15 @@ campaigns.value.push({
                                     alt=""
                                     class="h-6 w-6 flex-none rounded-full bg-white/10"
                                 />
-                                {{campaign.publisher?.name}}
+
+                                <h3 class="text-xl">
+                                    {{campaign.publisher?.name}}
+                                </h3>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <h3 class="mt-3 text-lg font-semibold leading-6 text-white">
+                    <h3 class="mt-3 text-3xl font-semibold leading-10 text-white">
                         <NuxtLink to="/bootstrap">
                             <span class="absolute inset-0"></span>
                             {{campaign.title}}

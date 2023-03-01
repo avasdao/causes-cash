@@ -9,7 +9,7 @@ campaigns.value.push({
     id: '95e75ff5-c90f-4d1f-8e69-044c19ccaca1',
     title: `Causes Cash: Nexa P2P Crowdfunding`,
     url: 'https://causes.cash/bootstrap',
-    publisher: {
+    manager: {
         name: `0xShomari`,
         url: 'https://twitter.com/0xShomari',
         avatar: 'https://pbs.twimg.com/profile_images/617458563/profile5_400x400.jpg',
@@ -23,7 +23,7 @@ campaigns.value.push({
     id: '904ccf9d-583a-463b-837b-96a2632a0581',
     title: `Nexa CashFusion`,
     url: 'https://docs.causes.cash/blog/nexa-cashfusion',
-    publisher: {
+    manager: {
         name: `Ava Nakamoto`,
         url: 'https://twitter.com/0xShomari',
         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -37,7 +37,7 @@ campaigns.value.push({
     id: 'da0e504b-ffd0-42ef-afdd-22f6c1153471',
     title: `Nexa Ledger (Live) Wallet`,
     url: 'https://docs.causes.cash/blog/nexa-ledger-live-wallet',
-    publisher: {
+    manager: {
         name: `Satoshi Nakamoto`,
         url: 'https://twitter.com/0xShomari',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -91,13 +91,13 @@ campaigns.value.push({
 
                             <div class="flex gap-x-2.5">
                                 <img
-                                    :src="campaign.publisher?.avatar"
+                                    :src="campaign.manager?.avatar"
                                     alt=""
                                     class="h-6 w-6 flex-none rounded-full bg-white/10"
                                 />
 
                                 <h3 class="text-xl">
-                                    {{campaign.publisher?.name}}
+                                    {{campaign.manager?.name}}
                                 </h3>
                             </div>
                         </div>

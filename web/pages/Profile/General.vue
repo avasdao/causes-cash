@@ -276,40 +276,40 @@ export default {
     computed: {
         seed() {
             if (this.showSeed) {
-                return this.$store.state.seed
+                return this.$store?.state?.seed
             } else {
                 return ''
             }
         },
 
         displayAbout() {
-            if (!this.$store.state.profileAbout) return ''
+            if (!this.$store?.state?.profileAbout) return ''
 
-            return this.$store.state.profileAbout
+            return this.$store?.state?.profileAbout
         },
 
         displayAvatar() {
-            if (!this.$store.state.profileAvatar) return ''
+            if (!this.$store?.state?.profileAvatar) return ''
 
-            return this.$store.state.profileAvatar
+            return this.$store?.state?.profileAvatar
         },
 
         displayHomepage() {
-            if (!this.$store.state.profileHomepage) return ''
+            if (!this.$store?.state?.profileHomepage) return ''
 
-            return this.$store.state.profileHomepage
+            return this.$store?.state?.profileHomepage
         },
 
         displayNickname() {
-            if (!this.$store.state.profileNickname) return ''
+            if (!this.$store?.state?.profileNickname) return ''
 
-            return this.$store.state.profileNickname
+            return this.$store?.state?.profileNickname
         },
 
         displayTagline() {
-            if (!this.$store.state.profileTagline) return ''
+            if (!this.$store?.state?.profileTagline) return ''
 
-            return this.$store.state.profileTagline
+            return this.$store?.state?.profileTagline
         },
 
     },

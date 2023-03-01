@@ -207,11 +207,11 @@ export default {
 
             // FIXME: We MUST convert `this.amount` to a BigInt FIRST!
             // NOTE: What is the smallest precision for `this.amount`??
-            const sats = BigInt(parseInt(this.amount * this.$store.state.ONE_BITCOIN))
+            const sats = BigInt(parseInt(this.amount * this.$store?.state?.ONE_BITCOIN))
 
             /* Set value. */
-            const value = (BigInt(this.$store.state.ONE_SMART_BITCOIN) * sats)
-                / BigInt(this.$store.state.ONE_BITCOIN)
+            const value = (BigInt(this.$store?.state?.ONE_SMART_BITCOIN) * sats)
+                / BigInt(this.$store?.state?.ONE_BITCOIN)
 
             /* Set contract options. */
             const contractOptions = {

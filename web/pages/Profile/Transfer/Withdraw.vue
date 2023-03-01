@@ -248,7 +248,7 @@ export default {
 
         async widthdraw() {
             /* Set seed phrase. */
-            const seed = this.$store.state.seed
+            const seed = this.$store?.state?.seed
 
             /* Instantiate Libauth crypto interfaces. */
             const secp256k1 = await instantiateSecp256k1()
@@ -261,7 +261,7 @@ export default {
 
             /* Generate private key entropy using Hop Wallet Prime. */
             const privateKeyEntropy = signatureEntropy
-                .mod(this.$store.state.HOP_WALLET_PRIME)
+                .mod(this.$store?.state?.HOP_WALLET_PRIME)
 
             /* Format the private key to binary. */
             // NOTE: Start at position 2 to omit the 0x prefix added by toHexString.
@@ -786,7 +786,7 @@ export default {
             const signingSerialization = generateSigningSerializationBCH({
                 correspondingOutput: state.correspondingOutput,
                 coveredBytecode: coveredBytecodeBin,
-                forkId: this.$store.state.CASH_FORK_ID,
+                forkId: this.$store?.state?.CASH_FORK_ID,
                 locktime: state.locktime,
                 outpointIndex: state.outpointIndex,
                 outpointTransactionHash: state.outpointTransactionHash,

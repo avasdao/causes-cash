@@ -34,13 +34,13 @@ export default {
     computed: {
         highlights() {
             /* Validate highlights. */
-            if (!this.$store.state.highlights) return []
+            if (!this.$store?.state?.highlights) return []
 
             /* Initialize highlights. */
             const highlights = []
 
             /* Handle highlights. */
-            this.$store.state.highlights.forEach(_highlight => {
+            this.$store?.state?.highlights.forEach(_highlight => {
                 /* Generate new UUID. */
                 const id = uuidv4()
 

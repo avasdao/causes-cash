@@ -101,7 +101,7 @@ export default {
             /* Validate contract code. */
             if (!code) {
                 /* Set current network. */
-                const curNetwork = this.$store.state.network
+                const curNetwork = this.$store?.state?.network
                 // console.log('CURRENT NETWORK', curNetwork)
 
                 /* Set (notification) message. */

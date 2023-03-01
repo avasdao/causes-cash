@@ -162,8 +162,8 @@ export default {
         },
 
         avatar() {
-            if (this.$store.state.profileAvatar) {
-                return this.$store.state.profileAvatar
+            if (this.$store?.state?.profileAvatar) {
+                return this.$store?.state?.profileAvatar
             } else if (this.sBchAddress) {
                 return makeBlockie(this.sBchAddress)
             } else {
@@ -172,8 +172,8 @@ export default {
         },
 
         nickname() {
-            if (this.$store.state.profileNickname) {
-                return this.$store.state.profileNickname
+            if (this.$store?.state?.profileNickname) {
+                return this.$store?.state?.profileNickname
             } else {
                 return 'Anonymous User'
             }
@@ -248,7 +248,7 @@ export default {
             let wallet
 
             /* Initialize seed phrase. */
-            seed = this.$store.state.seed
+            seed = this.$store?.state?.seed
             // console.log('SEED PHRASE', seed)
 
             /* Validate seed phrase. */
@@ -314,7 +314,7 @@ export default {
 
             /* Generate private key entropy using Hop Wallet Prime. */
             const privateKeyEntropy = signatureEntropy
-                .mod(this.$store.state.HOP_WALLET_PRIME)
+                .mod(this.$store?.state?.HOP_WALLET_PRIME)
 
             /* Format the private key to binary. */
             // NOTE: Start at position 2 to omit the 0x prefix added by toHexString.

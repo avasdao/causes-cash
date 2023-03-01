@@ -9,8 +9,13 @@
 
 <script>
 /* Import modules. */
-import DOMPurify from 'dompurify'
+// import { JSDOM } from 'jsdom'
+// import DOMPurify from 'dompurify'
+import DOMPurify from 'isomorphic-dompurify'
 import showdown from 'showdown'
+
+// const window = new JSDOM('').window;
+// const purify = DOMPurify(window)
 
 export default {
     components: {
@@ -24,7 +29,7 @@ export default {
     computed: {
         description() {
             /* Set description. */
-            const description = this.$store.state.description
+            const description = this.$store?.state?.description
 
             /* Sanitize markdown (from description). */
             const markdown = DOMPurify.sanitize(description, {

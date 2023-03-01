@@ -558,51 +558,51 @@ export default {
     },
     computed: {
         displayCategory() {
-            if (!this.$store.state.category) return ''
+            if (!this.$store?.state?.category) return ''
 
-            return this.$store.state.category
+            return this.$store?.state?.category
         },
 
         displayDomain() {
-            if (!this.$store.state.domain) return ''
+            if (!this.$store?.state?.domain) return ''
 
-            return this.$store.state.domain
+            return this.$store?.state?.domain
         },
 
         displayTitle() {
-            if (!this.$store.state.title) return ''
+            if (!this.$store?.state?.title) return ''
 
-            return this.$store.state.title
+            return this.$store?.state?.title
         },
 
         displaySummary() {
-            if (!this.$store.state.summary) return ''
+            if (!this.$store?.state?.summary) return ''
 
-            return this.$store.state.summary
+            return this.$store?.state?.summary
         },
 
         displayDescription() {
-            if (!this.$store.state.description) return ''
+            if (!this.$store?.state?.description) return ''
 
-            return this.$store.state.description
+            return this.$store?.state?.description
         },
 
         displayBanner() {
-            if (!this.$store.state.banner) return ''
+            if (!this.$store?.state?.banner) return ''
 
-            return this.$store.state.banner
+            return this.$store?.state?.banner
         },
 
         displayHighlights() {
-            if (!this.$store.state.highlights) return ''
+            if (!this.$store?.state?.highlights) return ''
 
-            return this.$store.state.highlights
+            return this.$store?.state?.highlights
         },
 
         displayIsPublished() {
-            if (!this.$store.state.isPublished) return ''
+            if (!this.$store?.state?.isPublished) return ''
 
-            return this.$store.state.isPublished
+            return this.$store?.state?.isPublished
         },
 
     },
@@ -660,7 +660,7 @@ export default {
 
             /* Initialize campaign instance. */
             const campaign = new ethers.Contract(
-                this.$store.state.campaignid, abi, signer)
+                this.$store?.state?.campaignid, abi, signer)
             // console.log('CONTRACT (campaign):', campaign)
 
             const category = this.category || ''

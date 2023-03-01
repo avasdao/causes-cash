@@ -113,9 +113,6 @@
 </template>
 
 <script>
-/* Import (global) components. */
-import CTA from '@/components/CTA'
-
 /* Import (local) components. */
 import Pledges from './Campaign/Pledges'
 import Description from './Campaign/Description'
@@ -146,8 +143,6 @@ export default {
         usd: Number,
     },
     components: {
-        CTA,
-
         Pledges,
         Description,
         Disclaimer,
@@ -197,11 +192,11 @@ export default {
     computed: {
         banner() {
             // return require('@/assets/poster.jpg')
-            return this.$store.state.banner
+            return this.$store?.state?.banner
         },
 
         summary() {
-            return this.$store.state.summary
+            return this.$store?.state?.summary
         },
 
     },

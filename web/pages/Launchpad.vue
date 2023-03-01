@@ -239,7 +239,7 @@ export default {
                 owner: this.owner,
                 title: this.title,
                 summary: this.summary,
-                fundingGoal: BigInt(parseInt(this.fundingGoal * 1000)) * BigInt(this.$store.state.ONE_SMART_BITCOIN.div(1000)),
+                fundingGoal: BigInt(parseInt(this.fundingGoal * 1000)) * BigInt(this.$store?.state?.ONE_SMART_BITCOIN.div(1000)),
                 starting: this.starting,
                 expiration: this.expiration,
             }

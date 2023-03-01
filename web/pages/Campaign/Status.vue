@@ -80,11 +80,11 @@ export default {
 
             /* Set BCH value. */
             const bchValue = Number(
-                weiValue / BigInt(this.$store.state.ONE_BITCOIN * 100)
+                weiValue / BigInt(this.$store?.state?.ONE_BITCOIN * 100)
             )
 
             /* Return (formatted) value. */
-            return numeral(bchValue / this.$store.state.ONE_BITCOIN)
+            return numeral(bchValue / this.$store?.state?.ONE_BITCOIN)
                 .format('0,0.00[00]')
         },
 
@@ -103,7 +103,7 @@ export default {
 
             /* Set USD value. */
             const usdValue = Number(
-                weiValue / BigInt(this.$store.state.ONE_SMART_BITCOIN)
+                weiValue / BigInt(this.$store?.state?.ONE_SMART_BITCOIN)
             )
 
             /* Return (formatted) value. */
@@ -142,7 +142,7 @@ export default {
 
             /* Set USD value. */
             const usdValue = Number(
-                weiValue / BigInt(this.$store.state.ONE_SMART_BITCOIN))
+                weiValue / BigInt(this.$store?.state?.ONE_SMART_BITCOIN))
 
             /* Return (formatted) value. */
             return numeral(usdValue / 100).format('$0,0.00')

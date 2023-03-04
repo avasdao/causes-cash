@@ -1,3 +1,17 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+
+const highlights = []
+
+highlights.push({
+    id: '1',
+    cat: 'Rewards',
+    body: 'Participants will share in 1% of freshly minted AVAS.'
+})
+
+</script>
+
 <template>
     <main class="border-t border-gray-200 mt-10 pt-10">
         <h3 class="text-lg font-medium text-gray-900">

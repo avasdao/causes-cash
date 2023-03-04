@@ -91,7 +91,7 @@ export default {
             const bch = parseFloat(satoshis / 100000000.0)
 
             /* Return format. */
-            return numeral(bch).format('0,0.00[0000]') + ' sBCH'
+            return numeral(bch).format('0,0.00[0000]') + ' NEXA'
         },
 
         displayUSD(_wei) {

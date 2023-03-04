@@ -5,21 +5,7 @@ import { ref } from 'vue'
 /* Initialize stores. */
 import { useSystemStore } from '@/stores/system'
 
-/* Import (local) components. */
-// import Disclaimer from './Disclaimer'
-// import Feedback from './Feedback'
-// import FeedbackWin from './FeedbackWin'
-// import Highlights from './Highlights'
-// import PledgeWin from './PledgeWin'
-// import Policy from './Policy'
-// import Menu from './Menu'
-// import Monitor from './Monitor'
-// import Related from './Related'
-// import ReportCards from './ReportCards'
-// import Share from './Share'
-// import Sponsors from './Sponsors'
-// import Status from './Status'
-
+/* Define (parent) properties. */
 const props = defineProps({
     network: String,
     provider: String,
@@ -165,7 +151,7 @@ const makePledge = async () => {
                         {{summary}}
                     </p>
 
-                    <Status :usd="usd" :provider="props.provider" />
+                    <CampaignStatus :usd="usd" :provider="props.provider" />
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                         <button
@@ -193,9 +179,9 @@ const makePledge = async () => {
                         </button>
                     </div>
 
-                    <Monitor class="hidden" />
+                    <CampaignMonitor class="hidden" />
 
-                    <Highlights />
+                    <CampaignHighlights />
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                         <button
@@ -215,37 +201,37 @@ const makePledge = async () => {
                         </button>
                     </div>
 
-                    <Sponsors />
+                    <CampaignSponsors />
 
-                    <Share />
+                    <CampaignShare />
 
-                    <Disclaimer />
+                    <CampaignDisclaimer />
 
                 </div>
 
                 <div class="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-4">
                     <div>
-                        <Menu class="" @tabbed="toggleMenu" :contributors="contributors" :supporters="supporters" />
+                        <CampaignMenu class="" @tabbed="toggleMenu" :contributors="contributors" :supporters="supporters" />
 
                         <CampaignDescription v-if="showDescription" />
                         <CampaignPledges v-if="showPledges" :contributors="contributors" :usd="usd" />
-                        <Feedback v-if="showFeedback" :supporters="supporters" />
-                        <ReportCards v-if="showReportCards" />
+                        <CampaignFeedback v-if="showFeedback" :supporters="supporters" />
+                        <CampaignReportCards v-if="showReportCards" />
 
                     </div>
                 </div>
             </div>
 
-            <Policy class="hidden" />
+            <CampaignPolicy class="hidden" />
 
-            <Related />
+            <CampaignRelated />
 
             <CTA class="mt-20 rounded-3xl overflow-hidden" />
 
         </section>
 
-        <FeedbackWin :hasFeedback="hasFeedback" @close="closeFeedback" />
+        <CampaignFeedbackWin :hasFeedback="hasFeedback" @close="closeFeedback" />
 
-        <PledgeWin :isPledging="isPledging" :usd="usd" @close="closePledge" />
+        <CampaignPledgeWin :isPledging="isPledging" :usd="usd" @close="closePledge" />
     </main>
 </template>

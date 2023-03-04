@@ -119,7 +119,8 @@ const makePledge = async () => {
     isPledging = true
 }
 
-
+const campaign = await $fetch('/api/campaigns?bootstrap')
+console.log('CAMPAIGN (page):', campaign)
 </script>
 
 <template>

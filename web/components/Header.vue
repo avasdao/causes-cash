@@ -1,9 +1,9 @@
 <template>
     <main class="bg-gradient-to-r from-lime-600 to-green-600 border-b-4 border-lime-700">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
-            <div class="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
+            <div class="w-full py-6 flex flex-col sm:flex-row items-center justify-between border-b border-indigo-500 lg:border-none">
                 <div class="flex items-center">
-                    <NuxtLink to="/" class="flex flex-col items-center">
+                    <NuxtLink to="/" class="flex flex-row sm:flex-col items-center">
                         <span class="sr-only">Causes Cash</span>
 
                         <img class="h-12 lg:h-16 w-auto" src="~/assets/logo.png" alt="" />
@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="ml-2 sm:ml-10 space-x-4">
+                <div class="mt-3 sm:mt-0 sm:ml-10 space-x-4">
                     <a href="javascript://" class="hidden inline-block bg-indigo-500 py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75">
                         Sign in
                     </a>

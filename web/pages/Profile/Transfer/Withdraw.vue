@@ -1,3 +1,17 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+import { ethers } from 'ethers'
+
+/* Initialize stores. */
+import { useSystemStore } from '@/stores/system'
+
+/* Initialize System. */
+const System = useSystemStore()
+
+
+</script>
+
 <template>
     <main class="p-3">
         <div class="mt-5">
@@ -36,8 +50,8 @@
 
                 <div class="mt-3 relative rounded-md shadow-sm">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <img v-if="$store.state.currency === 'SBCH' || $store.state.currency === null" class="w-5 h-5" :src="require('../../../assets/smart-bch-sbch-logo.png')" />
-                        <img v-if="$store.state.currency === 'BCH'" class="w-5 h-5" :src="require('../../../assets/bitcoin-cash-bch-logo.png')" />
+                        <img v-if="System.currency === 'SBCH' || System.currency === null" class="w-5 h-5" :src="require('../../../assets/smart-bch-sbch-logo.png')" />
+                        <img v-if="System.currency === 'BCH'" class="w-5 h-5" :src="require('../../../assets/bitcoin-cash-bch-logo.png')" />
                     </div>
 
                     <input
@@ -51,8 +65,8 @@
                     />
 
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                        <span v-if="$store.state.currency === 'SBCH' || $store.state.currency === null" class="text-gray-500 sm:text-sm" id="price-currency">SBCH</span>
-                        <span v-if="$store.state.currency === 'BCH'" class="text-gray-500 sm:text-sm" id="price-currency">BCH</span>
+                        <span v-if="System.currency === 'SBCH' || System.currency === null" class="text-gray-500 sm:text-sm" id="price-currency">SBCH</span>
+                        <span v-if="System.currency === 'BCH'" class="text-gray-500 sm:text-sm" id="price-currency">BCH</span>
                     </div>
                 </div>
 
@@ -85,10 +99,7 @@
 </template>
 
 <script>
-/* global BigInt */
-
 /* Import modules. */
-import { ethers } from 'ethers'
 
 import QrScanner from 'qr-scanner'
 QrScanner.WORKER_PATH = './js/qr-scanner-worker.min.js'

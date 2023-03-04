@@ -127,20 +127,20 @@ export default createStore({
         },
 
         /**
-         * Smartstarter ABI
+         * Causes ABI
          *
-         * Provides the ABI for the Smartstarter contract.
+         * Provides the ABI for the Causes contract.
          */
-        getSmartstarterAbi() {
-            return require('../../contracts/Smartstarter.json')
+        getCausesAbi() {
+            return require('../../contracts/Causes.json')
         },
 
         /**
-         * Smartstarter Address
+         * Causes Address
          *
-         * Provides the address for the Smartstarter contract.
+         * Provides the address for the Causes contract.
          */
-        getSmartstarterAddr() {
+        getCausesAddr() {
             return '0x708387b3aFdd5Dd72e0Fb9354250dCBC7D4525aC'
             /* Validate network. */
             // if (_state.network === 'mainnet') {

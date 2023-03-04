@@ -8,13 +8,13 @@
 
         <Benefits class="" />
 
-        <Reporting class="py-16 lg:py-24" />
+        <!-- <Reporting class="py-16 lg:py-24" /> -->
 
-        <Recent class="py-16 lg:py-24" />
+        <!-- <Recent class="py-16 lg:py-24" /> -->
 
-        <Metrics class="" />
+        <!-- <Metrics class="" /> -->
 
-        <Contributors class="py-24 lg:py-32" />
+        <!-- <Contributors class="py-24 lg:py-32" /> -->
 
         <CTA class="my-20" />
     </main>

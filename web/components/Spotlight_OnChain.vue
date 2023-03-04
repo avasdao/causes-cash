@@ -244,7 +244,7 @@ export default {
 
             /* Set topics. */
             const topics = [
-                // SmartstarterCreated
+                // CauseCreated
                 '0xd88dc5dd1e46152fecce681e8ef1affa28b0a06534b296438edaf3b700f5c590',
             ]
 
@@ -267,7 +267,7 @@ export default {
                 try {
                     /* Decode event log. */
                     const decoded = iface
-                        .decodeEventLog('SmartstarterCreated', _log.data)
+                        .decodeEventLog('CauseCreated', _log.data)
 
                     /* Set created parameters. */
                     const created = {

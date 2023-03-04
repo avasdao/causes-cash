@@ -39,7 +39,7 @@
                     </span>
 
                     <span class="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                        Why Smartstarter
+                        Why Causes Cash
                     </span>
                 </h1>
 

@@ -6,7 +6,7 @@
                 <div class="flex items-start justify-between">
 
                     <h2 class="text-2xl font-medium text-gray-300">
-                        Smartstarter Portal
+                        Causes Cash Portal
                     </h2>
 
                     <div class="ml-3 h-7 flex items-center">
@@ -259,11 +259,11 @@ export default {
             /* Set Web3 address. */
             this.web3Address = portalid
 
-            /* Set Smartstarter Address. */
-            const addr = this.$store.getters.getSmartstarterAddr
+            /* Set Causes Address. */
+            const addr = this.$store.getters.getCausesAddr
 
-            /* Set Smartstarter ABI. */
-            const abi = this.$store.getters.getSmartstarterAbi
+            /* Set Causes ABI. */
+            const abi = this.$store.getters.getCausesAbi
 
             /* Initialize provider. */
             const provider = new ethers.providers
@@ -273,21 +273,21 @@ export default {
 
 
             /* Initialize campaign instance. */
-            const smartstarter = new ethers.Contract(addr, abi, provider)
-            // console.log('CONTRACT (smartstarter):', smartstarter)
+            const causes = new ethers.Contract(addr, abi, provider)
+            // console.log('CONTRACT (causes):', causes)
 
-            /* Request smartstarter nickname. */
-            const portalInfo = await smartstarter
+            /* Request causes nickname. */
+            const portalInfo = await causes
                 .getProfile(this.web3Address)
                 .catch(err => {
                     console.error(err)
 
                     /* Handle invalid call. */
                     if (err.code === 'CALL_EXCEPTION') {
-                        throw new Error('Failed to load (on-chain) Smartstarter contract.')
+                        throw new Error('Failed to load (on-chain) Causes contract.')
                     }
                 })
-            console.log('SMARTSTARTER (portalInfo):', portalInfo)
+            console.log('CAUSES CASH (portalInfo):', portalInfo)
 
             /* Validate portal info. */
             if (portalInfo) {

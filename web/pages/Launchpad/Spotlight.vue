@@ -5,7 +5,7 @@
         </legend>
 
         <p class="text-sm p-3">
-            Spotlight campaigns are featured on sites like Smartstarter and Causes Cash.
+            Spotlight campaigns are featured on sites like Causes Cash.
 
             If the campaign is successfully funded, 1% of proceeds will be sent to the
             <a class="text-red-500 font-medium" href="https://pif.cash" target="_blank">Pay It Forward Treasury</a>.

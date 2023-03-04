@@ -4,7 +4,7 @@
 
             <div class="px-4 py-5 sm:px-6">
                 <h2 id="applicant-information-title" class="text-2xl leading-6 font-medium text-gray-900">
-                    Smartstarter Profile
+                    Causes Profile
                 </h2>
 
                 <p class="mt-1 max-w-2xl text-lg text-gray-500">
@@ -326,7 +326,7 @@ export default {
 
         openPortal() {
             this.$router.push(`/portal/${this.web3Address}`)
-            // window.open(`https://smartstarter.cash/portal/${this.web3Address}`)
+            // window.open(`https://causes.cash/portal/${this.web3Address}`)
         },
 
         async update() {
@@ -364,11 +364,11 @@ export default {
             // console.log('SIGNER', signer)
 
             /* Set Campaign ABI. */
-            const abi = this.$store.getters.getSmartstarterAbi
+            const abi = this.$store.getters.getCausesAbi
 
             /* Initialize campaign instance. */
-            const smartstarter = new ethers.Contract(
-                this.$store.getters.getSmartstarterAddr, abi, signer)
+            const causes = new ethers.Contract(
+                this.$store.getters.getCausesAddr, abi, signer)
             // console.log('CONTRACT (campaign):', campaign)
 
             const about = this.about || ''
@@ -389,7 +389,7 @@ export default {
             // console.log('CONTRACT OPTIONS', contractOptions)
 
             /* Make pledge. */
-            const response = await smartstarter
+            const response = await causes
                 .saveProfile(
                     about,
                     avatar,

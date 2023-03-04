@@ -12,7 +12,7 @@
 
                 <div class="mt-2">
                     <p class="text-sm text-gray-500">
-                        Easily deposit your crypto into your Smartstarter wallet.
+                        Easily deposit your crypto into your Causes wallet.
                     </p>
                 </div>
 

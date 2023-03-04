@@ -60,11 +60,11 @@ export default {
         card = `
 ## Testnet is ONLINE!
 
-The Smartstarter Testnet is now online.
+The Causes Cash Testnet is now online.
 
 ### Completed
 
-1. Deployed the first Smartstarter.sol contract on the Amber testnet.
+1. Deployed the first Causes.sol contract on the Amber testnet.
 
 ### Links to other resources
 
@@ -98,14 +98,14 @@ Report Cards offer campaign managers the tools and resources they need to keep t
         })
 
         card = `
-## Introducing SMARTSTARTER!
+## Introducing CAUSES CASH!
 
 The first release of this new SmartBCH peer-to-peer, crowdfunding platform.
 
 ### Completed
 
-1. Launched smartstarter.cash Testnet
-2. Created docs.smartstarter.cash
+1. Launched causes.cash Testnet
+2. Created docs.causes.cash
 3. Published new GitLab repository
 
 ### Links to other resources

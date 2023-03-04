@@ -26,7 +26,7 @@ const System = useSystemStore()
 
                 <div class="mt-2">
                     <p class="text-sm text-gray-500">
-                        When you're ready to withdraw funds from your Smartstarter wallet, just enter the destination and click 'SEND'.
+                        When you're ready to withdraw funds from your Causes wallet, just enter the destination and click 'SEND'.
                     </p>
                 </div>
 

@@ -179,7 +179,7 @@ const initCampaign = async (_state, _commit, _getters, _dispatch) => {
 
     /* Request event data. */
     query = await campaign
-        .queryFilter('SmartstarterPledgeReceived', fromBlock, toBlock)
+        .queryFilter('CausesPledgeReceived', fromBlock, toBlock)
         .catch(err => console.error(err))
     console.log('QUERY (PledgeReceived):', query)
 
@@ -230,7 +230,7 @@ const initCampaign = async (_state, _commit, _getters, _dispatch) => {
 
     /* Request event data. */
     query = await campaign
-        .queryFilter('SmartstarterPledgeReclaimed', fromBlock, toBlock)
+        .queryFilter('CausesPledgeReclaimed', fromBlock, toBlock)
         .catch(err => console.error(err))
     // console.log('QUERY (PledgeReclaimed):', query)
 
@@ -250,7 +250,7 @@ const initCampaign = async (_state, _commit, _getters, _dispatch) => {
 
     /* Request event data. */
     query = await campaign
-        .queryFilter('SmartstarterOwnerPaid', fromBlock, toBlock)
+        .queryFilter('CausesOwnerPaid', fromBlock, toBlock)
         .catch(err => console.error(err))
     // console.log('QUERY (OwnerPaid):', query)
 
@@ -266,7 +266,7 @@ const initCampaign = async (_state, _commit, _getters, _dispatch) => {
 
     /* Request event data. */
     query = await campaign
-        .queryFilter('SmartstarterFeedbackSent', fromBlock, toBlock)
+        .queryFilter('CausesFeedbackSent', fromBlock, toBlock)
         .catch(err => console.error(err))
     console.log('QUERY (FeedbackSent):', query)
 
@@ -296,7 +296,7 @@ const initCampaign = async (_state, _commit, _getters, _dispatch) => {
 
     /* Request event data. */
     query = await campaign
-        .queryFilter('SmartstarterReportCardAdded', fromBlock, toBlock)
+        .queryFilter('CausesReportCardAdded', fromBlock, toBlock)
         .catch(err => console.error(err))
     // console.log('QUERY (ReportCardAdded):', query)
 

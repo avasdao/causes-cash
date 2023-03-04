@@ -12,7 +12,7 @@
                 </h1>
 
                 <p class="mt-6 max-w-3xl text-xl text-gray-300">
-                    Smartstarter is a FULLY decentralized platform.
+                    Causes Cash is a FULLY decentralized platform.
                     There are NO central servers to censor.
                     ALL campaign details are stored on-chain and 100% controlled by YOU.
                 </p>
@@ -43,12 +43,12 @@
                         </h3>
 
                         <p class="mt-4 text-base text-gray-500">
-                            Our Reddit sub (<a class="text-red-400 font-medium" href="https://www.reddit.com/r/Smartstarter/" target="_blank">/Smartstarter</a>) is the best place to go to get the most up-to-date information on this project.
+                            Our Reddit sub (<a class="text-red-400 font-medium" href="https://www.reddit.com/r/CausesCash/" target="_blank">/CausesCash</a>) is the best place to go to get the most up-to-date information on this project.
                         </p>
                     </div>
 
                     <div class="p-6 bg-gray-50 rounded-bl-2xl rounded-br-2xl md:px-8">
-                        <a href="https://www.reddit.com/r/Smartstarter/" target="_blank" class="text-base font-medium text-indigo-700 hover:text-indigo-600">Contact us<span aria-hidden="true"> &rarr;</span></a>
+                        <a href="https://www.reddit.com/r/CausesCash/" target="_blank" class="text-base font-medium text-indigo-700 hover:text-indigo-600">Contact us<span aria-hidden="true"> &rarr;</span></a>
                     </div>
                 </div>
 

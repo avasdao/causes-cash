@@ -464,7 +464,7 @@ export default {
         //
         //     /* Initialize an electrum cluster that trusts the servers it connects to. */
         //     this.electrum = new ElectrumClient(
-        //         'Smartstarter',
+        //         'Causes',
         //         '1.4.3',
         //         'bch.imaginary.cash',
         //         50004, // wss

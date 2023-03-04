@@ -96,8 +96,8 @@
 
                 <footer>
                     Our team is ready to assist you 24hrs a day, whatever your needs.
-                    Email us directly at <a href="mailto:support@bchplease.org">support@bchplease.org</a> or
-                    <a href="https://join.slack.com/t/bchplease/shared_invite/zt-e7jj03j5-vJbe47kNrPBjTgTXwLNRkA" target="_blank">join our Slack</a> for real-time support.
+                    Email us directly at <a href="mailto:support@avasdao.org">support@avasdao.org</a> or
+                    <a href="https://discord.gg/2yQNsZV6EJ" target="_blank">join the Nexa Discord</a> for real-time support.
                 </footer>
 
             </v-container>

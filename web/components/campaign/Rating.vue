@@ -45,25 +45,3 @@ Active: "text-yellow-400", Default: "text-gray-300"
         <p class="sr-only">4 out of 5 stars</p>
     </main>
 </template>
-
-<script>
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

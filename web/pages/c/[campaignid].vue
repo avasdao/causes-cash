@@ -1,3 +1,141 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+
+/* Initialize stores. */
+import { useSystemStore } from '@/stores/system'
+
+/* Import (local) components. */
+// import Disclaimer from './Disclaimer'
+// import Feedback from './Feedback'
+// import FeedbackWin from './FeedbackWin'
+// import Highlights from './Highlights'
+// import PledgeWin from './PledgeWin'
+// import Policy from './Policy'
+// import Menu from './Menu'
+// import Monitor from './Monitor'
+// import Related from './Related'
+// import ReportCards from './ReportCards'
+// import Share from './Share'
+// import Sponsors from './Sponsors'
+// import Status from './Status'
+
+const props = defineProps({
+    network: String,
+    provider: String,
+    blockNum: Number,
+    usd: Number,
+})
+
+/* Import responsive holders. */
+const description = ref(null)
+
+const showPledges = ref(false)
+const showDescription = ref(true)
+const showFeedback = ref(false)
+const showReportCards = ref(false)
+
+const contributors = ref(null)
+const supporters = ref(null)
+
+const isPledging = ref(false)
+const hasFeedback = ref(false)
+
+/* Set constants. */
+const RETRY_DELAY = 500 // 0.5 seconds
+
+/* Initialize System. */
+const System = useSystemStore()
+
+watch(props?.provider, (_provider) => {
+    console.log('(CAMPAIGN) PROVIDER HAS CHANGED', _provider)
+
+    if (_provider) {
+        /* Initialize blockchain. */
+        setTimeout(() => {
+            System.initBlockchain()
+        }, RETRY_DELAY)
+    }
+})
+
+const banner = computed(() => {
+    // return require('@/assets/poster.jpg')
+    return System.banner
+})
+
+const summary = computed(() => {
+    return System.summary
+})
+
+/**
+ * Toggle Menu
+ *
+ * Controls the information display menus.
+ */
+const toggleMenu = (_selected) => {
+    // console.log('TOGGLE MENU (selected):', _selected)
+
+    /* Set all menu displays to false. */
+    showPledges.value = false
+    showDescription.value = false
+    showFeedback.value = false
+    showReportCards.value = false
+
+    /* Handle user selection. */
+    switch(_selected) {
+    case 'contributors':
+        return showPledges.value = true
+    case 'description':
+        return showDescription.value = true
+    case 'feedback':
+        return showFeedback.value = true
+    case 'report-cards':
+        return showReportCards.value = true
+    default:
+        return showDescription.value = true
+    }
+
+}
+
+const closeFeedback = () => {
+    hasFeedback.value = false
+}
+
+const closePledge = () => {
+    isPledging.value = false
+}
+
+/**
+ * Make Pledge
+ */
+const makePledge = async () => {
+    // let isPledging = null
+
+    /* Validate Web3 provider. */
+    if (!window.ethereum) {
+        /* Send notification request. */
+        $store.dispatch('showNotif', {
+            icon: 'error',
+            title: 'MetaMask Error!',
+            message: `No Web3 provider found!`,
+        })
+
+        return
+    }
+
+    /* Connect to Web3 provider. */
+    await window.ethereum
+        .enable()
+        .catch(err => console.error(err))
+
+    /* Set pledging flag. */
+    // TODO Set to state.
+    isPledging = true
+}
+
+
+</script>
+
 <template>
     <main class="bg-white">
         <section class="mx-auto pt-6 sm:pt-10 lg:pt-16 pb-4 sm:pb-10 px-4 lg:pb-20 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -18,16 +156,16 @@
                 <div class="max-w-2xl mx-auto mt-4 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
 
                     <div class="flex flex-col-reverse">
-                        <Title />
+                        <CampaignTitle />
 
-                        <Rating />
+                        <CampaignRating />
                     </div>
 
                     <p class="text-gray-500 mt-6 text-lg">
                         {{summary}}
                     </p>
 
-                    <Status :usd="usd" :provider="provider" />
+                    <Status :usd="usd" :provider="props.provider" />
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                         <button
@@ -89,8 +227,8 @@
                     <div>
                         <Menu class="" @tabbed="toggleMenu" :contributors="contributors" :supporters="supporters" />
 
-                        <Description v-if="showDescription" />
-                        <Pledges v-if="showPledges" :contributors="contributors" :usd="usd" />
+                        <CampaignDescription v-if="showDescription" />
+                        <CampaignPledges v-if="showPledges" :contributors="contributors" :usd="usd" />
                         <Feedback v-if="showFeedback" :supporters="supporters" />
                         <ReportCards v-if="showReportCards" />
 
@@ -111,177 +249,3 @@
         <PledgeWin :isPledging="isPledging" :usd="usd" @close="closePledge" />
     </main>
 </template>
-
-<script>
-/* Import (local) components. */
-import Pledges from './Pledges'
-import Description from './Description'
-import Disclaimer from './Disclaimer'
-import Feedback from './Feedback'
-import FeedbackWin from './FeedbackWin'
-import Highlights from './Highlights'
-import PledgeWin from './PledgeWin'
-import Policy from './Policy'
-import Menu from './Menu'
-import Monitor from './Monitor'
-import Rating from './Rating'
-import Related from './Related'
-import ReportCards from './ReportCards'
-import Share from './Share'
-import Sponsors from './Sponsors'
-import Status from './Status'
-import Title from './Title'
-
-/* Set constants. */
-const RETRY_DELAY = 500 // 0.5 seconds
-
-export default {
-    props: {
-        network: String,
-        provider: String,
-        blockNum: Number,
-        usd: Number,
-    },
-    components: {
-        Pledges,
-        Description,
-        Disclaimer,
-        Feedback,
-        FeedbackWin,
-        Highlights,
-        PledgeWin,
-        Policy,
-        Menu,
-        Monitor,
-        Rating,
-        Related,
-        ReportCards,
-        Share,
-        Sponsors,
-        Status,
-        Title,
-    },
-    data: () => {
-        return {
-            description: null,
-
-            showPledges: null,
-            showDescription: null,
-            showFeedback: null,
-            showReportCards: null,
-
-            contributors: null,
-            supporters: null,
-
-            isPledging: null,
-            hasFeedback: null,
-        }
-    },
-    watch: {
-        provider: function (_provider) {
-            console.log('(CAMPAIGN) PROVIDER HAS CHANGED', _provider);
-
-            if (_provider) {
-                /* Initialize blockchain. */
-                setTimeout(() => {
-                    this.$store.dispatch('initBlockchain')
-                }, RETRY_DELAY)
-            }
-        },
-    },
-    computed: {
-        banner() {
-            // return require('@/assets/poster.jpg')
-            return this.$store?.state?.banner
-        },
-
-        summary() {
-            return this.$store?.state?.summary
-        },
-
-    },
-    methods: {
-        /**
-         * Toggle Menu
-         *
-         * Controls the information display menus.
-         */
-        toggleMenu(_selected) {
-            // console.log('TOGGLE MENU (selected):', _selected)
-
-            /* Set all menu displays to false. */
-            this.showPledges = false
-            this.showDescription = false
-            this.showFeedback = false
-            this.showReportCards = false
-
-            /* Handle user selection. */
-            switch(_selected) {
-            case 'contributors':
-                return this.showPledges = true
-            case 'description':
-                return this.showDescription = true
-            case 'feedback':
-                return this.showFeedback = true
-            case 'report-cards':
-                return this.showReportCards = true
-            default:
-                return this.showDescription = true
-            }
-
-        },
-
-        closeFeedback() {
-            this.hasFeedback = false
-        },
-
-        closePledge() {
-            this.isPledging = false
-        },
-
-        /**
-         * Make Pledge
-         */
-        async makePledge() {
-            // let isPledging = null
-
-            /* Validate Web3 provider. */
-            if (!window.ethereum) {
-                /* Send notification request. */
-                this.$store.dispatch('showNotif', {
-                    icon: 'error',
-                    title: 'MetaMask Error!',
-                    message: `No Web3 provider found!`,
-                })
-
-                return
-            }
-
-            /* Connect to Web3 provider. */
-            await window.ethereum
-                .enable()
-                .catch(err => console.error(err))
-
-            /* Set pledging flag. */
-            // TODO Set to state.
-            this.isPledging = true
-        },
-
-    },
-    created: function () {
-        /* Set all menu displays to false. */
-        this.showPledges = false
-        this.showFeedback = false
-        this.showReportCards = false
-
-        /* Set description (default) display to true. */
-        this.showDescription = true
-
-        this.hasFeedback = false
-        this.isPledging = false
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

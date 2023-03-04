@@ -29,13 +29,17 @@ const description = computed(() => {
     // this.description = clean
     return html
 })
+
+const campaign = await $fetch('/api/campaigns?bootstrap')
+console.log('CAMPAIGN (description):', campaign)
+
 </script>
 
 <template>
     <main id="campaign-description">
         <div
             class="mt-10 sm:p-10 sm:bg-gray-50 sm:border-2 border-gray-200 rounded-xl"
-            v-html="description"
+            v-html="campaign?.description"
         />
     </main>
 </template>

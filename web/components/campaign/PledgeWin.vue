@@ -1,3 +1,13 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+
+const props = defineProps({
+    receiver: String,
+})
+
+</script>
+
 <template>
     <main v-if="isPledging" class="fixed inset-0 overflow-hidden" role="dialog" aria-modal="true">
         <div class="absolute inset-0 overflow-hidden">
@@ -36,28 +46,20 @@
 
                                         <div class="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6">
                                             <div class="sm:flex-1">
-                                                <div class="hidden">
-                                                    <div class="flex items-center">
-                                                        <h3 class="font-bold text-xl text-gray-900 sm:text-2xl">Ashley Porter</h3>
-
-                                                        <span class="ml-2.5 bg-green-400 flex-shrink-0 inline-block h-2 w-2 rounded-full">
-                                                            <span class="sr-only">Online</span>
-                                                        </span>
-                                                    </div>
-
-                                                    <p class="text-sm text-gray-500">
-                                                        @ashleyporter
-                                                    </p>
-                                                </div>
-
                                                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3">
-                                                    <button
+
+                                                    <NuxtLink :to="props.receiver"
+                                                        class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
+                                                    >
+                                                        Submit My Pledge
+                                                    </NuxtLink>
+                                                    <!-- <button
                                                         @click="makePledge"
                                                         type="button"
                                                         class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
                                                     >
                                                         Submit My Pledge
-                                                    </button>
+                                                    </button> -->
 
                                                 </div>
                                             </div>

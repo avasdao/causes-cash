@@ -95,28 +95,27 @@ const closePledge = () => {
  * Make Pledge
  */
 const makePledge = async () => {
-    // let isPledging = null
-
     /* Validate Web3 provider. */
-    if (!window.ethereum) {
-        /* Send notification request. */
-        $store.dispatch('showNotif', {
-            icon: 'error',
-            title: 'MetaMask Error!',
-            message: `No Web3 provider found!`,
-        })
+    // if (!window.ethereum) {
+    //     /* Send notification request. */
+    //     $store.dispatch('showNotif', {
+    //         icon: 'error',
+    //         title: 'MetaMask Error!',
+    //         message: `No Web3 provider found!`,
+    //     })
 
-        return
-    }
+    //     return
+    // }
 
     /* Connect to Web3 provider. */
-    await window.ethereum
-        .enable()
-        .catch(err => console.error(err))
+    // await window.ethereum
+    //     .enable()
+    //     .catch(err => console.error(err))
 
     /* Set pledging flag. */
     // TODO Set to state.
-    isPledging = true
+    // isPledging.value = true
+    document.location = campaign?.receiver
 }
 
 const campaign = await $fetch('/api/campaigns?bootstrap')
@@ -149,7 +148,8 @@ console.log('CAMPAIGN (page):', campaign)
                     </div>
 
                     <p class="text-gray-500 mt-6 text-lg">
-                        {{summary}}
+                        <!-- {{summary}} -->
+                        {{campaign?.summary}}
                     </p>
 
                     <CampaignStatus :usd="usd" :provider="props.provider" />
@@ -174,11 +174,21 @@ console.log('CAMPAIGN (page):', campaign)
                         <button
                             @click="reclaim"
                             type="button"
-                            class="w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-medium font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                            class="cursor-not-allowed w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-medium font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                            disabled
                         >
                             Reclaim My Pledge
                         </button>
                     </div>
+
+                    <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" _target="blank" class="px-3 py-1 mt-5 flex justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
+                        <span class="sm:hidden text-sm text-rose-500 font-medium">
+                            {{campaign?.receiver.slice(0, 20)}} ... {{campaign?.receiver.slice(-15)}}
+                        </span>
+                        <span class="hidden sm:inline text-sm text-rose-500 font-medium">
+                            {{campaign?.receiver}}
+                        </span>
+                    </NuxtLink>
 
                     <CampaignMonitor class="hidden" />
 
@@ -231,8 +241,16 @@ console.log('CAMPAIGN (page):', campaign)
 
         </section>
 
-        <CampaignFeedbackWin :hasFeedback="hasFeedback" @close="closeFeedback" />
+        <CampaignFeedbackWin
+            :hasFeedback="hasFeedback"
+            @close="closeFeedback"
+        />
 
-        <CampaignPledgeWin :isPledging="isPledging" :usd="usd" @close="closePledge" />
+        <CampaignPledgeWin
+            :isPledging="isPledging"
+            :usd="usd"
+            :receiver="campaign?.receiver"
+            @close="closePledge"
+        />
     </main>
 </template>

@@ -9,9 +9,11 @@ const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COU
 
 const BOOTSTRAP_CAMPAIGNID = '475b4cfc-ae95-419d-9681-cf378c083963'
 
-export default defineEventHandler(() => {
-    const campaign = campaignsDb.get(BOOTSTRAP_CAMPAIGNID)
-    console.log('CAMPAIGN (api):', campaign)
+export default defineEventHandler(async () => {
+    const campaign = await campaignsDb
+        .get(BOOTSTRAP_CAMPAIGNID)
+        .catch(err => console.error(err))
+    // console.log('CAMPAIGN (api):', campaign)
 
     if (!campaign) {
         return {}

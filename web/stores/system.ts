@@ -13,7 +13,7 @@ export const useSystemStore = defineStore('system', {
 
         sponsors: 'Our beloved sponsors',
 
-        banner: 'https://causes.cash/poster.jpg',
+        banner: 'https://i.ibb.co/cF9kbVT/causes-for-nexa.jpg',
 
         currency: 'BCH',
     }),

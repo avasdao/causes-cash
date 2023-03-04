@@ -10,7 +10,7 @@
 
         <div class="flex justify-between items-center px-10 flex-col sm:flex-row">
             <a href="https://avasdao.org" target="_blank">
-                <img src="https://i.imgur.com/lez4zfn.png" alt="" class="w-8 h-8 rounded-full" />
+                <img src="https://i.ibb.co/0ZMVPp7/logo.png" alt="" class="w-8 h-8 rounded-full" />
             </a>
 
             <div>

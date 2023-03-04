@@ -3,7 +3,7 @@
         <h4 class="sr-only">Status</h4>
 
         <p class="text-3xl text-center font-medium text-gray-700">
-            {{fundedDisplay}} of {{requestedDisplay}} sBCH
+            {{fundedDisplay}} of {{requestedDisplay}} NEXA
         </p>
 
         <p class="text-center text-base text-gray-500 font-medium">

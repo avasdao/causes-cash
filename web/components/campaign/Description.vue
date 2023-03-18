@@ -9,6 +9,13 @@ import { useSystemStore } from '@/stores/system'
 /* Initialize System. */
 const System = useSystemStore()
 
+/* Define (parent) properties. */
+const props = defineProps({
+    campaign: Object,
+})
+const campaign = ref(props.campaign)
+console.log('CAMPAIGN (description):', campaign.value)
+
 const description = computed(() => {
     /* Set description. */
     const description = System.description
@@ -29,9 +36,6 @@ const description = computed(() => {
     // this.description = clean
     return html
 })
-
-const campaign = await $fetch('/api/campaigns?bootstrap')
-console.log('CAMPAIGN (description):', campaign)
 
 </script>
 

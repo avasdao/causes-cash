@@ -118,8 +118,13 @@ const makePledge = async () => {
     document.location = campaign?.receiver
 }
 
-const campaign = await $fetch('/api/campaigns?bootstrap')
-console.log('CAMPAIGN (page):', campaign)
+const route = useRoute()
+const campaignid = route.params.campaignid
+console.log('Campaign ID:', campaignid)
+
+let campaign = ref()
+campaign.value = await $fetch(`/api/campaigns?id=${campaignid}`)
+console.log('CAMPAIGN (page):', campaign.value)
 </script>
 
 <template>
@@ -183,7 +188,7 @@ console.log('CAMPAIGN (page):', campaign)
 
                     <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" _target="blank" class="px-3 py-1 mt-5 flex justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
                         <span class="sm:hidden text-sm text-rose-500 font-medium">
-                            {{campaign?.receiver.slice(0, 20)}} ... {{campaign?.receiver.slice(-15)}}
+                            {{campaign?.receiver?.slice(0, 20)}} ... {{campaign?.receiver?.slice(-15)}}
                         </span>
                         <span class="hidden sm:inline text-sm text-rose-500 font-medium">
                             {{campaign?.receiver}}
@@ -224,7 +229,7 @@ console.log('CAMPAIGN (page):', campaign)
                     <div>
                         <CampaignMenu class="" @tabbed="toggleMenu" :contributors="contributors" :supporters="supporters" />
 
-                        <CampaignDescription v-if="showDescription" />
+                        <CampaignDescription v-if="showDescription" :campaign="campaign" />
                         <CampaignPledges v-if="showPledges" :contributors="contributors" :usd="usd" />
                         <CampaignFeedback v-if="showFeedback" :supporters="supporters" />
                         <CampaignReportCards v-if="showReportCards" />

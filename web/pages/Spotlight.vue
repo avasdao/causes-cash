@@ -6,9 +6,9 @@ import { ref } from 'vue'
 const campaigns = ref([])
 
 campaigns.value.push({
-    id: '95e75ff5-c90f-4d1f-8e69-044c19ccaca1',
+    id: '475b4cfc-ae95-419d-9681-cf378c083963',
     title: `Causes Cash: Nexa-powered P2P Crowdfunding`,
-    url: 'https://causes.cash/bootstrap',
+    url: 'https://causes.cash/c/475b4cfc-ae95-419d-9681-cf378c083963',
     manager: {
         name: `0xShomari`,
         url: 'https://twitter.com/0xShomari',
@@ -20,9 +20,9 @@ campaigns.value.push({
 })
 
 campaigns.value.push({
-    id: '904ccf9d-583a-463b-837b-96a2632a0581',
+    id: '707e2a8c-4eea-4c26-9ea2-c548e9e91726',
     title: `Nexa CashFusion`,
-    url: 'https://docs.causes.cash/blog/nexa-cashfusion',
+    url: 'https://causes.cash/c/707e2a8c-4eea-4c26-9ea2-c548e9e91726',
     manager: {
         name: `Ava Nakamoto`,
         url: 'https://twitter.com/0xShomari',
@@ -34,9 +34,9 @@ campaigns.value.push({
 })
 
 campaigns.value.push({
-    id: 'da0e504b-ffd0-42ef-afdd-22f6c1153471',
+    id: 'b8fac25d-e619-4ddf-b474-af084e8250ce',
     title: `Nexa Ledger (Live) Wallet`,
-    url: 'https://docs.causes.cash/blog/nexa-ledger-live-wallet',
+    url: 'https://causes.cash/c/b8fac25d-e619-4ddf-b474-af084e8250ce',
     manager: {
         name: `Satoshi Nakamoto`,
         url: 'https://twitter.com/0xShomari',
@@ -104,7 +104,7 @@ campaigns.value.push({
                     </section>
 
                     <h3 class="mt-3 text-3xl font-semibold leading-10 text-white">
-                        <NuxtLink to="/bootstrap">
+                        <NuxtLink :to="'/c/' + campaign.id">
                             <span class="absolute inset-0"></span>
                             {{campaign.title}}
                         </NuxtLink>

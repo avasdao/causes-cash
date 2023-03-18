@@ -1,7 +1,25 @@
+<script setup>
+/* Import modules. */
+import { ethers } from 'ethers'
+import moment from 'moment'
+import numeral from 'numeral'
+import { ref } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
+// import WebSocket from 'isomorphic-ws'
+
+const campaignPledged = ref(0)
+const campaignTotal = ref(0)
+
+
+
+/* Initialize Rostrum. */
+// initRostrum()
+</script>
+
 <template>
     <main class="mt-5">
         <h4 class="sr-only">Status</h4>
-
+pledged:{{campaignPledged}}
         <p class="text-3xl text-center font-medium text-gray-700">
             {{fundedDisplay}} of {{requestedDisplay}} NEXA
         </p>
@@ -26,13 +44,6 @@
 </template>
 
 <script>
-/* global BigInt */
-
-/* Import modules. */
-import { ethers } from 'ethers'
-import moment from 'moment'
-import numeral from 'numeral'
-
 /* Set constants. */
 const RETRY_DELAY = 500 // 0.5 seconds
 const RETRY_ATTEMPTS = 10 // approx. 5 seconds

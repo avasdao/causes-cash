@@ -9,6 +9,10 @@ export const useProfileStore = defineStore('profile', {
         /* Initialize session. */
         _session: null,
 
+        /* Initialize private key. */
+        // NOTE: This is a "random" 256-bit value. */
+        privateKey: null,
+
         // TBD
     }),
 
@@ -24,6 +28,11 @@ export const useProfileStore = defineStore('profile', {
         challenge(_state) {
             return _state._session?.challenge
         },
+
+        mnemonic(_state) {
+            return 'this mnemonic must be derived from the private key'
+        },
+
     },
 
     actions: {

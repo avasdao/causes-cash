@@ -124,7 +124,13 @@ console.log('Campaign ID:', campaignid)
 
 let campaign = ref()
 campaign.value = await $fetch(`/api/campaigns?id=${campaignid}`)
-console.log('CAMPAIGN (page):', campaign.value)
+
+if (process.client) {
+    console.log('CAMPAIGN (page):', campaign.value)
+}
+
+const success = await $fetch('/api/purse')
+console.log('SUCCESS', success)
 </script>
 
 <template>

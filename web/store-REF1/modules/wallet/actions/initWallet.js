@@ -36,10 +36,10 @@ const initWallet = ({ commit }) => {
      * Manages the indices of account (addresses) and their respective
      * derivation paths.
      *
-     * Deposit     : m/44'/145'/0'/0/<index>
-     * Change      : m/44'/145'/0'/1/<index>
-     * Causes Cash : m/44'/145'/0'/6767/<index>
-     * Nexa Cash   : m/44'/145'/0'/7867/<index>
+     * Deposit     : m/44'/29223'/0'/0/<index>          (29223 = 0x7227)
+     * Change      : m/44'/29223'/0'/1/<index>
+     * Causes Cash : m/44'/29223'/17219'/0/<index>      (17219 = 0x4343 = "CC")
+     * Nito Cash   : m/44'/29223'/20035'/0/<index>      (20035 = 0x4E43 = "NC")
      */
     const indicesModel = {
         deposit: 0,

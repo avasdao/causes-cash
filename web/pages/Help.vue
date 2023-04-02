@@ -129,9 +129,9 @@ export default {
                     // 'https://smartbch.greyh.at',
                     // 'https://smartbch.devops.cash/mainnet',
                 ],
-                chainName: 'SmartBCH',
+                chainName: 'NEXA',
                 nativeCurrency: {
-                    name: 'SmartBCH',
+                    name: 'NEXA',
                     symbol: 'SBCH',
                     decimals: 18,
                 },
@@ -148,9 +148,9 @@ export default {
                     // 'https://smartbch.fountainhead.cash/testnet',
                     // 'https://smartbch.devops.cash/testnet',
                 ],
-                chainName: 'SmartBCH (Amber)',
+                chainName: 'NEXA (Amber)',
                 nativeCurrency: {
-                    name: 'SmartBCH',
+                    name: 'NEXA',
                     symbol: 'SBCH',
                     decimals: 18,
                 },

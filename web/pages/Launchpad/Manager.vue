@@ -11,7 +11,15 @@
   Active: "ring-2 ring-indigo-500"
 -->
                 <label class="relative bg-white border rounded-lg shadow-sm p-4 flex cursor-pointer focus:outline-none">
-                    <input type="radio" name="delivery-method" value="Standard" class="sr-only" aria-labelledby="delivery-method-0-label" aria-describedby="delivery-method-0-description-0 delivery-method-0-description-1" />
+                    <input
+                        type="radio"
+                        name="delivery-method"
+                        value="Standard"
+                        class="sr-only"
+                        aria-labelledby="delivery-method-0-label"
+                        aria-describedby="delivery-method-0-description-0 delivery-method-0-description-1"
+                    />
+
                     <div class="flex-1 flex">
                         <div class="flex flex-col">
                             <span id="delivery-method-0-label" class="block text-sm font-medium text-gray-900">

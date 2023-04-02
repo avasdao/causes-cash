@@ -38,7 +38,7 @@ const System = useSystemStore()
                         type="text"
                         name="destination"
                         id="destination"
-                        placeholder="Enter a SmartBCH account / address"
+                        placeholder="Enter a NEXA account / address"
                         class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-3 pr-12 text-lg border-gray-300 rounded-md"
                         aria-describedby="destination"
                     />
@@ -80,7 +80,7 @@ const System = useSystemStore()
                         type="button"
                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-400 text-base font-medium text-gray-50 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
                     >
-                        SmartBCH (SBCH)
+                        NEXA (SBCH)
                     </button>
 
                     <button

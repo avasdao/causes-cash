@@ -26,7 +26,7 @@
                 </p>
 
                 <p class="mt-5 text-lg text-gray-300">
-                    SmartBCH introduces an improved system for managing public, peer-to-peer fundraisers.
+                    NEXA introduces an improved system for managing public, peer-to-peer fundraisers.
                 </p>
 
                 <p class="mt-5 text-lg text-gray-300">

@@ -100,7 +100,7 @@ Report Cards offer campaign managers the tools and resources they need to keep t
         card = `
 ## Introducing CAUSES CASH!
 
-The first release of this new SmartBCH peer-to-peer, crowdfunding platform.
+The first release of this new NEXA peer-to-peer, crowdfunding platform.
 
 ### Completed
 

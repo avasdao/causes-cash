@@ -6,9 +6,6 @@ import {
 
 import Home from '../views/Home'
 
-import About from '../views/About'
-import Campaign from '../views/Campaign'
-import Compare from '../views/Compare'
 import Launchpad from '../views/Launchpad'
 import Manage from '../views/Manage'
 import Portal from '../views/Portal'

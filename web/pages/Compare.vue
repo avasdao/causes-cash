@@ -147,7 +147,7 @@
 
                             <div class="pl-3">
                                 <span class="text-sm text-rose-400 font-medium">
-                                    <span class="text-base font-bold">0.5%</span> automatic payout to Nexa Core team
+                                    <span class="text-base font-bold">0.5%</span> automatic payout to BU/Nexa Treasury
                                 </span>
                             </div>
 

@@ -24,10 +24,10 @@ const initWeb3 = (_commit) => {
 
         /* Handle chain id. */
         if (chainId) {
-            if (chainId === SMARTBCH_MAINNET_CHAINID) { // SmartBCH Mainnet
+            if (chainId === SMARTBCH_MAINNET_CHAINID) { // NEXA Mainnet
                 /* Request network update. */
                 _commit('saveNetwork', 'mainnet')
-            } else if (chainId === SMARTBCH_TESTNET_CHAINID) { // SmartBCH Testnet
+            } else if (chainId === SMARTBCH_TESTNET_CHAINID) { // NEXA Testnet
                 /* Request network update. */
                 _commit('saveNetwork', 'testnet')
             }

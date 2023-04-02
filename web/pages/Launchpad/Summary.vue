@@ -1,8 +1,22 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+
+const emit = defineEmits(['set-summary'])
+
+let summary = ref(null)
+
+const handleSummary = () => {
+    emit('set-summary', summary.value)
+}
+
+</script>
+
 <template>
     <main>
         <label for="summary" class="block text-xl font-medium text-gray-700">
             <span class="text-2xl text-indigo-500">3.</span>
-            Enter a brief summary of your campaign
+            Please enter a brief summary of your Campaign
         </label>
 
         <div>
@@ -69,11 +83,11 @@
 
                     <textarea
                         v-model="summary"
-                        @keyUp="handleSummary"
+                        @keyup="handleSummary"
                         rows="5"
                         name="comment"
                         id="comment"
-                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-base border-gray-300 rounded-md"
+                        class="px-3 py-1 block w-full bg-yellow-50 border-2 border-yellow-400 shadow text-lg text-yellow-700 font-medium rounded-md placeholder:text-yellow-500"
                         placeholder="Enter your campaign summary...">
                     </textarea>
                 </div>
@@ -87,31 +101,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            summary: null,
-        }
-    },
-    methods: {
-        handleSummary() {
-            this.$emit('set-summary', this.summary)
-        },
-
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

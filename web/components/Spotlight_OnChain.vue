@@ -191,7 +191,7 @@
 
             <div class="mt-20 flex justify-center">
                 <a href="https://smartbch.builders" target="_blank" class="rounded-xl py-5 px-10 border-4 text-xl sm:text-2xl font-bold text-yellow-700 bg-yellow-200 border-yellow-400 hover:text-yellow-50 hover:bg-yellow-400 hover:border-yellow-200">
-                    Open SmartBCH BUIDLers
+                    Open NEXA BUIDLers
                 </a>
             </div>
         </div>

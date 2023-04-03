@@ -109,12 +109,11 @@ curTab.value = 'dashboard'
 
                         <Edit :class="{ 'hidden' : curTab !== 'edit' }" />
 
-                        <!-- <Notifications :class="{ 'hidden' : curTab !== 'notifs' }" /> -->
+                        <Notifications :class="{ 'hidden' : curTab !== 'notifs' }" />
 
-                        <!-- <Feedback :class="{ 'hidden' : curTab !== 'feedback' }" /> -->
+                        <Feedback :class="{ 'hidden' : curTab !== 'feedback' }" />
 
-                        <!-- <Reports :class="{ 'hidden' : curTab !== 'reports' }" /> -->
-
+                        <Reports :class="{ 'hidden' : curTab !== 'reports' }" />
                     </div>
                 </div>
 

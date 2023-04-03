@@ -1,3 +1,71 @@
+<script setup>
+/* Import modules. */
+import { ethers } from 'ethers'
+import moment from 'moment'
+
+/* Initialize stores. */
+import { useCampaignStore } from '@/stores/campaign'
+
+/* Initialize Campaign. */
+const Campaign = useCampaignStore()
+
+const campaignid = computed(() => {
+    if (!Campaign.campaignid) return null
+
+    return Campaign.campaignid
+})
+
+const displayCategory = computed(() => {
+    if (!Campaign.category) return ''
+
+    return Campaign
+        .getCategoryById(Campaign.category)
+})
+
+const displayTitle = computed(() => {
+    if (!Campaign.title) return ''
+
+    return Campaign.title
+})
+
+const displaySummary = computed(() => {
+    if (!Campaign.summary) return ''
+
+    return Campaign.summary
+})
+
+const displayFundingGoal = computed(() => {
+    if (!Campaign.fundingGoal) return 0
+
+    /* Set funding goal. */
+    const fundingGoal = ethers.BigNumber.from(Campaign.fundingGoal)
+    // console.log('FUNDING GOAL', fundingGoal)
+
+    const bchFundingGoal = fundingGoal.div(Campaign.ONE_SMART_BITCOIN)
+
+    return bchFundingGoal + ' BCH'
+})
+
+const displayStarting = computed(() => {
+    if (!Campaign.starting) return 0
+
+    /* Set starting time. */
+    const starting = Campaign.starting
+
+    return moment.unix(starting).format('LLLL')
+})
+
+const displayExpiration = computed(() => {
+    if (!Campaign.expiration) return 0
+
+    /* Set expiration time. */
+    const expiration = Campaign.expiration
+
+    return moment.unix(expiration).format('LLLL')
+})
+
+</script>
+
 <template>
     <main>
         <div class="mt-5 bg-white shadow overflow-hidden sm:rounded-lg">
@@ -123,89 +191,3 @@
 
     </main>
 </template>
-
-<script>
-/* Import modules. */
-import { ethers } from 'ethers'
-import moment from 'moment'
-
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    computed: {
-        campaignid() {
-            if (!this.$store?.state?.campaignid) return null
-
-            return this.$store?.state?.campaignid
-        },
-
-        displayCategory() {
-            if (!this.$store?.state?.category) return ''
-
-            return this.$store.getters
-                .getCategoryById(this.$store?.state?.category)
-        },
-
-        displayTitle() {
-            if (!this.$store?.state?.title) return ''
-
-            return this.$store?.state?.title
-        },
-
-        displaySummary() {
-            if (!this.$store?.state?.summary) return ''
-
-            return this.$store?.state?.summary
-        },
-
-        displayFundingGoal() {
-            if (!this.$store?.state?.fundingGoal) return 0
-
-            /* Set funding goal. */
-            const fundingGoal = ethers.BigNumber.from(this.$store?.state?.fundingGoal)
-            // console.log('FUNDING GOAL', fundingGoal)
-
-            const bchFundingGoal = fundingGoal.div(this.$store?.state?.ONE_SMART_BITCOIN)
-
-            return bchFundingGoal + ' BCH'
-        },
-
-        displayStarting() {
-            if (!this.$store?.state?.starting) return 0
-
-            /* Set starting time. */
-            const starting = this.$store?.state?.starting
-
-            return moment.unix(starting).format('LLLL')
-        },
-
-        displayExpiration() {
-            if (!this.$store?.state?.expiration) return 0
-
-            /* Set expiration time. */
-            const expiration = this.$store?.state?.expiration
-
-            return moment.unix(expiration).format('LLLL')
-        },
-
-    },
-    methods: {
-        //
-    },
-    created: function () {
-
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

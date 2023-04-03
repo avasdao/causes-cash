@@ -6,7 +6,6 @@ import {
 
 import Home from '../views/Home'
 
-import Launchpad from '../views/Launchpad'
 import Manage from '../views/Manage'
 import Portal from '../views/Portal'
 import Profile from '../views/Profile'

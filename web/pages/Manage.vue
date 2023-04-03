@@ -1,3 +1,37 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+
+/* Import components. */
+import Dashboard from './Manage/Dashboard'
+import Edit from './Manage/Edit'
+import Feedback from './Manage/Feedback'
+import Notifications from './Manage/Notifications'
+import Reports from './Manage/Reports'
+
+const selectedTab =  'border-indigo-500 text-indigo-600 w-1/5 py-4 px-1 text-center border-b-2 font-medium text-lg'
+
+const unselectedTab = 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/5 py-4 px-1 text-center border-b-2 font-medium text-lg'
+
+let curTab = ref(null)
+
+const changeTab = (_tab) => {
+    /* Set current tab. */
+    curTab.value = _tab
+}
+
+const handleChange = (_evt) => {
+    // console.log('EVENT', _evt.target.value)
+
+    /* Change tab. */
+    changeTab(_evt.target.value)
+}
+
+/* Initialize current tab. */
+curTab.value = 'dashboard'
+
+</script>
+
 <template>
     <main class="flex-1 overflow-y-auto focus:outline-none">
         <div class="relative max-w-4xl mx-auto md:px-8 xl:px-0">
@@ -58,13 +92,13 @@
 
                         <Dashboard :class="{ 'hidden' : curTab !== 'dashboard' }" />
 
-                        <Edit :class="{ 'hidden' : curTab !== 'edit' }" />
+                        <!-- <Edit :class="{ 'hidden' : curTab !== 'edit' }" /> -->
 
-                        <Notifications :class="{ 'hidden' : curTab !== 'notifs' }" />
+                        <!-- <Notifications :class="{ 'hidden' : curTab !== 'notifs' }" /> -->
 
-                        <Feedback :class="{ 'hidden' : curTab !== 'feedback' }" />
+                        <!-- <Feedback :class="{ 'hidden' : curTab !== 'feedback' }" /> -->
 
-                        <Reports :class="{ 'hidden' : curTab !== 'reports' }" />
+                        <!-- <Reports :class="{ 'hidden' : curTab !== 'reports' }" /> -->
 
                     </div>
                 </div>
@@ -73,58 +107,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Import components. */
-import Dashboard from './Manage/Dashboard'
-import Edit from './Manage/Edit'
-import Feedback from './Manage/Feedback'
-import Notifications from './Manage/Notifications'
-import Reports from './Manage/Reports'
-
-export default {
-    components: {
-        Dashboard,
-        Edit,
-        Feedback,
-        Notifications,
-        Reports,
-    },
-    data: () => {
-        return {
-            curTab: null,
-        }
-    },
-    computed: {
-        selectedTab() {
-            return 'border-indigo-500 text-indigo-600 w-1/5 py-4 px-1 text-center border-b-2 font-medium text-lg'
-        },
-
-        unselectedTab() {
-            return 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/5 py-4 px-1 text-center border-b-2 font-medium text-lg'
-        },
-    },
-    methods: {
-        changeTab(_tab) {
-            /* Set current tab. */
-            this.curTab = _tab
-        },
-
-        handleChange(_evt) {
-            // console.log('EVENT', _evt.target.value)
-
-            /* Change tab. */
-            this.changeTab(_evt.target.value)
-        },
-
-    },
-    created: function () {
-        /* Initialize current tab. */
-        this.curTab = 'dashboard'
-
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

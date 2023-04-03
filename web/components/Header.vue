@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="mt-3 sm:mt-0 sm:ml-10 space-x-4">
+                <div class="mt-3 sm:mt-0 sm:ml-10 sm:space-x-4">
                     <a href="javascript://" class="hidden inline-block bg-indigo-500 py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75">
                         Sign in
                     </a>

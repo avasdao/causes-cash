@@ -12,6 +12,15 @@ import Recipients from './Launchpad/Recipients.vue'
 import Spotlight from './Launchpad/Spotlight.vue'
 import Summary from './Launchpad/Summary.vue'
 
+/* Import stores. */
+import { useSystemStore } from '@/stores/system'
+
+/* Enable BigInt serialization. */
+BigInt.prototype.toJSON = function() { return this.toString() }
+
+/* Initialize (System) store. */
+const System = useSystemStore()
+
 /* Initialize constants. */
 const DEFAULT_CAMPAIGN_DURATION = 30
 
@@ -91,7 +100,7 @@ const setExpiration = (_expiration) => {
 /**
  * Create Campaign
  */
-const create = () => {
+const create = async () => {
     /* Validate title. */
     if (!title.value) {
         return alert(`Please enter a campaign title.`)
@@ -124,20 +133,21 @@ const create = () => {
         owner: owner.value,
         title: title.value,
         summary: summary.value,
-        fundingGoal: BigInt(parseInt(fundingGoal.value * 1000)) * BigInt(System.ONE_SMART_BITCOIN.div(1000)),
+        fundingGoal: BigInt(fundingGoal.value * 100),  // NOTE: Amount is in satoshis.
         starting: starting.value,
         expiration: expiration.value,
     }
+    console.log('CAMPAIGN PKG', pkg)
 
-    // alert(`CREATE CAMPAIGN\n${JSON.stringify(
-    //     pkg,
-    //     (key, value) =>
-    //         typeof value === 'bigint' ? value.toString() + 'n' : value,
-    //     2
-    // )}`)
+    const response = await $fetch('/api/campaigns', {
+        method: 'POST',
+        body: pkg,
+    })
+    .catch(err => console.error(err))
+    console.log('RESPONSE', response)
 
     /* Deploy contract. */
-    deployContract(pkg)
+    // deployContract(pkg)
 }
 
 /**

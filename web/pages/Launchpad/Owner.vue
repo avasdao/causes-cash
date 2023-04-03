@@ -1,3 +1,16 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+
+const emit = defineEmits(['set-owner'])
+
+let owner = ref(null)
+
+const handleOwner = () => {
+    emit('set-owner', owner.value)
+}
+</script>
+
 <template>
     <main class="space-y-2">
         <div class="space-y-1">
@@ -11,7 +24,7 @@
                 <div class="flex-grow">
                     <input
                         v-model="owner"
-                        @keyUp="handleOwner"
+                        @keyup="handleOwner"
                         type="text"
                         name="add-team-members"
                         id="add-team-members"
@@ -26,31 +39,3 @@
 
     </main>
 </template>
-
-<script>
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            owner: null,
-        }
-    },
-    methods: {
-        handleOwner() {
-            this.$emit('set-owner', this.owner)
-        },
-
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

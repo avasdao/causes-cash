@@ -9,7 +9,6 @@ let summary = ref(null)
 const handleSummary = () => {
     emit('set-summary', summary.value)
 }
-
 </script>
 
 <template>

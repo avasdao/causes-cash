@@ -50,8 +50,8 @@ const System = useSystemStore()
 
                 <div class="mt-3 relative rounded-md shadow-sm">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <img v-if="System.currency === 'SBCH' || System.currency === null" class="w-5 h-5" :src="require('../../../assets/smart-bch-sbch-logo.png')" />
-                        <img v-if="System.currency === 'BCH'" class="w-5 h-5" :src="require('../../../assets/bitcoin-cash-bch-logo.png')" />
+                        <img v-if="System.currency === 'SBCH' || System.currency === null" class="w-5 h-5" src="~/assets/smart-bch-sbch-logo.png" />
+                        <img v-if="System.currency === 'BCH'" class="w-5 h-5" src="~/assets/bitcoin-cash-bch-logo.png" />
                     </div>
 
                     <input

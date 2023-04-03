@@ -17,6 +17,10 @@ export const useCampaignStore = defineStore('campaign', {
     },
 
     actions: {
+        getCategoryById (_cateogry) {
+            return 'My Category'
+        },
+
         /**
          * Set Session
          *

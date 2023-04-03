@@ -1,3 +1,276 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+import { ethers } from 'ethers'
+
+/* Initialize stores. */
+import { useCampaignStore } from '@/stores/campaign'
+
+/* Initialize Campaign. */
+const Campaign = useCampaignStore()
+
+let showCategories = ref(null)
+
+let category = ref(null)
+let domain = ref(null)
+let title = ref(null)
+let summary = ref(null)
+let description = ref(null)
+let banner = ref(null)
+let highlights = ref(null)
+let isPublished = ref(null)
+
+
+// watch: {
+//     displayCategory: {
+//         handler(_category) {
+//             this.category = _category
+//         },
+//         immediate: true,
+//     },
+
+//     displayDomain: {
+//         handler(_domain) {
+//             this.domain = _domain
+//         },
+//         immediate: true,
+//     },
+
+//     displayTitle: {
+//         handler(_title) {
+//             this.title = _title
+//         },
+//         immediate: true,
+//     },
+
+//     displaySummary: {
+//         handler(_summary) {
+//             this.summary = _summary
+//         },
+//         immediate: true,
+//     },
+
+//     displayDescription: {
+//         handler(_description) {
+//             this.description = _description
+//         },
+//         immediate: true,
+//     },
+
+//     displayBanner: {
+//         handler(_banner) {
+//             this.banner = _banner
+//         },
+//         immediate: true,
+//     },
+
+//     displayHighlights: {
+//         handler(_highlights) {
+//             /* Validate highlights has been initialized. */
+//             if (!this.highlights) return
+
+//             // NOTE: We need to use the "spread" format to avoid creating
+//             //       a constant that cannot be updated with reactivity.
+//             this.highlights = [ ..._highlights ]
+//         },
+//         immediate: true,
+//     },
+
+//     displayIsPublished: {
+//         handler(_isPublished) {
+//             this.isPublished = _isPublished
+//         },
+//         immediate: true,
+//     },
+
+// },
+
+
+const displayCategory = computed(() => {
+    if (!Campaign.category) return ''
+
+    return Campaign.category
+})
+
+const displayDomain = computed(() => {
+    if (!Campaign.domain) return ''
+
+    return Campaign.domain
+})
+
+const displayTitle = computed(() => {
+    if (!Campaign.title) return ''
+
+    return Campaign.title
+})
+
+const displaySummary = computed(() => {
+    if (!Campaign.summary) return ''
+
+    return Campaign.summary
+})
+
+const displayDescription = computed(() => {
+    if (!Campaign.description) return ''
+
+    return Campaign.description
+})
+
+const displayBanner = computed(() => {
+    if (!Campaign.banner) return ''
+
+    return Campaign.banner
+})
+
+const displayHighlights = computed(() => {
+    if (!Campaign.highlights) return ''
+
+    return Campaign.highlights
+})
+
+const displayIsPublished = computed(() => {
+    if (!Campaign.isPublished) return ''
+
+    return Campaign.isPublished
+})
+
+
+
+const toggleCategory = () => {
+    if (this.showCategories) {
+        this.showCategories = false
+    } else {
+        this.showCategories = true
+    }
+}
+
+const selectCategory = (_category) => {
+    this.showCategories = false
+
+    this.category = _category
+}
+
+const update = async () => {
+    console.log('Updating campaign..')
+
+    /* Validate embedded Web3 objects. */
+    if (!window.ethereum && !window.bitcoin) {
+        /* Validate embedded ethereum object. */
+        if (window.bitcoin) {
+            console.info('Found Bitcoin provider.')
+        } else if (window.ethereum) {
+            console.info('Found Ethereum provider.')
+        } else {
+            return console.error('No Web3 provider found.')
+        }
+    }
+
+    /* Connect accounts. */
+    const accounts = await ethereum.request({
+        method: 'eth_requestAccounts'
+    })
+    // console.info('Connected Web3 accounts:', accounts)
+
+    if (!accounts || accounts.length < 1) {
+        return alert('Please connect your MetaMask account to continue.')
+    }
+
+    /* Initialize provider. */
+    const provider = new ethers
+        .providers
+        .Web3Provider(window.ethereum, 'any')
+
+    /* Set signer. */
+    const signer = provider.getSigner()
+    // console.log('SIGNER', signer)
+
+    /* Set Campaign ABI. */
+    const abi = Campaign.getCampaignAbi
+
+    /* Initialize campaign instance. */
+    const campaign = new ethers.Contract(
+        Campaign.campaignid, abi, signer)
+    // console.log('CONTRACT (campaign):', campaign)
+
+    const category = this.category || ''
+    const domain = this.domain || ''
+    const title = this.title || ''
+    const summary = this.summary || ''
+    const description = this.description || ''
+    const banner = this.banner || ''
+    const highlights = this.highlights || ['', '', '', '', '']
+    const isPublished = this.isPublished || false
+
+    /* Set gas price. */
+    // NOTE: Current minimum is 1.05 gWei (1,050,000,000)
+    const gasPrice = BigInt(1050000000)
+
+    /* Set contract options. */
+    const contractOptions = {
+        gasPrice,
+        // value,
+    }
+    // console.log('CONTRACT OPTIONS', contractOptions)
+
+    /* Make pledge. */
+    const response = await campaign
+        .updateCampaign(
+            category,
+            domain,
+            title,
+            summary,
+            description,
+            banner,
+            highlights,
+            isPublished,
+            { ...contractOptions }
+        )
+        .catch(err => {
+            console.error(err)
+
+            /* Initialize message. */
+            let message = ''
+
+            /* Validate message. */
+            if (err.message) {
+                message += err.message
+
+                /* Validate account permissions. */
+                if (err.message.includes('execution reverted')) {
+                    message = `Oops! You don't have permission to perform that update. Check your account and try again..`
+                }
+            }
+
+            /* Validate data message. */
+            if (err.data && err.data.message) {
+                message += ' - ' + err.data.message
+            }
+
+            /* Send notification request. */
+            // this.$store.dispatch('showNotif', {
+            //     icon: 'error',
+            //     title: 'MetaMask Error!',
+            //     message,
+            // })
+        })
+    console.log('DEPLOY RESPONSE', response)
+
+    /* Send notification request. */
+    // this.$store.dispatch('showNotif', {
+    //     icon: 'success',
+    //     title: 'Campaign Manager',
+    //     message: `Your campaign has been updated successfully!`,
+    // })
+
+}
+
+/* Initialize category combobox. */
+showCategories.value = false
+
+/* Initialize highlights. */
+highlights.value = ['', '', '', '', '']
+</script>
+
 <template>
     <main>
 
@@ -36,7 +309,7 @@
                         <div class="relative mt-1">
                             <input
                                 @click="toggleCategory"
-                                :value="$store.getters.getCategoryById(category)"
+                                :value="Campaign.getCategoryById(category)"
                                 id="combobox"
                                 type="text"
                                 class="w-full rounded-md border border-gray-300 text-gray-700 text-lg bg-white py-2 pl-3 pr-12 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -465,287 +738,3 @@
 
     </main>
 </template>
-
-<script>
-/* global BigInt ethereum */
-
-/* Import modules. */
-import { ethers } from 'ethers'
-
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            showCategories: null,
-
-            category: null,
-            domain: null,
-            title: null,
-            summary: null,
-            description: null,
-            banner: null,
-            highlights: null,
-            isPublished: null,
-        }
-    },
-    watch: {
-        displayCategory: {
-            handler(_category) {
-                this.category = _category
-            },
-            immediate: true,
-        },
-
-        displayDomain: {
-            handler(_domain) {
-                this.domain = _domain
-            },
-            immediate: true,
-        },
-
-        displayTitle: {
-            handler(_title) {
-                this.title = _title
-            },
-            immediate: true,
-        },
-
-        displaySummary: {
-            handler(_summary) {
-                this.summary = _summary
-            },
-            immediate: true,
-        },
-
-        displayDescription: {
-            handler(_description) {
-                this.description = _description
-            },
-            immediate: true,
-        },
-
-        displayBanner: {
-            handler(_banner) {
-                this.banner = _banner
-            },
-            immediate: true,
-        },
-
-        displayHighlights: {
-            handler(_highlights) {
-                /* Validate highlights has been initialized. */
-                if (!this.highlights) return
-
-                // NOTE: We need to use the "spread" format to avoid creating
-                //       a constant that cannot be updated with reactivity.
-                this.highlights = [ ..._highlights ]
-            },
-            immediate: true,
-        },
-
-        displayIsPublished: {
-            handler(_isPublished) {
-                this.isPublished = _isPublished
-            },
-            immediate: true,
-        },
-
-    },
-    computed: {
-        displayCategory() {
-            if (!this.$store?.state?.category) return ''
-
-            return this.$store?.state?.category
-        },
-
-        displayDomain() {
-            if (!this.$store?.state?.domain) return ''
-
-            return this.$store?.state?.domain
-        },
-
-        displayTitle() {
-            if (!this.$store?.state?.title) return ''
-
-            return this.$store?.state?.title
-        },
-
-        displaySummary() {
-            if (!this.$store?.state?.summary) return ''
-
-            return this.$store?.state?.summary
-        },
-
-        displayDescription() {
-            if (!this.$store?.state?.description) return ''
-
-            return this.$store?.state?.description
-        },
-
-        displayBanner() {
-            if (!this.$store?.state?.banner) return ''
-
-            return this.$store?.state?.banner
-        },
-
-        displayHighlights() {
-            if (!this.$store?.state?.highlights) return ''
-
-            return this.$store?.state?.highlights
-        },
-
-        displayIsPublished() {
-            if (!this.$store?.state?.isPublished) return ''
-
-            return this.$store?.state?.isPublished
-        },
-
-    },
-    methods: {
-        toggleCategory() {
-            if (this.showCategories) {
-                this.showCategories = false
-            } else {
-                this.showCategories = true
-            }
-        },
-
-        selectCategory(_category) {
-            this.showCategories = false
-
-            this.category = _category
-        },
-
-        async update() {
-            console.log('Updating campaign..')
-
-            /* Validate embedded Web3 objects. */
-            if (!window.ethereum && !window.bitcoin) {
-                /* Validate embedded ethereum object. */
-                if (window.bitcoin) {
-                    console.info('Found Bitcoin provider.')
-                } else if (window.ethereum) {
-                    console.info('Found Ethereum provider.')
-                } else {
-                    return console.error('No Web3 provider found.')
-                }
-            }
-
-            /* Connect accounts. */
-            const accounts = await ethereum.request({
-                method: 'eth_requestAccounts'
-            })
-            // console.info('Connected Web3 accounts:', accounts)
-
-            if (!accounts || accounts.length < 1) {
-                return alert('Please connect your MetaMask account to continue.')
-            }
-
-            /* Initialize provider. */
-            const provider = new ethers
-                .providers
-                .Web3Provider(window.ethereum, 'any')
-
-            /* Set signer. */
-            const signer = provider.getSigner()
-            // console.log('SIGNER', signer)
-
-            /* Set Campaign ABI. */
-            const abi = this.$store.getters.getCampaignAbi
-
-            /* Initialize campaign instance. */
-            const campaign = new ethers.Contract(
-                this.$store?.state?.campaignid, abi, signer)
-            // console.log('CONTRACT (campaign):', campaign)
-
-            const category = this.category || ''
-            const domain = this.domain || ''
-            const title = this.title || ''
-            const summary = this.summary || ''
-            const description = this.description || ''
-            const banner = this.banner || ''
-            const highlights = this.highlights || ['', '', '', '', '']
-            const isPublished = this.isPublished || false
-
-            /* Set gas price. */
-            // NOTE: Current minimum is 1.05 gWei (1,050,000,000)
-            const gasPrice = BigInt(1050000000)
-
-            /* Set contract options. */
-            const contractOptions = {
-                gasPrice,
-                // value,
-            }
-            // console.log('CONTRACT OPTIONS', contractOptions)
-
-            /* Make pledge. */
-            const response = await campaign
-                .updateCampaign(
-                    category,
-                    domain,
-                    title,
-                    summary,
-                    description,
-                    banner,
-                    highlights,
-                    isPublished,
-                    { ...contractOptions }
-                )
-                .catch(err => {
-                    console.error(err)
-
-                    /* Initialize message. */
-                    let message = ''
-
-                    /* Validate message. */
-                    if (err.message) {
-                        message += err.message
-
-                        /* Validate account permissions. */
-                        if (err.message.includes('execution reverted')) {
-                            message = `Oops! You don't have permission to perform that update. Check your account and try again..`
-                        }
-                    }
-
-                    /* Validate data message. */
-                    if (err.data && err.data.message) {
-                        message += ' - ' + err.data.message
-                    }
-
-                    /* Send notification request. */
-                    this.$store.dispatch('showNotif', {
-                        icon: 'error',
-                        title: 'MetaMask Error!',
-                        message,
-                    })
-                })
-            console.log('DEPLOY RESPONSE', response)
-
-            /* Send notification request. */
-            // this.$store.dispatch('showNotif', {
-            //     icon: 'success',
-            //     title: 'Campaign Manager',
-            //     message: `Your campaign has been updated successfully!`,
-            // })
-
-        },
-
-    },
-    created: function () {
-        /* Initialize category combobox. */
-        this.showCategories = false
-
-        /* Initialize highlights. */
-        this.highlights = ['', '', '', '', '']
-
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

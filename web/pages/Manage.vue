@@ -50,16 +50,31 @@ curTab.value = 'dashboard'
                                 Select a tab
                             </label>
 
-                            <select id="selected-tab" name="selected-tab" @change="handleChange($event)" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md">
-                                <option value="dashboard" selected>Dashboard</option>
+                            <select
+                                id="selected-tab"
+                                name="selected-tab"
+                                @change="handleChange($event)"
+                                class="mt-1 block w-full pl-3 pr-10 py-2 font-bold text-lg border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 rounded-md"
+                            >
+                                <option value="dashboard" selected>
+                                    Dashboard
+                                </option>
 
-                                <option value="edit">Edit</option>
+                                <option value="edit">
+                                    Edit
+                                </option>
 
-                                <option value="notifs">Notifications</option>
+                                <option value="notifs">
+                                    Notifications
+                                </option>
 
-                                <option value="feedback">Feedback</option>
+                                <option value="feedback">
+                                    Feedback
+                                </option>
 
-                                <option value="reports">Report Cards</option>
+                                <option value="reports">
+                                    Report Cards
+                                </option>
                             </select>
                         </div>
 
@@ -92,7 +107,7 @@ curTab.value = 'dashboard'
 
                         <Dashboard :class="{ 'hidden' : curTab !== 'dashboard' }" />
 
-                        <!-- <Edit :class="{ 'hidden' : curTab !== 'edit' }" /> -->
+                        <Edit :class="{ 'hidden' : curTab !== 'edit' }" />
 
                         <!-- <Notifications :class="{ 'hidden' : curTab !== 'notifs' }" /> -->
 

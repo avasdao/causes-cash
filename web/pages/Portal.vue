@@ -1,3 +1,110 @@
+<script setup>
+/* Import modules. */
+import { ethers } from 'ethers'
+import makeBlockie from 'ethereum-blockies-base64'
+import { ref } from 'vue'
+
+let web3Address = ref(null)
+
+let avatar = ref(null)
+let bio = ref(null)
+let nickname = ref(null)
+
+const displayAvatar = computed(() => {
+    if (avatar.value) {
+        return avatar.value
+    } else if (web3Address.value) {
+        return makeBlockie(web3Address.value)
+    } else {
+        return makeBlockie('anonymous')
+    }
+})
+
+
+/**
+ * Initialization
+ */
+const init = async () => {
+    let route
+    let params
+    let portalid
+
+    /* Validate router. */
+    if (this.$route) {
+        /* Set route. */
+        route = this.$route
+    }
+    // console.log('ROUTE', route)
+
+    /* Validate (route) parameters. */
+    if (route.params) {
+        /* Set parameters. */
+        params = route.params
+    }
+    // console.log('PARAMS', params)
+
+    if (params && params.portalid) {
+        portalid = params.portalid
+        console.log('PORTAL ID', portalid)
+    }
+
+    // TODO: Validate Web3 address (check code)
+
+    /* Set Web3 address. */
+    this.web3Address = portalid
+
+    /* Set Causes Address. */
+    const addr = this.$store.getters.getCausesAddr
+
+    /* Set Causes ABI. */
+    const abi = this.$store.getters.getCausesAbi
+
+    /* Initialize provider. */
+    const provider = new ethers.providers
+        // .JsonRpcProvider(_getters.getProvider)
+        .JsonRpcProvider('https://moeing.tech:9545')
+    // console.log('PROVIDER', provider)
+
+
+    /* Initialize campaign instance. */
+    const causes = new ethers.Contract(addr, abi, provider)
+    // console.log('CONTRACT (causes):', causes)
+
+    /* Request causes nickname. */
+    const portalInfo = await causes
+        .getProfile(this.web3Address)
+        .catch(err => {
+            console.error(err)
+
+            /* Handle invalid call. */
+            if (err.code === 'CALL_EXCEPTION') {
+                throw new Error('Failed to load (on-chain) Causes contract.')
+            }
+        })
+    console.log('CAUSES CASH (portalInfo):', portalInfo)
+
+    /* Validate portal info. */
+    if (portalInfo) {
+        /* Set avatar. */
+        this.avatar = portalInfo.avatar
+
+        /* Set about. */
+        this.about = portalInfo.about
+
+        /* Set domain. */
+        this.domain = portalInfo.domain
+
+        /* Set nickname. */
+        this.nickname = portalInfo.nickname
+
+    }
+}
+
+
+/* Initialization. */
+init()
+</script>
+
 <template>
     <main class="max-w-5xl mx-auto">
         <div class="h-full flex flex-col bg-white shadow-xl">
@@ -10,7 +117,7 @@
                     </h2>
 
                     <div class="ml-3 h-7 flex items-center">
-                        <img class="w-12" :src="require('../assets/logo.png')" />
+                        <img class="w-12" src="~/assets/logo.png" />
                     </div>
                 </div>
             </div>
@@ -192,130 +299,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Import modules. */
-import { ethers } from 'ethers'
-import makeBlockie from 'ethereum-blockies-base64'
-
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            web3Address: null,
-
-            avatar: null,
-            bio: null,
-            nickname: null,
-        }
-    },
-    computed: {
-        displayAvatar() {
-            if (this.avatar) {
-                return this.avatar
-            } else if (this.web3Address) {
-                return makeBlockie(this.web3Address)
-            } else {
-                return makeBlockie('anonymous')
-            }
-        },
-
-    },
-    methods: {
-        /**
-         * Initialization
-         */
-        async init() {
-            let route
-            let params
-            let portalid
-
-            /* Validate router. */
-            if (this.$route) {
-                /* Set route. */
-                route = this.$route
-            }
-            // console.log('ROUTE', route)
-
-            /* Validate (route) parameters. */
-            if (route.params) {
-                /* Set parameters. */
-                params = route.params
-            }
-            // console.log('PARAMS', params)
-
-            if (params && params.portalid) {
-                portalid = params.portalid
-                console.log('PORTAL ID', portalid)
-            }
-
-            // TODO: Validate Web3 address (check code)
-
-            /* Set Web3 address. */
-            this.web3Address = portalid
-
-            /* Set Causes Address. */
-            const addr = this.$store.getters.getCausesAddr
-
-            /* Set Causes ABI. */
-            const abi = this.$store.getters.getCausesAbi
-
-            /* Initialize provider. */
-            const provider = new ethers.providers
-                // .JsonRpcProvider(_getters.getProvider)
-                .JsonRpcProvider('https://moeing.tech:9545')
-            // console.log('PROVIDER', provider)
-
-
-            /* Initialize campaign instance. */
-            const causes = new ethers.Contract(addr, abi, provider)
-            // console.log('CONTRACT (causes):', causes)
-
-            /* Request causes nickname. */
-            const portalInfo = await causes
-                .getProfile(this.web3Address)
-                .catch(err => {
-                    console.error(err)
-
-                    /* Handle invalid call. */
-                    if (err.code === 'CALL_EXCEPTION') {
-                        throw new Error('Failed to load (on-chain) Causes contract.')
-                    }
-                })
-            console.log('CAUSES CASH (portalInfo):', portalInfo)
-
-            /* Validate portal info. */
-            if (portalInfo) {
-                /* Set avatar. */
-                this.avatar = portalInfo.avatar
-
-                /* Set about. */
-                this.about = portalInfo.about
-
-                /* Set domain. */
-                this.domain = portalInfo.domain
-
-                /* Set nickname. */
-                this.nickname = portalInfo.nickname
-
-            }
-
-        },
-
-    },
-    created: function () {
-        console.log('WE ARE IN THE PORTAL');
-        /* Initialization. */
-        this.init()
-
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "23.3.19",
+  "version": "23.4.4",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@bugsnag/js": "7.20.0",
+    "@bugsnag/plugin-vue": "7.19.0",
     "@nuxtjs/tailwindcss": "6.4.1",
     "@pinia-plugin-persistedstate/nuxt": "1.0.0",
     "@types/node": "18.14.2",

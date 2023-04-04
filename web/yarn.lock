@@ -584,7 +584,7 @@
   resolved "https://registry.yarnpkg.com/@bugsnag/cuid/-/cuid-3.0.2.tgz#544f8e6e7e3768c8cb618ca5c5fb1eea6aacbb7e"
   integrity sha512-cIwzC93r3PQ/INeuwtZwkZIG2K8WWN0rRLZQhu+mr48Ay+i6sEki4GYfTsflse7hZ1BeDWrNb/Q9vgY3B31xHQ==
 
-"@bugsnag/js@7.20.0":
+"@bugsnag/js@^7.20.0":
   version "7.20.0"
   resolved "https://registry.yarnpkg.com/@bugsnag/js/-/js-7.20.0.tgz#a526d074e2d2719d290ebb3479ec4b9e26dbd164"
   integrity sha512-lhUUSOveE8fP10RagAINqBmuH+eoOpyUOiTN1WRkjHUevWG0LZjRRUWEGN3AA+ZyTphmC6ljd2qE3/64qfOSGQ==
@@ -603,6 +603,11 @@
     iserror "^0.0.2"
     pump "^3.0.0"
     stack-generator "^2.0.3"
+
+"@bugsnag/plugin-vue@^7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/plugin-vue/-/plugin-vue-7.19.0.tgz#39daaf62662e21119c57080ca2602663b81e7a3c"
+  integrity sha512-onZNsIkEw8OdHQHjp1cdE/k3rTn/sLFtLWYew2/7LKZq+cJxXkQF8QWbWs5P43M7aPPWr8rHzXYfSf3+PUyW/w==
 
 "@bugsnag/safe-json-stringify@^6.0.0":
   version "6.0.0"
@@ -5113,7 +5118,7 @@ negotiator@0.6.3:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
-nexajs@^23.3.19:
+nexajs@23.3.19:
   version "23.3.19"
   resolved "https://registry.yarnpkg.com/nexajs/-/nexajs-23.3.19.tgz#f4152eac9a173458ca62fb5165c41164ddc4299c"
   integrity sha512-pOTfFbwnnfkVvHh4Q8y1qRqoI0dAnX98XVYpgQLhO13jtj2ojDUL4tNdrWioHvBwXWZBtwDOE+GaWexv7eA+TA==

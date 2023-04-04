@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 /* Import modules. */
 import { ref } from 'vue'
 
@@ -20,6 +20,20 @@ campaigns.value.push({
 })
 
 campaigns.value.push({
+    id: 'b8fac25d-e619-4ddf-b474-af084e8250ce',
+    title: `Nexa Ledger (Live) Wallet`,
+    url: 'https://causes.cash/c/b8fac25d-e619-4ddf-b474-af084e8250ce',
+    manager: {
+        name: `Satoshi Nakamoto`,
+        url: 'https://twitter.com/0xShomari',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    poster: 'https://i.ibb.co/9V3YHj1/image.png',
+    createdAt: 'Mar 15 2023',
+    expiresAt: 'Apr 15 2023',
+})
+
+campaigns.value.push({
     id: '707e2a8c-4eea-4c26-9ea2-c548e9e91726',
     title: `Nexa CashFusion`,
     url: 'https://causes.cash/c/707e2a8c-4eea-4c26-9ea2-c548e9e91726',
@@ -33,21 +47,8 @@ campaigns.value.push({
     expiresAt: 'Apr 15 2023',
 })
 
-campaigns.value.push({
-    id: 'b8fac25d-e619-4ddf-b474-af084e8250ce',
-    title: `Nexa Ledger (Live) Wallet`,
-    url: 'https://causes.cash/c/b8fac25d-e619-4ddf-b474-af084e8250ce',
-    manager: {
-        name: `Satoshi Nakamoto`,
-        url: 'https://twitter.com/0xShomari',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    poster: 'https://i.ibb.co/9V3YHj1/image.png',
-    createdAt: 'Apr 15 2023',
-    expiresAt: 'May 15 2023',
-})
-
 // TBD
+// this.$bugsnag.notify(new Error('Nuxt Test error'))
 </script>
 
 <template>

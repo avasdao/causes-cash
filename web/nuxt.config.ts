@@ -56,4 +56,8 @@ export default defineNuxtConfig({
     piniaPersistedstate: {
         storage: 'localStorage', // NOTE: Default is cookies.
     },
+
+    plugins: [
+        // { src: '@/plugins/bugsnag', ssr: false }
+    ],
 })

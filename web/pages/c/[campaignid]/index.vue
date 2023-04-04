@@ -122,15 +122,18 @@ const route = useRoute()
 const campaignid = route.params.campaignid
 console.log('Campaign ID:', campaignid)
 
-let campaign = ref()
-campaign.value = await $fetch(`/api/campaigns?id=${campaignid}`)
+;(async () => {
+    let campaign = ref()
+    campaign.value = await $fetch(`/api/campaigns?id=${campaignid}`)
 
-if (process.client) {
-    console.log('CAMPAIGN (page):', campaign.value)
-}
+    if (process.client) {
+        console.log('CAMPAIGN (page):', campaign.value)
+    }
 
-const success = await $fetch('/api/purse')
-console.log('SUCCESS', success)
+    const success = await $fetch('/api/purse')
+    console.log('SUCCESS', success)
+})()
+
 </script>
 
 <template>
@@ -214,13 +217,13 @@ console.log('SUCCESS', success)
                             Send Feedback
                         </button>
 
-                        <button
+                        <!-- <button
                             @click="$store.dispatch('addReportCard')"
                             type="button"
                             class="w-full bg-red-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-medium font-medium text-red-700 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500"
                         >
                             Add a Report Card
-                        </button>
+                        </button> -->
                     </div>
 
                     <CampaignSponsors />

@@ -21,10 +21,9 @@ export default defineEventHandler(async (event) => {
         ip_fwd: headers['x-forwarded-for'],
         url: event.node.req.url,
     }
+    // console.info('LOG (api):', logDetails)
 
-    let success
-
-    success = await logsDb
+    const success = await logsDb
         .put({
             _id: uuidv4(),
             source: 'headers',
@@ -33,6 +32,4 @@ export default defineEventHandler(async (event) => {
         })
         .catch(err => console.error(err))
     // console.log('SUCCESS (logs):', success)
-
-    // console.info('LOG (api):', logDetails)
 })

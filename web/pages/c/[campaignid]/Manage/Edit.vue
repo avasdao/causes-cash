@@ -4,10 +4,10 @@ import { ref } from 'vue'
 import { ethers } from 'ethers'
 
 /* Initialize stores. */
-import { useCampaignStore } from '@/stores/campaign'
+import { useCampaignsStore } from '@/stores/campaigns'
 
-/* Initialize Campaign. */
-const Campaign = useCampaignStore()
+/* Initialize Campaigns. */
+const Campaigns = useCampaignsStore()
 
 let showCategories = ref(null)
 
@@ -87,51 +87,51 @@ let isPublished = ref(null)
 
 
 const displayCategory = computed(() => {
-    if (!Campaign.category) return ''
+    if (!Campaigns.category) return ''
 
-    return Campaign.category
+    return Campaigns.category
 })
 
 const displayDomain = computed(() => {
-    if (!Campaign.domain) return ''
+    if (!Campaigns.domain) return ''
 
-    return Campaign.domain
+    return Campaigns.domain
 })
 
 const displayTitle = computed(() => {
-    if (!Campaign.title) return ''
+    if (!Campaigns.title) return ''
 
-    return Campaign.title
+    return Campaigns.title
 })
 
 const displaySummary = computed(() => {
-    if (!Campaign.summary) return ''
+    if (!Campaigns.summary) return ''
 
-    return Campaign.summary
+    return Campaigns.summary
 })
 
 const displayDescription = computed(() => {
-    if (!Campaign.description) return ''
+    if (!Campaigns.description) return ''
 
-    return Campaign.description
+    return Campaigns.description
 })
 
 const displayBanner = computed(() => {
-    if (!Campaign.banner) return ''
+    if (!Campaigns.banner) return ''
 
-    return Campaign.banner
+    return Campaigns.banner
 })
 
 const displayHighlights = computed(() => {
-    if (!Campaign.highlights) return ''
+    if (!Campaigns.highlights) return ''
 
-    return Campaign.highlights
+    return Campaigns.highlights
 })
 
 const displayIsPublished = computed(() => {
-    if (!Campaign.isPublished) return ''
+    if (!Campaigns.isPublished) return ''
 
-    return Campaign.isPublished
+    return Campaigns.isPublished
 })
 
 
@@ -184,12 +184,12 @@ const update = async () => {
     const signer = provider.getSigner()
     // console.log('SIGNER', signer)
 
-    /* Set Campaign ABI. */
-    const abi = Campaign.getCampaignAbi
+    /* Set Campaigns ABI. */
+    const abi = Campaigns.getCampaignsAbi
 
     /* Initialize campaign instance. */
     const campaign = new ethers.Contract(
-        Campaign.campaignid, abi, signer)
+        Campaigns.campaignid, abi, signer)
     // console.log('CONTRACT (campaign):', campaign)
 
     const category = this.category || ''
@@ -214,7 +214,7 @@ const update = async () => {
 
     /* Make pledge. */
     const response = await campaign
-        .updateCampaign(
+        .updateCampaigns(
             category,
             domain,
             title,
@@ -258,7 +258,7 @@ const update = async () => {
     /* Send notification request. */
     // this.$store.dispatch('showNotif', {
     //     icon: 'success',
-    //     title: 'Campaign Manager',
+    //     title: 'Campaigns Manager',
     //     message: `Your campaign has been updated successfully!`,
     // })
 
@@ -278,7 +278,7 @@ highlights.value = ['', '', '', '', '']
         <div class="flex-1 xl:overflow-y-auto">
             <div class="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:py-12 lg:px-8">
                 <h1 class="text-3xl font-extrabold text-gray-500">
-                    Campaign Editor
+                    Campaigns Editor
                 </h1>
 
                 <div class="">
@@ -309,7 +309,7 @@ highlights.value = ['', '', '', '', '']
                         <div class="relative mt-1">
                             <input
                                 @click="toggleCategory"
-                                :value="Campaign.getCategoryById(category)"
+                                :value="Campaigns.getCategoryById(category)"
                                 id="combobox"
                                 type="text"
                                 class="w-full rounded-md border border-gray-300 text-gray-700 text-lg bg-white py-2 pl-3 pr-12 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"

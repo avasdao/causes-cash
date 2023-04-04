@@ -2,9 +2,9 @@
 import { defineStore } from 'pinia'
 
 /**
- * Campaign Store
+ * Campaigns Store
  */
-export const useCampaignStore = defineStore('campaign', {
+export const useCampaignsStore = defineStore('campaigns', {
     state: () => ({
         // TBD
     }),

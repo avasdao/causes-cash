@@ -17,6 +17,12 @@ export const useCampaignStore = defineStore('campaign', {
     },
 
     actions: {
+        load (_campaignid) {
+            return {
+                id: 'my-test-campaign',
+            }
+        },
+
         getCategoryById (_cateogry) {
             return 'My Category'
         },

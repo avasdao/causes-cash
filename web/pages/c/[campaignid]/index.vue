@@ -122,18 +122,20 @@ const route = useRoute()
 const campaignid = route.params.campaignid
 console.log('Campaign ID:', campaignid)
 
-;(async () => {
-    let campaign = ref()
+const campaign = ref()
+
+const loadCampaign = async () => {
     campaign.value = await $fetch(`/api/campaigns?id=${campaignid}`)
+    console.log('CAMPAIGN (page):', campaign.value)
+}
 
-    if (process.client) {
-        console.log('CAMPAIGN (page):', campaign.value)
-    }
-
+const loadPurse = async () => {
     const success = await $fetch('/api/purse')
     console.log('SUCCESS', success)
-})()
+}
 
+loadCampaign() // NOTE: This is non-blocking.
+loadPurse() // NOTE: This is non-blocking.
 </script>
 
 <template>

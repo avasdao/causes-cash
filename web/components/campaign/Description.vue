@@ -13,15 +13,24 @@ const System = useSystemStore()
 const props = defineProps({
     campaign: Object,
 })
-const campaign = ref(props.campaign)
-console.log('CAMPAIGN (description):', campaign.value)
+// const campaign = ref(props.campaign)
+// console.log('CAMPAIGN (description):', campaign.value)
+
+const campaign = computed(() => {
+    return props.campaign
+})
 
 const description = computed(() => {
     /* Set description. */
-    const description = System.description
+    const _description = campaign?.value?.description
+
+    /* Validate description. */
+    if (!_description) {
+        return `loading description. please wait..`
+    }
 
     /* Sanitize markdown (from description). */
-    const markdown = DOMPurify.sanitize(description, {
+    const markdown = DOMPurify.sanitize(_description, {
         USE_PROFILES: { html: true } // HTML ONLY
     })
 
@@ -43,7 +52,7 @@ const description = computed(() => {
     <main id="campaign-description">
         <div
             class="mt-10 sm:p-10 sm:bg-gray-50 sm:border-2 border-gray-200 rounded-xl"
-            v-html="campaign?.description"
+            v-html="description"
         />
     </main>
 </template>

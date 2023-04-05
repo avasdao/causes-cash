@@ -20,7 +20,7 @@ export const useSystemStore = defineStore('system', {
 
         /* Set constants. */
         ONE_BITCOIN: 100000000,
-        ONE_SMART_BITCOIN: ethers.BigNumber.from(1000000000000000000n),
+        ONE_SMART_BITCOIN: BigInt('1000000000000000000'),
 
         /* Initialize notifications. */
         notif: {

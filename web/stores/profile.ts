@@ -11,14 +11,14 @@ export const useProfileStore = defineStore('profile', {
 
         /* Initialize private key. */
         // NOTE: This is a "random" 256-bit value. */
-        privateKey: null,
+        _privateKey: null,
 
         /**
          * Email
          *
          * This is a valid email address.
          */
-        email: null,
+        _email: null,
 
         /**
          * Master Seed
@@ -26,7 +26,7 @@ export const useProfileStore = defineStore('profile', {
          * A 32-byte seed, which can be generated randomly, or by importing
          * from an existing wallet.
          */
-        masterSeed: null,
+        _masterSeed: null,
 
         /**
          * Metadata
@@ -42,7 +42,7 @@ export const useProfileStore = defineStore('profile', {
          *       1. Bitcoin Files Protocol (BFP) (https://bitcoinfiles.com/)
          *       2. Telr Locker (https://locker.telr.io)
          */
-        meta: null,
+        _meta: null,
 
         /**
          * Nickname
@@ -52,7 +52,7 @@ export const useProfileStore = defineStore('profile', {
          * NOTE: Only alpha-numeric characters are accepted.
          *       Both upper and lower-case characters are accepted.
          */
-        nickname: null,
+        _nickname: null,
     }),
 
     getters: {
@@ -99,6 +99,7 @@ export const useProfileStore = defineStore('profile', {
         },
 
         saveSession(_session) {
+            console.log('PROFILE SAVING SESSION', _session)
             /* Set session. */
             this._setSession(_session)
         },

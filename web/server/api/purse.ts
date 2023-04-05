@@ -8,8 +8,6 @@ import { sendUtxo } from 'nexajs'
 const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/campaigns`)
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
 
-// const BOOTSTRAP_CAMPAIGNID = '475b4cfc-ae95-419d-9681-cf378c083963'
-
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
     let purse

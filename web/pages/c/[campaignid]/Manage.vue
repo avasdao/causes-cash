@@ -12,7 +12,7 @@ import Reports from './Manage/Reports'
 definePageMeta({
     middleware: [
         'admin',
-        // 'owner',
+        'owner',
     ]
 })
 

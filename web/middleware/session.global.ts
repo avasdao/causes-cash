@@ -1,17 +1,27 @@
-/* Initialize stores. */
-import { useSystemStore } from '@/stores/system'
+/* Import stores. */
+import { useProfileStore } from '@/stores/profile'
 
-export default defineNuxtRouteMiddleware((to, from) => {
-    console.log('SESSION MIDDLEWARE (to):', to)
-    console.log('SESSION MIDDLEWARE (from):', from)
+export default defineNuxtRouteMiddleware(async (to, from) => {
+    // NOTE: We skip middleware on server.
+    if (process.server) return
 
-    /* Initialize System. */
-    const System = useSystemStore()
-    console.log('System.ONE_BITCOIN', System.ONE_BITCOIN)
+    /* Initialize locals. */
+    let session
 
-    // if (to.params.id === '1') {
-    //     return abortNavigation()
-    // }
+    /* Initialize Profile store. */
+    const Profile = useProfileStore()
 
-    // return navigateTo('/')
+    /* Update session. */
+    if (Profile.sessionid) {
+        session = await $fetch(`/api/sessions/${Profile.sessionid}`)
+    } else {
+        /* Request new session. */
+        session = await $fetch(`/api/sessions`)
+    }
+
+    /* Validate session. */
+    if (!session || session?._id !== Profile.sessionid) {
+        /* Save session. */
+        Profile.saveSession(session)
+    }
 })

@@ -9,9 +9,9 @@ export const useProfileStore = defineStore('profile', {
         /* Initialize session. */
         _session: null,
 
-        /* Initialize private key. */
-        // NOTE: This is a "random" 256-bit value. */
-        _privateKey: null,
+        /* Initialize entropy (used for HD wallet). */
+        // NOTE: This is a cryptographically-secure "random" 32-byte (256-bit) value. */
+        _entropy: null,
 
         /**
          * Email

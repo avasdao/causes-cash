@@ -55,6 +55,7 @@ export default defineEventHandler(async (event) => {
 
     /* Set session id. */
     const sessionid = event.context.params?.sessionid
+    console.log('SESSION.POST (params):', event.context.params)
     console.log('SESSION ID', sessionid)
 
     /* Request session (if available). */

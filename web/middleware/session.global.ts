@@ -1,7 +1,7 @@
 /* Import stores. */
 import { useProfileStore } from '@/stores/profile'
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware((to, from) => {
     // NOTE: We skip middleware on server.
     if (process.server) return
 
@@ -11,22 +11,25 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     /* Initialize Profile store. */
     const Profile = useProfileStore()
 
-    /* Manage session. */
-    session = await $fetch('/api/sessions', {
-        method: 'POST',
-        body: { sessionid: Profile.sessionid },
-    })
+    // NOTE: Manage (non-blocking) sessions.
+    ;(async () => {
+        /* Manage session. */
+        session = await $fetch('/api/sessions', {
+            method: 'POST',
+            body: { sessionid: Profile.sessionid },
+        })
 
-    /* Update (client-side) session. */
-    /* Sanitize client-side session. */
-    session = {
-        id: session.id,
-        ...session,
-    }
+        /* Update (client-side) session. */
+        /* Sanitize client-side session. */
+        session = {
+            id: session._id,
+            ...session,
+        }
 
-    delete session._id
-    delete session._rev
+        delete session._id
+        delete session._rev
 
-    /* Save session. */
-    Profile.saveSession(session)
+        /* Save session. */
+        Profile.saveSession(session)
+    })()
 })

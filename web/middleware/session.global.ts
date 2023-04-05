@@ -11,17 +11,22 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     /* Initialize Profile store. */
     const Profile = useProfileStore()
 
-    /* Update session. */
-    if (Profile.sessionid) {
-        session = await $fetch(`/api/sessions/${Profile.sessionid}`)
-    } else {
-        /* Request new session. */
-        session = await $fetch(`/api/sessions`)
+    /* Manage session. */
+    session = await $fetch('/api/sessions', {
+        method: 'POST',
+        body: { sessionid: Profile.sessionid },
+    })
+
+    /* Update (client-side) session. */
+    /* Sanitize client-side session. */
+    session = {
+        id: session.id,
+        ...session,
     }
 
-    /* Validate session. */
-    if (!session || session?._id !== Profile.sessionid) {
-        /* Save session. */
-        Profile.saveSession(session)
-    }
+    delete session._id
+    delete session._rev
+
+    /* Save session. */
+    Profile.saveSession(session)
 })

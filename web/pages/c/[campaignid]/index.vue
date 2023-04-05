@@ -130,7 +130,9 @@ const loadCampaign = async () => {
 }
 
 const loadPurse = async () => {
-    const success = await $fetch('/api/purse')
+    const success = await $fetch('/api/purse', {
+        method: 'POST',
+    })
     console.log('SUCCESS', success)
 }
 

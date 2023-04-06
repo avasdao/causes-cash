@@ -3,6 +3,12 @@
 import { ethers } from 'ethers'
 import { ref } from 'vue'
 
+/* Initialize stores. */
+import { useProfileStore } from '@/stores/profile'
+
+/* Initialize Profile. */
+const Profile = useProfileStore()
+
 let web3Address = ref(null)
 
 /* Import components. */
@@ -16,97 +22,8 @@ import Notes from './Profile/Notes'
  * Initialization
  */
 const init = async () => {
-    /* Set Causes Address. */
-    const addr = this.$store.getters.getCausesAddr
-
-    /* Set Causes ABI. */
-    const abi = this.$store.getters.getCausesAbi
-
-    /* Validate embedded Web3 objects. */
-    if (!window.ethereum && !window.bitcoin) {
-        /* Validate embedded ethereum object. */
-        if (window.bitcoin) {
-            console.info('Found Bitcoin provider.')
-        } else if (window.ethereum) {
-            console.info('Found Ethereum provider.')
-        } else {
-            return console.error('No Web3 provider found.')
-        }
-    }
-
-    /* Connect accounts. */
-    const accounts = await ethereum.request({
-        method: 'eth_requestAccounts'
-    })
-    console.info('Connected Web3 accounts:', accounts)
-
-    /* Validate accounts. */
-    if (accounts && accounts.length > 0) {
-        this.web3Address = accounts[0]
-    }
-
-    if (!accounts || accounts.length < 1) {
-        return alert('Please connect your MetaMask account to continue.')
-    }
-
-    /* Initialize provider. */
-    const provider = new ethers
-        .providers
-        .Web3Provider(window.ethereum, 'any')
-
-    /* Initialize provider. */
-    // const provider = new ethers.providers
-    //     .JsonRpcProvider(this.$store.getters.getProvider)
-    // console.log('PROVIDER', provider)
-
-    /* Validate contract code. */
-    const code = await provider
-        .getCode(addr)
-        .catch(err => console.error(err))
-    // console.log('PROFILE (code):', code)
-
-    /* Validate contract code. */
-    if (!code) {
-        /* Set current network. */
-        const curNetwork = this.$store?.state?.network
-        // console.log('CURRENT NETWORK', curNetwork)
-
-        /* Set (notification) message. */
-        const message = `Contract NOT found on [ ${curNetwork} ].\n\nSwitching networks now..`
-
-        /* Send notification request. */
-        this.$store.dispatch('showNotif', {
-            icon: 'error',
-            title: 'Network Error!',
-            message,
-        })
-
-        /* Validate current network. */
-        if (curNetwork === 'mainnet') {
-            console.log('Switching to Testnet')
-            this.$store.dispatch('saveNetwork', 'testnet')
-        } else {
-            console.log('Switching to Mainnet')
-            this.$store.dispatch('saveNetwork', 'mainnet')
-        }
-
-    }
-
-    /* Initialize campaign instance. */
-    const causes = new ethers.Contract(addr, abi, provider)
-    // console.log('CONTRACT (causes):', causes)
-
     /* Request causes nickname. */
-    const profileInfo = await causes
-        .getProfile(this.web3Address)
-        .catch(err => {
-            console.error(err)
-
-            /* Handle invalid call. */
-            if (err.code === 'CALL_EXCEPTION') {
-                throw new Error('Failed to load (on-chain) Causes contract.')
-            }
-        })
+    const profileInfo = {}
     console.log('CAUSES CASH (profileInfo):', profileInfo)
 
     /* Validate about. */
@@ -140,7 +57,7 @@ const init = async () => {
     }
 }
 
-init()
+// init()
 </script>
 
 <template>
@@ -155,7 +72,12 @@ init()
                     <Notes />
                 </div>
 
-                <Activity />
+                <div>
+                    <Activity />
+
+                    other stuff
+                    <pre>{{ Profile.session }}</pre>
+                </div>
             </div>
         </section>
     </main>

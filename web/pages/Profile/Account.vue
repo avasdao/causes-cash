@@ -419,10 +419,10 @@ const deleteWallet = () => {
 balance.value = 0
 
 /* Initialize. */
-init()
+// init()
 
 /* Initialize wallet. */
-initWallet()
+// initWallet()
 // deleteWallet()
 
 /* Initialize transfer flag. */

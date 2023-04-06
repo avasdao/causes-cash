@@ -49,14 +49,14 @@ const createSession = async (_event) => {
 export default defineEventHandler(async (event) => {
     /* Set (request) body. */
     const body = await readBody(event)
+    // console.log('SESSIONS.POST (body):', body)
 
     /* Initialize locals. */
     let session
 
     /* Set session id. */
-    const sessionid = event.context.params?.sessionid
-    console.log('SESSION.POST (params):', event.context.params)
-    console.log('SESSION ID', sessionid)
+    const sessionid = body?.sessionid
+    // console.log('SESSION ID', sessionid)
 
     /* Request session (if available). */
     session = await sessionsDb
@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
         const success = await sessionsDb
             .put(session)
             .catch(err => console.error(err))
-        console.log('UPDATE SESSION (api):', success)
+        // console.log('UPDATE SESSION (api):', success)
     }
 
     /* Return session. */

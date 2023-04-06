@@ -10,7 +10,7 @@ const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COU
 
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
-    let purse
+    let wallet
     let response
 
     /* Set (request) query. */
@@ -46,11 +46,11 @@ export default defineEventHandler(async (event) => {
     //     })
     // console.log('Send UTXO (response):', response)
 
-    /* Build purse package. */
-    purse = {
+    /* Build wallet package. */
+    wallet = {
         balance: 1337,
     }
 
-    /* Return purse. */
-    return purse
+    /* Return wallet. */
+    return wallet
 })

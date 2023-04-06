@@ -204,47 +204,6 @@ export const useSystemStore = defineStore('system', {
     },
 
     actions: {
-        // async initSession () {
-        //     console.log('INIT SESSION (before):', this._session)
-        //     /* Check for existing session. */
-        //     if (this._session) {
-        //         return this._session
-        //     }
-
-        //     /* Request new session. */
-        //     const session = await $fetch('/api/newSession')
-        //     console.log('INIT SESSION (after fetch):', session)
-
-        //     /* Set session. */
-        //     this._setSession(session)
-
-        //     /* Return session. */
-        //     return session
-        // },
-
-        deleteSession() {
-            /* Set session. */
-            this._setSession(null)
-        },
-
-        saveDescription(_description) {
-            /* Set description. */
-            this._description = _description
-        },
-
-        /**
-         * Set Session
-         *
-         * @param {Object} _session Save session details.
-         */
-        _setSession (_session) {
-            /* Set session. */
-            this._session = _session
-            console.log('SET SESSION', this._session)
-        },
-
-
-
         // FIXME: TEMPORARY -- Move to ACTIONS
         setTitleVisibility(state, _isShowing) {
             state.titleVisibility = _isShowing

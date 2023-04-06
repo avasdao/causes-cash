@@ -1,5 +1,11 @@
 /* Import modules. */
+import { binToHex, hexToBin, instantiateSha256 } from '@bitauth/libauth' // TODO Replace with NexaJS.
+import { entropyToMnemonic } from '@nexajs/hdnode'
 import { defineStore } from 'pinia'
+import { randomBytes } from '@ethersproject/random' // TODO Replace with NexaJS.
+
+/* Set constants. */
+const ENTROPY_BYTES_LENGTH = 32
 
 /**
  * Profile Store
@@ -69,28 +75,35 @@ export const useProfileStore = defineStore('profile', {
         },
 
         mnemonic(_state) {
-            return 'this mnemonic must be derived from the private key'
+            if (!_state._entropy) return null
+
+            return entropyToMnemonic(hexToBin(_state._entropy))
         },
 
     },
 
     actions: {
-        async initSession () {
-            console.log('INIT SESSION (before):', this._session)
-            /* Check for existing session. */
-            if (this._session) {
-                return this._session
-            }
+        async createWallet() {
+            /* Return random bytes (as hex string). */
+            const myBytes = binToHex(randomBytes(ENTROPY_BYTES_LENGTH))
+            console.log('CREATE WALLET (myBytes):', myBytes)
 
-            /* Request new session. */
-            const session = await $fetch('/api/newSession')
-            console.log('INIT SESSION (after fetch):', session)
+            const svrBytes = await $fetch('/api/entropy')
+                .catch(err => console.error(err))
+            console.log('SERVER BYTES', svrBytes)
 
-            /* Set session. */
-            this._setSession(session)
+            /* Create 32-bytes (256-bit) entropy.*/
+            const entropy = myBytes.slice(0, 32) + svrBytes.slice(-32)
+            console.log('FINAL ENTROPY', entropy)
 
-            /* Return session. */
-            return session
+            const sha256 = await instantiateSha256()
+            const hashed = sha256.hash(hexToBin(entropy))
+            console.log('HASHED ENTROPY', binToHex(hashed))
+
+            /* Set entropy. */
+            // NOTE: Serialize to a 16-byte (128-bit) Hex String.
+            // NOTE: We use 16-bytes to remain compatible with popular HD wallets.
+            this._entropy = binToHex(hashed).slice(0, 16) + binToHex(hashed).slice(-16)
         },
 
         deleteSession() {

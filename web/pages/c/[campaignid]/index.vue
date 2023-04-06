@@ -129,15 +129,15 @@ const loadCampaign = async () => {
     console.log('CAMPAIGN (page):', campaign.value)
 }
 
-const loadPurse = async () => {
-    const success = await $fetch('/api/purse', {
+const loadWallet = async () => {
+    const success = await $fetch('/api/wallet', {
         method: 'POST',
     })
     console.log('SUCCESS', success)
 }
 
 loadCampaign() // NOTE: This is non-blocking.
-loadPurse() // NOTE: This is non-blocking.
+loadWallet() // NOTE: This is non-blocking.
 </script>
 
 <template>

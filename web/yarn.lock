@@ -992,7 +992,7 @@
     "@ethersproject/hdnode" "5.7.0"
     "@nexajs/address" "23.3.11"
 
-"@nexajs/hdnode@23.3.19":
+"@nexajs/hdnode@23.3.19", "@nexajs/hdnode@^23.3.19":
   version "23.3.19"
   resolved "https://registry.yarnpkg.com/@nexajs/hdnode/-/hdnode-23.3.19.tgz#fd716bb274356a949fe2091544186074a72c67f8"
   integrity sha512-61bixyhL5m/zkwkeTwLE89qvRD4yGAzOptsNg9JaWcxMi9X7D2L+6mQugmOLeZh401a7ctgifIynveam7YGdAA==

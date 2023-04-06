@@ -1,6 +1,5 @@
 <script setup>
 /* Import modules. */
-import { ethers } from 'ethers'
 import { ref } from 'vue'
 
 /* Initialize stores. */
@@ -72,11 +71,20 @@ const init = async () => {
                     <Notes />
                 </div>
 
-                <div>
+                <div class="space-y-8">
                     <Activity />
 
-                    other stuff
-                    <pre>{{ Profile.session }}</pre>
+                    <pre class="bg-rose-500">{{ Profile.session }}</pre>
+
+                    <pre class="bg-yellow-500">{{ Profile._entropy }}</pre>
+
+                    <p class="p-3 bg-green-500 font-mono">
+                        {{ Profile.mnemonic }}
+                    </p>
+
+                    <button @click="Profile.createWallet()" class="px-3 py-1 bg-sky-500 rounded-lg">
+                        Create Wallet
+                    </button>
                 </div>
             </div>
         </section>

@@ -1,6 +1,7 @@
 /* Import modules. */
 import moment from 'moment'
-import Nexa from 'nexajs'
+import { Address } from '@nexajs/address'
+// import { Message } from '@nexajs/message'
 
 /**
  * Get Signed Message
@@ -40,7 +41,7 @@ const getSignedMessage = (state, getters, rootState, rootGetters) => (_message) 
     const childNode = hdNode.deriveChild(path)
 
     /* Set (profile) address. */
-    const address = Nexa.Address.toCashAddress(childNode)
+    const address = Address.toCashAddress(childNode)
 
     /* Set WIF. */
     const wif = childNode.privateKey.toWIF()
@@ -49,7 +50,7 @@ const getSignedMessage = (state, getters, rootState, rootGetters) => (_message) 
     const nonce = moment().unix()
 
     /* Request signature. */
-    const signature = Nexa.Message.sign(`${_message}:${nonce}`, wif)
+    const signature = Message.sign(`${_message}:${nonce}`, wif)
     // console.log('GET SIGNED MESSAGE (signature):', signature)
 
     /* Build package. */

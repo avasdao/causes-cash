@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nexa from 'nexajs'
+import { Crypto } from '@nexajs/crypto'
 
 /**
  * Get Avatar
@@ -15,7 +15,7 @@ const getAvatar = (state, getter) => {
     // console.log('AVATAR (email):', email)
 
     /* Encode email address. */
-    const encoded = Nexa.Crypto.hash(email, 'md5', true)
+    const encoded = Crypto.hash(email, 'md5', true)
     // console.log('AVATAR (encoded):', encoded)
 
     /* Set avatar (url). */

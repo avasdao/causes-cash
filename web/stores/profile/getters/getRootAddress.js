@@ -1,5 +1,5 @@
 /* Import modules. */
-import Nexa from 'nexajs'
+import { Address } from '@nexajs/address'
 
 /**
  * Get Address
@@ -34,7 +34,7 @@ const getAddress = (state, getters, rootState, rootGetters) => {
     const childNode = hdNode.deriveChild(path)
 
     /* Set (profile) address. */
-    const address = Nexa.Address.toCashAddress(childNode)
+    const address = Address.toCashAddress(childNode)
 
     /* Return profile address. */
     return address

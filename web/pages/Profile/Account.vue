@@ -4,7 +4,6 @@ import { ethers } from 'ethers'
 // import { ElectrumClient } from 'electrum-cash'
 // import EventSource from 'eventsource'
 import makeBlockie from 'ethereum-blockies-base64'
-import Nexa from 'nexajs'
 import { ref } from 'vue'
 
 /* Import library to manage bitcoin cash data structures. */

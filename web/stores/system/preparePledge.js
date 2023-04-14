@@ -1,6 +1,6 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
-import Nexa from 'nexajs'
+import { sendCoin } from '@nexajs/purse'
 
 /* Set dust amount (satoshis). */
 const DUST = 546
@@ -70,8 +70,7 @@ const preparePledge = async ({ getters, dispatch }, _pkg) => {
     /* Set auto fee (flag). */
     const autoFee = false
 
-    const results = await Nexa.Transaction
-        .sendCoin(coin, receivers, autoFee)
+    const results = await sendCoin(coin, receivers, autoFee)
         .catch(Bugsnag.notify)
     // console.log('PLEDGE COIN (results):', results)
 

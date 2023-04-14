@@ -253,7 +253,8 @@ import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import bitcoincomLink from 'bitcoincom-link'
-import Nexa from 'nexajs'
+import { Blockchain } from '@nexajs/blockchain'
+// import { Markets } from '@nexajs/markets'
 import numeral from 'numeral'
 import Swal from 'sweetalert2'
 
@@ -421,8 +422,8 @@ export default {
          * Initialize Blockchain
          */
         initBlockchain() {
-            /* Initialize Nexa blockchain. */
-            this.blockchain = new Nexa.Blockchain()
+            /* Initialize Blockchain. */
+            this.blockchain = new Blockchain()
             // console.log('NITO BLOCKCHAIN', this.blockchain)
 
             if (this.getAddress('causes')) {
@@ -455,7 +456,7 @@ export default {
 
             /* Request BCH/USD market price. */
             if (!this.usd) {
-                this.usd = await Nexa.Markets.getTicker('BCH', 'USD')
+                // this.usd = await Markets.getTicker('BCH', 'USD')
                 // console.log('USD', this.usd)
             }
 
@@ -998,7 +999,7 @@ export default {
         ]
 
         /* Request BCH/USD market price. */
-        this.usd = await Nexa.Markets.getTicker('BCH', 'USD')
+        // this.usd = await Markets.getTicker('BCH', 'USD')
         // console.log('USD', this.usd)
 
         /* Validate user authorization. */

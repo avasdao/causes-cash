@@ -1,5 +1,7 @@
 /* Import modules. */
-import Nexa from 'nexajs'
+import { Address } from '@nexajs/address'
+import { Crypto } from '@nexajs/crypto'
+import { Utils } from '@nexajs/utils'
 
 /**
  * Assemble Signature Hash Digest
@@ -18,12 +20,12 @@ const getSighashDigest = () => (
     let value = null
 
     /* Set value. */
-    value = Nexa.Utils
+    value = Utils
         .encodeNumber(userPledge.outputs[0].value)
     // console.log('Encoded value:', value)
 
     /* Set locking script. */
-    const locking_script = Nexa.Address
+    const locking_script = Address
         .toPubKeyHash(userPledge.outputs[0].address)
     // console.log('Campaign (locking_script):', locking_script)
 
@@ -39,7 +41,7 @@ const getSighashDigest = () => (
 
         // Add the output lockscript.
         transactionOutpoints.push(
-            Nexa.Utils.varBuf(thisOutputs[currentOutput].locking_script)
+            Utils.varBuf(thisOutputs[currentOutput].locking_script)
         )
     }
     // console.log('Transaction outpoints:', transactionOutpoints)
@@ -55,7 +57,7 @@ const getSighashDigest = () => (
 
     /* Set outpoint. */
     const outpoint = Buffer.concat([
-        Nexa.Utils.reverseBuffer(previousTransactionHash),
+        Utils.reverseBuffer(previousTransactionHash),
         previousTransactionOutputIndex,
     ])
 
@@ -72,7 +74,7 @@ const getSighashDigest = () => (
     const nSequence = Buffer.from('FFFFFFFF', 'hex')
 
     /* Set hash outputs. */
-    const hashOutputs = Nexa.Crypto
+    const hashOutputs = Crypto
         .hash(Buffer.concat(transactionOutpoints), 'sha256sha256')
 
     /* Set locktime. */
@@ -97,7 +99,7 @@ const getSighashDigest = () => (
     // console.log('sighashMessage', sighashMessage.toString('hex'));
 
     /* Create signature hash digest (of message). */
-    const sighashDigest = Nexa.Crypto.hash(sighashMessage, 'sha256sha256')
+    const sighashDigest = Crypto.hash(sighashMessage, 'sha256sha256')
     // console.log('sighashDigest', sighashDigest.toString('hex'));
 
     /* Return signature hash digest. */

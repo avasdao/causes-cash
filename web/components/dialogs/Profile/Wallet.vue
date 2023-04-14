@@ -192,7 +192,8 @@ import { mapActions, mapGetters } from 'vuex'
 
 /* Import modules. */
 import bitcoincomLink from 'bitcoincom-link'
-import Nexa from 'nexajs'
+import { Blockchain } from '@nexajs/blockchain'
+import { sendCoin } from '@nexajs/purse'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
 
@@ -401,8 +402,8 @@ export default {
          * Initialize Blockchain
          */
         initBlockchain() {
-            /* Initialize Nexa blockchain. */
-            this.blockchain = new Nexa.Blockchain()
+            /* Initialize Blockchain. */
+            this.blockchain = new Blockchain()
             // console.log('NITO BLOCKCHAIN', this.blockchain)
 
             if (this.getAddress('deposit')) {
@@ -549,7 +550,7 @@ export default {
             }
 
             /* Retrieve market price. */
-            const marketPrice = await Nexa.Markets.getTicker('BCH', 'USD')
+            // const marketPrice = await Markets.getTicker('BCH', 'USD')
             console.info(`Market price (USD)`, marketPrice) // eslint-disable-line no-console
 
             const formattedBalance =
@@ -577,8 +578,7 @@ export default {
             /* Set auto fee (flag). */
             const autoFee = true
 
-            const results = await Nexa.Transaction
-                .sendCoin(_coin, receivers, autoFee)
+            const results = await sendCoin(_coin, receivers, autoFee)
                 .catch(err => {
                     console.error(err) // eslint-disable-line no-console
 
@@ -708,7 +708,7 @@ export default {
         this.showPledge = false
 
         /* Request BCH/USD market price. */
-        this.usd = await Nexa.Markets.getTicker('BCH', 'USD')
+        // this.usd = await Markets.getTicker('BCH', 'USD')
         // console.log('USD', this.usd)
 
         const providerStatuses = bitcoincomLink.getWalletProviderStatus()

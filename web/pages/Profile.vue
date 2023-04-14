@@ -12,10 +12,10 @@ const Profile = useProfileStore()
 let web3Address = ref(null)
 
 /* Import components. */
-import Account from './Profile/Account'
-import Activity from './Profile/Activity'
-import General from './Profile/General'
-import Notes from './Profile/Notes'
+// import Account from './Profile/Account'
+// import Activity from './Profile/Activity'
+// import General from './Profile/General'
+// import Notes from './Profile/Notes'
 
 
 /**
@@ -27,33 +27,33 @@ const init = async () => {
     console.log('CAUSES CASH (profileInfo):', profileInfo)
 
     /* Validate about. */
-    if (profileInfo && profileInfo.about) {
+    if (profileInfo?.about) {
         /* Set about. */
-        this.$store.dispatch('setProfileAbout', profileInfo.about)
+        // this.$store.dispatch('setProfileAbout', profileInfo.about)
     }
 
     /* Validate avatar. */
-    if (profileInfo && profileInfo.avatar) {
+    if (profileInfo?.avatar) {
         /* Set avatar. */
-        this.$store.dispatch('setProfileAvatar', profileInfo.avatar)
+        // this.$store.dispatch('setProfileAvatar', profileInfo.avatar)
     }
 
     /* Validate homepage. */
-    if (profileInfo && profileInfo.homepage) {
+    if (profileInfo?.homepage) {
         /* Set homepage. */
-        this.$store.dispatch('setProfileHomepage', profileInfo.homepage)
+        // this.$store.dispatch('setProfileHomepage', profileInfo.homepage)
     }
 
     /* Validate nickname. */
-    if (profileInfo && profileInfo.nickname) {
+    if (profileInfo?.nickname) {
         /* Set nickname. */
-        this.$store.dispatch('setProfileNickname', profileInfo.nickname)
+        // this.$store.dispatch('setProfileNickname', profileInfo.nickname)
     }
 
     /* Validate tagline. */
-    if (profileInfo && profileInfo.tagline) {
+    if (profileInfo?.tagline) {
         /* Set tagline. */
-        this.$store.dispatch('setProfileTagline', profileInfo.tagline)
+        // this.$store.dispatch('setProfileTagline', profileInfo.tagline)
     }
 }
 
@@ -75,13 +75,15 @@ const init = async () => {
                 <div class="space-y-8">
                     <Activity />
 
-                    <pre class="bg-rose-500">{{ Profile.session }}</pre>
 
-                    <pre class="bg-yellow-500">{{ Profile._entropy }}</pre>
+                    <pre class="bg-rose-500">Session - {{ Profile.session }}</pre>
 
-                    <pre class="bg-sky-500">{{ Wallet.address }}</pre>
+                    <pre class="bg-yellow-500">Entropy - {{ Profile._entropy }}</pre>
+
+                    <pre class="bg-sky-500">Address - {{ Wallet.address }}</pre>
 
                     <p class="p-3 bg-green-500 font-mono">
+                        Mnemonic
                         {{ Profile.mnemonic }}
                     </p>
 

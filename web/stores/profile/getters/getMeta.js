@@ -1,7 +1,7 @@
 /* Import modules. */
 import Bugsnag from '@bugsnag/js'
 import crypto from 'crypto'
-import Nexa from 'nexajs'
+import { Address } from '@nexajs/addres'
 
 /**
  * Decrypt
@@ -52,7 +52,7 @@ const getMeta = async (state, getters, rootState, rootGetters) => {
         const childNode = hdNode.deriveChild(path)
 
         /* Set (profile) address. */
-        const address = Nexa.Address.toCashAddress(childNode)
+        const address = Address.toCashAddress(childNode)
 
         /* Retrieve API provider. */
         const API_PROVIDER = rootGetters.getApiProvider

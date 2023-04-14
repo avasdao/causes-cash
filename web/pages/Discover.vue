@@ -63,7 +63,7 @@
 <script>
 /* Import modules. */
 import moment from 'moment'
-import Nexa from 'nexajs'
+// import { Markets } from '@nexajs/markets'
 import numeral from 'numeral'
 
 const SATS_PER_BCH = 100000000
@@ -342,7 +342,7 @@ export default {
         this.hasMoreResults = false
 
         // FIXME: Pull real-time price from api.telr.io
-        // this.usd = await Nexa.Markets.getTicker('BCH', 'USD')
+        // this.usd = await Markets.getTicker('BCH', 'USD')
 
         /* Initialize alert flag. */
         // this.showAlert = true

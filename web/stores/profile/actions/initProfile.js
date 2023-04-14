@@ -1,6 +1,6 @@
 /* Import modules. */
 import moment from 'moment'
-import Nexa from 'nexajs'
+import { Crypto } from '@nexajs/crypto'
 
 /**
  * Initialize Wallet
@@ -25,7 +25,7 @@ const initProfile = async ({ state, commit }) => {
      * We MUST properly evaluate ANY and ALL weaknesses with
      * using randomBytes via a ("mobile") web browser.
      */
-    const masterSeed = Nexa.Crypto.randomBytes(32)
+    const masterSeed = Crypto.randomBytes(32)
 
     /* Set new master (private) key. */
     commit('setMasterSeed', masterSeed)

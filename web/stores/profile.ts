@@ -77,7 +77,7 @@ export const useProfileStore = defineStore('profile', {
         mnemonic(_state) {
             if (!_state._entropy) return null
 
-            return entropyToMnemonic(hexToBin(_state._entropy))
+            return entropyToMnemonic(_state._entropy)
         },
 
     },

@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "23.4.5",
+  "version": "23.4.13",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@bitauth/libauth": "1.19.1",
-    "@nexajs/hdnode": "23.3.19",
     "@pinia/nuxt": "0.4.7",
     "dompurify": "3.0.0",
     "ethereum-blockies-base64": "1.0.2",
@@ -19,7 +18,7 @@
     "isomorphic-dompurify": "1.0.0",
     "jsdom": "21.1.0",
     "moment": "2.29.4",
-    "nexajs": "23.3.19",
+    "nexajs": "23.4.12",
     "numeral": "2.0.6",
     "nuxt": "3.2.2",
     "pinia": "2.0.32",
@@ -31,7 +30,6 @@
     "uuid": "9.0.0"
   },
   "devDependencies": {
-    "@ethersproject/random": "5.7.0",
     "@nuxtjs/tailwindcss": "6.4.1",
     "@pinia-plugin-persistedstate/nuxt": "1.0.0",
     "@types/node": "18.14.2",

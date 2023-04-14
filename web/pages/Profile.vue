@@ -1,6 +1,7 @@
 <script setup>
 /* Import modules. */
 import { ref } from 'vue'
+import { Wallet } from '@nexajs/wallet'
 
 /* Initialize stores. */
 import { useProfileStore } from '@/stores/profile'
@@ -77,6 +78,8 @@ const init = async () => {
                     <pre class="bg-rose-500">{{ Profile.session }}</pre>
 
                     <pre class="bg-yellow-500">{{ Profile._entropy }}</pre>
+
+                    <pre class="bg-sky-500">{{ Wallet.address }}</pre>
 
                     <p class="p-3 bg-green-500 font-mono">
                         {{ Profile.mnemonic }}

@@ -5,6 +5,8 @@ import { ref } from 'vue'
 /* Initialize stores. */
 import { useSystemStore } from '@/stores/system'
 
+import loadingIcon from '@/assets/loading_icon.gif'
+
 /* Define (parent) properties. */
 const props = defineProps({
     network: String,
@@ -45,8 +47,11 @@ watch(props?.provider, (_provider) => {
 })
 
 const banner = computed(() => {
-    // return require('@/assets/poster.jpg')
-    return System.banner
+    if (!campaign.value?.media?.poster) {
+        return loadingIcon
+    }
+
+    return campaign.value?.media?.poster
 })
 
 const summary = computed(() => {
@@ -95,27 +100,10 @@ const closePledge = () => {
  * Make Pledge
  */
 const makePledge = async () => {
-    /* Validate Web3 provider. */
-    // if (!window.ethereum) {
-    //     /* Send notification request. */
-    //     $store.dispatch('showNotif', {
-    //         icon: 'error',
-    //         title: 'MetaMask Error!',
-    //         message: `No Web3 provider found!`,
-    //     })
-
-    //     return
-    // }
-
-    /* Connect to Web3 provider. */
-    // await window.ethereum
-    //     .enable()
-    //     .catch(err => console.error(err))
-
     /* Set pledging flag. */
     // TODO Set to state.
-    // isPledging.value = true
-    document.location = campaign?.receiver
+    isPledging.value = true
+    // document.location = campaign?.receiver
 }
 
 const route = useRoute()
@@ -151,7 +139,7 @@ loadWallet() // NOTE: This is non-blocking.
                         <img
                             :src="banner"
                             alt="Loading campaign banner, please wait..."
-                            class="object-center object-cover"
+                            class="w-full object-center object-cover"
                         />
                     </div>
                 </div>
@@ -160,7 +148,7 @@ loadWallet() // NOTE: This is non-blocking.
                 <div class="max-w-2xl mx-auto mt-4 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
 
                     <div class="flex flex-col-reverse">
-                        <CampaignTitle />
+                        <CampaignTitle :title="campaign?.title" />
 
                         <CampaignRating />
                     </div>

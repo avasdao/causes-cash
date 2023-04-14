@@ -1,7 +1,17 @@
+<script setup>
+/* Import modules. */
+import { ref } from 'vue'
+
+const props = defineProps({
+    title: String,
+})
+
+</script>
+
 <template>
     <main class="mt-4">
         <h1 class="text-center text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl">
-            {{title}}
+            {{props.title}}
         </h1>
 
         <h2 id="information-heading" class="sr-only">
@@ -30,32 +40,3 @@
 
     </main>
 </template>
-
-<script>
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    computed: {
-        title() {
-            // return this.$store?.state?.title
-            return `My Awesome Campaign`
-        },
-
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

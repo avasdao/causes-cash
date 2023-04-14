@@ -3,13 +3,144 @@
 import { ref } from 'vue'
 
 const props = defineProps({
+    isPledging: Boolean,
     receiver: String,
+    usd: Number,
 })
+
+const winHandler = ref(null)
+const amount = ref(null)
+const currency = ref(null)
+const label = ref(null)
+const comment = ref(null)
+const url = ref(null)
+
+/* Monitor pledging flag. */
+watch(() => props.isPledging, (_status) => {
+    console.log('PLEDGING HAS CHANGED', _status)
+
+    if (_status) {
+        winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-0'
+    } else {
+        winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
+    }
+})
+
+/**
+ * Make Pledge
+ *
+ * Begins the pledge process by launching a UI modal.
+ */
+const makePledge = async () => {
+    return console.log('START PLEDGE')
+
+    /* Close window. */
+    // FIXME: Detect a succussfully submitted tx before closing.
+    this.$emit('close')
+
+    /* Validate embedded Web3 objects. */
+    if (!window.ethereum && !window.bitcoin) {
+        /* Validate embedded ethereum object. */
+        if (window.bitcoin) {
+            console.info('Found Bitcoin provider.')
+        } else if (window.ethereum) {
+            console.info('Found Ethereum provider.')
+        } else {
+            return console.error('No Web3 provider found.')
+        }
+    }
+
+    /* Initialize provider. */
+    const provider = new ethers
+        .providers
+        .Web3Provider(window.ethereum, 'any')
+
+    /* Set signer. */
+    const signer = provider.getSigner()
+    // console.log('SIGNER', signer)
+
+    /* Set Campaign ABI. */
+    const cAbi = this.$store.getters.getCampaignAbi
+
+    // FOR DEVELOPMENT PURPOSES ONLY
+    // The first campaign contract is hardcoded.
+    const cAddr = this.$store.getters.getCampaignAddr
+
+    /* Initialize campaign instance. */
+    const campaign = new ethers.Contract(cAddr, cAbi, signer)
+    // console.log('CONTRACT (campaign):', campaign)
+
+    const label = this.label || ''
+    const comment = this.comment || ''
+    const url = this.url || ''
+    const bchUsd = this.usd ? parseInt(this.usd * 100) : 0
+
+    /* Set gas price. */
+    // NOTE: Current minimum is 1.05 gWei (1,050,000,000)
+    const gasPrice = BigInt(1050000000)
+
+    // FIXME: We MUST convert `this.amount` to a BigInt FIRST!
+    // NOTE: What is the smallest precision for `this.amount`??
+    const sats = BigInt(parseInt(this.amount * this.$store?.state?.ONE_BITCOIN))
+
+    /* Set value. */
+    const value = (BigInt(this.$store?.state?.ONE_SMART_BITCOIN) * sats)
+        / BigInt(this.$store?.state?.ONE_BITCOIN)
+
+    /* Set contract options. */
+    const contractOptions = {
+        gasPrice,
+        value,
+    }
+
+    // console.log('LABEL / COMMENT URL / BCHUSD', label, comment, url, bchUsd);
+
+    /* Make pledge. */
+    await campaign
+        .makePledge(
+            label,
+            comment,
+            url,
+            bchUsd,
+            { ...contractOptions }
+        )
+        .catch(err => {
+            console.error(err)
+
+            /* Initialize message. */
+            let message = ''
+
+            /* Validate message. */
+            if (err.message) {
+                message += err.message
+            }
+
+            /* Validate data message. */
+            if (err.data && err.data.message) {
+                message += ' - ' + err.data.message
+            }
+
+            /* Send notification request. */
+            this.$store.dispatch('showNotif', {
+                icon: 'error',
+                title: 'MetaMask Error!',
+                message,
+            })
+        })
+
+}
+
+
+/* Set (default) currency. */
+currency.value = 'USD'
+
+/* Set initial window (class) handler. */
+winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
 
 </script>
 
 <template>
-    <main v-if="isPledging" class="fixed inset-0 overflow-hidden" role="dialog" aria-modal="true">
+    <main v-if="props.isPledging" class="fixed inset-0 overflow-hidden" role="dialog" aria-modal="true">
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute inset-0 bg-gray-300 bg-opacity-80" aria-hidden="true">
                 <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16">
@@ -48,24 +179,17 @@ const props = defineProps({
                                             <div class="sm:flex-1">
                                                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3">
 
-                                                    <NuxtLink :to="props.receiver"
+                                                    <NuxtLink :to="props?.receiver"
                                                         class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
                                                     >
                                                         Submit My Pledge
                                                     </NuxtLink>
-                                                    <!-- <button
-                                                        @click="makePledge"
-                                                        type="button"
-                                                        class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
-                                                    >
-                                                        Submit My Pledge
-                                                    </button> -->
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="px-4 pt-5 pb-5 sm:px-0 sm:pt-0">
                                     <div class="space-y-8 px-4 sm:px-6 sm:space-y-6">
                                         <div>
@@ -119,156 +243,3 @@ const props = defineProps({
         </div>
     </main>
 </template>
-
-<script>
-/* global BigInt */
-
-/* Import modules. */
-import { ethers } from 'ethers'
-
-export default {
-    props: {
-        usd: Number,
-        isPledging: Boolean,
-    },
-    data: () => {
-        return {
-            winHandler: null,
-            amount: null,
-            currency: null,
-            label: null,
-            comment: null,
-            url: null,
-        }
-    },
-    watch: {
-        isPledging: function (_status) {
-            console.log('PLEDGING HAS CHANGED', _status)
-
-            if (_status) {
-                this.winHandler = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-0'
-            } else {
-                this.winHandler = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
-            }
-        },
-
-    },
-    methods: {
-        /**
-         * Make Pledge
-         *
-         * Begins the pledge process by launching a UI modal.
-         */
-        async makePledge() {
-            console.log('START PLEDGE');
-
-            /* Close window. */
-            // FIXME: Detect a succussfully submitted tx before closing.
-            this.$emit('close')
-
-            /* Validate embedded Web3 objects. */
-            if (!window.ethereum && !window.bitcoin) {
-                /* Validate embedded ethereum object. */
-                if (window.bitcoin) {
-                    console.info('Found Bitcoin provider.')
-                } else if (window.ethereum) {
-                    console.info('Found Ethereum provider.')
-                } else {
-                    return console.error('No Web3 provider found.')
-                }
-            }
-
-            /* Initialize provider. */
-            const provider = new ethers
-                .providers
-                .Web3Provider(window.ethereum, 'any')
-
-            /* Set signer. */
-            const signer = provider.getSigner()
-            // console.log('SIGNER', signer)
-
-            /* Set Campaign ABI. */
-            const cAbi = this.$store.getters.getCampaignAbi
-
-            // FOR DEVELOPMENT PURPOSES ONLY
-            // The first campaign contract is hardcoded.
-            const cAddr = this.$store.getters.getCampaignAddr
-
-            /* Initialize campaign instance. */
-            const campaign = new ethers.Contract(cAddr, cAbi, signer)
-            // console.log('CONTRACT (campaign):', campaign)
-
-            const label = this.label || ''
-            const comment = this.comment || ''
-            const url = this.url || ''
-            const bchUsd = this.usd ? parseInt(this.usd * 100) : 0
-
-            /* Set gas price. */
-            // NOTE: Current minimum is 1.05 gWei (1,050,000,000)
-            const gasPrice = BigInt(1050000000)
-
-            // FIXME: We MUST convert `this.amount` to a BigInt FIRST!
-            // NOTE: What is the smallest precision for `this.amount`??
-            const sats = BigInt(parseInt(this.amount * this.$store?.state?.ONE_BITCOIN))
-
-            /* Set value. */
-            const value = (BigInt(this.$store?.state?.ONE_SMART_BITCOIN) * sats)
-                / BigInt(this.$store?.state?.ONE_BITCOIN)
-
-            /* Set contract options. */
-            const contractOptions = {
-                gasPrice,
-                value,
-            }
-
-            // console.log('LABEL / COMMENT URL / BCHUSD', label, comment, url, bchUsd);
-
-            /* Make pledge. */
-            await campaign
-                .makePledge(
-                    label,
-                    comment,
-                    url,
-                    bchUsd,
-                    { ...contractOptions }
-                )
-                .catch(err => {
-                    console.error(err)
-
-                    /* Initialize message. */
-                    let message = ''
-
-                    /* Validate message. */
-                    if (err.message) {
-                        message += err.message
-                    }
-
-                    /* Validate data message. */
-                    if (err.data && err.data.message) {
-                        message += ' - ' + err.data.message
-                    }
-
-                    /* Send notification request. */
-                    this.$store.dispatch('showNotif', {
-                        icon: 'error',
-                        title: 'MetaMask Error!',
-                        message,
-                    })
-                })
-
-        },
-
-    },
-    created: function () {
-        /* Set (default) currency. */
-        this.currency = 'USD'
-
-        /* Set initial window (class) handler. */
-        this.winHandler = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
-
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

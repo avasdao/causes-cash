@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 const props = defineProps({
     isPledging: Boolean,
-    receiver: String,
+    campaign: Object,
     usd: Number,
 })
 
@@ -179,7 +179,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                             <div class="sm:flex-1">
                                                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3">
 
-                                                    <NuxtLink :to="props?.receiver"
+                                                    <NuxtLink :to="props?.campaign?.receiver"
                                                         class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
                                                     >
                                                         Submit My Pledge

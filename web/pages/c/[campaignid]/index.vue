@@ -7,16 +7,9 @@ import { useSystemStore } from '@/stores/system'
 
 import loadingIcon from '@/assets/loading_icon.gif'
 
-/* Define (parent) properties. */
-const props = defineProps({
-    network: String,
-    provider: String,
-    blockNum: Number,
-    usd: Number,
-})
-
 /* Import responsive holders. */
 const description = ref(null)
+const usd = ref(0.0)
 
 const showPledges = ref(false)
 const showDescription = ref(true)
@@ -35,16 +28,16 @@ const RETRY_DELAY = 500 // 0.5 seconds
 /* Initialize System. */
 const System = useSystemStore()
 
-watch(props?.provider, (_provider) => {
-    console.log('(CAMPAIGN) PROVIDER HAS CHANGED', _provider)
+// watch(props?.provider, (_provider) => {
+//     console.log('(CAMPAIGN) PROVIDER HAS CHANGED', _provider)
 
-    if (_provider) {
-        /* Initialize blockchain. */
-        setTimeout(() => {
-            System.initBlockchain()
-        }, RETRY_DELAY)
-    }
-})
+//     if (_provider) {
+//         /* Initialize blockchain. */
+//         setTimeout(() => {
+//             System.initBlockchain()
+//         }, RETRY_DELAY)
+//     }
+// })
 
 const banner = computed(() => {
     if (!campaign.value?.media?.poster) {
@@ -117,6 +110,11 @@ const loadCampaign = async () => {
     console.log('CAMPAIGN (page):', campaign.value)
 }
 
+const loadMarket = async () => {
+    usd.value = await $fetch(`https://nexa.exchange/mex`)
+    console.log('USD (mex):', usd.value)
+}
+
 const loadWallet = async () => {
     const success = await $fetch('/api/wallet', {
         method: 'POST',
@@ -125,6 +123,7 @@ const loadWallet = async () => {
 }
 
 loadCampaign() // NOTE: This is non-blocking.
+loadMarket() // NOTE: This is non-blocking.
 loadWallet() // NOTE: This is non-blocking.
 </script>
 
@@ -158,7 +157,10 @@ loadWallet() // NOTE: This is non-blocking.
                         {{campaign?.summary}}
                     </p>
 
-                    <CampaignStatus :usd="usd" :provider="props.provider" />
+                    <CampaignStatus
+                        :usd="usd"
+                        :campaign="campaign"
+                    />
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                         <button
@@ -255,7 +257,7 @@ loadWallet() // NOTE: This is non-blocking.
         <CampaignPledgeWin
             :isPledging="isPledging"
             :usd="usd"
-            :receiver="campaign?.receiver"
+            :campaign="campaign"
             @close="closePledge"
         />
     </main>

@@ -1,27 +1,150 @@
 <script setup>
 /* Import modules. */
-import { ethers } from 'ethers'
+import { getAddressBalance } from '@nexajs/rostrum'
+import { getAddressHistory } from '@nexajs/rostrum'
 import moment from 'moment'
 import numeral from 'numeral'
 import { ref } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
-// import WebSocket from 'isomorphic-ws'
+
+const props = defineProps({
+    campaign: Object,
+    provider: String,
+    usd: Number,
+})
 
 const campaignPledged = ref(0)
-const campaignTotal = ref(0)
+const campaignGoals = ref(null)
+
+const blockNum = ref(0)
+const expiration = ref(0)
+const fundingGoal = ref(0.0)
+// const pledgeBalance = ref(null)
+
+/* Set constants. */
+const RETRY_DELAY = 500 // 0.5 seconds
+const RETRY_ATTEMPTS = 10 // approx. 5 seconds
+
+/**
+ * Funded Display
+ */
+const fundedDisplay = computed(() => {
+    /* Validate pledge balance. */
+    if (!campaignPledged.value) return '0.0'
+
+    /* Set satoshis value. */
+    const satoshis = campaignPledged.value
+
+    // /* Set NEXA value. */
+    const nexValue = Number(
+        satoshis / 100
+    )
+
+    // /* Return (formatted) value. */
+    return numeral(nexValue / 1000000)
+        .format('0,0.00[00]')
+})
+
+/**
+ * Funded Display (USD)
+ */
+const fundedDisplayUsd = computed(() => {
+    /* Validate pledge balance. */
+    if (!campaignPledged.value || !props.usd) return '$0.00'
+
+    const usdValue = (campaignPledged.value / 100000000) * props.usd
+
+    /* Return (formatted) value. */
+    return numeral(usdValue).format('$0,0.00')
+})
+
+/**
+ * Requested Display
+ */
+const requestedDisplay = computed(() => {
+    /* Validate funding goal. */
+    if (!campaignGoals.value || !props.usd) return '0.00'
+
+    /* Set satoshis value. */
+    const satoshis = campaignGoals.value[0].amount
+
+    /* Set NEXA value. */
+    const nexValue = Number(satoshis / 100)
+
+    /* Return (formatted) value. */
+    return numeral(nexValue / 1000000).format('0,0.00[00]')
+})
+
+/**
+ * Requesed Display (USD)
+ */
+const requestedDisplayUsd = computed(() => {
+    /* Validate pledge balance. */
+    if (!campaignGoals.value || !props.usd) return '$0.00'
+
+    const usdValue = (campaignGoals.value[0].amount / 100000000) * props.usd
+
+    /* Return (formatted) value. */
+    return numeral(usdValue).format('$0,0.00')
+})
+
+/**
+ * Percentage Completed
+ */
+const pctCompleted = computed(() => {
+    /* Validate funding goal. */
+    if (!fundingGoal.value || !campaignPledged.value) return 0
+
+    /* Set cents. */
+    const cents = campaignPledged.value * 100
+
+    /* Set percentage. */
+    const pct = parseInt((cents / fundingGoal.value))
+
+    /* Return percentage. */
+    return pct
+})
+
+/**
+ * Expiration Display
+ *
+ * Show the time remaining in the campaign.
+ */
+const expirationDisplay = computed(() => {
+    /* Validate expiration. */
+    if (!expiration.value) return 'n/a'
+
+    /* Return (formatted) expiration. */
+    return moment.unix(expiration.value).fromNow(true)
+})
+
+watch(() => props.campaign, async (_campaign) => {
+    console.log('CAMPAIGN HAS CHANGED', _campaign)
+
+    /* Request (receiver) address history. */
+    // const history = await getAddressHistory(_campaign.receiver)
+    //     .catch(err => console.error(err))
+    // console.log('HISTORY', history)
+
+    /* Request (receiver) address balance. */
+    const balance = await getAddressBalance(_campaign.receiver)
+        .catch(err => console.error(err))
+    console.log('BALANCE', balance)
+
+    /* Set campaign pledged amount. */
+    campaignPledged.value = balance.confirmed
+
+    campaignGoals.value = _campaign.goals
+})
 
 
-
-/* Initialize Rostrum. */
-// initRostrum()
 </script>
 
 <template>
     <main class="mt-5">
         <h4 class="sr-only">Status</h4>
-pledged:{{campaignPledged}}
+
         <p class="text-3xl text-center font-medium text-gray-700">
-            {{fundedDisplay}} of {{requestedDisplay}} NEXA
+            {{fundedDisplay}} of {{requestedDisplay}} <span class="text-2xl text-gray-500">m</span>NEXA
         </p>
 
         <p class="text-center text-base text-gray-500 font-medium">
@@ -42,221 +165,3 @@ pledged:{{campaignPledged}}
         </div>
     </main>
 </template>
-
-<script>
-/* Set constants. */
-const RETRY_DELAY = 500 // 0.5 seconds
-const RETRY_ATTEMPTS = 10 // approx. 5 seconds
-
-export default {
-    props: {
-        provider: String,
-        usd: Number,
-    },
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            blockNum: null,
-            expiration: null,
-
-            fundingGoal: null,
-            pledgeBalance: null,
-        }
-    },
-    watch: {
-        provider: function (_provider) {
-            // console.log('(STATUS) PROVIDER HAS CHANGED', _provider);
-
-            /* Validate provider. */
-            if (_provider) {
-                setTimeout(() => {
-                    /* Initialize blockchain. */
-                    // this.initBlockchain()
-                }, RETRY_DELAY)
-            }
-        },
-    },
-    computed: {
-        /**
-         * Funded Display
-         */
-        fundedDisplay() {
-            /* Validate pledge balance. */
-            if (!this.pledgeBalance) return '0.0'
-
-            /* Set Wei value. */
-            const weiValue = this.pledgeBalance
-
-            /* Set BCH value. */
-            const bchValue = Number(
-                weiValue / BigInt(this.$store?.state?.ONE_BITCOIN * 100)
-            )
-
-            /* Return (formatted) value. */
-            return numeral(bchValue / this.$store?.state?.ONE_BITCOIN)
-                .format('0,0.00[00]')
-        },
-
-        /**
-         * Funded Display (USD)
-         */
-        fundedDisplayUsd() {
-            /* Validate pledge balance. */
-            if (!this.pledgeBalance || !this.usd) return '$0.00'
-
-            /* Set cents. */
-            const cents = BigInt(parseInt(this.usd * 100))
-
-            /* Set Wei value. */
-            const weiValue = this.pledgeBalance * cents
-
-            /* Set USD value. */
-            const usdValue = Number(
-                weiValue / BigInt(this.$store?.state?.ONE_SMART_BITCOIN)
-            )
-
-            /* Return (formatted) value. */
-            return numeral(usdValue / 100).format('$0,0.00')
-        },
-
-        /**
-         * Requested Display
-         */
-        requestedDisplay() {
-            /* Validate funding goal. */
-            if (!this.fundingGoal || !this.usd) return '0.00'
-
-            /* Set Wei value. */
-            const weiValue = this.fundingGoal
-
-            /* Set BCH value. */
-            const bchValue = Number(weiValue / BigInt(10000000000))
-
-            /* Return (formatted) value. */
-            return numeral(bchValue / 100000000).format('0,0.00[00]')
-        },
-
-        /**
-         * Requesed Display (USD)
-         */
-        requestedDisplayUsd() {
-            /* Validate funding goal. */
-            if (!this.fundingGoal || !this.usd) return '$0.00'
-
-            /* Set cents. */
-            const cents = BigInt(parseInt(this.usd * 100))
-
-            /* Set Wei value. */
-            const weiValue = this.fundingGoal * cents
-
-            /* Set USD value. */
-            const usdValue = Number(
-                weiValue / BigInt(this.$store?.state?.ONE_SMART_BITCOIN))
-
-            /* Return (formatted) value. */
-            return numeral(usdValue / 100).format('$0,0.00')
-        },
-
-        /**
-         * Percentage Completed
-         */
-        pctCompleted() {
-            /* Validate funding goal. */
-            if (!this.fundingGoal || !this.pledgeBalance) return 0
-
-            /* Set cents. */
-            const cents = this.pledgeBalance * BigInt(100)
-
-            /* Set percentage. */
-            const pct = parseInt((cents / this.fundingGoal))
-
-            /* Return percentage. */
-            return pct
-        },
-
-        /**
-         * Expiration Display
-         *
-         * Show the time remaining in the campaign.
-         */
-        expirationDisplay() {
-            /* Validate expiration. */
-            if (!this.expiration) return 'n/a'
-
-            /* Return (formatted) expiration. */
-            return moment.unix(this.expiration).fromNow(true)
-        }
-
-    },
-    methods: {
-        async initBlockchain() {
-            /* Validate Web3 provider. */
-            if (this.$store.getters.getProvider) {
-                console.error('(Status) Blockchain init failed!')
-
-                /* Validate retry attempts. */
-                if (this.retries++ < RETRY_ATTEMPTS) {
-                    /* Pause and try again. */
-                    setTimeout(() => {
-                        /* Initialize blockchain. */
-                        this.initBlockchain()
-                    }, RETRY_DELAY)
-                }
-            }
-
-            /* Initialize provider. */
-            const provider = new ethers.providers
-                .JsonRpcProvider(this.$store.getters.getProvider)
-            console.log('PROVIDER', provider)
-
-            this.blockNum = await provider
-                .getBlockNumber()
-                .catch(err => console.error(err))
-            // console.log('BLOCK NUM', this.blockNum)
-
-            /* Set Campaign ABI. */
-            const cAbi = this.$store.getters.getCampaignAbi
-
-            // FOR DEVELOPMENT PURPOSES ONLY
-            // The first campaign contract is hardcoded.
-            const cAddr = this.$store.getters.getCampaignAddr
-
-            /* Initialize campaign instance. */
-            const campaign = new ethers.Contract(cAddr, cAbi, provider)
-            console.log('CONTRACT (campaign):', campaign)
-
-            /* Request campaign info. */
-            const campaignInfo = await campaign
-                .getCampaign()
-                .catch(err => console.error(err))
-            console.log('STATUS (info):', campaignInfo)
-
-            this.fundingGoal = BigInt(campaignInfo.fundingGoal)
-            // console.log('FUNDING GOAL', this.fundingGoal)
-
-            this.pledgeBalance = BigInt(campaignInfo.pledgeBalance)
-            // console.log('PLEDGE BALANCE', this.pledgeBalance)
-
-            this.expiration = Number(campaignInfo.expiration)
-
-        },
-
-    },
-    created: function () {
-        /* Initialize block number. */
-        this.blockNum = 0
-
-        /* Initialize funding goal. */
-        this.fundingGoal = BigInt(0)
-
-        /* Initialize pledge balance. */
-        this.pledgeBalance = BigInt(0)
-    },
-    mounted: function () {
-        /* Initialize blockchain. */
-        // this.initBlockchain()
-    },
-}
-</script>

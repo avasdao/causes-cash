@@ -14,15 +14,7 @@ const props = defineProps({
 
 const campaignPledged = ref(0)
 const campaignGoals = ref(null)
-
-const blockNum = ref(0)
 const expiration = ref(0)
-const fundingGoal = ref(0.0)
-// const pledgeBalance = ref(null)
-
-/* Set constants. */
-const RETRY_DELAY = 500 // 0.5 seconds
-const RETRY_ATTEMPTS = 10 // approx. 5 seconds
 
 /**
  * Funded Display
@@ -92,13 +84,14 @@ const requestedDisplayUsd = computed(() => {
  */
 const pctCompleted = computed(() => {
     /* Validate funding goal. */
-    if (!fundingGoal.value || !campaignPledged.value) return 0
+    if (!campaignGoals.value || !campaignPledged.value) return '0.0%'
 
-    /* Set cents. */
-    const cents = campaignPledged.value * 100
+    console.log('campaignPledged.value ', campaignPledged.value)
+    console.log('campaignGoals.value[0].amount', campaignGoals.value[0].amount)
 
     /* Set percentage. */
-    const pct = parseInt((cents / fundingGoal.value))
+    const pct = numeral(campaignPledged.value / campaignGoals.value[0].amount).format('0.0[0]%')
+    console.log('PCT COMPLETE', pct)
 
     /* Return percentage. */
     return pct
@@ -134,6 +127,8 @@ watch(() => props.campaign, async (_campaign) => {
     campaignPledged.value = balance.confirmed
 
     campaignGoals.value = _campaign.goals
+
+    expiration.value = _campaign.expiresAt
 })
 
 
@@ -158,7 +153,7 @@ watch(() => props.campaign, async (_campaign) => {
 
             <div class="text-sm text-center font-medium text-gray-600 mt-1 pl-5">
                 <div class="text-green-600">
-                    <span class="text-xl">{{pctCompleted}}%</span> complete with <span class="text-xl">{{expirationDisplay}}</span> to go
+                    <span class="text-xl">{{pctCompleted}}</span> complete with <span class="text-xl">{{expirationDisplay}}</span> to go
                 </div>
             </div>
 

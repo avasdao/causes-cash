@@ -123,12 +123,16 @@ watch(() => props.campaign, async (_campaign) => {
         .catch(err => console.error(err))
     console.log('BALANCE', balance)
 
-    /* Set campaign pledged amount. */
-    campaignPledged.value = balance.confirmed
+    if (balance) {
+        /* Set campaign pledged amount. */
+        campaignPledged.value = balance.confirmed
 
-    campaignGoals.value = _campaign.goals
+        /* Set campaign goals. */
+        campaignGoals.value = _campaign.goals
 
-    expiration.value = _campaign.expiresAt
+        /* Set expiration. */
+        expiration.value = _campaign.expiresAt
+    }
 })
 
 

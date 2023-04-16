@@ -147,7 +147,7 @@ loadWallet() // NOTE: This is non-blocking.
                 <div class="max-w-2xl mx-auto mt-4 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
 
                     <div class="flex flex-col-reverse">
-                        <CampaignTitle :title="campaign?.title" />
+                        <CampaignTitle :campaign="campaign" />
 
                         <CampaignRating />
                     </div>

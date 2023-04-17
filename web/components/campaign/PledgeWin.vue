@@ -66,11 +66,19 @@ watch(() => props.isPledging, (_status) => {
 })
 
 const setNEXA = () => {
-    currency.value = 'NEXA'
+    if (currency.value !== 'NEXA') {
+        currency.value = 'NEXA'
+
+        amount.value = ((amount.value / props.usd) * 1000000).toFixed(2)
+    }
 }
 
 const setUSD = () => {
-    currency.value = 'USD'
+    if (currency.value !== 'USD') {
+        currency.value = 'USD'
+
+        amount.value = ((amount.value * props.usd) / 1000000).toFixed(2)
+    }
 }
 
 /* Set (default) currency. */
@@ -130,6 +138,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                         <input
                                             v-model="amount"
                                             type="number"
+                                            step="0.01"
                                             class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
                                         >
                                     </div>
@@ -154,12 +163,14 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                     </h2>
                                 </div>
 
-                                <div class="flex justify-center">
+                                <NuxtLink :to="props?.campaign?.receiver"
+                                    class="flex justify-center"
+                                >
                                     <img
                                         :src="dataUrl"
                                         class="my-5 w-64 h-64 border-2 border-yellow-500 rounded-lg"
                                     />
-                                </div>
+                                </NuxtLink>
 
                                 <div class="pt-5 pb-5 sm:px-0 sm:pt-0">
                                     <div class="space-y-8 px-4 sm:px-6 sm:space-y-6">

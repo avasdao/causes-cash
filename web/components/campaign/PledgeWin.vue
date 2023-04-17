@@ -129,7 +129,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                     <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
                                         <input
                                             v-model="amount"
-                                            type="text"
+                                            type="number"
                                             class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
                                         >
                                     </div>
@@ -148,7 +148,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                     </div>
                                 </section>
 
-                                <div class="flex justify-center">
+                                <div class="mt-3 sm:mt-0 flex justify-center">
                                     <h2 class="text-2xl font-medium">
                                         - OR - Scan Below
                                     </h2>
@@ -161,12 +161,12 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                     />
                                 </div>
 
-                                <div class="px-4 pt-5 pb-5 sm:px-0 sm:pt-0">
+                                <div class="pt-5 pb-5 sm:px-0 sm:pt-0">
                                     <div class="space-y-8 px-4 sm:px-6 sm:space-y-6">
 
                                         <div v-if="numChars" class="flex justify-center px-3 py-1 bg-rose-200 border-2 border-rose-400 rounded-md">
                                             <h3 class="text-rose-700 text-sm">
-                                                Your pledge message is <span class="text-base font-bold">{{numChars}}</span> of {{MAX_MESSAGE_LENGTH}} max
+                                                Your pledge message is <span class="text-base font-bold">{{numChars}}</span> characters of {{MAX_MESSAGE_LENGTH}} max
                                             </h3>
                                         </div>
 

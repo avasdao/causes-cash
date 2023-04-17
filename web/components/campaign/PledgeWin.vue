@@ -1,6 +1,7 @@
 <script setup>
 /* Import modules. */
 import { ref } from 'vue'
+import QRCode from 'qrcode'
 
 const props = defineProps({
     isPledging: Boolean,
@@ -8,12 +9,48 @@ const props = defineProps({
     usd: Number,
 })
 
+const MAX_MESSAGE_LENGTH = 220
+
 const winHandler = ref(null)
 const amount = ref(null)
 const currency = ref(null)
+
 const label = ref(null)
 const comment = ref(null)
 const url = ref(null)
+
+const dataUrl = ref(null)
+const pledgeUrl = ref(null)
+
+const numChars = computed(() => {
+    /* Set label length. */
+    const labelLen = label.value?.length || 0
+
+    /* Set comment length. */
+    const commentLen = comment.value?.length || 0
+
+    /* Set URL length. */
+    const urlLen = url.value?.length || 0
+
+    /* Calculate total count. */
+    const totalCount = labelLen + commentLen + urlLen
+
+    /* Return total count. */
+    return totalCount || 0
+})
+
+const updateQrCode = async () => {
+    if (amount.value > 0) {
+        pledgeUrl.value = `${props.campaign?.receiver}?amount=${amount.value}&label=Causes.Cash`
+    } else {
+        pledgeUrl.value = props.campaign?.receiver
+    }
+    dataUrl.value = await QRCode.toDataURL(pledgeUrl.value)
+}
+
+watch(() => amount.value, async () => {
+    updateQrCode()
+})
 
 /* Monitor pledging flag. */
 watch(() => props.isPledging, (_status) => {
@@ -24,118 +61,24 @@ watch(() => props.isPledging, (_status) => {
     } else {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
     }
+
+    updateQrCode()
 })
 
-/**
- * Make Pledge
- *
- * Begins the pledge process by launching a UI modal.
- */
-const makePledge = async () => {
-    return console.log('START PLEDGE')
-
-    /* Close window. */
-    // FIXME: Detect a succussfully submitted tx before closing.
-    this.$emit('close')
-
-    /* Validate embedded Web3 objects. */
-    if (!window.ethereum && !window.bitcoin) {
-        /* Validate embedded ethereum object. */
-        if (window.bitcoin) {
-            console.info('Found Bitcoin provider.')
-        } else if (window.ethereum) {
-            console.info('Found Ethereum provider.')
-        } else {
-            return console.error('No Web3 provider found.')
-        }
-    }
-
-    /* Initialize provider. */
-    const provider = new ethers
-        .providers
-        .Web3Provider(window.ethereum, 'any')
-
-    /* Set signer. */
-    const signer = provider.getSigner()
-    // console.log('SIGNER', signer)
-
-    /* Set Campaign ABI. */
-    const cAbi = this.$store.getters.getCampaignAbi
-
-    // FOR DEVELOPMENT PURPOSES ONLY
-    // The first campaign contract is hardcoded.
-    const cAddr = this.$store.getters.getCampaignAddr
-
-    /* Initialize campaign instance. */
-    const campaign = new ethers.Contract(cAddr, cAbi, signer)
-    // console.log('CONTRACT (campaign):', campaign)
-
-    const label = this.label || ''
-    const comment = this.comment || ''
-    const url = this.url || ''
-    const bchUsd = this.usd ? parseInt(this.usd * 100) : 0
-
-    /* Set gas price. */
-    // NOTE: Current minimum is 1.05 gWei (1,050,000,000)
-    const gasPrice = BigInt(1050000000)
-
-    // FIXME: We MUST convert `this.amount` to a BigInt FIRST!
-    // NOTE: What is the smallest precision for `this.amount`??
-    const sats = BigInt(parseInt(this.amount * this.$store?.state?.ONE_BITCOIN))
-
-    /* Set value. */
-    const value = (BigInt(this.$store?.state?.ONE_SMART_BITCOIN) * sats)
-        / BigInt(this.$store?.state?.ONE_BITCOIN)
-
-    /* Set contract options. */
-    const contractOptions = {
-        gasPrice,
-        value,
-    }
-
-    // console.log('LABEL / COMMENT URL / BCHUSD', label, comment, url, bchUsd);
-
-    /* Make pledge. */
-    await campaign
-        .makePledge(
-            label,
-            comment,
-            url,
-            bchUsd,
-            { ...contractOptions }
-        )
-        .catch(err => {
-            console.error(err)
-
-            /* Initialize message. */
-            let message = ''
-
-            /* Validate message. */
-            if (err.message) {
-                message += err.message
-            }
-
-            /* Validate data message. */
-            if (err.data && err.data.message) {
-                message += ' - ' + err.data.message
-            }
-
-            /* Send notification request. */
-            this.$store.dispatch('showNotif', {
-                icon: 'error',
-                title: 'MetaMask Error!',
-                message,
-            })
-        })
-
+const setNEXA = () => {
+    currency.value = 'NEXA'
 }
 
+const setUSD = () => {
+    currency.value = 'USD'
+}
 
 /* Set (default) currency. */
 currency.value = 'USD'
 
 /* Set initial window (class) handler. */
 winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
+
 
 </script>
 
@@ -147,9 +90,9 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                     <div class="w-screen max-w-md" :class="winHandler">
                         <div class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
 
-                            <div class="bg-gray-600 px-4 py-6 sm:px-6">
+                            <header class="bg-gray-600 px-4 py-6 sm:px-6">
                                 <div class="flex items-start justify-between">
-                                    <h2 class="text-lg font-medium text-gray-50">
+                                    <h2 class="text-2xl font-medium text-gray-50">
                                         Make a Pledge
                                     </h2>
 
@@ -162,44 +105,69 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </header>
 
-                            <div>
-                                <div class="pb-1 sm:pb-6">
-                                    <div>
-                                        <div class="hidden relative h-40 sm:h-56">
-                                            <img
-                                                class="absolute h-full w-full object-cover"
-                                                src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&h=600&q=80"
-                                                alt=""
-                                            />
-                                        </div>
+                            <div class="px-3 py-2">
 
-                                        <div class="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6">
-                                            <div class="sm:flex-1">
-                                                <div class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3">
+                                <label for="project-name" class="flex flex-col sm:flex-row sm:items-center">
+                                    <span class="text-xl font-medium text-gray-700">
+                                        What is your Pledge amount?
+                                    </span>
+                                </label>
 
-                                                    <NuxtLink :to="props?.campaign?.receiver"
-                                                        class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
-                                                    >
-                                                        Submit My Pledge
-                                                    </NuxtLink>
-                                                </div>
-                                            </div>
+                                <section class="mt">
+                                    <div class="text-sm font-medium text-gray-500 sm:flex-shrink-0">
+                                        Pledge Amount ( in
+                                        <span class="font-medium text-sm text-green-300">
+                                            <a href="javascript://" @click="setNEXA" :class="{ 'font-bold text-base text-green-500' : currency === 'NEXA'}">NEXA</a>
+                                            <span class="text-gray-300 mx-2">-OR-</span>
+                                            <a href="javascript://" @click="setUSD" :class="{ 'font-bold text-base text-green-500' : currency === 'USD' }">USD</a>
+                                        </span>
+                                        )
+                                    </div>
+
+                                    <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
+                                        <input
+                                            v-model="amount"
+                                            type="text"
+                                            class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                                        >
+                                    </div>
+                                </section>
+
+                                <section class="pb-1 sm:pb-6">
+                                    <div class="sm:flex-1">
+                                        <div class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3">
+
+                                            <NuxtLink :to="props?.campaign?.receiver"
+                                                class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
+                                            >
+                                                Click Here To Open Wallet
+                                            </NuxtLink>
                                         </div>
                                     </div>
+                                </section>
+
+                                <div class="flex justify-center">
+                                    <h2 class="text-2xl font-medium">
+                                        - OR - Scan Below
+                                    </h2>
+                                </div>
+
+                                <div class="flex justify-center">
+                                    <img
+                                        :src="dataUrl"
+                                        class="my-5 w-64 h-64 border-2 border-yellow-500 rounded-lg"
+                                    />
                                 </div>
 
                                 <div class="px-4 pt-5 pb-5 sm:px-0 sm:pt-0">
                                     <div class="space-y-8 px-4 sm:px-6 sm:space-y-6">
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-500 sm:flex-shrink-0">
-                                                Pledge Amount (in BCH)
-                                            </div>
 
-                                            <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                                <input v-model="amount" type="text" class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
-                                            </div>
+                                        <div v-if="numChars" class="flex justify-center px-3 py-1 bg-rose-200 border-2 border-rose-400 rounded-md">
+                                            <h3 class="text-rose-700 text-sm">
+                                                Your pledge message is <span class="text-base font-bold">{{numChars}}</span> of {{MAX_MESSAGE_LENGTH}} max
+                                            </h3>
                                         </div>
 
                                         <div>
@@ -208,7 +176,11 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                             </div>
 
                                             <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                                <input v-model="label" type="text" class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                                                <input
+                                                    v-model="label"
+                                                    type="text"
+                                                    class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                                                >
                                             </div>
                                         </div>
 
@@ -218,7 +190,11 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                             </div>
 
                                             <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                                <textarea v-model="comment" rows="3" class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"></textarea>
+                                                <textarea
+                                                    v-model="comment"
+                                                    rows="3"
+                                                    class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                                                </textarea>
                                             </div>
                                         </div>
 
@@ -228,7 +204,11 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                             </div>
 
                                             <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                                <input v-model="url" type="text" class="block w-full shadow-sm sm:text-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+                                                <input
+                                                    v-model="url"
+                                                    type="text"
+                                                    class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                                                >
                                             </div>
                                         </div>
 
@@ -236,6 +216,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
 
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

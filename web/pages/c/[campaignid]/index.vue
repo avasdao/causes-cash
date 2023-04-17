@@ -111,7 +111,7 @@ const loadCampaign = async () => {
 }
 
 const loadMarket = async () => {
-    usd.value = await $fetch(`https://nexa.exchange/mex`)
+    usd.value = Number(await $fetch(`https://nexa.exchange/mex`))
     console.log('USD (mex):', usd.value)
 }
 

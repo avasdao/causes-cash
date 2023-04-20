@@ -101,25 +101,28 @@ const makePledge = async () => {
 
 const route = useRoute()
 const campaignid = route.params.campaignid
-console.log('Campaign ID:', campaignid)
+// console.log('Campaign ID:', campaignid)
 
 const campaign = ref()
 
 const loadCampaign = async () => {
     campaign.value = await $fetch(`/api/campaigns?id=${campaignid}`)
-    console.log('CAMPAIGN (page):', campaign.value)
+    // console.log('CAMPAIGN (page):', campaign.value)
+
+    // FIXME FOR DEV PURPOSES ONLY
+    // campaign.value.receiver = 'nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz'
 }
 
 const loadMarket = async () => {
     usd.value = Number(await $fetch(`https://nexa.exchange/mex`))
-    console.log('USD (mex):', usd.value)
+    // console.log('USD (mex):', usd.value)
 }
 
 const loadWallet = async () => {
     const success = await $fetch('/api/wallet', {
         method: 'POST',
     })
-    console.log('SUCCESS', success)
+    // console.log('SUCCESS', success)
 }
 
 loadCampaign() // NOTE: This is non-blocking.

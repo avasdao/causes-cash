@@ -6,17 +6,17 @@ import { ref } from 'vue'
 const campaigns = ref([])
 
 campaigns.value.push({
-    id: '475b4cfc-ae95-419d-9681-cf378c083963',
-    title: `Causes Cash: Nexa-powered P2P Crowdfunding`,
-    url: 'https://causes.cash/c/475b4cfc-ae95-419d-9681-cf378c083963',
+    id: 'b4240af8-a027-4f8a-9088-2ae97c53cf63',
+    title: `Crowdfunding Plan 2023 and Onwards`,
+    url: 'https://causes.cash/c/b4240af8-a027-4f8a-9088-2ae97c53cf63',
     manager: {
-        name: `0xShomari`,
-        url: 'https://twitter.com/0xShomari',
-        avatar: 'https://pbs.twimg.com/profile_images/617458563/profile5_400x400.jpg',
+        name: `Paul Church`,
+        url: 'https://twitter.com/SingularityP',
+        avatar: 'https://pbs.twimg.com/profile_images/1593205612774670336/qSo8LN0y_400x400.jpg',
     },
-    poster: 'https://i.ibb.co/4dnGnRj/unsplash-hand-red.jpg',
-    createdAt: 'Feb 28 2023',
-    expiresAt: 'Mar 15 2023',
+    poster: 'https://i.ibb.co/6yCdHZ9/nexa-banner.jpg',
+    createdAt: 'Mar 15 2023',
+    expiresAt: 'May 1 2023',
 })
 
 campaigns.value.push({
@@ -45,6 +45,20 @@ campaigns.value.push({
     poster: 'https://i.ibb.co/CK8hJqP/image.png',
     createdAt: 'Mar 15 2023',
     expiresAt: 'Apr 15 2023',
+})
+
+campaigns.value.push({
+    id: '475b4cfc-ae95-419d-9681-cf378c083963',
+    title: `Causes Cash: Nexa-powered P2P Crowdfunding`,
+    url: 'https://causes.cash/c/475b4cfc-ae95-419d-9681-cf378c083963',
+    manager: {
+        name: `0xShomari`,
+        url: 'https://twitter.com/0xShomari',
+        avatar: 'https://pbs.twimg.com/profile_images/617458563/profile5_400x400.jpg',
+    },
+    poster: 'https://i.ibb.co/4dnGnRj/unsplash-hand-red.jpg',
+    createdAt: 'Feb 28 2023',
+    expiresAt: 'Mar 15 2023',
 })
 
 // TBD

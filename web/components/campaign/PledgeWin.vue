@@ -1,6 +1,7 @@
 <script setup>
 /* Import modules. */
 import { ref } from 'vue'
+import { subscribeAddress } from '@nexajs/rostrum'
 import QRCode from 'qrcode'
 
 const props = defineProps({
@@ -12,7 +13,10 @@ const props = defineProps({
 const MAX_MESSAGE_LENGTH = 220
 
 const winHandler = ref(null)
+const cleanup = ref(null)
+
 const amount = ref(null)
+const amountKex = ref(null)
 const currency = ref(null)
 
 const label = ref(null)
@@ -40,17 +44,20 @@ const numChars = computed(() => {
 })
 
 const updateQrCode = async () => {
+    /* Handle (user-defined) amount. */
     if (amount.value > 0) {
-        pledgeUrl.value = `${props.campaign?.receiver}?amount=${amount.value}&label=Causes.Cash`
+        pledgeUrl.value = `${props.campaign?.receiver}?amount=${amountKex.value}&label=Causes.Cash`
     } else {
         pledgeUrl.value = props.campaign?.receiver
     }
+
+    /* Set data URL. */
     dataUrl.value = await QRCode.toDataURL(pledgeUrl.value)
 }
 
-watch(() => amount.value, async () => {
-    updateQrCode()
-})
+const myHandler = (_updatedInfo) => {
+    console.log('PLEDGE HANDLER', _updatedInfo)
+}
 
 /* Monitor pledging flag. */
 watch(() => props.isPledging, (_status) => {
@@ -62,7 +69,37 @@ watch(() => props.isPledging, (_status) => {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
     }
 
+    /* Update QR code. */
     updateQrCode()
+
+    /* Handle pledging status. */
+    if (_status) {
+        const myAddress = props.campaign?.receiver
+        console.log('MY ADDRESS', myAddress)
+
+        /* Start monitoring address. */
+        cleanup.value = subscribeAddress(myAddress, myHandler)
+    } else {
+        console.log('CLEANUP MONITORING')
+        cleanup.value() // Execute to cancel (and cleanup) an Address subscription.
+    }
+})
+
+/* Monitor (user-defined) amount. */
+watch(() => amount.value, (_amount) => {
+    console.log('AMOUNT HAS CHANGED', _amount)
+
+    /* Update QR code. */
+    updateQrCode()
+
+    if (currency.value === 'NEXA') {
+    }
+
+    if (currency.value === 'USD') {
+    }
+
+    // TODO Calculate KEX value.
+    amountKex.value = _amount
 })
 
 const setNEXA = () => {

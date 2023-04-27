@@ -95,7 +95,7 @@ const displayDate = (_timestamp) => {
                     </section>
 
                     <h3 class="mt-3 text-3xl font-semibold leading-10 text-white">
-                        <NuxtLink :to="'/c/' + campaign._id">
+                        <NuxtLink :to="'/c/' + campaign.id">
                             <span class="absolute inset-0"></span>
                             {{campaign.title}}
                         </NuxtLink>

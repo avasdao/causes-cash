@@ -16,6 +16,10 @@ export default defineEventHandler(async (event) => {
 
     const campaignid = query?.id
 
+    if (!campaignid) {
+        return {}
+    }
+
     const campaign = await campaignsDb
         .get(campaignid)
         .catch(err => console.error(err))
@@ -24,6 +28,13 @@ export default defineEventHandler(async (event) => {
     if (!campaign) {
         return {}
     }
+
+    /* Add campaign id. */
+    campaign.id = campaign._id
+
+    /* Delete database fields. */
+    delete campaign._id
+    delete campaign._rev
 
     /* Return campaigns. */
     return campaign

@@ -123,7 +123,7 @@ watch(() => props.campaign, async (_campaign) => {
     /* Set expiration. */
     expiration.value = _campaign.expiresAt
 
-    if (_campaign.goals.length > 1) {
+    if (_campaign.goals?.length > 1) {
         const decoded = decodeAddress(_campaign.receiver)
         console.log('DECODED', decoded)
 

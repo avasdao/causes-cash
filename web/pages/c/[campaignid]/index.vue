@@ -192,7 +192,7 @@ loadWallet() // NOTE: This is non-blocking.
                         </button>
                     </div>
 
-                    <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" _target="blank" class="px-3 py-1 mt-5 flex justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
+                    <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" target="_blank" class="px-3 py-1 mt-5 flex justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
                         <span class="sm:hidden text-sm text-rose-500 font-medium">
                             {{campaign?.receiver?.slice(0, 20)}} ... {{campaign?.receiver?.slice(-15)}}
                         </span>

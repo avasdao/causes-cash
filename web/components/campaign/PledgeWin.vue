@@ -3,6 +3,7 @@
 import { ref } from 'vue'
 import { subscribeAddress } from '@nexajs/rostrum'
 import QRCode from 'qrcode'
+import { Wallet } from '@nexajs/wallet'
 
 const props = defineProps({
     isPledging: Boolean,
@@ -16,7 +17,7 @@ const winHandler = ref(null)
 const cleanup = ref(null)
 
 const amount = ref(null)
-const amountKex = ref(null)
+const amountNex = ref(0)
 const currency = ref(null)
 
 const label = ref(null)
@@ -25,6 +26,13 @@ const url = ref(null)
 
 const dataUrl = ref(null)
 const pledgeUrl = ref(null)
+const depositAddress = ref(null)
+
+/* Initialize stores. */
+import { useProfileStore } from '@/stores/profile'
+
+/* Initialize Profile. */
+const Profile = useProfileStore()
 
 const numChars = computed(() => {
     /* Set label length. */
@@ -45,11 +53,12 @@ const numChars = computed(() => {
 
 const updateQrCode = async () => {
     /* Handle (user-defined) amount. */
-    if (amount.value > 0) {
-        pledgeUrl.value = `${props.campaign?.receiver}?amount=${amountKex.value}&label=Causes.Cash`
+    if (amountNex.value > 0) {
+        pledgeUrl.value = `${depositAddress.value}?amount=${amountNex.value}&label=Causes.Cash`
     } else {
-        pledgeUrl.value = props.campaign?.receiver
+        pledgeUrl.value = depositAddress.value
     }
+    console.log('PLEDGE URL', pledgeUrl.value)
 
     /* Set data URL. */
     dataUrl.value = await QRCode.toDataURL(pledgeUrl.value)
@@ -60,7 +69,7 @@ const myHandler = (_updatedInfo) => {
 }
 
 /* Monitor pledging flag. */
-watch(() => props.isPledging, (_status) => {
+watch(() => props.isPledging, async (_status) => {
     console.log('PLEDGING HAS CHANGED', _status)
 
     if (_status) {
@@ -69,19 +78,29 @@ watch(() => props.isPledging, (_status) => {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
     }
 
+    const wallet = new Wallet(Profile.mnemonic)
+    console.log('WALLET', wallet)
+
+    depositAddress.value = wallet.address
+    console.log('DEPOSIT ADDRESS', depositAddress.value)
+
     /* Update QR code. */
     updateQrCode()
 
     /* Handle pledging status. */
     if (_status) {
-        const myAddress = props.campaign?.receiver
-        console.log('MY ADDRESS', myAddress)
+        // const myAddress = props.campaign?.receiver
+        // console.log('MY ADDRESS', myAddress)
 
         /* Start monitoring address. */
-        cleanup.value = subscribeAddress(myAddress, myHandler)
+        cleanup.value = await subscribeAddress(depositAddress.value, myHandler)
     } else {
-        console.log('CLEANUP MONITORING')
-        cleanup.value() // Execute to cancel (and cleanup) an Address subscription.
+        console.log('CLEANUP MONITORING', cleanup.value)
+
+        // TODO Return cleanup method from `subscribeAddress`
+        // if (cleanup.value) {
+        //     cleanup.value() // Execute to cancel (and cleanup) an Address subscription.
+        // }
     }
 })
 
@@ -99,7 +118,7 @@ watch(() => amount.value, (_amount) => {
     }
 
     // TODO Calculate KEX value.
-    amountKex.value = _amount
+    amountNex.value = _amount
 })
 
 const setNEXA = () => {
@@ -185,7 +204,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                     <div class="sm:flex-1">
                                         <div class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3">
 
-                                            <NuxtLink :to="props?.campaign?.receiver"
+                                            <NuxtLink :to="depositAddress"
                                                 class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
                                             >
                                                 Click Here To Open Wallet
@@ -200,7 +219,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
                                     </h2>
                                 </div>
 
-                                <NuxtLink :to="props?.campaign?.receiver"
+                                <NuxtLink :to="depositAddress"
                                     class="flex justify-center"
                                 >
                                     <img

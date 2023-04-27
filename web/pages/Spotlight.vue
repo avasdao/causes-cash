@@ -1,51 +1,41 @@
 <script setup lang="ts">
 /* Import modules. */
+import moment from 'moment'
 import { ref } from 'vue'
 
 /* Initialize campaigns. */
 const campaigns = ref([])
 
-campaigns.value.push({
-    id: '475b4cfc-ae95-419d-9681-cf378c083963',
-    title: `Causes Cash: Nexa-powered P2P Crowdfunding`,
-    url: 'https://causes.cash/c/475b4cfc-ae95-419d-9681-cf378c083963',
-    manager: {
-        name: `0xShomari`,
-        url: 'https://twitter.com/0xShomari',
-        avatar: 'https://pbs.twimg.com/profile_images/617458563/profile5_400x400.jpg',
-    },
-    poster: 'https://i.ibb.co/4dnGnRj/unsplash-hand-red.jpg',
-    createdAt: 'Feb 28 2023',
-    expiresAt: 'Mar 15 2023',
-})
+const loadCampaigns = async () => {
+    /* Initialize locals. */
+    let campaign
 
-campaigns.value.push({
-    id: '707e2a8c-4eea-4c26-9ea2-c548e9e91726',
-    title: `Nexa CashFusion`,
-    url: 'https://causes.cash/c/707e2a8c-4eea-4c26-9ea2-c548e9e91726',
-    manager: {
-        name: `Ava Nakamoto`,
-        url: 'https://twitter.com/0xShomari',
-        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    poster: 'https://i.ibb.co/CK8hJqP/image.png',
-    createdAt: 'Mar 15 2023',
-    expiresAt: 'Apr 15 2023',
-})
+    /* Initialize spotlight campaign ids. */
+    const spotlights = [
+        'b4240af8-a027-4f8a-9088-2ae97c53cf63',
+        'b8fac25d-e619-4ddf-b474-af084e8250ce',
+        '707e2a8c-4eea-4c26-9ea2-c548e9e91726',
+        '475b4cfc-ae95-419d-9681-cf378c083963',
+    ]
 
-campaigns.value.push({
-    id: 'b8fac25d-e619-4ddf-b474-af084e8250ce',
-    title: `Nexa Ledger (Live) Wallet`,
-    url: 'https://causes.cash/c/b8fac25d-e619-4ddf-b474-af084e8250ce',
-    manager: {
-        name: `Satoshi Nakamoto`,
-        url: 'https://twitter.com/0xShomari',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    poster: 'https://i.ibb.co/9V3YHj1/image.png',
-    createdAt: 'Apr 15 2023',
-    expiresAt: 'May 15 2023',
-})
+    /* Add campaigns. */
+    for (let i = 0; i < spotlights.length; i++) {
+        /* Request campaign. */
+        campaign = await $fetch(`/api/campaigns?id=${spotlights[i]}`)
+            .catch(err => console.error(err))
+        // console.log('SPOTLIGHT CAMPAIGN', campaign)
+
+        /* Add campaign. */
+        campaigns.value.push(campaign)
+    }
+}
+
+/* Load campaigns. */
+loadCampaigns()
+
+const displayDate = (_timestamp) => {
+    return moment.unix(_timestamp).format('ll')
+}
 
 // TBD
 </script>
@@ -70,7 +60,7 @@ campaigns.value.push({
                     class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80"
                 >
                     <img
-                        :src="campaign.poster"
+                        :src="campaign.media?.poster"
                         alt=""
                         class="absolute inset-0 -z-10 h-full w-full object-cover"
                     />
@@ -81,7 +71,7 @@ campaigns.value.push({
 
                     <section class="flex flex-wrap justify-between items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
                         <time datetime="2020-03-16" class="mr-8 text-xl">
-                            {{campaign.expiresAt}}
+                            {{displayDate(campaign.expiresAt)}}
                         </time>
 
                         <div class="-ml-4 flex items-center gap-x-4">
@@ -91,7 +81,7 @@ campaigns.value.push({
 
                             <div class="flex gap-x-2.5">
                                 <img
-                                    :src="campaign.manager?.avatar"
+                                    :src="campaign.manager?.icon"
                                     alt=""
                                     class="h-6 w-6 flex-none rounded-full bg-white/10"
                                 />

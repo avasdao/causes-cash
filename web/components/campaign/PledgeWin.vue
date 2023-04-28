@@ -1,9 +1,18 @@
 <script setup>
 /* Import modules. */
-import { ref } from 'vue'
-import { subscribeAddress } from '@nexajs/rostrum'
+import { encodePrivateKeyWif } from '@nexajs/hdnode'
+import { listUnspent } from '@nexajs/address'
 import QRCode from 'qrcode'
+import { ref } from 'vue'
+import { sendCoin } from '@nexajs/purse'
+import { subscribeAddress } from '@nexajs/rostrum'
 import { Wallet } from '@nexajs/wallet'
+
+/* Libauth helpers. */
+import {
+    instantiateSha256,
+} from '@bitauth/libauth'
+
 
 const props = defineProps({
     isPledging: Boolean,
@@ -12,6 +21,7 @@ const props = defineProps({
 })
 
 const MAX_MESSAGE_LENGTH = 220
+const DUST_LIMIT = 546
 
 const winHandler = ref(null)
 const cleanup = ref(null)
@@ -26,6 +36,7 @@ const url = ref(null)
 
 const dataUrl = ref(null)
 const pledgeUrl = ref(null)
+const wallet = ref(null)
 const depositAddress = ref(null)
 
 /* Initialize stores. */
@@ -64,8 +75,70 @@ const updateQrCode = async () => {
     dataUrl.value = await QRCode.toDataURL(pledgeUrl.value)
 }
 
-const myHandler = (_updatedInfo) => {
+const depositHandler = async (_updatedInfo) => {
     console.log('PLEDGE HANDLER', _updatedInfo)
+
+    let unspent
+
+    /* Initialize SHA-256. */
+    const sha256 = await instantiateSha256()
+
+    /* Encode Private Key WIF. */
+    const wif = encodePrivateKeyWif(sha256, wallet.value.privateKey, 'mainnet')
+    console.log('PRIVATE KEY (WIF):', wif)
+
+    // Fetch all unspent transaction outputs for the temporary in-browser wallet.
+    unspent = await listUnspent(wallet.value.address)
+    console.log('\n  Unspent outputs:\n', unspent)
+
+    /* Filter out ANY tokens. */
+    // FIXME We should probably do something better than this, lol.
+    unspent = unspent.filter(_unspent => {
+        return _unspent.value > DUST_LIMIT
+    })
+
+    /* Validate unspent outputs. */
+    if (unspent.length === 0) {
+        return console.error('There are NO unspent outputs available.')
+    }
+
+    /* Build parameters. */
+    const coins = unspent.map(_unspent => {
+        const outpoint = _unspent.outpointHash
+        const satoshis = _unspent.value
+
+        return {
+            outpoint,
+            satoshis,
+            wif,
+        }
+    })
+    console.log('\n  Coins:', coins)
+
+    const receivers = [
+        {
+            data: '1337deadbeef'
+        },
+        {
+            address: props.campaign?.receiver,
+            satoshis: -1, // alias for send MAX
+        }
+    ]
+    console.log('\n  Receivers:', receivers)
+
+    /* Set automatic fee (handling) flag. */
+    const autoFee = true
+
+    /* Send UTXO request. */
+    const response = await sendCoin(coins, receivers, autoFee)
+    console.log('Send UTXO (response):', response)
+
+    try {
+        const txResult = JSON.parse(response)
+        console.log('TX RESULT', txResult)
+    } catch (err) {
+        console.error(err)
+    }
 }
 
 /* Monitor pledging flag. */
@@ -78,10 +151,10 @@ watch(() => props.isPledging, async (_status) => {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
     }
 
-    const wallet = new Wallet(Profile.mnemonic)
-    console.log('WALLET', wallet)
+    wallet.value = new Wallet(Profile.mnemonic)
+    console.log('WALLET', wallet.value)
 
-    depositAddress.value = wallet.address
+    depositAddress.value = wallet.value.address
     console.log('DEPOSIT ADDRESS', depositAddress.value)
 
     /* Update QR code. */
@@ -93,7 +166,8 @@ watch(() => props.isPledging, async (_status) => {
         // console.log('MY ADDRESS', myAddress)
 
         /* Start monitoring address. */
-        cleanup.value = await subscribeAddress(depositAddress.value, myHandler)
+        cleanup.value = await subscribeAddress(depositAddress.value, depositHandler)
+        console.log('CLEANUP', cleanup.value)
     } else {
         console.log('CLEANUP MONITORING', cleanup.value)
 
@@ -108,17 +182,21 @@ watch(() => props.isPledging, async (_status) => {
 watch(() => amount.value, (_amount) => {
     console.log('AMOUNT HAS CHANGED', _amount)
 
-    /* Update QR code. */
-    updateQrCode()
-
     if (currency.value === 'NEXA') {
+        // TODO Calculate KEX value.
+        amountNex.value = _amount
     }
 
     if (currency.value === 'USD') {
-    }
+        // TODO Calculate KEX value.
+        // amountNex.value = _amount
 
-    // TODO Calculate KEX value.
-    amountNex.value = _amount
+        amountNex.value = ((amount.value / props.usd) * 1000000).toFixed(2)
+    }
+    console.log('AMOUNT NEX', amountNex.value)
+
+    /* Update QR code. */
+    updateQrCode()
 })
 
 const setNEXA = () => {

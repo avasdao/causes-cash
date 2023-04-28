@@ -115,15 +115,58 @@ const depositHandler = async (_updatedInfo) => {
     })
     console.log('\n  Coins:', coins)
 
-    const receivers = [
-        {
-            data: '1337deadbeef'
-        },
-        {
-            address: props.campaign?.receiver,
-            satoshis: -1, // alias for send MAX
+    /* Initialize user data. */
+    let userData = ''
+
+    if (label.value && label.value !== '') {
+        userData += label.value
+    }
+
+    if (comment.value && comment.value !== '' && !userData) {
+        userData += comment.value
+    } else if (comment.value !== '') {
+        userData += '~~' + comment.value
+    }
+
+    if (url.value && url.value !== '' && !userData) {
+        userData += url.value
+    } else if (url.value !== '') {
+        userData += '~~' + url.value
+    }
+
+    /* Initialize receivers. */
+    const receivers = []
+
+    /* Validate user data. */
+    if (userData) {
+        console.log('USER DATA', userData)
+
+        /* Initialize hex data. */
+        let hexData = ''
+
+        /* Convert user data (string) to hex. */
+        for (let i = 0; i < userData.length; i++) {
+            /* Convert to hex code. */
+            let code = userData.charCodeAt(i).toString(16)
+
+            /* Add hex code to string. */
+            hexData += code
         }
-    ]
+        console.log('HEX DATA', hexData)
+
+        // TODO Validate data length is less than OP_RETURN max (220).
+
+        /* Add OP_RETURN data. */
+        receivers.push({
+            data: hexData,
+        })
+    }
+
+    /* Add value output. */
+    receivers.push({
+        address: props.campaign?.receiver,
+        satoshis: -1, // alias for send MAX
+    })
     console.log('\n  Receivers:', receivers)
 
     /* Set automatic fee (handling) flag. */

@@ -12,10 +12,10 @@ const Profile = useProfileStore()
 let web3Address = ref(null)
 
 /* Import components. */
-import Account from './Profile/Account'
-import Activity from './Profile/Activity'
-import General from './Profile/General'
-import Notes from './Profile/Notes'
+import Account from './profile/Account'
+import Activity from './profile/Activity'
+import General from './profile/General'
+import Notes from './profile/Notes'
 
 
 /**

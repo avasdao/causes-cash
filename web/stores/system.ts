@@ -7,20 +7,12 @@ import { ethers } from 'ethers'
  */
 export const useSystemStore = defineStore('system', {
     state: () => ({
-        /* Initialize description. */
-        // _description: null,
-        // _description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-        // TBD
-
-        sponsors: 'Our beloved sponsors',
-
-        // banner: 'https://i.ibb.co/cF9kbVT/causes-for-nexa.jpg',
-
-        // currency: 'NEXA',
-
         /* Set constants. */
-        ONE_BITCOIN: 100000000,
-        ONE_SMART_BITCOIN: BigInt('1000000000000000000'),
+        ONE_SAT: BigInt('1'),
+        ONE_NEX: BigInt('100'),
+        ONE_KEX: BigInt('100000'),
+        ONE_MEX: BigInt('100000000'),
+        ONE_META: BigInt('1000000000000000000'),
 
         /* Initialize notifications. */
         notif: {
@@ -30,6 +22,8 @@ export const useSystemStore = defineStore('system', {
             description: null,
             delay: 7000,
         },
+
+        sponsors: 'Our beloved sponsors',
 
         /* Initialize network. */
         // NOTE: Current available options are `mainnet` and `testnet`.
@@ -200,7 +194,7 @@ export const useSystemStore = defineStore('system', {
     }),
 
     getters: {
-//
+        // TODO
     },
 
     actions: {
@@ -208,6 +202,7 @@ export const useSystemStore = defineStore('system', {
         setTitleVisibility(state, _isShowing) {
             state.titleVisibility = _isShowing
         },
+
         setSheetVisibility(state, _isShowing) {
             // console.log('SETTING SHEET', _isShowing);
             if (typeof _isShowing !== 'undefined') {
@@ -216,24 +211,28 @@ export const useSystemStore = defineStore('system', {
                 state.sheetVisibility = !state.sheetVisibility
             }
         },
+
         showAd(state, _adid) {
             // console.log('SHOWING AD', _adid)
             state.adDisplay = _adid
         },
+
         showCampaign(state, _campaignid) {
             // console.log('SHOWING CAMPAIGN', _campaignid)
             state.campaignDisplay = _campaignid
         },
+
         showPIF(state, _campaignid) {
             // console.log('SHOWING PIF', _campaignid)
             state.pifDisplay = _campaignid
         },
+
         showProfile(state, _showing) {
             // console.log('SHOWING PROFILE', _showing)
 
             state.profileDisplay = _showing
         },
-
     },
+
     persist: true,
 })

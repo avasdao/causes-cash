@@ -5,12 +5,12 @@ import numeral from 'numeral'
 import { ref } from 'vue'
 
 /* Import components. */
-import Calendar from './Launchpad/Calendar.vue'
-import Owner from './Launchpad/Owner.vue'
-import Manager from './Launchpad/Manager.vue'
-import Recipients from './Launchpad/Recipients.vue'
-import Spotlight from './Launchpad/Spotlight.vue'
-import Summary from './Launchpad/Summary.vue'
+import Calendar from './launchpad/Calendar.vue'
+import Owner from './launchpad/Owner.vue'
+import Manager from './launchpad/Manager.vue'
+import Recipients from './launchpad/Recipients.vue'
+import Spotlight from './launchpad/Spotlight.vue'
+import Summary from './launchpad/Summary.vue'
 
 /* Import stores. */
 import { useSystemStore } from '@/stores/system'

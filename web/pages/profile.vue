@@ -58,10 +58,10 @@ const init = async () => {
 }
 
 // init()
-
-const wallet = new Wallet(Profile.mnemonic)
-console.log('WALLET', wallet)
-console.log('ADDRESS', wallet.address)
+console.log('Profile.mnemonic', Profile.mnemonic)
+// const wallet = new Wallet(Profile.mnemonic)
+// console.log('WALLET', wallet)
+// console.log('ADDRESS', wallet.address)
 </script>
 
 <template>

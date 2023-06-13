@@ -115,7 +115,7 @@ const expirationDisplay = computed(() => {
 })
 
 watch(() => props.campaign, async (_campaign) => {
-    console.log('CAMPAIGN HAS CHANGED', _campaign)
+    // console.log('CAMPAIGN HAS CHANGED', _campaign)
 
     let balance = 0
     let history
@@ -125,31 +125,31 @@ watch(() => props.campaign, async (_campaign) => {
 
     if (_campaign.goals?.length > 1) {
         const decoded = decodeAddress(_campaign.receiver)
-        console.log('DECODED', decoded)
+        // console.log('DECODED', decoded)
 
         const scriptPubKey = binToHex(decoded.hash).slice(2)
-        console.log('scriptPubKey', scriptPubKey)
+        // console.log('scriptPubKey', scriptPubKey)
 
         /* Request (receiver) address history. */
         history = await getAddressHistory(_campaign.receiver)
             .catch(err => console.error(err))
-        console.log('HISTORY', history)
+        // console.log('HISTORY', history)
 
         for (let i = 0; i < history.length; i++) {
             const tx = await getTransaction(history[i].tx_hash)
-            console.log('TX', tx)
+            // console.log('TX', tx)
 
             for (let j = 0; j < tx.vout.length; j++) {
                 const output = tx.vout[j]
-                console.log('OUTPUT', output)
+                // console.log('OUTPUT', output)
 
                 if (output.scriptPubKey.hex === scriptPubKey) {
                     balance += output.value_satoshi
-                    console.log('BALANCE', balance)
+                    // console.log('BALANCE', balance)
                 }
             }
         }
-        console.log('BALANCE (final):', balance)
+        // console.log('BALANCE (final):', balance)
 
         // FIXME Handle campaign index (using _campaign.goals)
         campaignGoalIdx.value = 0
@@ -157,7 +157,7 @@ watch(() => props.campaign, async (_campaign) => {
         /* Request (receiver) address balance. */
         balance = await getAddressBalance(_campaign.receiver)
             .catch(err => console.error(err))
-        console.log('BALANCE', balance)
+        // console.log('BALANCE', balance)
 
         // FIXME Handle campaign index (using _campaign.goals)
         campaignGoalIdx.value = 0

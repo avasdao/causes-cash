@@ -1,0 +1,17 @@
+{
+  "name": "causesdb",
+  "version": "23.6.13",
+  "description": "Causes Cash Database / Daemon",
+  "main": "server.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@nexajs/address": "^23.6.7",
+    "@nexajs/rostrum": "^23.6.7",
+    "@nexajs/rpc": "^23.5.15",
+    "@nexajs/utils": "^23.5.15",
+    "moment": "^2.29.4",
+    "numeral": "^2.0.6",
+    "uuid": "^9.0.0"
+  }
+}

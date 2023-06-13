@@ -6,12 +6,16 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@nexajs/address": "^23.6.7",
-    "@nexajs/rostrum": "^23.6.7",
-    "@nexajs/rpc": "^23.5.15",
-    "@nexajs/utils": "^23.5.15",
-    "moment": "^2.29.4",
-    "numeral": "^2.0.6",
-    "uuid": "^9.0.0"
+    "@nexajs/address": "23.6.7",
+    "@nexajs/rostrum": "23.6.7",
+    "@nexajs/rpc": "23.5.15",
+    "@nexajs/utils": "23.5.15",
+    "eventsource": "2.0.2",
+    "moment": "2.29.4",
+    "node-fetch": "3.3.1",
+    "numeral": "2.0.6",
+    "pouchdb": "8.0.1",
+    "puppeteer": "20.7.1",
+    "uuid": "9.0.0"
   }
 }

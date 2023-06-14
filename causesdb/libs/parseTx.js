@@ -15,8 +15,8 @@ import {
     encodeDataPush,
 } from '@bitauth/libauth'
 
-export default async (_receiver, _txidem) => {
-    const transaction = await getTransaction(_txidem)
+export default async (_receiver, _txid) => {
+    const transaction = await getTransaction(_txid)
     // console.log('TRANSACTION', transaction)
 
     const inputs = transaction?.vin
@@ -49,12 +49,19 @@ export default async (_receiver, _txidem) => {
         return _out.scriptPubKey.hex === _receiver
     })
 
+    const satoshis = received.value_satoshi
+
+    const txidem = transaction.txidem
+
     /* Set package. */
     const pkg = {
         sender,
+        satoshis,
+        txidem,
+        txid: _txid,
         // inputs,
         // outputs,
-        received,
+        // received,
     }
 
     /* Return package. */

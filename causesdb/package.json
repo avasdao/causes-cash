@@ -6,7 +6,9 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@bitauth/libauth": "^1.19.1",
     "@nexajs/address": "23.6.7",
+    "@nexajs/crypto": "^23.5.22",
     "@nexajs/rostrum": "^23.6.13",
     "@nexajs/rpc": "23.5.15",
     "@nexajs/utils": "23.5.15",

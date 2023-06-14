@@ -2,12 +2,16 @@
 import fetch from 'node-fetch'
 import moment from 'moment'
 import PouchDB from 'pouchdb'
+import { decodeAddress } from '@nexajs/address'
 import {
     getAddressHistory,
     getGenesisInfo,
 } from '@nexajs/rostrum'
 import { Rpc } from '@nexajs/rpc'
+import { binToHex } from '@nexajs/utils'
 import { v4 as uuidv4 } from 'uuid'
+
+import parseTx from './libs/parseTx.js'
 
 /* Initialize databases. */
 const vendingDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/vending`)
@@ -50,10 +54,13 @@ const getInfo = async () => {
 }
 
 
-const doWork = (_history, _startIdx) => {
+const doWork = async (_receiver, _history, _startIdx) => {
     const queue = _history.slice(_startIdx)
 
     console.log('QUEUE', queue.length, queue)
+
+    const parsed = await parseTx(_receiver, queue[0].tx_hash)
+    console.log('PARSED', parsed)
 }
 
 const run = async () => {
@@ -92,7 +99,10 @@ const run = async () => {
         if (history.length > txsCount) {
             // console.log('WE GOT WORK TO DO!!!')
 
-            doWork(history, txsCount)
+            const { hash } = decodeAddress(receiver)
+            // console.log('HASH', binToHex(hash))
+
+            doWork(binToHex(hash).slice(2), history, txsCount)
         } else {
             console.log('All caught up.')
         }

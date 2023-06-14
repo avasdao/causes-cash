@@ -1,19 +1,30 @@
-#!/usr/bin/env node
+/* Import modules. */
+import moment from 'moment'
+import PouchDB from 'pouchdb'
+import { v4 as uuidv4 } from 'uuid'
 
-/* global BigInt */
-
-const bchaddr = require('bchaddrjs-slp')
-// const BITBOX = require('bitbox-sdk').BITBOX
-// const bitbox = new BITBOX()
-const bitcore = require('bitcore-lib-cash')
-const Mnemonic = require('bitcore-mnemonic')
-const PouchDB = require('pouchdb')
-const moment = require('moment')
-const superagent = require('superagent')
-// const util = require('util')
+/* Initialize databases. */
+const payoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/payouts`)
+const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
 
 /* Set dust amount. */
 const DUST_AMOUNT = 546
+
+
+
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+
+
+const bchaddr = require('bchaddrjs-slp')
+const bitcore = require('bitcore-lib-cash')
+const Mnemonic = require('bitcore-mnemonic')
+const superagent = require('superagent')
 
 let mnemonic = require('./.mnemonic')
 
@@ -231,67 +242,6 @@ const mint = async (_baton, _privateKeys, _doc, _amountToMint, _isLive) => {
 }
 
 /**
- * Baton Query
- */
-const batonQuery = async function () {
-    let query = {
-        v: 3,
-        q: {
-            db: ['t'],
-            find: {
-                'tokenDetails.tokenIdHex': TOKEN_ID
-            }
-        }
-    }
-    let b64 = Buffer.from(JSON.stringify(query)).toString('base64')
-    // let url = 'https://slpdb.fountainhead.cash/q/' + b64
-    let url = 'https://slpdb.devops.cash/q/' + b64
-
-    // Make an HTTP request to bitdb.fountainhead.cash public endpoint
-    const batonDetails = await superagent.get(url)
-    console.log('\nBaton details:', batonDetails.body)
-
-    const outpoint = batonDetails.body.t[0].mintBatonUtxo
-    // console.log('\nBaton outpoint:', outpoint)
-
-    const txid = outpoint.split(':')[0]
-
-    query = {
-        v: 3,
-        q: {
-            db: ['c', 'u'],
-            find: {
-                'tx.h': txid
-            }
-        }
-    }
-    b64 = Buffer.from(JSON.stringify(query)).toString('base64')
-    // url = 'https://bitdb.bch.sx/q/' + b64
-    url = 'https://bitdb.devops.cash/q/' + b64
-
-    // Make an HTTP request to bitdb.fountainhead.cash public endpoint
-    const batonTx = await superagent.get(url)
-    // console.log('BATON TX', batonTx.body)
-
-    let baton = null
-
-    if (batonTx.body.c.length) {
-        baton = batonTx.body.c[0].out[3].e
-    }
-
-    if (batonTx.body.u.length) {
-        baton = batonTx.body.u[0].out[3].e
-    }
-
-    if (baton) {
-        baton.txid = txid
-    }
-    // console.log('BATON', baton)
-
-    return baton
-}
-
-/**
  * Mint Pending
  */
 const mintPending = async function (_isLive) {
@@ -310,7 +260,7 @@ const mintPending = async function (_isLive) {
             const pendingDoc = results.rows[i].doc
             console.log('PENDING DOC', pendingDoc)
 
-            const baton = await batonQuery()
+            // const baton = await batonQuery()
             // console.log('BATON', baton)
 
             /* Initialize number of tickets. */

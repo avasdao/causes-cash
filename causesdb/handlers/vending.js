@@ -1,4 +1,25 @@
-#!/usr/bin/env node
+/* Import modules. */
+import moment from 'moment'
+import PouchDB from 'pouchdb'
+import { v4 as uuidv4 } from 'uuid'
+
+/* Initialize databases. */
+const payoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/payouts`)
+const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
+
+/* Set dust amount. */
+const DUST_AMOUNT = 546
+
+
+
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+
 
 /* Import core modules. */
 const numeral = require('numeral')

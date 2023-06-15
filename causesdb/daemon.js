@@ -13,6 +13,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 import parseTx from './libs/parseTx.js'
 
+/* Initialize sleep. */
+const sleep = ms => new Promise(r => setTimeout(r, ms))
+
 /* Initialize databases. */
 const vendingDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/vending`)
 const vendingPayoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/vending_payouts`)
@@ -29,28 +32,11 @@ setInterval(() => {
 }, 30000)
 
 
-const runTest = async () => {
-    /* Set request parameters. */
-    const params = []
-    console.log('AUTH PARAMS', params)
-
-    /* Send request to (local) node. */
-    const response = await Rpc
-        .call('getwalletinfo', params, {
-            username: 'user',
-            password: 'password',
-        })
-        .catch(err => console.error(err))
-    console.log('NODE RESPONSE', response)
-
-}
-
 const getInfo = async () => {
     const token = await getGenesisInfo(AVAS_TOKEN_ID)
         .catch(err => console.error(err))
     console.log('TOKEN', token)
 }
-
 
 const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, _startIdx) => {
     let response
@@ -64,6 +50,9 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
     const { hash } = decodeAddress(_receiver)
     // console.log('HASH', binToHex(hash))
     const pkScriptHash = binToHex(hash).slice(2)
+
+    // TODO Support the FULL queue.
+    // await sleep(3000) // 3-second pause
 
     const source = await parseTx(pkScriptHash, queue[0].tx_hash)
     console.log('SOURCE', source)
@@ -90,30 +79,55 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
     const reward = parseInt(source.satoshis * _rate)
     console.log('REWARD', reward)
 
-    const cmd = `nexa-cli token send ${_groupid} ${source.sender} ${reward}`
-    console.log('NODE CMD\n', cmd)
+    const rpcCmd = `nexa-cli token send ${_groupid} ${source.sender} ${reward}`
+    console.log('RPC CMD\n', rpcCmd)
 
     try {
-        // RPC send tokens
-        txidem = true
+        /* Set request parameters. */
+        const params = [
+            'send',
+            _groupid,
+            source.sender,
+            reward,
+        ]
+        console.log('AUTH PARAMS', params)
+
+        /* Send request to (local) node. */
+        const response = await Rpc
+            .call('token', params, {
+                username: 'user',
+                password: 'password',
+            })
+            .catch(err => console.error(err))
+        console.log('NODE RESPONSE', response)
+
+        /* Handle response. */
+        if (response?.result) {
+            txidem = response.result
+        } else {
+            // TODO Add ADMIN email notifcation.
+            return console.error(response?.error)
+        }
     } catch (err) {
         console.error(err)
+        // TODO Add ADMIN email notifcation.
+        return console.error('Oops! We tried to send tokens??')
     }
 
     if (txidem) { // response
         snapshot = await vendingDb
             .get(_vmid)
             .catch(err => console.error(err))
-        console.log('SNAPSHOT-1', snapshot)
+        // console.log('SNAPSHOT-1', snapshot)
 
         snapshot.paid = parseInt(snapshot.paid + reward)
         snapshot.txCount++
         snapshot.updatedAt = moment().unix()
 
-        response = await vendingDb
-            .put(snapshot)
-            .catch(err => console.error(err))
-        console.log('UPDATE', response)
+        // response = await vendingDb
+        //     .put(snapshot)
+        //     .catch(err => console.error(err))
+        // // console.log('UPDATE', response)
 
         const payout = {
             _id: source.txidem,
@@ -129,13 +143,15 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
             },
             createdAt: moment().unix(),
         }
-        console.log('PAYOUT', payout)
+        // console.log('PAYOUT', payout)
 
-        response = await vendingPayoutsDb
-            .put(payout)
-            .catch(err => console.error(err))
-        console.log('PAYOUT', response)
+        // response = await vendingPayoutsDb
+        //     .put(payout)
+        //     .catch(err => console.error(err))
+        // // console.log('PAYOUT', response)
     }
+
+    return true
 }
 
 const run = async () => {
@@ -149,10 +165,6 @@ const run = async () => {
     let vm
     let vmid
     let vms
-
-    // runTest()
-
-    // await getInfo()
 
     results = await vendingDb
         .query('api/isActive', {
@@ -186,11 +198,20 @@ const run = async () => {
         if (history.length > txCount) {
             // console.log('WE GOT WORK TO DO!!!')
 
-            doWork(vmid, campaignid, groupid, receiver, rate, history, txCount)
+            await doWork(vmid, campaignid, groupid, receiver, rate, history, txCount)
         } else {
             console.log('All caught up.')
         }
+
+        /* Validate "next" VM. */
+        if ((i + 1) < vms.length) {
+            await sleep(3000) // 3-second pause
+        }
     }
+
+    return true
 }
 
-run()
+await run()
+await sleep(3000) // 3-second pause
+console.log('ALL DONE!!!')

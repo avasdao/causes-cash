@@ -72,6 +72,25 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
     const source = await parseTx(pkScriptHash, queue[0].tx_hash)
     console.log('SOURCE', source)
 
+    /* Validate source. */
+    // NOTE: Will occur when SENDING coins from address.
+    if (!source) {
+        snapshot = await vendingDb
+            .get(_vmid)
+            .catch(err => console.error(err))
+        console.log('SNAPSHOT-1', snapshot)
+
+        snapshot.txCount++
+        snapshot.updatedAt = moment().unix()
+
+        response = await vendingDb
+            .put(snapshot)
+            .catch(err => console.error(err))
+        console.log('UPDATE', response)
+
+        return console.log('Skipping SENT coins.')
+    }
+
     const reward = parseInt(source.satoshis * _rate)
     console.log('REWARD', reward)
 
@@ -93,12 +112,12 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
 
         snapshot.paid = parseInt(snapshot.paid + reward)
         snapshot.txCount++
-        snapshot.updatedAt = moment.unix()
+        snapshot.updatedAt = moment().unix()
 
-        // response = await vendingDb
-        //     .put(snapshot)
-        //     .catch(err => console.error(err))
-        // console.log('UPDATE', response)
+        response = await vendingDb
+            .put(snapshot)
+            .catch(err => console.error(err))
+        console.log('UPDATE', response)
 
         const payout = {
             _id: source.txidem,
@@ -116,10 +135,10 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         }
         console.log('PAYOUT', payout)
 
-        // response = await vendingPayoutsDb
-        //     .put(payout)
-        //     .catch(err => console.error(err))
-        // console.log('PAYOUT', response)
+        response = await vendingPayoutsDb
+            .put(payout)
+            .catch(err => console.error(err))
+        console.log('PAYOUT', response)
     }
 }
 

@@ -49,6 +49,12 @@ export default async (_receiver, _txid) => {
         return _out.scriptPubKey.hex === _receiver
     })
 
+    /* Validate received. */
+    // NOTE: Will occur when SENDING coins from address.
+    if (!received) {
+        return null
+    }
+
     const satoshis = received.value_satoshi
 
     const txidem = transaction.txidem

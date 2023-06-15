@@ -27,11 +27,6 @@ const AVAS_TOKEN_ID = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2a
 // const AVAS_TOKEN_GROUP = 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x'
 const AVAS_TOKEN_DECIMALS = 8
 
-setInterval(() => {
-    console.log('waiting...')
-}, 30000)
-
-
 const getInfo = async () => {
     const token = await getGenesisInfo(AVAS_TOKEN_ID)
         .catch(err => console.error(err))
@@ -213,6 +208,8 @@ const run = async () => {
     return true
 }
 
-await run()
-await sleep(3000) // 3-second pause
-console.log('ALL DONE!!!')
+while (true) {
+    console.time('\n\n\n  Starting next run...\n\n\n')
+    await run()
+    await sleep(3000) // 3-second pause
+}

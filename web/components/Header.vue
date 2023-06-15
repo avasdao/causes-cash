@@ -33,9 +33,9 @@
                         Sign in
                     </a>
 
-                    <NuxtLink to="/c/bootstrap" class="inline-block bg-lime-600 py-2 px-4 border-4 border-lime-300 rounded-xl hover:bg-lime-700 hover:border-lime-500">
+                    <NuxtLink to="https://avas.cash/bootstrap" target="_blank" class="inline-block bg-lime-600 py-2 px-4 border-4 border-lime-300 rounded-xl hover:bg-lime-700 hover:border-lime-500">
                         <span class="text-2xl font-bold text-gray-50 tracking-tighter">
-                            👉 Nexa Is Boostrapping 👀
+                            👉 Bootstrap for $AVAS 👀
                         </span>
                     </NuxtLink>
                 </div>

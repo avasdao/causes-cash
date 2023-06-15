@@ -14,7 +14,7 @@ reports.value.push({
         url: 'https://twitter.com/0xShomari',
         avatar: 'https://pbs.twimg.com/profile_images/617458563/profile5_400x400.jpg',
     },
-    description: `Causes Cash is now running its Boostrapping campaign to allow ANY Nexican to create their own P2P campaign.`,
+    description: `Causes Cash is now running its Bootstrapping campaign to allow ANY Nexican to create their own P2P campaign.`,
     poster: 'https://i.ibb.co/4dnGnRj/unsplash-hand-red.jpg',
     createdAt: 'Feb 28 2023',
     expiresAt: 'Mar 15 2023',

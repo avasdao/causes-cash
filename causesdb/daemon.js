@@ -102,8 +102,8 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         console.log('NODE RESPONSE', response)
 
         /* Handle response. */
-        if (response?.result) {
-            txidem = response.result
+        if (response) {
+            txidem = response
         } else {
             // TODO Add ADMIN email notifcation.
             return console.error(response?.error)
@@ -114,7 +114,8 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         return console.error('Oops! We tried to send tokens??')
     }
 
-    if (txidem) { // response
+    /* Validate transaction idem. */
+    if (txidem.length === 64) {
         snapshot = await vendingDb
             .get(_vmid)
             .catch(err => console.error(err))
@@ -127,7 +128,7 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         response = await vendingDb
             .put(snapshot)
             .catch(err => console.error(err))
-        // console.log('UPDATE', response)
+        console.log('UPDATE (vending):', response)
 
         const payout = {
             _id: source.txidem,
@@ -148,10 +149,10 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         response = await vendingPayoutsDb
             .put(payout)
             .catch(err => console.error(err))
-        // console.log('PAYOUT', response)
+        console.log('UPDATE (payout):', response)
     }
 
-    return true
+    return txidem
 }
 
 const run = async () => {

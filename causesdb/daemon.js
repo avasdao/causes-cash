@@ -21,12 +21,8 @@ const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COU
 console.log('Causes Cash DB is starting...')
 
 const AVAS_TOKEN_ID = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000'
-const AVAS_TOKEN_GROUP = 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x'
+// const AVAS_TOKEN_GROUP = 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x'
 const AVAS_TOKEN_DECIMALS = 8
-
-const CAMPAIGN_1_ADDRESS = 'nexa:nqtsq5g5kc24d57cclndrnapv3jxvl9vdjm9nh2ljgxpaw2s'
-const CAMPAIGN_1_GOAL = 300_000_000_00
-const CAMPAIGN_1_TOKENS = 210_000_00_000_000
 
 setInterval(() => {
     console.log('waiting...')
@@ -95,7 +91,7 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
     console.log('REWARD', reward)
 
     const cmd = `nexa-cli token send ${_groupid} ${source.sender} ${reward}`
-    console.log('NODE CMD', cmd)
+    console.log('NODE CMD\n', cmd)
 
     try {
         // RPC send tokens

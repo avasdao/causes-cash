@@ -124,10 +124,10 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         snapshot.txCount++
         snapshot.updatedAt = moment().unix()
 
-        // response = await vendingDb
-        //     .put(snapshot)
-        //     .catch(err => console.error(err))
-        // // console.log('UPDATE', response)
+        response = await vendingDb
+            .put(snapshot)
+            .catch(err => console.error(err))
+        // console.log('UPDATE', response)
 
         const payout = {
             _id: source.txidem,
@@ -145,10 +145,10 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         }
         // console.log('PAYOUT', payout)
 
-        // response = await vendingPayoutsDb
-        //     .put(payout)
-        //     .catch(err => console.error(err))
-        // // console.log('PAYOUT', response)
+        response = await vendingPayoutsDb
+            .put(payout)
+            .catch(err => console.error(err))
+        // console.log('PAYOUT', response)
     }
 
     return true

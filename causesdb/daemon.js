@@ -3,14 +3,12 @@ import fetch from 'node-fetch'
 import moment from 'moment'
 import PouchDB from 'pouchdb'
 import { decodeAddress } from '@nexajs/address'
-import {
-    getAddressHistory,
-    getGenesisInfo,
-} from '@nexajs/rostrum'
 import { Rpc } from '@nexajs/rpc'
 import { binToHex } from '@nexajs/utils'
 import { v4 as uuidv4 } from 'uuid'
 
+import getAddressHistory from './_getAddressHistory.js'
+// import getInfo from './_getInfo.js'
 import parseTx from './libs/parseTx.js'
 
 /* Initialize sleep. */
@@ -24,15 +22,10 @@ const vendingPayoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${proce
 
 console.log('Causes Cash DB is starting...')
 
-const AVAS_TOKEN_ID = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000'
+// const AVAS_TOKEN_ID = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000'
 // const AVAS_TOKEN_GROUP = 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x'
-const AVAS_TOKEN_DECIMALS = 8
+const AVAS_TOKEN_DECIMALS = 8 // TODO: Pull from `getInfo` dynamically
 
-const getInfo = async () => {
-    const token = await getGenesisInfo(AVAS_TOKEN_ID)
-        .catch(err => console.error(err))
-    console.log('TOKEN', token)
-}
 
 const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, _startIdx) => {
     let response

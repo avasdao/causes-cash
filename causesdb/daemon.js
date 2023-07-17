@@ -216,14 +216,14 @@ while (true) {
     // console.time('\n\n\n  Starting next run...\n\n\n')
     await run()
 
-    response = await system.get('0')
+    response = await systemDb.get('0')
         .catch(err => console.error(err))
     console.log('RESPONSE', response)
 
     if (response) {
         response.lastVendingAt = moment.unix()
 
-        response = await system.put(response)
+        response = await systemDb.put(response)
             .catch(err => console.error(err))
         console.log('UPDATED', response)
     }

@@ -17,9 +17,10 @@ import parseTx from './libs/parseTx.js'
 const sleep = ms => new Promise(r => setTimeout(r, ms))
 
 /* Initialize databases. */
+const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
+const systemDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/system`)
 const vendingDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/vending`)
 const vendingPayoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/vending_payouts`)
-const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
 
 console.log('Causes Cash DB is starting...')
 
@@ -208,8 +209,24 @@ const run = async () => {
     return true
 }
 
+let lastVendingAt
+let response
+
 while (true) {
-    console.time('\n\n\n  Starting next run...\n\n\n')
+    // console.time('\n\n\n  Starting next run...\n\n\n')
     await run()
+
+    response = await system.get('0')
+        .catch(err => console.error(err))
+    console.log('RESPONSE', response)
+
+    if (response) {
+        response.lastVendingAt = moment.unix()
+
+        response = await system.put(response)
+            .catch(err => console.error(err))
+        console.log('UPDATED', response)
+    }
+
     await sleep(3000) // 3-second pause
 }

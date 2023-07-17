@@ -221,7 +221,7 @@ while (true) {
     console.log('RESPONSE', response)
 
     if (response) {
-        response.lastVendingAt = moment.unix()
+        response.lastVendingAt = moment().unix()
 
         response = await systemDb.put(response)
             .catch(err => console.error(err))

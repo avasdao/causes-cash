@@ -173,7 +173,7 @@ const run = async () => {
     vms = results.rows.map(_row => {
         return _row.doc
     })
-    console.log('VENDING MACHINES', vms)
+    // console.log('VENDING MACHINES', vms)
 
     /* Handle each vending machine. */
     for (let i = 0; i < vms.length; i++) {
@@ -218,14 +218,14 @@ while (true) {
 
     response = await systemDb.get('0')
         .catch(err => console.error(err))
-    console.log('RESPONSE', response)
+    // console.log('RESPONSE', response)
 
     if (response) {
         response.lastVendingAt = moment().unix()
 
         response = await systemDb.put(response)
             .catch(err => console.error(err))
-        console.log('UPDATED', response)
+        // console.log('UPDATED', response)
     }
 
     await sleep(3000) // 3-second pause

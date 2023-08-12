@@ -1357,10 +1357,10 @@ netmask@^2.0.2:
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-2.0.2.tgz#8b01a07644065d536383835823bc52004ebac5e7"
   integrity sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==
 
-nexajs@^23.8.9:
-  version "23.8.9"
-  resolved "https://registry.yarnpkg.com/nexajs/-/nexajs-23.8.9.tgz#0d5d570b84fea954124d4047402fb0af59b3a50c"
-  integrity sha512-spudghyww4jp0fcMu3OaO9ucJ17fvheyKmhxAXoZzjxfsGGujrcxxSaLOny6JkP9npI/NkaL6I2IhAo/xyFyqA==
+nexajs@23.8.11:
+  version "23.8.11"
+  resolved "https://registry.yarnpkg.com/nexajs/-/nexajs-23.8.11.tgz#46c54e0ecedec23b720ba9dc7b11f1f06168ed2c"
+  integrity sha512-7+ipeVR7x3FF+CLU6ua8q1nJPhuYbnuz7TRCEOSgVwJ5X5s2Ho2rPmvmKTB8GYK+9CnqNAEddyJRH7ee5JAteg==
   dependencies:
     "@bitauth/libauth" "1.19.1"
     "@nexajs/address" "23.7.22"

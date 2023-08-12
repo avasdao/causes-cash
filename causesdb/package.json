@@ -1,6 +1,6 @@
 {
   "name": "causesdb",
-  "version": "23.7.21",
+  "version": "23.8.12",
   "description": "Causes Cash Database / Daemon",
   "main": "server.js",
   "license": "MIT",

@@ -1,9 +1,11 @@
 /* Import modules. */
-import { encodeAddress } from '@nexajs/address'
-import { getTransaction } from '@nexajs/rostrum'
-import { binToHex } from '@nexajs/utils'
-import { hexToBin } from '@nexajs/utils'
-import { sha256 } from '@nexajs/crypto'
+import {
+    binToHex,
+    encodeAddress,
+    getTransaction,
+    hexToBin,
+    sha256,
+} from 'nexajs'
 
 /* Libauth helpers. */
 import { instantiateRipemd160 } from '@bitauth/libauth'

@@ -1,5 +1,5 @@
 /* Import modules. */
-import { getGenesisInfo } from '@nexajs/rostrum'
+import { getGenesisInfo } from 'nexajs'
 
 /**
  * Get Genesis Info

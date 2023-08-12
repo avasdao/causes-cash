@@ -16,6 +16,14 @@ pragma nexscript ^0.1.0;
  *   2. 500 equals 5.00%
  *   3. 3,000 equals 30.00%
  *
+ * IMPORTANT NOTE:
+ *
+ * This contract DOES NOT protect against "out-of-band" payments made in
+ * exchange for the assets contained within.
+ *
+ * Asset marketplaces would be expected to honor the Royalty contract by
+ * maintaining "in-band" asset transfers (incl. payouts to the asset Creator).
+ *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
  * Version     : 01
@@ -42,27 +50,36 @@ contract Royalties(pubkey creator, int royalty) {
      * @param signature
      */
     function transfer(bytes20 owner, sig signature) {
+        /* Set (token) dust value. */
+        int DUST_VALUE = 546;
+
         /**
          * We restrict the outputs to:
-         *   - The 1st output is the asset (and covenant) transfer.
-         *   - The 2nd output is the royalty payout to the asset Creator.
-         *   - The 3rd output is the payment to the asset Owner.
-         *   - The 4th output may either be "change" or a "broker fee".
+         *   - 1st output is the asset (and covenant) transfer.
+         *   - 2nd output is the royalty payout to the asset Creator.
+         *   - 3rd output is the payment to the asset Owner.
+         *   - (optional) 4th output may either be "change" or a "broker fee".
          *     NOTE: Either way, this is included in the royalty calculation.
          */
-        require(tx.outputs.length == 4);
+        require(tx.outputs.length <= 4);
 
         /* Calculate royalty output amount. */
-        int royaltyOutputAmount = tx.outputs[2].value + tx.outputs[3].value;
+        int royaltyOutputAmount = tx.outputs[2].value;
+
+        /* Verify a 4th output. */
+        if (tx.outputs.length == 4) {
+            /* Add 4th output value to royalty outout amount. */
+            royaltyOutputAmount = royaltyOutputAmount + tx.outputs[3].value;
+        }
 
         /* Calculate royalty value (in satoshis). */
         int royalty = (royaltyOutputAmount * royalty) / 100;
 
-        /* Verify that we maintain the same contract. */
-        require(tx.outputs[0].lockingBytecode == tx.inputs[this.activeInputIndex].lockingBytecode);
+        /* Verify royalty value meets dust threshold. */
+        require(royalty >= DUST_VALUE);
 
-        /* Set (token) dust value. */
-        int DUST_VALUE = 546;
+        /* Verify that we maintain the same contract. */
+        require(tx.outputs[0].lockingBytecode == this.activeBytecode);
 
         // NOTE: This is the asset output.
         require(tx.outputs[0].value == DUST_VALUE);

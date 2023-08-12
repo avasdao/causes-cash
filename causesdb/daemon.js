@@ -2,9 +2,11 @@
 import fetch from 'node-fetch'
 import moment from 'moment'
 import PouchDB from 'pouchdb'
-import { decodeAddress } from '@nexajs/address'
-import { Rpc } from '@nexajs/rpc'
-import { binToHex } from '@nexajs/utils'
+import {
+    binToHex,
+    decodeAddress,
+    Rpc,
+} from 'nexajs'
 import { v4 as uuidv4 } from 'uuid'
 
 import getAddressHistory from './_getAddressHistory.js'

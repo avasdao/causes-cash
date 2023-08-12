@@ -1,5 +1,5 @@
 /* Import modules. */
-import { getAddressHistory } from '@nexajs/rostrum'
+import { getAddressHistory } from 'nexajs'
 
 /**
  * Get Address History

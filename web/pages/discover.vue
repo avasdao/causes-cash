@@ -1,3 +1,12 @@
+<script setup lang="ts">
+/* Import modules. */
+import moment from 'moment'
+// import { Markets } from '@nexajs/markets'
+import numeral from 'numeral'
+
+const SATS_PER_BCH = 100000000
+</script>
+
 <template>
     <v-container class="bg-indigo-500 pb-20">
 
@@ -60,14 +69,7 @@
     </v-container>
 </template>
 
-<script>
-/* Import modules. */
-import moment from 'moment'
-// import { Markets } from '@nexajs/markets'
-import numeral from 'numeral'
-
-const SATS_PER_BCH = 100000000
-
+<script lang="ts">
 export default {
     components: {
         //

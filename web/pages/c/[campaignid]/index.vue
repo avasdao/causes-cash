@@ -93,7 +93,9 @@ const closePledge = () => {
 }
 
 /**
- * Make Pledge
+ * Edit Pledge
+ *
+ * Open a side panel with options for customizing the pledge.
  */
 const makePledge = async () => {
     /* Set pledging flag. */
@@ -119,6 +121,13 @@ const loadCampaign = async () => {
 const loadMarket = async () => {
     usd.value = Number(await $fetch(`https://nexa.exchange/mex`))
     // console.log('USD (mex):', usd.value)
+}
+
+const copyToClipboard = () => {
+    /* Copy address to clipboard. */
+    Clipboard.copy(campaign.value?.receiver)
+
+    alert(`${campaign.value?.receiver} has been copied to your clipboard.`)
 }
 
 // const loadWallet = async () => {
@@ -170,39 +179,57 @@ loadMarket() // NOTE: This is non-blocking.
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                         <button
-                            @click="makePledge"
+                            @click="copyToClipboard"
                             type="button"
-                            class="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-medium font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                            class="sm:col-span-2 w-full bg-sky-600 border border-sky-800 rounded-md py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                         >
-                            Make a Pledge
+
+                            <h3 class="text-2xl text-sky-50 font-medium">
+                                Copy Address to Clipboard
+                            </h3>
+
+                            <span class="sm:hidden text-sm text-sky-200 font-medium">
+                                {{campaign?.receiver?.slice(0, 20)}} ... {{campaign?.receiver?.slice(-15)}}
+                            </span>
+                            <span class="hidden sm:inline text-sm text-sky-200 font-medium">
+                                {{campaign?.receiver}}
+                            </span>
                         </button>
 
-                        <!-- <button
-                            @click="follow"
+                        <button
+                            @click="makePledge"
                             type="button"
-                            class="w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                            class="w-full bg-rose-500 border border-rose-700 rounded-md py-3 px-3 flex flex-col items-center justify-center text-2xl font-medium text-rose-50 shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                         >
-                            Subscribe for Updates
-                        </button> -->
+                            Make a Pledge
+                            <span class="text-xs italic text-rose-200">
+                                from Causes wallet
+                            </span>
+                        </button>
 
                         <button
                             @click="reclaim"
                             type="button"
-                            class="cursor-not-allowed w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-medium font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                            class="cursor-not-allowed opacity-50 w-full bg-amber-100 border border-amber-300 rounded-md py-3 px-3 flex items-center justify-center text-2xl font-medium text-amber-500 shadow hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-amber-500"
                             disabled
                         >
-                            Reclaim My Pledge
+                            Reclaim Pledge
                         </button>
+
                     </div>
 
-                    <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" target="_blank" class="px-3 py-1 mt-5 flex justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
+                    <!-- <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" target="_blank" class="px-3 py-1 mt-5 flex flex-col items-center justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
+                        <h3 class="text-2xl text-rose-700 font-medium">
+                            Open My Wallet
+                        </h3>
+
                         <span class="sm:hidden text-sm text-rose-500 font-medium">
                             {{campaign?.receiver?.slice(0, 20)}} ... {{campaign?.receiver?.slice(-15)}}
                         </span>
                         <span class="hidden sm:inline text-sm text-rose-500 font-medium">
                             {{campaign?.receiver}}
                         </span>
-                    </NuxtLink>
+                    </NuxtLink> -->
 
                     <CampaignMonitor class="hidden" />
 

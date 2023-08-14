@@ -1,6 +1,8 @@
 /* Import modules. */
 import { defineStore } from 'pinia'
-import { ethers } from 'ethers'
+
+/* Import clipboard manager. */
+import './system/clipboard.ts'
 
 /**
  * System Store

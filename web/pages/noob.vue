@@ -102,8 +102,9 @@ const makePledge = async () => {
     // document.location = campaign?.receiver
 }
 
-const route = useRoute()
-const campaignid = route.params.campaignid
+// const route = useRoute()
+// const campaignid = route.params.campaignid
+const campaignid = 'd5ab0386-5d67-46aa-96f0-9a5837093303'
 // console.log('Campaign ID:', campaignid)
 
 const campaign = ref()

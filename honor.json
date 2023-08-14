@@ -1,0 +1,11 @@
+{
+  "ticker": "HONOR",
+  "name": "Nexican Honor Society",
+  "summary": "A community rewards token for Nexican app creators and service providers.",
+  "description": "One of every three HONORS mined is rewarded to Nexican creators, based on their current Report Cards.",
+  "legal": "Nexican (non-exclusive) creators ONLY are qualified for rewards tokens.",
+  "creator": "Causes Cash DAO",
+  "contact": { "twitter.com": "@CausesCash", "reddit.com": "r/CausesCash" },
+  "icon": "/icon.svg",
+  "category": "coin"
+}

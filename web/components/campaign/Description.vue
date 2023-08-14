@@ -5,16 +5,12 @@ import showdown from 'showdown'
 
 /* Initialize stores. */
 import { useSystemStore } from '@/stores/system'
-
-/* Initialize System. */
 const System = useSystemStore()
 
 /* Define (parent) properties. */
 const props = defineProps({
     campaign: Object,
 })
-// const campaign = ref(props.campaign)
-// console.log('CAMPAIGN (description):', campaign.value)
 
 const campaign = computed(() => {
     return props.campaign
@@ -45,7 +41,6 @@ const description = computed(() => {
     // this.description = clean
     return html
 })
-
 </script>
 
 <template>

@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 /* Import modules. */
-import { ref } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 
 const highlights = []
 
@@ -8,6 +8,49 @@ highlights.push({
     id: '1',
     cat: 'Rewards',
     body: 'Participants will share in 1% of freshly minted AVAS.'
+})
+
+const highlights = computed(() => {
+    /* Validate highlights. */
+    if (!this.$store?.state?.highlights) return []
+
+    /* Initialize highlights. */
+    const highlights = []
+
+    /* Handle highlights. */
+    this.$store?.state?.highlights.forEach(_highlight => {
+        /* Generate new UUID. */
+        const id = uuidv4()
+
+        /* Initialize holders. */
+        let body
+        let cat
+
+        /* Validate category. */
+        if (_highlight.includes('|')) {
+            /* Set category. */
+            cat = _highlight.split('|')[0].trim()
+
+            /* Set body. */
+            body = _highlight.split('|')[1].trim()
+        } else {
+            /* Set body. */
+            body = _highlight
+        }
+
+        /* Validate body. */
+        if (body) {
+            /* Add to highlights. */
+            highlights.push({
+                id,
+                cat,
+                body,
+            })
+        }
+    })
+
+    /* Return highlights. */
+    return highlights
 })
 
 </script>
@@ -28,73 +71,3 @@ highlights.push({
         </div>
     </main>
 </template>
-
-<script>
-/* Import modules. */
-import { v4 as uuidv4 } from 'uuid'
-
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    computed: {
-        highlights() {
-            /* Validate highlights. */
-            if (!this.$store?.state?.highlights) return []
-
-            /* Initialize highlights. */
-            const highlights = []
-
-            /* Handle highlights. */
-            this.$store?.state?.highlights.forEach(_highlight => {
-                /* Generate new UUID. */
-                const id = uuidv4()
-
-                /* Initialize holders. */
-                let body
-                let cat
-
-                /* Validate category. */
-                if (_highlight.includes('|')) {
-                    /* Set category. */
-                    cat = _highlight.split('|')[0].trim()
-
-                    /* Set body. */
-                    body = _highlight.split('|')[1].trim()
-                } else {
-                    /* Set body. */
-                    body = _highlight
-                }
-
-                /* Validate body. */
-                if (body) {
-                    /* Add to highlights. */
-                    highlights.push({
-                        id,
-                        cat,
-                        body,
-                    })
-                }
-            })
-
-            /* Return highlights. */
-            return highlights
-        },
-
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

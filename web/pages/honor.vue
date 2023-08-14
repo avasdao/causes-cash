@@ -24,13 +24,11 @@ const System = useSystemStore()
 <template>
     <main class="max-w-7xl mx-auto py-5">
         <h1 class="text-5xl font-medium">
-            $HONOR Rewards Token
+            $HONOR Reward Tokens
         </h1>
 
         <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id eius voluptatem minus natus at eveniet dolorum eos mollitia, maxime animi excepturi harum omnis illum odit recusandae pariatur! Unde, explicabo molestias.
+            HONOR are minted at the same schedule as NexaPoW; by means of the Nexa Token Mining (NexaTM) protocol.
         </p>
     </main>
-
-    <Footer />
 </template>

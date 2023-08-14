@@ -1,3 +1,37 @@
+<script setup lang="ts">
+/* Import modules. */
+import moment from 'moment'
+
+/* Define properties. */
+// https://vuejs.org/guide/components/props.html#props-declaration
+const props = defineProps({
+    campaign: Object,
+    supporters: Array,
+})
+
+const feedback = computed(() => {
+    if (!this.supporters) return []
+
+    const supporters = this.supporters
+
+    return supporters.reverse()
+})
+
+const timestamp = (_timestamp) => {
+    return moment.unix(_timestamp).format('dddd, MMMM Do YYYY, h:mm:ss a')
+}
+
+// onMounted(() => {
+//     console.log('Mounted!')
+//     // Now it's safe to perform setup operations.
+// })
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
+</script>
+
 <template>
     <main>
         <!-- 'Customer Reviews' panel, show/hide based on tab state -->
@@ -30,61 +64,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Import modules. */
-// import { ethers } from 'ethers'
-import moment from 'moment'
-
-export default {
-    props: {
-        supporters: Array,
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    computed: {
-        feedback() {
-            if (!this.supporters) return []
-
-            const supporters = this.supporters
-
-            return supporters.reverse()
-        },
-
-        // pledges() {
-        //     /* Validate supporters. */
-        //     if (!this.supporters) return []
-        //
-        //     /* Initialize supporters. */
-        //     const supporters = []
-        //
-        //     /* Handle supporters. */
-        //     this.supporters.forEach(_supporter => {
-        //         // NOTE: We filter out donation under 1 satoshi
-        //         if (_supporter.pledgeAmount.gt(10000000000n)) {
-        //             supporters.push(_supporter)
-        //         }
-        //     })
-        //
-        //     /* Return supporters. */
-        //     return supporters
-        // }
-
-    },
-    methods: {
-        timestamp(_timestamp) {
-            return moment.unix(_timestamp).format('dddd, MMMM Do YYYY, h:mm:ss a')
-        },
-
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

@@ -1,3 +1,26 @@
+<script setup lang="ts">
+/* global BigInt */
+
+/* Import modules. */
+import { ethers } from 'ethers'
+
+/* Define properties. */
+// https://vuejs.org/guide/components/props.html#props-declaration
+const props = defineProps({
+    campaign: Object,
+})
+
+// onMounted(() => {
+//     console.log('Mounted!')
+//     // Now it's safe to perform setup operations.
+// })
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
+</script>
+
 <template>
     <main v-if="hasFeedback" class="fixed inset-0 overflow-hidden" role="dialog" aria-modal="true">
         <div class="absolute inset-0 overflow-hidden">
@@ -98,12 +121,7 @@
     </main>
 </template>
 
-<script>
-/* global BigInt */
-
-/* Import modules. */
-import { ethers } from 'ethers'
-
+<script lang="ts">
 export default {
     props: {
         hasFeedback: Boolean,

@@ -2,21 +2,31 @@
 import moment from 'moment'
 import numeral from 'numeral'
 import PouchDB from 'pouchdb'
+
 import {
+    decodeAddress,
+} from '@nexajs/address'
+
+import {
+    getAddressBalance,
     getAddressHistory,
     getTransaction,
 } from '@nexajs/rostrum'
 
+import {
+    binToHex,
+} from '@nexajs/utils'
+
 /* Initialize databases. */
 const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/campaigns`)
-
-/* Initialize (data) cache. */
-let cache = {}
 
 const CACHE_REFRESH_DELAY = 30 // default: 30 seconds
 const MARKET_UPDATE_DELAY = 30000 // default: 30 seconds
 
-const campaignGoalIdx = 0 // FIXME: FOR DEV ONLY
+/* Initialize (data) cache. */
+let cache = {}
+
+let campaignGoalIdx = 0 // FIXME: FOR DEV ONLY
 
 let usd
 
@@ -59,6 +69,83 @@ const requestedDisplayUsd = (_campaignGoals) => {
     return numeral(usdValue).format('$0,0.00')
 }
 
+/**
+ * Funded Display
+ */
+const fundedDisplay = (_goal) => {
+    /* Validate pledge balance. */
+    if (!_goal.received) return '0.0'
+
+    /* Set satoshis value. */
+    const satoshis = _goal.received
+
+    // /* Set NEXA value. */
+    const nexValue = Number(satoshis / 100)
+
+    // /* Return (formatted) value. */
+    return numeral(nexValue / 1000000)
+        .format('0,0.00[00]')
+}
+
+/**
+ * Funded Display (USD)
+ */
+const fundedDisplayUsd = (_goal) => {
+    /* Validate pledge balance. */
+    if (!_goal.received || !usd) return '$0.00'
+
+    const usdValue = (_goal.received / 100000000) * usd
+
+    /* Return (formatted) value. */
+    return numeral(usdValue).format('$0,0.00')
+}
+
+/**
+ * Percentage Completed
+ */
+const pctCompleted = (_goal) => {
+    /* Validate funding goal. */
+    if (!_goal) return '0.0%'
+
+    /* Set percentage. */
+    const pct = numeral(_goal.received / _goal.amount).format('0.0[0]%')
+    console.log('PCT COMPLETE', pct)
+
+    /* Return percentage. */
+    return pct
+}
+
+/**
+ * Expiration Display
+ *
+ * Show the time remaining in the campaign.
+ */
+const expirationDisplay = (_expiration) => {
+    /* Validate expiration. */
+    if (!_expiration) return 'n/a'
+
+    /* Return (formatted) expiration. */
+    return moment.unix(_expiration).fromNow(true)
+}
+
+const requestReceived = async (_campaign, _index) => {
+    let received
+
+    received = _campaign.received
+
+    if (_index > 0) {
+        for (let i = 0; i < _index; i++) {
+            received -= _campaign.goals[i].amount
+        }
+    }
+
+    if (received < 0) {
+        received = 0
+    }
+
+    return received
+}
+
 setInterval(updateMarket, MARKET_UPDATE_DELAY)
 
 
@@ -67,6 +154,7 @@ export default defineEventHandler(async (event) => {
     let campaignid
     let goals
     let history
+    let received
     let receiver
     let response
     let txs
@@ -101,46 +189,121 @@ export default defineEventHandler(async (event) => {
 
     receiver = campaign.receiver
 
-    if (!cache[campaignid]?.updatedAt || cache[campaignid].updatedAt + CACHE_REFRESH_DELAY < moment().unix()) {
-        history = await getAddressHistory(receiver)
-            .catch(err => console.error(err))
-        // console.log('HISTORY', history)
 
-        txs = []
-
-        for (let i = 0; i < history.length; i++) {
-            const txid = history[i].tx_hash
-
-            const tx = await getTransaction(txid)
-                .catch(err => console.error(err))
-
-            txs.push({
-                hash: tx.hash,
-                height: tx.height,
-                fee: tx.fee,
-            })
-        }
-
-        cache[campaignid] = {
-            txs,
-            updatedAt: moment().unix(),
-        }
-    } else {
-        console.log('***LOADED FROM CACHE***')
-    }
-
-    /* Update cache. */
-    campaign.cache = cache[campaignid]
 
     if (!usd) {
         await updateMarket()
     }
 
-    campaign.goals.forEach(_goal => {
-        _goal.displayAmount = requestedDisplay(_goal)
-        _goal.displayAmountMex = requestedDisplay(_goal, true) // isMex
-        _goal.displayAmountUsd = requestedDisplayUsd(_goal)
-    })
+    if (campaign.goals?.length > 1) {
+        let decoded
+        let history
+        let output
+        let scriptPubKey
+        let tx
+        let txid
+
+        decoded = decodeAddress(campaign.receiver)
+        // console.log('DECODED', decoded)
+
+        scriptPubKey = binToHex(decoded.hash).slice(2)
+        // console.log('scriptPubKey', scriptPubKey)
+
+        if (!cache[campaignid]?.updatedAt || cache[campaignid].updatedAt + CACHE_REFRESH_DELAY < moment().unix()) {
+            history = await getAddressHistory(receiver)
+                .catch(err => console.error(err))
+            // console.log('HISTORY', history)
+
+            received = 0
+            txs = []
+
+            for (let i = 0; i < history.length; i++) {
+                txid = history[i].tx_hash
+
+                tx = await getTransaction(txid)
+                    .catch(err => console.error(err))
+
+                for (let j = 0; j < tx.vout.length; j++) {
+                    output = tx.vout[j]
+                    // console.log('OUTPUT', output)
+
+                    if (output.scriptPubKey.hex === scriptPubKey) {
+                        received += output.value_satoshi
+                        // console.log('RECEIVED', received)
+                    }
+                }
+
+                txs.push({
+                    hash: tx.hash,
+                    height: tx.height,
+                    fee: tx.fee,
+                    received,
+                })
+            }
+
+            cache[campaignid] = {
+                txs,
+                updatedAt: moment().unix(),
+            }
+        } else {
+            console.log('***LOADED FROM CACHE***')
+        }
+
+        /* Update received (balance). */
+        campaign.received = received
+
+        /* Update cache. */
+        campaign.cache = cache[campaignid]
+
+
+
+        /* Request (receiver) address history. */
+        // history = await getAddressHistory(campaign.receiver)
+        //     .catch(err => console.error(err))
+        // console.log('HISTORY', history)
+
+        // for (let i = 0; i < history.length; i++) {
+        //     tx = await getTransaction(history[i].tx_hash)
+        //     // console.log('TX', tx)
+
+        //     for (let j = 0; j < tx.vout.length; j++) {
+        //         output = tx.vout[j]
+        //         // console.log('OUTPUT', output)
+
+        //         if (output.scriptPubKey.hex === scriptPubKey) {
+        //             balance += output.value_satoshi
+        //             // console.log('BALANCE', balance)
+        //         }
+        //     }
+        // }
+        // console.log('BALANCE (final):', balance)
+
+        // FIXME Handle campaign index (using _campaign.goals)
+        campaignGoalIdx = 0
+    } else {
+        /* Request (receiver) address balance. */
+        balance = await getAddressBalance(_campaign.receiver)
+            .catch(err => console.error(err))
+        // console.log('BALANCE', balance)
+
+        // FIXME Handle campaign index (using _campaign.goals)
+        campaignGoalIdx = 0
+    }
+
+    for (let i = 0; i < campaign.goals.length; i++) {
+        const goal = campaign.goals[i]
+
+        goal.received = await requestReceived(campaign, i)
+
+        goal.displayAmount = requestedDisplay(goal)
+        goal.displayAmountMex = requestedDisplay(goal, true) // isMex
+        goal.displayAmountUsd = requestedDisplayUsd(goal)
+        goal.fundedDisplay = fundedDisplay(goal)
+        goal.fundedDisplayUsd = fundedDisplayUsd(goal)
+        goal.pctCompleted = pctCompleted(goal)
+    }
+
+    campaign.expirationDisplay = expirationDisplay(campaign.expiresAt)
 
     /* Return campaigns. */
     return campaign

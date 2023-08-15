@@ -7,6 +7,7 @@ definePageMeta({
 
 /* Initialize stores. */
 import { useSystemStore } from '@/stores/system'
+const System = useSystemStore()
 
 import loadingIcon from '@/assets/loading_icon.gif'
 
@@ -27,20 +28,6 @@ const hasFeedback = ref(false)
 
 /* Set constants. */
 const RETRY_DELAY = 500 // 0.5 seconds
-
-/* Initialize System. */
-const System = useSystemStore()
-
-// watch(props?.provider, (_provider) => {
-//     console.log('(CAMPAIGN) PROVIDER HAS CHANGED', _provider)
-
-//     if (_provider) {
-//         /* Initialize blockchain. */
-//         setTimeout(() => {
-//             System.initBlockchain()
-//         }, RETRY_DELAY)
-//     }
-// })
 
 const banner = computed(() => {
     if (!campaign.value?.media?.poster) {

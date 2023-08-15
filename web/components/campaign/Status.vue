@@ -24,68 +24,8 @@ const campaignGoals = ref(null)
 const campaignGoalIdx = ref(null)
 const expiration = ref(0)
 
-/**
- * Funded Display
- */
-const fundedDisplay = computed(() => {
-    /* Validate pledge balance. */
-    if (!campaignPledged.value) return '0.0'
-
-    /* Set satoshis value. */
-    const satoshis = campaignPledged.value
-
-    // /* Set NEXA value. */
-    const nexValue = Number(satoshis / 100)
-
-    // /* Return (formatted) value. */
-    return numeral(nexValue / 1000000)
-        .format('0,0.00[00]')
-})
-
-/**
- * Funded Display (USD)
- */
-const fundedDisplayUsd = computed(() => {
-    /* Validate pledge balance. */
-    if (!campaignPledged.value || !props.usd) return '$0.00'
-
-    const usdValue = (campaignPledged.value / 100000000) * props.usd
-
-    /* Return (formatted) value. */
-    return numeral(usdValue).format('$0,0.00')
-})
 
 
-/**
- * Percentage Completed
- */
-const pctCompleted = computed(() => {
-    /* Validate funding goal. */
-    if (!campaignGoals.value || !campaignPledged.value) return '0.0%'
-
-    console.log('campaignPledged.value ', campaignPledged.value)
-    console.log('campaignGoals.value[0].amount', campaignGoals.value[campaignGoalIdx.value].amount)
-
-    /* Set percentage. */
-    const pct = numeral(campaignPledged.value / campaignGoals.value[campaignGoalIdx.value].amount).format('0.0[0]%')
-    console.log('PCT COMPLETE', pct)
-
-    /* Return percentage. */
-    return pct
-})
-
-/**
- * Expiration Display
- *
- * Show the time remaining in the campaign.
- */
-const expirationDisplay = computed(() => {
-    /* Validate expiration. */
-    if (!expiration.value) return 'n/a'
-
-    /* Return (formatted) expiration. */
-    return moment.unix(expiration.value).fromNow(true)
-})
 
 watch(() => props.campaign, async (_campaign) => {
     // console.log('CAMPAIGN HAS CHANGED', _campaign)

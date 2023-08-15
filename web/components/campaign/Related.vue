@@ -1,3 +1,21 @@
+<script setup lang="ts">
+/* Define properties. */
+// https://vuejs.org/guide/components/props.html#props-declaration
+const props = defineProps({
+    campaign: Object,
+})
+
+// onMounted(() => {
+//     console.log('Mounted!')
+//     // Now it's safe to perform setup operations.
+// })
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
+</script>
+
 <template>
     <main class="max-w-2xl mx-auto mt-24 sm:mt-32 lg:max-w-none">
         <div class="flex items-center justify-between space-x-4">
@@ -46,25 +64,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

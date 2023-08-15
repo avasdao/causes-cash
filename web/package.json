@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "23.8.12",
+  "version": "23.8.14",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@bitauth/libauth": "1.19.1",
+    "@nexajs/crypto": "23.5.22",
     "@nexajs/rostrum": "23.8.11",
     "@nexajs/rpc": "23.5.15",
+    "@nexajs/utils": "23.7.22",
     "@nexajs/wallet": "23.8.11",
     "@pinia/nuxt": "0.4.7",
     "dompurify": "3.0.0",

@@ -1,13 +1,17 @@
-<script setup>
+<script setup lang="ts">
 /* Import modules. */
-import { binToHex } from '@bitauth/libauth'
 import { decodeAddress } from '@nexajs/address'
-import { getAddressBalance } from '@nexajs/rostrum'
-import { getAddressHistory } from '@nexajs/rostrum'
-import { getTransaction } from '@nexajs/rostrum'
+
+import {
+    getAddressBalance,
+    getAddressHistory,
+    getTransaction,
+} from '@nexajs/rostrum'
+
+import { binToHex } from '@nexajs/utils'
+
 import moment from 'moment'
 import numeral from 'numeral'
-import { ref } from 'vue'
 
 const props = defineProps({
     campaign: Object,
@@ -171,8 +175,6 @@ watch(() => props.campaign, async (_campaign) => {
         campaignPledged.value = balance.confirmed || balance
     }
 })
-
-
 </script>
 
 <template>

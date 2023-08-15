@@ -1,3 +1,76 @@
+<script setup lang="ts">
+/* Import modules. */
+import numeral from 'numeral'
+
+/* Define properties. */
+// https://vuejs.org/guide/components/props.html#props-declaration
+const props = defineProps({
+    contributors: Array,
+    usd: Number,
+})
+
+watch(contributors, (_contributors) => {
+    console.log('CONTRIBUTORS HAS CHANGED', _contributors)
+})
+
+const pledges = computed(() => {
+    /* Validate contributors. */
+    if (!props.contributors) return []
+
+    /* Initialize contributors. */
+    const contributors = []
+
+    /* Handle contributors. */
+    props.contributors.forEach(_contributor => {
+        // NOTE: We filter out donation under 1 satoshi
+// FIXME Big integer literals are not available in the configured target environment ("es2019")
+        // if (_contributor.pledgeAmount.gt(10000000000n)) {
+        //     contributors.push(_contributor)
+        // }
+    })
+
+    /* Return contributors. */
+    return contributors.reverse()
+})
+
+const displayBCH = (_wei) => {
+    /* Calculate satoshis. */
+// FIXME Big integer literals are not available in the configured target environment ("es2019")
+    // const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
+
+    /* Calculate BCH. */
+    const bch = parseFloat(satoshis / 100000000.0)
+
+    /* Return format. */
+    return numeral(bch).format('0,0.00[0000]') + ' NEXA'
+}
+
+const displayUSD = (_wei) => {
+    /* Calculate satoshis. */
+// FIXME Big integer literals are not available in the configured target environment ("es2019")
+    // const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
+
+    /* Calculate BCH. */
+    const bch = parseFloat(satoshis / 100000000.0)
+
+    /* Calculate USD. */
+    const usd = bch * props.usd
+
+    /* Return format. */
+    return numeral(usd).format('$0,0.00') + ' USD'
+}
+
+// onMounted(() => {
+//     console.log('Mounted!')
+//     // Now it's safe to perform setup operations.
+// })
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
+</script>
+
 <template>
     <main>
         <div
@@ -43,83 +116,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* Import modules. */
-import numeral from 'numeral'
-
-export default {
-    props: {
-        contributors: Array,
-        usd: Number,
-    },
-    watch: {
-        contributors: function (_contributors) {
-            console.log('CONTRIBUTORS HAS CHANGED', _contributors)
-        },
-
-    },
-    computed: {
-        pledges() {
-            /* Validate contributors. */
-            if (!this.contributors) return []
-
-            /* Initialize contributors. */
-            const contributors = []
-
-            /* Handle contributors. */
-            this.contributors.forEach(_contributor => {
-                // NOTE: We filter out donation under 1 satoshi
-// FIXME Big integer literals are not available in the configured target environment ("es2019")
-                // if (_contributor.pledgeAmount.gt(10000000000n)) {
-                //     contributors.push(_contributor)
-                // }
-            })
-
-            /* Return contributors. */
-            return contributors.reverse()
-        }
-
-    },
-    methods: {
-        displayBCH(_wei) {
-            /* Calculate satoshis. */
-// FIXME Big integer literals are not available in the configured target environment ("es2019")
-            // const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
-
-            /* Calculate BCH. */
-            const bch = parseFloat(satoshis / 100000000.0)
-
-            /* Return format. */
-            return numeral(bch).format('0,0.00[0000]') + ' NEXA'
-        },
-
-        displayUSD(_wei) {
-            /* Calculate satoshis. */
-// FIXME Big integer literals are not available in the configured target environment ("es2019")
-            // const satoshis = _wei.div(10000000000n).toNumber() // reduce to 8 decimals
-
-            /* Calculate BCH. */
-            const bch = parseFloat(satoshis / 100000000.0)
-
-            /* Calculate USD. */
-            const usd = bch * this.usd
-
-            /* Return format. */
-            return numeral(usd).format('$0,0.00') + ' USD'
-        },
-
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    created: async function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

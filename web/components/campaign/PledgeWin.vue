@@ -1,17 +1,18 @@
-<script setup>
+<script setup lang="ts">
 /* Import modules. */
-import { encodePrivateKeyWif } from '@nexajs/hdnode'
 import { listUnspent } from '@nexajs/address'
-import QRCode from 'qrcode'
-import { ref } from 'vue'
+
+import { sha256 } from '@nexajs/crypto'
+
+import { encodePrivateKeyWif } from '@nexajs/hdnode'
+
 import { sendCoin } from '@nexajs/purse'
+
 import { subscribeAddress } from '@nexajs/rostrum'
+
 import { Wallet } from '@nexajs/wallet'
 
-/* Libauth helpers. */
-import {
-    instantiateSha256,
-} from '@bitauth/libauth'
+import QRCode from 'qrcode'
 
 
 const props = defineProps({
@@ -41,8 +42,6 @@ const depositAddress = ref(null)
 
 /* Initialize stores. */
 import { useProfileStore } from '@/stores/profile'
-
-/* Initialize Profile. */
 const Profile = useProfileStore()
 
 const numChars = computed(() => {
@@ -79,9 +78,6 @@ const depositHandler = async (_updatedInfo) => {
     console.log('PLEDGE HANDLER', _updatedInfo)
 
     let unspent
-
-    /* Initialize SHA-256. */
-    const sha256 = await instantiateSha256()
 
     /* Encode Private Key WIF. */
     const wif = encodePrivateKeyWif(sha256, wallet.value.privateKey, 'mainnet')

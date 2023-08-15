@@ -1,7 +1,6 @@
 <script setup>
 /* Import modules. */
 import moment from 'moment'
-import { ref } from 'vue'
 
 /* Initialize campaigns. */
 const campaigns = ref([])

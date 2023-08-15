@@ -443,13 +443,6 @@ export default {
                 }
             }, 500)
         },
-
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
     },
 }
 </script>

@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "6.4.1",
-    "@pinia-plugin-persistedstate/nuxt": "1.0.0",
     "@types/node": "18.14.2",
     "@types/pouchdb": "6.4.0",
     "@types/uuid": "9.0.1"

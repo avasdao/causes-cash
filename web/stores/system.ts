@@ -258,8 +258,5 @@ export const useSystemStore = defineStore('system', {
             a.remove()
         }
 
-
     },
-
-    persist: true,
 })

@@ -128,5 +128,4 @@ export const useProfileStore = defineStore('profile', {
             console.log('SET SESSION', this._session)
         },
     },
-    persist: true,
 })

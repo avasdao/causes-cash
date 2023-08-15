@@ -38,5 +38,4 @@ export const useCampaignsStore = defineStore('campaigns', {
         //     console.log('SET SESSION', this._session)
         // },
     },
-    persist: true,
 })

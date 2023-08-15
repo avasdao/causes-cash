@@ -210,7 +210,7 @@ loadMarket() // NOTE: This is non-blocking.
                         <button
                             @click="reclaim"
                             type="button"
-                            class="cursor-not-allowed opacity-50 w-full bg-amber-100 border border-amber-300 rounded-md py-3 px-3 flex items-center justify-center text-2xl font-medium text-amber-500 shadow hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-amber-500"
+                            class="cursor-not-allowed opacity-70 w-full bg-amber-100 border border-amber-300 rounded-md py-3 px-3 flex items-center justify-center text-2xl font-medium text-amber-500 shadow hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-amber-500"
                             disabled
                         >
                             Reclaim Pledge

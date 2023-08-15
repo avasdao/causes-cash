@@ -27,20 +27,85 @@ const System = useSystemStore()
             Nexican Honor Society
         </h1>
 
-        <p>
+        <p class="w-full lg:w-2/3 px-5 py-2">
             Community-driven reward tokens for the TOP100 App Creators and Service Providers making the greatest positive impact on the Nexican community.
         </p>
 
-        <p>
+        <p class="w-full lg:w-2/3 px-5 py-2">
             Creators and Providers receive (sponsored) daily payouts in NEXA, based on the amount of HONOR they're pledged, and their overall Report Card rating.
         </p>
 
-        <ol>
-            <li>TOP100 Receive Daily Base Payouts, Honorable</li>
-            <li>Once per Week (Monday @ 00:00), TOP30 Payouts, Elite</li>
-            <li>Once per Month (1st @ 00:00), TOP10 Payouts, Noble</li>
-            <li>Once per Festival (Opening Ceremony), TOP3 Payouts, Legend</li>
-            <li></li>
+        <ol class="my-5 pl-20 list-disc space-y-5">
+
+            <!-- $10,000 to $1,000,000 per month -->
+            <li>
+                <h3 class="text-lg font-medium">
+                    Legends, TOP3
+                </h3>
+
+                Once per Festival (Opening Ceremony)
+
+                <h3 class="text-xl text-rose-500 font-light">
+                    1B to 100 Billion NEXA
+                    <span class="block text-lg text-rose-700 italic">
+                        <sup>US</sup>$10.12K to <sup>US</sup>$1M
+                    </span>
+                </h3>
+            </li>
+
+            <!-- $10,000 to $100,000 per month -->
+            <li>
+                <h3 class="text-lg font-medium">
+                    Nobles, TOP10
+                </h3>
+
+                Once per Month (1st @ 00:00)
+
+                <h3 class="text-xl text-rose-500 font-light">
+                    100M to 1 Billion NEXA
+                    <span class="block text-lg text-rose-700 italic">
+                        <sup>US</sup>$1.01K to <sup>US</sup>$10K
+                    </span>
+                </h3>
+            </li>
+
+            <!-- $12,000 to $48,000 per month -->
+            <li>
+                <h3 class="text-lg font-medium">
+                    Elites, TOP30
+                </h3>
+
+                Once per Week (Monday @ 00:00)
+
+                <h3 class="text-xl text-rose-500 font-light">
+                    10M to 40 Million NEXA
+                    <span class="block text-lg text-rose-700 italic">
+                        <sup>US</sup>$101.33 to <sup>US</sup>$400.00
+                    </span>
+                </h3>
+            </li>
+
+            <!-- $30,000 per month -->
+            <li>
+                <h3 class="text-lg font-medium">
+                    Honorables, TOP100
+                </h3>
+
+                Receive Daily <em class="text-indigo-500 font-medium">Base</em> Payouts
+
+                <h3 class="text-xl text-rose-500 font-light">
+                    1 Million NEXA
+                    <span class="block text-lg text-rose-700 italic">
+                        <sup>US</sup>$10.8883
+                    </span>
+                </h3>
+            </li>
+
         </ol>
+
+        <p class="w-full lg:w-2/3 px-5 py-2">
+            * NOTE: Creators and Providers MUST qualify to a minimum <span class="font-medium">Report Card Ranking (RCR)</span> of <span class="text-xl text-indigo-500 font-medium italic">TOP70</span> for first-time entry to the Nexican Honor Society.
+        </p>
+
     </main>
 </template>

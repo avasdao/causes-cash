@@ -1,3 +1,21 @@
+<script setup lang="ts">
+/* Define properties. */
+// https://vuejs.org/guide/components/props.html#props-declaration
+const props = defineProps({
+    campaign: Object,
+})
+
+// onMounted(() => {
+//     console.log('Mounted!')
+//     // Now it's safe to perform setup operations.
+// })
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
+</script>
+
 <template>
     <main>
         <div class="bg-gray-200 rounded-full overflow-hidden mt-20">
@@ -5,32 +23,21 @@
         </div>
 
         <div class="grid grid-cols-4 text-xs font-medium text-gray-600 mt-6">
-            <div class="text-center text-green-600">FUNDING</div>
-            <div class="text-center text-gray-400">BUILDING</div>
-            <div class="text-center text-gray-400">TESTING</div>
-            <div class="text-center text-gray-400">DELIVERED</div>
+            <div class="text-center text-green-600 uppercase">
+                Funding
+            </div>
+
+            <div class="text-center text-gray-400 uppercase">
+                Building
+            </div>
+
+            <div class="text-center text-gray-400 uppercase">
+                Testing
+            </div>
+
+            <div class="text-center text-gray-400 uppercase">
+                Delivered
+            </div>
         </div>
     </main>
 </template>
-
-<script>
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            //
-        }
-    },
-    created: function () {
-        //
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

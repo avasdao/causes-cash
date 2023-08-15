@@ -197,14 +197,6 @@ import { sendCoin } from '@nexajs/purse'
 import numeral from 'numeral'
 import QRCode from 'qrcode'
 
-/* Import components. */
-// import Footer from '@/components/Footer.vue'
-// import Header from '@/components/Header.vue'
-
-/* Import (account) components. */
-// import Banner from '@/components/Account/Banner.vue'
-// import Sidenav from '@/components/Account/Sidenav.vue'
-
 export default {
     components: {
         // Footer,

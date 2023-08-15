@@ -11,6 +11,8 @@ import { useSystemStore } from '@/stores/system'
 import loadingIcon from '@/assets/loading_icon.gif'
 
 /* Import responsive holders. */
+const receiver = ref(null)
+
 const description = ref(null)
 const usd = ref(0.0)
 
@@ -169,41 +171,29 @@ loadMarket() // NOTE: This is non-blocking.
                         :campaign="campaign"
                     />
 
-                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                        <button
-                            @click="makePledge"
-                            type="button"
-                            class="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-medium font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                        >
-                            Make a Pledge
-                        </button>
-
-                        <!-- <button
-                            @click="follow"
-                            type="button"
-                            class="w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                        >
-                            Subscribe for Updates
-                        </button> -->
+                    <div class="mt-10 flex flex-col gap-5">
+                        <input
+                            class="w-full px-5 py-4 text-2xl text-amber-700 font-light placeholder-amber-500 bg-amber-200 border-2 border-amber-400 rounded-xl shadow"
+                            type="text"
+                            placeholder="(optional) destination address"
+                            v-model="receiver"
+                        />
 
                         <button
-                            @click="reclaim"
+                            @click="copyToClipboard"
                             type="button"
-                            class="cursor-not-allowed w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-medium font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                            disabled
+                            class="w-full bg-sky-600 border-2 border-sky-800 rounded-xl py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                         >
-                            Reclaim My Pledge
+
+                            <h3 class="text-2xl text-sky-50 font-medium">
+                                Mint a Random Noob SFT
+                            </h3>
+
+                            <span class="text-base text-sky-200 font-medium italic">
+                                minting fee <span class="text-2xl fotn-bold">10,000</span> NEXA each
+                            </span>
                         </button>
                     </div>
-
-                    <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" target="_blank" class="px-3 py-1 mt-5 flex justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
-                        <span class="sm:hidden text-sm text-rose-500 font-medium">
-                            {{campaign?.receiver?.slice(0, 20)}} ... {{campaign?.receiver?.slice(-15)}}
-                        </span>
-                        <span class="hidden sm:inline text-sm text-rose-500 font-medium">
-                            {{campaign?.receiver}}
-                        </span>
-                    </NuxtLink>
 
                     <CampaignMonitor class="hidden" />
 

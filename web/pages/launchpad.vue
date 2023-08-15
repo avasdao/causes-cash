@@ -2,7 +2,8 @@
 /* Import modules. */
 import moment from 'moment'
 import numeral from 'numeral'
-import { ref } from 'vue'
+
+import * as fflate from 'fflate'
 
 /* Import components. */
 import Calendar from './launchpad/Calendar.vue'
@@ -14,12 +15,10 @@ import Summary from './launchpad/Summary.vue'
 
 /* Import stores. */
 import { useSystemStore } from '@/stores/system'
+const System = useSystemStore()
 
 /* Enable BigInt serialization. */
-BigInt.prototype.toJSON = function() { return this.toString() }
-
-/* Initialize (System) store. */
-const System = useSystemStore()
+// BigInt.prototype.toJSON = function() { return this.toString() }
 
 /* Initialize constants. */
 const DEFAULT_CAMPAIGN_DURATION = 30
@@ -250,6 +249,46 @@ expiration.value = moment().add(duration.value, 'days').unix()
 nexUsd.value = await $fetch('https://nexa.exchange/nex')
     .catch(err => console.error(err))
 
+const mint = () => {
+    const zipped = fflate.zipSync({
+        // Directories can be nested structures, as in an actual filesystem
+        'dir1': {
+            'nested': {
+                'hi-again.txt': fflate.strToU8('Hi again!')
+            },
+            // You can also manually write out a directory path
+            'other/tmp.txt': new Uint8Array([97, 98, 99, 100])
+        },
+
+        // You can also provide compression options
+        //   'massiveImage.bmp': [aMassiveFile, {
+        //     level: 9,
+        //     mem: 12
+        //   }],
+        // PNG is pre-compressed; no need to waste time
+        //   'superTinyFile.png': [aPNGFile, { level: 0 }],
+
+        'exec': [{
+            'hello.sh': [fflate.strToU8('echo Hi there!'), {
+            // ZIP only: Set the operating system to Unix
+            os: 3,
+            // ZIP only: Make this file executable on Unix
+            attrs: 0o755 << 16
+        }]
+    }, {
+        // ZIP and GZIP support mtime (defaults to current time)
+        mtime: new Date('10/20/2020')
+    }]
+}, {
+    // These options are the defaults for all files, but file-specific
+    // options take precedence.
+    level: 1,
+    // Obfuscate last modified time by default
+    mtime: new Date('1/1/1980')
+})
+// console.log('zipped', zipped)
+System.downloadBlob(zipped, 'download.zip', 'application/octet-stream')
+}
 </script>
 
 <template>
@@ -284,10 +323,46 @@ nexUsd.value = await $fetch('https://nexa.exchange/nex')
                     <input
                         v-model="title"
                         type="text"
-                        class="px-3 py-1 block w-full bg-yellow-50 border-2 border-yellow-400 shadow text-lg text-yellow-700 font-medium rounded-md placeholder:text-yellow-500"
+                        class="px-5 py-4 block w-full bg-amber-50 border-2 border-amber-400 shadow text-2xl text-amber-700 font-medium rounded-md placeholder:text-amber-500"
                         placeholder="My Awesome Nexa Project"
                     />
                 </div>
+            </div>
+
+            <h3>
+                What is Your Purpose?
+            </h3>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button
+                    type="button"
+                    class="w-full bg-lime-600 border-2 border-lime-800 rounded-xl py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-lime-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                >
+
+                    <h3 class="text-4xl text-lime-50 font-medium">
+                        Funding
+                    </h3>
+
+                    <span class="text-base text-lime-200 font-medium italic">
+                        Raise capital for a project
+                    </span>
+                </button>
+
+                <button
+                    @click="mint"
+                    type="button"
+                    class="w-full bg-cyan-600 border-2 border-cyan-800 rounded-xl py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                >
+
+                    <h3 class="text-4xl text-cyan-50 font-medium">
+                        Minting
+                    </h3>
+
+                    <span class="text-base text-cyan-200 font-medium italic">
+                        Generate NFTs and SFTs for sale
+                    </span>
+                </button>
+
             </div>
 
             <div>
@@ -314,7 +389,7 @@ nexUsd.value = await $fetch('https://nexa.exchange/nex')
                         type="text"
                         name="project-name"
                         id="project-name"
-                        class="px-3 py-1 block w-full bg-yellow-50 border-2 border-yellow-400 shadow text-lg text-yellow-700 font-medium rounded-md placeholder:text-yellow-500"
+                        class="px-3 py-1 block w-full bg-amber-50 border-2 border-amber-400 shadow text-lg text-amber-700 font-medium rounded-md placeholder:text-amber-500"
                         placeholder="0"
                     />
                 </div>
@@ -373,7 +448,7 @@ nexUsd.value = await $fetch('https://nexa.exchange/nex')
                     <input
                         :value="displayStarting"
                         type="text"
-                        class="px-3 py-1 block w-full bg-yellow-50 border-2 border-yellow-400 shadow text-lg text-yellow-700 font-medium rounded-md placeholder:text-yellow-500"
+                        class="px-3 py-1 block w-full bg-amber-50 border-2 border-amber-400 shadow text-lg text-amber-700 font-medium rounded-md placeholder:text-amber-500"
                         disabled
                     />
                 </div>
@@ -390,14 +465,14 @@ nexUsd.value = await $fetch('https://nexa.exchange/nex')
                     <input
                         v-model="duration"
                         type="text"
-                        class="px-3 py-1 block w-full bg-yellow-50 border-2 border-yellow-400 shadow text-lg text-yellow-700 font-medium rounded-md placeholder:text-yellow-500"
+                        class="px-3 py-1 block w-full bg-amber-50 border-2 border-amber-400 shadow text-lg text-amber-700 font-medium rounded-md placeholder:text-amber-500"
                         placeholder="30 days"
                     />
                 </div>
 
                 <div class="font-bold">
                     <span class="block mt-2 ml-3 text-sm text-gray-500">CAMPAIGN EXPIRATION DATE IS</span>
-                    <span class="block ml-3 text-lg text-yellow-500">{{displayExpiration}}</span>
+                    <span class="block ml-3 text-lg text-amber-500">{{displayExpiration}}</span>
                 </div>
             </section>
 

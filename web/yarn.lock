@@ -1086,7 +1086,7 @@
     graphql-ws "5.12.0"
     ws "8.13.0"
 
-"@nexajs/crypto@23.5.22", "@nexajs/crypto@^23.5.22":
+"@nexajs/crypto@23.5.22":
   version "23.5.22"
   resolved "https://registry.yarnpkg.com/@nexajs/crypto/-/crypto-23.5.22.tgz#1ca8e76cc18e159d18ef59f08368135dfcafee88"
   integrity sha512-2rKBRYsWKbtD7trTa25sOAN0TuAuz7RGU7eLMDLBtgLoIbIrQ6Q8amA4BlPyLNpjc4Og/KWbncSqRrXIvpm5Lw==
@@ -1202,7 +1202,7 @@
   dependencies:
     debug "4.3.4"
 
-"@nexajs/utils@23.7.22", "@nexajs/utils@^23.7.22":
+"@nexajs/utils@23.7.22":
   version "23.7.22"
   resolved "https://registry.yarnpkg.com/@nexajs/utils/-/utils-23.7.22.tgz#528a2d0fbb0c9db200f0b2ca877560d26944d33f"
   integrity sha512-8gX+YgXJOwxr+F5u91WqOZ9vV/xydSOUbZuHiOGjDirBG1MAsSb33MBhuW21ZuZrYtC3md589UhHBtai3QjAdw==
@@ -3478,6 +3478,11 @@ fetch-cookie@0.11.0:
   integrity sha512-BQm7iZLFhMWFy5CZ/162sAGjBfdNWb7a8LEqqnzsHFhxT/X/SVj/z2t2nu3aJvjlbQkrAlTUApplPRjWyH4mhA==
   dependencies:
     tough-cookie "^2.3.3 || ^3.0.1 || ^4.0.0"
+
+fflate@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.8.0.tgz#f93ad1dcbe695a25ae378cf2386624969a7cda32"
+  integrity sha512-FAdS4qMuFjsJj6XHbBaZeXOgaypXp8iw/Tpyuq/w3XA41jjLHT8NPA+n7czH/DDhdncq0nAyDZmPeWXh2qmdIg==
 
 file-uri-to-path@1.0.0:
   version "1.0.0"

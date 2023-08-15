@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "23.8.14",
+  "version": "23.8.15",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -20,6 +20,7 @@
     "dompurify": "3.0.0",
     "ethereum-blockies-base64": "1.0.2",
     "ethers": "5.7.2",
+    "fflate": "0.8.0",
     "isomorphic-dompurify": "1.0.0",
     "jsdom": "21.1.0",
     "moment": "2.29.4",

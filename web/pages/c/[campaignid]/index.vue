@@ -218,19 +218,6 @@ loadMarket() // NOTE: This is non-blocking.
 
                     </div>
 
-                    <!-- <NuxtLink :to="'https://explorer.nexa.org/address/' + campaign?.receiver" target="_blank" class="px-3 py-1 mt-5 flex flex-col items-center justify-center bg-rose-100 border-2 border-rose-300 rounded shadow">
-                        <h3 class="text-2xl text-rose-700 font-medium">
-                            Open My Wallet
-                        </h3>
-
-                        <span class="sm:hidden text-sm text-rose-500 font-medium">
-                            {{campaign?.receiver?.slice(0, 20)}} ... {{campaign?.receiver?.slice(-15)}}
-                        </span>
-                        <span class="hidden sm:inline text-sm text-rose-500 font-medium">
-                            {{campaign?.receiver}}
-                        </span>
-                    </NuxtLink> -->
-
                     <CampaignMonitor class="hidden" />
 
                     <CampaignHighlights />

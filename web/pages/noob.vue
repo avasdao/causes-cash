@@ -134,6 +134,10 @@ const loadMarket = async () => {
 loadCampaign() // NOTE: This is non-blocking.
 loadMarket() // NOTE: This is non-blocking.
 // loadWallet() // NOTE: This is non-blocking.
+
+const mint = () => {
+    alert('Minting coming soon...')
+}
 </script>
 
 <template>
@@ -180,7 +184,7 @@ loadMarket() // NOTE: This is non-blocking.
                         />
 
                         <button
-                            @click="copyToClipboard"
+                            @click="mint"
                             type="button"
                             class="w-full bg-sky-600 border-2 border-sky-800 rounded-xl py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                         >

@@ -1,5 +1,6 @@
 /* Import modules. */
 import moment from 'moment'
+import numeral from 'numeral'
 import PouchDB from 'pouchdb'
 import {
     getAddressHistory,
@@ -13,6 +14,53 @@ const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.en
 let cache = {}
 
 const CACHE_REFRESH_DELAY = 30 // default: 30 seconds
+const MARKET_UPDATE_DELAY = 30000 // default: 30 seconds
+
+const campaignGoalIdx = 0 // FIXME: FOR DEV ONLY
+
+let usd
+
+const updateMarket = async () => {
+    usd = Number(await $fetch(`https://nexa.exchange/mex`))
+    console.log('USD (mex):', usd)
+}
+
+/**
+ * Requested Display
+ */
+const requestedDisplay = (_campaignGoals, _isMex = false) => {
+    /* Validate funding goal. */
+    if (!_campaignGoals || !usd) return '0.00'
+
+    /* Set satoshis value. */
+    const satoshis = _campaignGoals.amount
+
+    /* Set NEXA value. */
+    const nexValue = Number(satoshis / 100)
+
+    /* Return (formatted) value. */
+    if (_isMex) {
+        return numeral(nexValue / 1000000).format('0,0.00[00]')
+    } else {
+        return numeral(nexValue).format('0,0.00[00]')
+    }
+}
+
+/**
+ * Requesed Display (USD)
+ */
+const requestedDisplayUsd = (_campaignGoals) => {
+    /* Validate pledge balance. */
+    if (!_campaignGoals || !usd) return '$0.00'
+
+    const usdValue = (_campaignGoals.amount / 100000000) * usd
+
+    /* Return (formatted) value. */
+    return numeral(usdValue).format('$0,0.00')
+}
+
+setInterval(updateMarket, MARKET_UPDATE_DELAY)
+
 
 export default defineEventHandler(async (event) => {
     let campaign
@@ -83,6 +131,16 @@ export default defineEventHandler(async (event) => {
 
     /* Update cache. */
     campaign.cache = cache[campaignid]
+
+    if (!usd) {
+        await updateMarket()
+    }
+
+    campaign.goals.forEach(_goal => {
+        _goal.displayAmount = requestedDisplay(_goal)
+        _goal.displayAmountMex = requestedDisplay(_goal, true) // isMex
+        _goal.displayAmountUsd = requestedDisplayUsd(_goal)
+    })
 
     /* Return campaigns. */
     return campaign

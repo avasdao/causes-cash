@@ -35,9 +35,7 @@ const fundedDisplay = computed(() => {
     const satoshis = campaignPledged.value
 
     // /* Set NEXA value. */
-    const nexValue = Number(
-        satoshis / 100
-    )
+    const nexValue = Number(satoshis / 100)
 
     // /* Return (formatted) value. */
     return numeral(nexValue / 1000000)
@@ -57,35 +55,6 @@ const fundedDisplayUsd = computed(() => {
     return numeral(usdValue).format('$0,0.00')
 })
 
-/**
- * Requested Display
- */
-const requestedDisplay = computed(() => {
-    /* Validate funding goal. */
-    if (!campaignGoals.value || !props.usd) return '0.00'
-
-    /* Set satoshis value. */
-    const satoshis = campaignGoals.value[campaignGoalIdx.value].amount
-
-    /* Set NEXA value. */
-    const nexValue = Number(satoshis / 100)
-
-    /* Return (formatted) value. */
-    return numeral(nexValue / 1000000).format('0,0.00[00]')
-})
-
-/**
- * Requesed Display (USD)
- */
-const requestedDisplayUsd = computed(() => {
-    /* Validate pledge balance. */
-    if (!campaignGoals.value || !props.usd) return '$0.00'
-
-    const usdValue = (campaignGoals.value[campaignGoalIdx.value].amount / 100000000) * props.usd
-
-    /* Return (formatted) value. */
-    return numeral(usdValue).format('$0,0.00')
-})
 
 /**
  * Percentage Completed
@@ -182,11 +151,11 @@ watch(() => props.campaign, async (_campaign) => {
         <h4 class="sr-only">Status</h4>
 
         <p class="text-3xl text-center font-medium text-gray-700">
-            {{fundedDisplay}} of {{requestedDisplay}} <span class="text-2xl text-gray-500">m</span>NEXA
+            {{fundedDisplay}} of {{props.campaign?.goals[0].displayAmountMex}} <span class="text-2xl text-gray-500">m</span>NEXA
         </p>
 
         <p class="text-center text-base text-gray-500 font-medium">
-            {{fundedDisplayUsd}} of {{requestedDisplayUsd}} USD
+            {{fundedDisplayUsd}} of {{props.campaign?.goals[0].displayAmountUsd}} USD
         </p>
 
         <div class="mt-6" aria-hidden="true">
@@ -202,4 +171,5 @@ watch(() => props.campaign, async (_campaign) => {
 
         </div>
     </main>
+    <!-- <pre>{{props.campaign}}</pre> -->
 </template>

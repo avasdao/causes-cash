@@ -189,8 +189,6 @@ export default defineEventHandler(async (event) => {
 
     receiver = campaign.receiver
 
-
-
     if (!usd) {
         await updateMarket()
     }
@@ -214,7 +212,6 @@ export default defineEventHandler(async (event) => {
                 .catch(err => console.error(err))
             // console.log('HISTORY', history)
 
-            received = 0
             txs = []
 
             for (let i = 0; i < history.length; i++) {
@@ -223,21 +220,11 @@ export default defineEventHandler(async (event) => {
                 tx = await getTransaction(txid)
                     .catch(err => console.error(err))
 
-                for (let j = 0; j < tx.vout.length; j++) {
-                    output = tx.vout[j]
-                    // console.log('OUTPUT', output)
-
-                    if (output.scriptPubKey.hex === scriptPubKey) {
-                        received += output.value_satoshi
-                        // console.log('RECEIVED', received)
-                    }
-                }
-
                 txs.push({
                     hash: tx.hash,
                     height: tx.height,
                     fee: tx.fee,
-                    received,
+                    vout: tx.vout,
                 })
             }
 
@@ -246,7 +233,29 @@ export default defineEventHandler(async (event) => {
                 updatedAt: moment().unix(),
             }
         } else {
-            console.log('***LOADED FROM CACHE***')
+            // console.log('***LOADED FROM CACHE***')
+        }
+
+        /* Initialize received amount (in satoshis). */
+        received = 0
+
+        // console.log('CACHE CAMPAIGN', cache[campaignid])
+
+        for (let i = 0; i < cache[campaignid].txs.length; i++) {
+            tx = cache[campaignid].txs[i]
+
+            for (let j = 0; j < tx.vout.length; j++) {
+                output = tx.vout[j]
+                // console.log('OUTPUT', output)
+
+                if (output.scriptPubKey.hex === scriptPubKey) {
+                    received += output.value_satoshi
+                    // console.log('RECEIVED', received)
+                }
+
+                /* Add received amount to transaction. */
+                tx.received = received
+            }
         }
 
         /* Update received (balance). */
@@ -254,29 +263,6 @@ export default defineEventHandler(async (event) => {
 
         /* Update cache. */
         campaign.cache = cache[campaignid]
-
-
-
-        /* Request (receiver) address history. */
-        // history = await getAddressHistory(campaign.receiver)
-        //     .catch(err => console.error(err))
-        // console.log('HISTORY', history)
-
-        // for (let i = 0; i < history.length; i++) {
-        //     tx = await getTransaction(history[i].tx_hash)
-        //     // console.log('TX', tx)
-
-        //     for (let j = 0; j < tx.vout.length; j++) {
-        //         output = tx.vout[j]
-        //         // console.log('OUTPUT', output)
-
-        //         if (output.scriptPubKey.hex === scriptPubKey) {
-        //             balance += output.value_satoshi
-        //             // console.log('BALANCE', balance)
-        //         }
-        //     }
-        // }
-        // console.log('BALANCE (final):', balance)
 
         // FIXME Handle campaign index (using _campaign.goals)
         campaignGoalIdx = 0

@@ -3,15 +3,13 @@
 import moment from 'moment'
 import numeral from 'numeral'
 
-import * as fflate from 'fflate'
-
 /* Import components. */
-import Calendar from './launchpad/Calendar.vue'
-import Owner from './launchpad/Owner.vue'
-import Manager from './launchpad/Manager.vue'
-import Recipients from './launchpad/Recipients.vue'
-import Spotlight from './launchpad/Spotlight.vue'
-import Summary from './launchpad/Summary.vue'
+import Calendar from './Calendar.vue'
+import Owner from './Owner.vue'
+import Manager from './Manager.vue'
+import Recipients from './Recipients.vue'
+import Spotlight from './Spotlight.vue'
+import Summary from './Summary.vue'
 
 /* Import stores. */
 import { useSystemStore } from '@/stores/system'
@@ -249,46 +247,6 @@ expiration.value = moment().add(duration.value, 'days').unix()
 nexUsd.value = await $fetch('https://nexa.exchange/nex')
     .catch(err => console.error(err))
 
-const mint = () => {
-    const zipped = fflate.zipSync({
-        // Directories can be nested structures, as in an actual filesystem
-        'dir1': {
-            'nested': {
-                'hi-again.txt': fflate.strToU8('Hi again!')
-            },
-            // You can also manually write out a directory path
-            'other/tmp.txt': new Uint8Array([97, 98, 99, 100])
-        },
-
-        // You can also provide compression options
-        //   'massiveImage.bmp': [aMassiveFile, {
-        //     level: 9,
-        //     mem: 12
-        //   }],
-        // PNG is pre-compressed; no need to waste time
-        //   'superTinyFile.png': [aPNGFile, { level: 0 }],
-
-        'exec': [{
-            'hello.sh': [fflate.strToU8('echo Hi there!'), {
-            // ZIP only: Set the operating system to Unix
-            os: 3,
-            // ZIP only: Make this file executable on Unix
-            attrs: 0o755 << 16
-        }]
-    }, {
-        // ZIP and GZIP support mtime (defaults to current time)
-        mtime: new Date('10/20/2020')
-    }]
-}, {
-    // These options are the defaults for all files, but file-specific
-    // options take precedence.
-    level: 1,
-    // Obfuscate last modified time by default
-    mtime: new Date('1/1/1980')
-})
-// console.log('zipped', zipped)
-System.downloadBlob(zipped, 'download.zip', 'application/octet-stream')
-}
 </script>
 
 <template>
@@ -349,7 +307,6 @@ System.downloadBlob(zipped, 'download.zip', 'application/octet-stream')
                 </button>
 
                 <button
-                    @click="mint"
                     type="button"
                     class="w-full bg-cyan-600 border-2 border-cyan-800 rounded-xl py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                 >

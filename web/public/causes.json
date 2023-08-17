@@ -1,0 +1,11 @@
+{
+    "ticker": "CAUSES",
+    "name": "Causes Cash",
+    "summary": "TBD",
+    "description": "TBD",
+    "legal": "TBD",
+    "creator": "Causes Cash DAO",
+    "contact": { "twitter.com": "@CausesCash", "reddit.com": "r/CausesCash" },
+    "icon": "/icon.svg",
+    "category": "coin"
+  }

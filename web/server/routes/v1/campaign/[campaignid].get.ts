@@ -264,16 +264,22 @@ export default defineEventHandler(async (event) => {
         /* Update cache. */
         campaign.cache = cache[campaignid]
 
-        // FIXME Handle campaign index (using _campaign.goals)
+        // FIXME Handle campaign index (using campaign.goals)
         campaignGoalIdx = 0
     } else {
         /* Request (receiver) address balance. */
-        balance = await getAddressBalance(_campaign.receiver)
+        campaign.received = await getAddressBalance(campaign.receiver)
             .catch(err => console.error(err))
-        // console.log('BALANCE', balance)
+        // console.log('RECEIVED', campaign.received)
 
-        // FIXME Handle campaign index (using _campaign.goals)
+        // FIXME Handle campaign index (using campaign.goals)
         campaignGoalIdx = 0
+    }
+
+    campaign.expirationDisplay = expirationDisplay(campaign.expiresAt)
+
+    if (!campaign.goals) {
+        return campaign
     }
 
     for (let i = 0; i < campaign.goals.length; i++) {
@@ -288,8 +294,6 @@ export default defineEventHandler(async (event) => {
         goal.fundedDisplayUsd = fundedDisplayUsd(goal)
         goal.pctCompleted = pctCompleted(goal)
     }
-
-    campaign.expirationDisplay = expirationDisplay(campaign.expiresAt)
 
     /* Return campaigns. */
     return campaign

@@ -1,0 +1,11 @@
+{
+  "ticker": "NOOB",
+  "name": "Nexican Noob Gallery",
+  "summary": "An exclusive showcase of 12 emerging non-fungible token (NFT) and semi-fungible token (SFT) collections.",
+  "description": "Each collection is showcased for 12 weeks, during which time, fans can purchase individual pieces, forge trophies and unlock the pièce de résistance from each collection.",
+  "legal": "Creators receive a 50% (instant) payout from EACH and EVERY mint/sale of their respective assets.",
+  "creator": "Causes Cash DAO",
+  "contact": { "twitter.com": "@CausesCash", "reddit.com": "r/CausesCash" },
+  "icon": "/icon.svg",
+  "category": "NFT"
+}

@@ -170,16 +170,16 @@ const mint = () => {
                         {{campaign?.summary}}
                     </p>
 
-                    <CampaignStatus
+                    <!-- <CampaignStatus
                         :usd="usd"
                         :campaign="campaign"
-                    />
+                    /> -->
 
                     <div class="mt-10 flex flex-col gap-5">
                         <input
                             class="w-full px-5 py-4 text-2xl text-amber-700 font-light placeholder-amber-500 bg-amber-200 border-2 border-amber-400 rounded-xl shadow"
                             type="text"
-                            placeholder="(optional) destination address"
+                            placeholder="enter (optional) destination address"
                             v-model="receiver"
                         />
 
@@ -190,11 +190,41 @@ const mint = () => {
                         >
 
                             <h3 class="text-2xl text-sky-50 font-medium">
-                                Mint a Random Noob SFT
+                                Mint <span class="text-3xl italic text-amber-500">1x</span> Random Noob SFT
                             </h3>
 
                             <span class="text-base text-sky-200 font-medium italic">
-                                minting fee <span class="text-2xl fotn-bold">10,000</span> NEXA each
+                                minting fee <span class="text-2xl fotn-bold text-amber-500">10,000</span> NEXA each
+                            </span>
+                        </button>
+
+                        <button
+                            @click="mint"
+                            type="button"
+                            class="w-full bg-sky-600 border-2 border-sky-800 rounded-xl py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                        >
+
+                            <h3 class="text-2xl text-sky-50 font-medium">
+                                Mint <span class="text-3xl italic text-amber-500">3x</span> Random Noob SFTs
+                            </h3>
+
+                            <span class="text-base text-sky-200 font-medium italic">
+                                minting fee <span class="text-2xl fotn-bold text-amber-500">7,000</span> NEXA each
+                            </span>
+                        </button>
+
+                        <button
+                            @click="mint"
+                            type="button"
+                            class="w-full bg-sky-600 border-2 border-sky-800 rounded-xl py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                        >
+
+                            <h3 class="text-2xl text-sky-50 font-medium">
+                                Mint <span class="text-3xl italic text-amber-500">9x</span> Random Noob SFTs
+                            </h3>
+
+                            <span class="text-base text-sky-200 font-medium italic">
+                                minting fee <span class="text-2xl fotn-bold text-amber-500">5,000</span> NEXA each
                             </span>
                         </button>
                     </div>

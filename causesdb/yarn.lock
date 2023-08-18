@@ -277,6 +277,18 @@
     graphql-ws "5.12.0"
     ws "8.13.0"
 
+"@nexajs/address@23.8.18":
+  version "23.8.18"
+  resolved "https://registry.yarnpkg.com/@nexajs/address/-/address-23.8.18.tgz#fdbe0d532f99bf19806411af24fb813bade5b2c1"
+  integrity sha512-uL4Rk8l4Dzuvkbyg8f4TD9vLnY63TE3xjsZP67NIb65LTKZ8Mzw8dx56kxssUZL+1vkbDheAn2Fl0Ga2WqhtRg==
+  dependencies:
+    "@nexajs/rostrum" "23.8.18"
+    big-integer "1.6.51"
+    debug "4.3.4"
+    graphql "16.6.0"
+    graphql-ws "5.12.0"
+    ws "8.13.0"
+
 "@nexajs/crypto@23.5.22":
   version "23.5.22"
   resolved "https://registry.yarnpkg.com/@nexajs/crypto/-/crypto-23.5.22.tgz#1ca8e76cc18e159d18ef59f08368135dfcafee88"
@@ -368,6 +380,17 @@
   version "23.8.11"
   resolved "https://registry.yarnpkg.com/@nexajs/rostrum/-/rostrum-23.8.11.tgz#26ffa014f3e5fe6e39caf3b2ab7325a74665a8bb"
   integrity sha512-M2keiDK6m6crUVx8IsYsZan1BL3TNm7I0aSSw6My5tRarPfuKAyDyue6Co5QeCGXOb/SgLTsOhCjwPyuq6RhHw==
+  dependencies:
+    debug "4.3.4"
+    events "3.3.0"
+    isomorphic-ws "5.0.0"
+    uuid "9.0.0"
+    ws "8.12.1"
+
+"@nexajs/rostrum@23.8.18":
+  version "23.8.18"
+  resolved "https://registry.yarnpkg.com/@nexajs/rostrum/-/rostrum-23.8.18.tgz#bbda292a3fbc6879a2e208dead6a90cfbe9d784b"
+  integrity sha512-sHWaYHEw4Bi2+gEWQvO/ddf6kyHb5m4Wcfx5NS+VIZ+JnmFt32GjEporrsY6/Kk0lzuuFU6/CAbEa6svtgEj8A==
   dependencies:
     debug "4.3.4"
     events "3.3.0"
@@ -1368,13 +1391,13 @@ netmask@^2.0.2:
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-2.0.2.tgz#8b01a07644065d536383835823bc52004ebac5e7"
   integrity sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==
 
-nexajs@23.8.12:
-  version "23.8.12"
-  resolved "https://registry.yarnpkg.com/nexajs/-/nexajs-23.8.12.tgz#13b3c13465dee9c3e3d72ee44f8d0a14ee065890"
-  integrity sha512-lAA3Y5vB1eo0ZJrcuceeY8IRa2P9ODiy9o7neZJP3v5ieuqt4kb7Ei3+Kg9iKcNGCw2eXz6SwQDab7ymFXXkBQ==
+nexajs@23.8.18:
+  version "23.8.18"
+  resolved "https://registry.yarnpkg.com/nexajs/-/nexajs-23.8.18.tgz#53308c05a1a9a1e6738d566edec399781440bea3"
+  integrity sha512-wzB+onK6Nyc8Fig8cmQ/4RCbNcLLRV2xZaB7vkQVCzn6Op1ijZU9F7iHFUGMZreHocsW23XYewpq4e73c4RWBg==
   dependencies:
     "@bitauth/libauth" "1.19.1"
-    "@nexajs/address" "23.8.11"
+    "@nexajs/address" "23.8.18"
     "@nexajs/crypto" "23.5.22"
     "@nexajs/hdnode" "23.7.26"
     "@nexajs/id" "23.5.15"
@@ -1382,7 +1405,7 @@ nexajs@23.8.12:
     "@nexajs/provider" "23.6.21"
     "@nexajs/purse" "23.8.11"
     "@nexajs/request" "23.5.15"
-    "@nexajs/rostrum" "23.8.11"
+    "@nexajs/rostrum" "23.8.18"
     "@nexajs/rpc" "23.5.15"
     "@nexajs/script" "23.7.21"
     "@nexajs/token" "23.8.11"

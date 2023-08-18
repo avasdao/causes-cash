@@ -1154,6 +1154,17 @@
     uuid "9.0.0"
     ws "8.12.1"
 
+"@nexajs/rostrum@^23.8.18":
+  version "23.8.18"
+  resolved "https://registry.yarnpkg.com/@nexajs/rostrum/-/rostrum-23.8.18.tgz#bbda292a3fbc6879a2e208dead6a90cfbe9d784b"
+  integrity sha512-sHWaYHEw4Bi2+gEWQvO/ddf6kyHb5m4Wcfx5NS+VIZ+JnmFt32GjEporrsY6/Kk0lzuuFU6/CAbEa6svtgEj8A==
+  dependencies:
+    debug "4.3.4"
+    events "3.3.0"
+    isomorphic-ws "5.0.0"
+    uuid "9.0.0"
+    ws "8.12.1"
+
 "@nexajs/rpc@23.5.15":
   version "23.5.15"
   resolved "https://registry.yarnpkg.com/@nexajs/rpc/-/rpc-23.5.15.tgz#d8bb94f8f5027019d9dd6b0c43b3bf33a90e79f0"
@@ -1444,14 +1455,6 @@
     is-glob "^4.0.3"
     micromatch "^4.0.5"
     napi-wasm "^1.1.0"
-
-"@pinia-plugin-persistedstate/nuxt@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@pinia-plugin-persistedstate/nuxt/-/nuxt-1.0.0.tgz#057fd3b0649e9c4ce90f60e3fc136eeef50c0777"
-  integrity sha512-oBLnkFXy0mcP9wCR0NQj1SguhgalEoubDF302gpRr1lh0V34vSL2Nlw8XDwRrULq5v3eHt4da632YSjNny1+BA==
-  dependencies:
-    "@nuxt/kit" "^3.0.0"
-    pinia-plugin-persistedstate ">=3.0.0"
 
 "@pinia/nuxt@0.4.7":
   version "0.4.7"
@@ -3479,7 +3482,7 @@ fetch-cookie@0.11.0:
   dependencies:
     tough-cookie "^2.3.3 || ^3.0.1 || ^4.0.0"
 
-fflate@^0.8.0:
+fflate@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/fflate/-/fflate-0.8.0.tgz#f93ad1dcbe695a25ae378cf2386624969a7cda32"
   integrity sha512-FAdS4qMuFjsJj6XHbBaZeXOgaypXp8iw/Tpyuq/w3XA41jjLHT8NPA+n7czH/DDhdncq0nAyDZmPeWXh2qmdIg==
@@ -5322,11 +5325,6 @@ pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
-
-pinia-plugin-persistedstate@>=3.0.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/pinia-plugin-persistedstate/-/pinia-plugin-persistedstate-3.2.0.tgz#9932ca2ae88aa6c0d6763bebc6447d7bd1f097d0"
-  integrity sha512-tZbNGf2vjAQcIm7alK40sE51Qu/m9oWr+rEgNm/2AWr1huFxj72CjvpQcIQzMknDBJEkQznCLAGtJTIcLKrKdw==
 
 pinia@2.0.32:
   version "2.0.32"

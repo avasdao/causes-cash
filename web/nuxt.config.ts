@@ -54,4 +54,11 @@ export default defineNuxtConfig({
     plugins: [
         // { src: '@/plugins/bugsnag', ssr: false }
     ],
+
+    /* Route Rules */
+    routeRules: {
+        /* Add CORS headers to root. */
+        // NOTE: We need this to make <token>.json files available to web apps.
+        '/**': { cors: true },
+    },
 })

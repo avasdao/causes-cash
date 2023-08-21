@@ -136,7 +136,7 @@ const create = async () => {
     }
     console.log('CAMPAIGN PKG', pkg)
 
-    const response = await $fetch('/api/campaigns', {
+    const response = await $fetch('/v1/campaign', {
         method: 'POST',
         body: pkg,
     })

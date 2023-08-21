@@ -21,7 +21,7 @@ const loadCampaigns = async () => {
     /* Add campaigns. */
     for (let i = 0; i < spotlights.length; i++) {
         /* Request campaign. */
-        campaign = await $fetch(`/api/campaigns?id=${spotlights[i]}`)
+        campaign = await $fetch(`/v1/campaign/${spotlights[i]}`)
             .catch(err => console.error(err))
         // console.log('SPOTLIGHT CAMPAIGN', campaign)
 

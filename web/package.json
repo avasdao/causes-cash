@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "23.8.22",
+  "version": "23.8.23",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",

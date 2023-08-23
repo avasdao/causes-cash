@@ -149,6 +149,9 @@ const setTab = (_tab) => {
     }
 }
 
+const createWallet = () => {
+    console.log('a wallet')
+}
 
 const init = async () => {
     /* Set (default) tab. */
@@ -186,6 +189,9 @@ onMounted(() => {
         </p>
 
         <div @click="Wallet.createWallet" class="cursor-pointer px-3 py-2 text-2xl text-blue-100 font-medium bg-blue-500 border-2 border-blue-700 rounded-lg shadow hover:bg-blue-400">
+            Create New Wallet
+        </div>
+        <div @click="createWallet" class="cursor-pointer px-3 py-2 text-2xl text-blue-100 font-medium bg-blue-500 border-2 border-blue-700 rounded-lg shadow hover:bg-blue-400">
             Create New Wallet
         </div>
 

@@ -5279,7 +5279,7 @@ negotiator@0.6.3:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
-nexajs@23.8.21:
+nexajs@^23.8.21:
   version "23.8.21"
   resolved "https://registry.yarnpkg.com/nexajs/-/nexajs-23.8.21.tgz#d0a7871364a52fe62f5388c0d4438637474e7b14"
   integrity sha512-ixIQ6L33r9ImSRAjCU6rElZbddwi5OAOHKHfOnLFFEBcRMFXVAld9Zy9/0bo3w9ga9g9pRszqIcWOWJkQQiB5w==

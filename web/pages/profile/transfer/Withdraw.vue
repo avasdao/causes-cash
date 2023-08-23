@@ -102,7 +102,7 @@ const System = useSystemStore()
 /* Import modules. */
 
 import QrScanner from 'qr-scanner'
-QrScanner.WORKER_PATH = './js/qr-scanner-worker.min.js'
+// QrScanner.WORKER_PATH = './js/qr-scanner-worker.min.js'
 
 // Import library to manage bitcoin cash data structures.
 import {

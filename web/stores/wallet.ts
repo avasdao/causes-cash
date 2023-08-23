@@ -307,6 +307,7 @@ export const useWalletStore = defineStore('wallet', {
         },
 
         createWallet(_entropy) {
+            console.log('ENTROPY', entropy)
             /* Validate entropy. */
             // NOTE: Expect HEX value to be 32 or 64 characters.
             if (_entropy.length !== 32 && _entropy.length !== 64) {

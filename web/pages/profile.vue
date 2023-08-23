@@ -58,7 +58,7 @@ const init = async () => {
 }
 
 // init()
-console.log('Profile.mnemonic', Profile.mnemonic)
+// console.log('Profile.mnemonic', Profile.mnemonic)
 // const wallet = new Wallet(Profile.mnemonic)
 // console.log('WALLET', wallet)
 // console.log('ADDRESS', wallet.address)
@@ -88,14 +88,9 @@ console.log('Profile.mnemonic', Profile.mnemonic)
 
                     <pre class="bg-sky-500">Address - {{ Wallet.address }}</pre>
 
-                    <p class="p-3 bg-green-500 font-mono">
-                        Mnemonic
-                        {{ Profile.mnemonic }}
-                    </p>
-
-                    <button @click="Profile.createWallet()" class="px-3 py-1 bg-sky-500 rounded-lg">
+                    <!-- <button @click="Profile.createWallet()" class="px-3 py-1 bg-sky-500 rounded-lg">
                         Create Wallet
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </section>

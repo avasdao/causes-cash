@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+    layout: 'admin',
+})
+
 useHead({
     title: `Rainmaker — Causes Cash`,
     meta: [
@@ -22,7 +26,7 @@ const System = useSystemStore()
 </script>
 
 <template>
-    <main class="py-10 max-w-5xl mx-auto">
+    <main class="">
         <header>
             <h1 class="text-5xl font-medium text-gray-600">
                 Rainmaker for Nexa

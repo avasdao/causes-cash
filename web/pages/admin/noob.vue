@@ -2,6 +2,10 @@
 /* Import modules. */
 import * as fflate from 'fflate'
 
+definePageMeta({
+    layout: 'admin',
+})
+
 useHead({
     title: `Noob Manager — Causes Cash`,
     meta: [

@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useHead({
-    title: `Admin Home — Causes Cash`,
+    title: `Settings — Causes Cash`,
     meta: [
         { name: 'description', content: `Causes Cash makes building your next BIG idea effortless.` }
     ],

@@ -7,11 +7,14 @@ definePageMeta({
 })
 
 useHead({
-    title: `Noob Manager — Causes Cash`,
+    title: `Noob Gallery Manager — Causes Cash`,
     meta: [
         { name: 'description', content: `Causes Cash makes building your next BIG idea effortless.` }
     ],
 })
+
+
+const isBootstrapping = ref(true)
 
 
 /* Initialize stores. */
@@ -94,9 +97,17 @@ const mint = () => {
 </script>
 
 <template>
-    <main class="max-w-7xl mx-auto py-5">
+    <main v-if="isBootstrapping" class="max-w-7xl mx-auto py-5">
         <h1 class="text-5xl font-medium">
-            Noob Manager
+            Noob Gallery Manager
+        </h1>
+
+        <Bootstrapping />
+    </main>
+
+    <main v-else class="max-w-7xl mx-auto py-5">
+        <h1 class="text-5xl font-medium">
+            Noob Gallery Manager
         </h1>
 
         <p>
@@ -118,9 +129,6 @@ const mint = () => {
             </span>
         </button>
 
-    </main>
-
-    <main>
         <div class="space-y-12">
             <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
                 <div>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useHead({
-    title: 'PROJECT_NAME — Nexa Studio',
+    title: 'Admin — Causes Cash',
     meta: [
-        { name: 'description', content: 'Nexa Studio makes building your next BIG idea effortless.' }
+        { name: 'description', content: '' }
     ],
 })
 
@@ -69,16 +69,19 @@ watch([Profile.$state, System.$state, Wallet.$state], (_state) => {
 
 const isShowingMenu = ref(false)
 
-// onMounted(() => {
-//     console.log('Mounted!')
-//     // Now it's safe to perform setup operations.
-// })
+
+onMounted(() => {
+    /* Initailize system. */
+    System.init()
+
+    /* Initialize wallet. */
+    Wallet.init()
+})
 
 // onBeforeUnmount(() => {
 //     console.log('Before Unmount!')
 //     // Now is the time to perform all cleanup operations.
 // })
-
 </script>
 
 <template>

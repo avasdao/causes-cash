@@ -71,6 +71,8 @@ console.log('Profile.mnemonic', Profile.mnemonic)
 
             <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                 <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+                    <ProfileWallet />
+
                     <General :web3Address="web3Address" />
 
                     <Notes />

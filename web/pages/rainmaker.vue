@@ -22,7 +22,17 @@ const System = useSystemStore()
 </script>
 
 <template>
-    <main>
+    <main class="py-10 max-w-5xl mx-auto">
+        <header>
+            <h1 class="text-5xl font-medium text-gray-600">
+                Rainmaker for Nexa
+            </h1>
+
+            <h2 class="text-xl font-medium">
+                Share FTs, NFTs and SFTs with your community
+            </h2>
+        </header>
+
         <div class="space-y-12">
             <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
                 <div>

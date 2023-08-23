@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "23.8.18",
+  "version": "23.8.22",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -11,11 +11,6 @@
   },
   "dependencies": {
     "@bitauth/libauth": "1.19.1",
-    "@nexajs/crypto": "23.5.22",
-    "@nexajs/rostrum": "23.8.18",
-    "@nexajs/rpc": "23.5.15",
-    "@nexajs/utils": "23.7.22",
-    "@nexajs/wallet": "23.8.11",
     "@pinia/nuxt": "0.4.7",
     "dompurify": "3.0.0",
     "ethereum-blockies-base64": "1.0.2",
@@ -24,6 +19,7 @@
     "isomorphic-dompurify": "1.0.0",
     "jsdom": "21.1.0",
     "moment": "2.29.4",
+    "nexajs": "23.8.21",
     "numeral": "2.0.6",
     "nuxt": "3.2.2",
     "pinia": "2.0.32",

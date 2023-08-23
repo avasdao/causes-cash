@@ -157,7 +157,7 @@ export default defineEventHandler(async (event) => {
     let received
     let receiver
     let response
-    let txs
+    // let txs
 
     /* Set campaign id. */
     campaignid = event.context.params?.campaignid
@@ -181,10 +181,6 @@ export default defineEventHandler(async (event) => {
         ...response,
     }
 
-    /* Delete database fields. */
-    delete campaign._id
-    delete campaign._rev
-
     goals = campaign.goals
 
     receiver = campaign.receiver
@@ -194,6 +190,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (campaign.goals?.length > 1) {
+        let checkpoint
         let decoded
         let history
         let output
@@ -201,43 +198,62 @@ export default defineEventHandler(async (event) => {
         let tx
         let txid
 
+        if (!cache[campaignid]) {
+            cache[campaignid] = {}
+        }
+
+        /* Clear transactions. */
+        cache[campaignid].txs = []
+
         decoded = decodeAddress(campaign.receiver)
         // console.log('DECODED', decoded)
 
         scriptPubKey = binToHex(decoded.hash).slice(2)
         // console.log('scriptPubKey', scriptPubKey)
 
+        checkpoint = campaign?.checkpoint || 0
+
         if (!cache[campaignid]?.updatedAt || cache[campaignid].updatedAt + CACHE_REFRESH_DELAY < moment().unix()) {
             history = await getAddressHistory(receiver)
                 .catch(err => console.error(err))
-            // console.log('HISTORY', history)
+            console.log('HISTORY', history)
 
-            txs = []
+            history = history.filter(_tx => {
+                return _tx.height > checkpoint
+            })
+            console.log('HISTORY (filtered)', history)
 
+            /* Handle NEW history. */
             for (let i = 0; i < history.length; i++) {
+                /* Set transaction id. */
                 txid = history[i].tx_hash
 
+                /* Request campaign details. */
                 tx = await getTransaction(txid)
                     .catch(err => console.error(err))
 
-                txs.push({
+                /* Add campaign to cache. */
+                cache[campaignid].txs.push({
                     hash: tx.hash,
                     height: tx.height,
                     fee: tx.fee,
                     vout: tx.vout,
                 })
+
+                /* Validate transaction height. */
+                if (tx.height > checkpoint) {
+                    checkpoint = tx.height
+                }
             }
 
-            cache[campaignid] = {
-                txs,
-                updatedAt: moment().unix(),
-            }
+            /* Update timestamp. */
+            cache[campaignid].updatedAt = moment().unix()
         } else {
             // console.log('***LOADED FROM CACHE***')
         }
 
         /* Initialize received amount (in satoshis). */
-        received = 0
+        received = campaign?.received || 0
 
         // console.log('CACHE CAMPAIGN', cache[campaignid])
 
@@ -261,8 +277,23 @@ export default defineEventHandler(async (event) => {
         /* Update received (balance). */
         campaign.received = received
 
+        campaign.checkpoint = checkpoint
+
+        campaign.updatedAt = moment().unix()
+
+        response = await campaignsDb
+            .put(campaign)
+            .catch(err => console.error(err))
+        console.error('DB UPDATE', response)
+
+        /* Delete database fields. */
+        delete campaign._id
+        delete campaign._rev
+
         /* Update cache. */
-        campaign.cache = cache[campaignid]
+        // campaign.cache = cache[campaignid]
+
+        // delete campaign.cache.txs
 
         // FIXME Handle campaign index (using campaign.goals)
         campaignGoalIdx = 0

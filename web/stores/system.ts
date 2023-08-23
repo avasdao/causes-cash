@@ -63,6 +63,9 @@ export const useSystemStore = defineStore('system', {
          */
         _tickers: null,
 
+
+
+
         sponsors: 'Our beloved sponsors',
 
         /* Initialize network. */
@@ -195,14 +198,6 @@ export const useSystemStore = defineStore('system', {
         inbox: null,
 
         /**
-         * Locale
-         *
-         * Controls the localization language.
-         * (default is english)
-         */
-        locale: null,
-
-        /**
          * Notices
          *
          * System notices that nag/remind the user of some important action or
@@ -212,7 +207,7 @@ export const useSystemStore = defineStore('system', {
          * NOTE: Unique 1-byte (hex) codes (up to 255) are used to reduce the size
          *       of this storage field.
          */
-        notices: null,
+        // notices: null,
 
         // TODO
         outbox: null,
@@ -234,7 +229,29 @@ export const useSystemStore = defineStore('system', {
     }),
 
     getters: {
-        // TODO
+        nex() {
+            if (!this._tickers?.NEXA) {
+                return null
+            }
+
+            return this._tickers.NEXA.quote.USD.price
+        },
+
+        usd() {
+            if (!this.nex) {
+                return null
+            }
+
+            return this.nex * 10**6
+        },
+
+        locale() {
+            if (!this._locale) {
+                return null
+            }
+
+            return this._locale
+        },
     },
 
     actions: {
@@ -265,10 +282,10 @@ export const useSystemStore = defineStore('system', {
             }
 
             /* Initialize (library) locale. */
-            const { locale } = useI18n()
+            // const { locale } = useI18n()
 
             /* Set (library) locale. */
-            locale.value = this.locale
+            // locale.value = this.locale
         },
 
         async updateTicker () {

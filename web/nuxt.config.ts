@@ -49,6 +49,9 @@ export default defineNuxtConfig({
 
         /* Pinia */
         '@pinia/nuxt',
+
+        /* Internationalization for Nuxt */
+        '@nuxtjs/i18n',
     ],
 
     plugins: [

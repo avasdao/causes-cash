@@ -2,13 +2,13 @@
 import { useProfileStore } from '@/stores/profile'
 // import { useSystemStore } from '@/stores/system'
 
-/* Initialize stores. */
-const Profile = useProfileStore()
-// const System = useSystemStore()
-
 export default defineNuxtRouteMiddleware(async (to, from) => {
     // NOTE: We skip middleware on server.
     if (process.server) return
+
+    /* Initialize stores. */
+    const Profile = useProfileStore()
+    // const System = useSystemStore()
 
     /* Initialize locals. */
     let session

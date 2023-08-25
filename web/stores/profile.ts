@@ -6,9 +6,12 @@ import { defineStore } from 'pinia'
  */
 export const useProfileStore = defineStore('profile', {
     state: () => ({
+        /* Initialize session. */
+        _session: null,
+
         /* Initialize entropy (used for HD wallet). */
         // NOTE: This is a cryptographically-secure "random" 32-byte (256-bit) value. */
-        _entropy: null,
+        // _entropy: null,
 
         /**
          * Email
@@ -23,7 +26,7 @@ export const useProfileStore = defineStore('profile', {
          * A 32-byte seed, which can be generated randomly, or by importing
          * from an existing wallet.
          */
-        _masterSeed: null,
+        // _masterSeed: null,
 
         /**
          * Metadata
@@ -57,9 +60,36 @@ export const useProfileStore = defineStore('profile', {
             return _state._session?.challenge
         },
 
+        session(_state) {
+            return _state._session
+        },
+
+        sessionid(_state) {
+            return _state._session?.id
+        },
     },
 
     actions: {
-        //
+        deleteSession() {
+            /* Set session. */
+            this._setSession(null)
+        },
+
+        saveSession(_session) {
+            console.log('PROFILE SAVING SESSION', _session)
+            /* Set session. */
+            this._setSession(_session)
+        },
+
+        /**
+         * Set Session
+         *
+         * @param {Object} _session Save session details.
+         */
+        _setSession (_session) {
+            /* Set session. */
+            this._session = _session
+            console.log('SET SESSION', this._session)
+        },
     },
 })

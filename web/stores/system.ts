@@ -19,9 +19,6 @@ export const useSystemStore = defineStore('system', {
         ONE_MEX: BigInt('100000000'),
         ONE_META: BigInt('1000000000000000000'),
 
-        /* Initialize session. */
-        _session: null,
-
         /* Initialize notifications. */
         notif: {
             isShowing: false,
@@ -255,15 +252,6 @@ export const useSystemStore = defineStore('system', {
 
             return this._locale
         },
-
-        session(_state) {
-            return _state._session
-        },
-
-        sessionid(_state) {
-            return _state._session?.id
-        },
-
     },
 
     actions: {
@@ -371,28 +359,5 @@ export const useSystemStore = defineStore('system', {
             a.click()
             a.remove()
         },
-
-        deleteSession() {
-            /* Set session. */
-            this._setSession(null)
-        },
-
-        saveSession(_session) {
-            console.log('PROFILE SAVING SESSION', _session)
-            /* Set session. */
-            this._setSession(_session)
-        },
-
-        /**
-         * Set Session
-         *
-         * @param {Object} _session Save session details.
-         */
-        _setSession (_session) {
-            /* Set session. */
-            this._session = _session
-            console.log('SET SESSION', this._session)
-        },
-
     },
 })

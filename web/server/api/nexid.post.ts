@@ -4,20 +4,20 @@ import PouchDB from 'pouchdb'
 import { v4 as uuidv4 } from 'uuid'
 
 /* Initialize databases. */
-const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
-const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/sessions`)
+const challengesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/challenges`)
 
 export default defineEventHandler(async (event) => {
+    /* Initialize locals. */
     let challenge
+    let challengeid
     let createdAt
     let dbSession
     let expiresAt
-    let sessionid
     let success
     let webSession
 
-    /* Create new session id. */
-    sessionid = uuidv4()
+    /* Create new challenge id. */
+    challengeid = uuidv4()
 
     /* Create new challenge. */
     challenge = uuidv4()
@@ -28,28 +28,27 @@ export default defineEventHandler(async (event) => {
     /* Set expiration time. */
     expiresAt = moment().add(7, 'days').unix()
 
-    /* Build (database) session. */
+    /* Build (database) challenge. */
     dbSession = {
-        _id: sessionid,
+        _id: challengeid,
         challenge,
         createdAt,
         expiresAt,
     }
 
-    /* Save (database) session. */
-    success = await sessionsDb
+    /* Save (database) challenge. */
+    success = await challengesDb
         .put(dbSession)
         .catch(err => console.error(err))
-    console.log('NEW SESSION (success):', success)
 
-    /* Build (web) session. */
+    /* Build (web) challenge. */
     webSession = {
-        id: sessionid,
+        id: challengeid,
         challenge,
         createdAt,
         expiresAt,
     }
 
-    /* Return (web) session. */
+    /* Return (web) challenge. */
     return webSession
 })

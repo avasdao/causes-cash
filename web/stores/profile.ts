@@ -70,13 +70,32 @@ export const useProfileStore = defineStore('profile', {
     },
 
     actions: {
+        async initSession () {
+            console.log('INIT SESSION (before):', this._session)
+            /* Check for existing session. */
+            if (this._session) {
+                return this._session
+            }
+
+            /* Request new session. */
+            const session = await $fetch('/api/sessions', {
+                method: 'POST',
+            })
+            console.log('INIT SESSION (after fetch):', session)
+
+            /* Set session. */
+            this._setSession(session)
+
+            /* Return session. */
+            return session
+        },
+
         deleteSession() {
             /* Set session. */
             this._setSession(null)
         },
 
         saveSession(_session) {
-            console.log('PROFILE SAVING SESSION', _session)
             /* Set session. */
             this._setSession(_session)
         },

@@ -44,17 +44,59 @@ const props = defineProps({
         -->
                 <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                     <div>
-                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                            <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 border-2 border-amber-300 shadow">
+                            <svg class="h-10 w-auto text-amber-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"></path>
                             </svg>
                         </div>
-                        <div class="mt-3 text-center sm:mt-5">
-                            <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Payment successful</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-500">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eius aliquam laudantium explicabo pariatur iste dolorem animi vitae error totam. At sapiente aliquam accusamus facere veritatis.
-                                </p>
+
+                        <div class="mt-3 text-center sm:mt-5 flex flex-col gap-4">
+                            <h3 class="text-2xl font-semibold leading-6 text-gray-900" id="modal-title">
+                                Add a New Profile
+                            </h3>
+
+                            <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+                                <div class="sm:col-span-3">
+                                    <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">
+                                        Telgram Username
+                                    </label>
+
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            autocomplete="given-name"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">
+                                        Display Name
+                                    </label>
+
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            autocomplete="family-name"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-4">
+                                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
+                                        Nexa Address
+                                    </label>
+
+                                    <div class="mt-2">
+                                        <input
+                                            type="email"
+                                            autocomplete="email"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

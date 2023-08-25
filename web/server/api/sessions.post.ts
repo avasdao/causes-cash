@@ -12,12 +12,18 @@ const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env
  * @returns session
  */
 const createSession = async (_event) => {
+    /* Initialize locals. */
+    let headers
+    let logDetails
+    let session
+    let success
+
     /* Set headers. */
-    const headers = _event.node.req.headers
+    headers = _event.node.req.headers
     // console.log('HEADERS', headers)
 
     /* Build log details. */
-    const logDetails = {
+    logDetails = {
         i18n: headers['accept-language'],
         client: headers['user-agent'],
         referer: headers['referer'],
@@ -29,15 +35,16 @@ const createSession = async (_event) => {
     // console.info('LOG (api):', logDetails)
 
     /* Create (new) session. */
-    const session = {
+    session = {
         _id: uuidv4(),
         ...logDetails,
         isActive: true,
         createdAt: moment().unix(),
+        expiresAt: moment().add(1, 'days').unix(),
     }
 
     /* Save session to database. */
-    const success = await sessionsDb
+    success = await sessionsDb
         .put(session)
         .catch(err => console.error(err))
     console.log('SUCCESS', success)
@@ -47,15 +54,18 @@ const createSession = async (_event) => {
 }
 
 export default defineEventHandler(async (event) => {
+    /* Initialize locals. */
+    let body
+    let session
+    let sessionid
+    let success
+
     /* Set (request) body. */
-    const body = await readBody(event)
+    body = await readBody(event)
     // console.log('SESSIONS.POST (body):', body)
 
-    /* Initialize locals. */
-    let session
-
     /* Set session id. */
-    const sessionid = body?.sessionid
+    sessionid = body?.sessionid
     // console.log('SESSION ID', sessionid)
 
     /* Request session (if available). */
@@ -75,7 +85,7 @@ export default defineEventHandler(async (event) => {
         }
 
         /* Save (updated) session. */
-        const success = await sessionsDb
+        success = await sessionsDb
             .put(session)
             .catch(err => console.error(err))
         // console.log('UPDATE SESSION (api):', success)

@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
         .put({
             _id: uuidv4(),
             source: 'headers',
-            body: logDetails,
+            ...logDetails,
             createdAt: moment().unix(),
         })
         .catch(err => console.error(err))

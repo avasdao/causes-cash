@@ -1,22 +1,24 @@
 /* Import stores. */
-import { useSystemStore } from '@/stores/system'
+import { useProfileStore } from '@/stores/profile'
+// import { useSystemStore } from '@/stores/system'
 
-export default defineNuxtRouteMiddleware((to, from) => {
+/* Initialize stores. */
+const Profile = useProfileStore()
+// const System = useSystemStore()
+
+export default defineNuxtRouteMiddleware(async (to, from) => {
     // NOTE: We skip middleware on server.
     if (process.server) return
 
     /* Initialize locals. */
     let session
 
-    /* Initialize System store. */
-    const System = useSystemStore()
-
     // NOTE: Manage (non-blocking) sessions.
-    ;(async () => {
+    // ;(async () => {
         /* Manage session. */
         session = await $fetch('/api/sessions', {
             method: 'POST',
-            body: { sessionid: System.sessionid },
+            body: { sessionid: Profile.sessionid },
         })
 
         /* Update (client-side) session. */
@@ -30,6 +32,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
         delete session._rev
 
         /* Save session. */
-        System.saveSession(session)
-    })()
+        Profile.saveSession(session)
+    // })()
 })

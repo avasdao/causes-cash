@@ -145,5 +145,5 @@ export default defineEventHandler(async (event) => {
     delete profile._rev
 
     /* Return profile. */
-    return profile
+    return profile.profileid ? 'Success! Welcome..' : 'ERROR! Try again...'
 })

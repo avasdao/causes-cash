@@ -36,7 +36,7 @@ const qr = computed(() => {
     strValue = ''
 
     /* Set registration link. */
-    nexidUri.value = `${NEXID_ENDPOINT}?op=reg&chal=${Profile.challenge}&cookie=${Profile.sessionid}&hdl=r&email=o&sm=o&realname=o&ava=o`
+    nexidUri.value = `${NEXID_ENDPOINT}?op=reg&chal=${Profile.challenge}&cookie=${btoa(Profile.sessionid)}&hdl=r&email=o&sm=o&realname=o&ava=o`
 
     /* Initialize scanner parameters. */
     params = {

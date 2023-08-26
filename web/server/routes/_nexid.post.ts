@@ -50,6 +50,14 @@ export default defineEventHandler(async (event) => {
         email,
     })
 
+    if (!cookie) {
+        return `Authorization FAILED!`
+    }
+
+    /* Decode cookie from base64. */
+    cookie = atob(cookie)
+    console.log('COOKIE (decoded):', cookie)
+
     /* Request session. */
     session = await sessionsDb
         .get(cookie)
@@ -67,7 +75,7 @@ export default defineEventHandler(async (event) => {
     params = [
         addr,
         sig,
-        `awesomenexa.org_nexid_reg_${challenge}`,
+        `causes.cash_nexid_reg_${challenge}`,
     ]
     console.log('AUTH PARAMS', params)
 

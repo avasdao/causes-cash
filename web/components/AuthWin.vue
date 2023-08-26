@@ -120,6 +120,15 @@ const pollForAuth = async () => {
 const init = async () => {
     console.log('AUTH WIN (Profile.session):', Profile.session)
 
+    /* Validate authorization elements. */
+    if (!Profile.sessionid || !Profile.challenge) {
+        /* Delete (browser) session. */
+        Profile.deleteSession()
+
+        /* Re-call initialization. */
+        return setTimeout(init, POLLING_FREQUENCY)
+    }
+
     /* Initialize locals. */
     let session
 

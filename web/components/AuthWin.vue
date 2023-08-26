@@ -121,7 +121,8 @@ const init = async () => {
     console.log('AUTH WIN (Profile.session):', Profile.session)
 
     /* Validate authorization elements. */
-    if (!Profile.sessionid || !Profile.challenge) {
+    // NOTE: Reset legacy session details.
+    if (Profile.sessionid && !Profile.challenge) {
         /* Delete (browser) session. */
         Profile.deleteSession()
 

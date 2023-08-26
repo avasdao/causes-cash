@@ -13,11 +13,11 @@ export default defineEventHandler(async (event) => {
 
     /* Set (request) query. */
     query = getQuery(event)
-    console.log('QUERY', query)
+    // console.log('QUERY', query)
 
     /* Set session id. */
     sessionid = query?.sid
-    console.log('SESSION ID', sessionid)
+    // console.log('SESSION ID', sessionid)
 
     /* Validate session id. */
     if (!sessionid) {

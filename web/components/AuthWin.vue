@@ -34,16 +34,18 @@ const isLoading = ref(true)
  * Displays a QR code, used to authenticate users.
  */
 const qr = computed(() => {
+    if (!nexidUri.value || !Profile.session) {
+        return null
+    }
+
     /* Initialize locals. */
-    let dataString
+    let chal
+    let cookie
     let params
     let strValue
 
     /* Initialize (string) value. */
     strValue = ''
-
-    /* Set registration link. */
-    nexidUri.value = `${NEXID_ENDPOINT}?op=reg&chal=${Profile.challenge}&cookie=${btoa(Profile.sessionid)}&hdl=r&email=o&sm=o&realname=o&ava=o`
 
     /* Initialize scanner parameters. */
     params = {
@@ -55,6 +57,16 @@ const qr = computed(() => {
             light: '#fff'
         }
     }
+
+    // chal = Profile.challenge
+    // console.log('INIT (chal):', chal)
+
+    // cookie = btoa(Profile.sessionid)
+    // console.log('INIT (cookie):', cookie)
+
+    // /* Set registration link. */
+    // nexidUri.value = encodeURI(`${NEXID_ENDPOINT}?op=reg&chal=${chal}&cookie=${cookie}&hdl=r&email=o&sm=o&realname=o&ava=o`)
+    // nexidUri.value = encodeURI(`${NEXID_ENDPOINT}?op=reg&chal=${Profile.challenge}&cookie=${btoa(Profile.sessionid)}&hdl=r&email=o&sm=o&realname=o&ava=o`)
 
     QRCode.toString(nexidUri.value, params, (err, value) => {
         if (err) {
@@ -70,7 +82,7 @@ const qr = computed(() => {
 })
 
 const pollForAuth = async () => {
-    console.log('POLLING FOR AUTH')
+    // console.log('POLLING FOR AUTH')
 
     if (!Profile.sessionid) {
         /* Handle loading flag. */
@@ -83,10 +95,10 @@ const pollForAuth = async () => {
 
     /* Set target. */
     const target = '/api/session?sid=' + Profile.sessionid
-    console.log('TARGET', target)
+    // console.log('TARGET', target)
 
     const session = await $fetch(target)
-    console.log('SESSION', session)
+    // console.log('SESSION', session)
 
     /* Validate authorized session. */
     if (session?.profileid) {
@@ -106,28 +118,49 @@ const pollForAuth = async () => {
 }
 
 const init = async () => {
-    console.log('SESSION', Profile.session)
+    console.log('AUTH WIN (Profile.session):', Profile.session)
 
+    /* Initialize locals. */
     let session
 
-    // session = await $fetch('/api/session', {
-    //     method: 'POST',
-    // })
-    // .catch(err => console.error(err))
-    // console.log('SESSION', session)
+    /* Manage session. */
+    session = await $fetch('/api/session', {
+        method: 'POST',
+        body: { sessionid: Profile.sessionid },
+    })
+    console.log('GLOBAL SESSION', session)
 
-    // if (session) {
-    //     challenge.value = session.challenge
-    // }
+    /* Update (client-side) session. */
+    // NOTE: Sanitize client-side session.
+    session = {
+        id: session?._id,
+        ...session,
+    }
 
+    delete session._id
+    delete session._rev
+
+    /* Save session. */
+    Profile.saveSession(session)
+
+    /* Validate client. */
     if (process.client) {
-        pollForAuth()
+        let chal = Profile.challenge
+        console.log('INIT (chal):', chal)
+
+        let cookie = btoa(Profile.sessionid)
+        console.log('INIT (cookie):', cookie)
+
+        /* Set registration link. */
+        nexidUri.value = encodeURI(`${NEXID_ENDPOINT}?op=reg&chal=${chal}&cookie=${cookie}&hdl=r&email=o&sm=o&realname=o&ava=o`)
+
+        /* Poll for authorization. */
+        // pollForAuth()
 
         /* Initialize authorization polling. */
         // FIXME How can we implement WebSockets for more efficiency?
         pollingid = setInterval(pollForAuth, POLLING_FREQUENCY)
     }
-
 }
 
 onMounted(() => {
@@ -141,7 +174,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <main v-if="Profile.session?.profileid">
+    <main v-if="Profile.session?.profileid" class="flex flex-col gap-4">
         <h2 class="text-2xl font-medium">
             You are signed in
         </h2>
@@ -149,9 +182,13 @@ onMounted(() => {
         <NuxtLink :to="'https://explorer.nexa.org/address/' + Profile.session.profileid" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
             {{Profile.session.profileid}}
         </NuxtLink>
+
+        <button @click="Profile.deleteSession()" class="px-5 py-2 w-fit flex text-xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg shadow">
+            Signout
+        </button>
     </main>
 
-    <main v-if="!Profile.session?.profileid" class="flex min-h-full flex-col justify-center">
+    <main v-if="!Profile.session?.profileid" class="hidden flex min-h-full flex-col justify-center">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <!-- <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" /> -->
 

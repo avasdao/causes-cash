@@ -12,25 +12,25 @@ export default defineNuxtRouteMiddleware((to, from) => {
     let session
 
     // NOTE: Manage (non-blocking) sessions and avoid page loading delays.
-    ;(async () => {
-        /* Manage session. */
-        session = await $fetch('/api/session', {
-            method: 'POST',
-            body: { sessionid: Profile.sessionid },
-        })
-        console.log('GLOBAL SESSION', session)
+    // ;(async () => {
+    //     /* Manage session. */
+    //     session = await $fetch('/api/session', {
+    //         method: 'POST',
+    //         body: { sessionid: Profile.sessionid },
+    //     })
+    //     console.log('GLOBAL SESSION', session)
 
-        /* Update (client-side) session. */
-        /* Sanitize client-side session. */
-        session = {
-            id: session?._id,
-            ...session,
-        }
+    //     /* Update (client-side) session. */
+    //     /* Sanitize client-side session. */
+    //     session = {
+    //         id: session?._id,
+    //         ...session,
+    //     }
 
-        delete session._id
-        delete session._rev
+    //     delete session._id
+    //     delete session._rev
 
-        /* Save session. */
-        Profile.saveSession(session)
-    })()
+    //     /* Save session. */
+    //     Profile.saveSession(session)
+    // })()
 })

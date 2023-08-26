@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
     session = await sessionsDb
         .get(cookie)
         .catch(err => console.error(err))
-    console.log('SESSION (cookie):', session)
+    // console.log('SESSION (cookie):', session)
 
     if (!session) {
         return `Authorization FAILED!`
@@ -106,7 +106,7 @@ export default defineEventHandler(async (event) => {
     result = await sessionsDb
         .put(session)
         .catch(err => console.error(err))
-    // console.log('SESSION UPDATE:', result)
+    console.log('SESSION UPDATE:', result)
 
     /* Request profile. */
     profile = await profilesDb

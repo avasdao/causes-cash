@@ -66,10 +66,11 @@ export default defineEventHandler(async (event) => {
     let body
     let session
     let sessionid
+    let success
 
     /* Set (request) body. */
     body = await readBody(event)
-    console.log('SESSIONS.POST (body):', body)
+    // console.log('SESSIONS.POST (body):', body)
 
     /* Set session id. */
     sessionid = body?.sessionid

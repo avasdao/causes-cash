@@ -14,12 +14,19 @@ import { useProfileStore } from '@/stores/profile'
 /* Set constants. */
 const NEXID_ENDPOINT = 'nexid://causes.cash/_nexid'
 
+/* Initialize constants. */
+const POLLING_FREQUENCY = 3000 // 3 seconds
+
+let pollingid
+
 /* Initialize (reactive) holders. */
 // let challenge = ref(null)
 const nexidUri = ref(null)
 
 /* Initialize Profile store. */
 const Profile = useProfileStore()
+
+const isLoading = ref(true)
 
 /**
  * QR Code
@@ -62,6 +69,42 @@ const qr = computed(() => {
     return strValue
 })
 
+const pollForAuth = async () => {
+    console.log('POLLING FOR AUTH')
+
+    if (!Profile.sessionid) {
+        /* Handle loading flag. */
+        if (isLoading.value) {
+            isLoading.value = false
+        }
+
+        return console.error('Oops! We DO NOT have an active Session.')
+    }
+
+    /* Set target. */
+    const target = '/api/session?sid=' + Profile.sessionid
+    console.log('TARGET', target)
+
+    const session = await $fetch(target)
+    console.log('SESSION', session)
+
+    /* Validate authorized session. */
+    if (session?.profileid) {
+        /* Stop polling. */
+        if (pollingid) {
+            clearInterval(pollingid)
+        }
+
+        /* Save session to profile. */
+        Profile.saveSession(session)
+    }
+
+    /* Handle loading flag. */
+    if (isLoading.value) {
+        isLoading.value = false
+    }
+}
+
 const init = async () => {
     console.log('SESSION', Profile.session)
 
@@ -76,6 +119,15 @@ const init = async () => {
     // if (session) {
     //     challenge.value = session.challenge
     // }
+
+    if (process.client) {
+        pollForAuth()
+
+        /* Initialize authorization polling. */
+        // FIXME How can we implement WebSockets for more efficiency?
+        pollingid = setInterval(pollForAuth, POLLING_FREQUENCY)
+    }
+
 }
 
 onMounted(() => {
@@ -89,7 +141,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <main class="flex min-h-full flex-col justify-center">
+    <main v-if="Profile.session?.profileid">
+        <h2 class="text-2xl font-medium">
+            You are signed in
+        </h2>
+
+        <NuxtLink :to="'https://explorer.nexa.org/address/' + Profile.session.profileid" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
+            {{Profile.session.profileid}}
+        </NuxtLink>
+    </main>
+
+    <main v-if="!Profile.session?.profileid" class="flex min-h-full flex-col justify-center">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <!-- <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" /> -->
 
@@ -194,7 +256,7 @@ onMounted(() => {
 
 
 
-    <main class="px-3 max-w-5xl mx-auto">
+    <main v-if="!Profile.session?.profileid" class="px-3 max-w-5xl mx-auto">
         <div class="max-w-xl mx-auto mt-5 flex flex-col gap-4 items-center">
             <p class="px-10 text-sm font-medium text-center">
                 If you're using the Wally mobile wallet, just click the link below

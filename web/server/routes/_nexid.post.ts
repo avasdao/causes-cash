@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
 
     /* Set (request) body. */
     body = await readBody(event)
-    console.log('BODY (_reg_/auto', body)
+    // console.log('BODY (_reg_/auto', body)
 
     /* Validate body. */
     if (!body) {
@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
 
     /* Decode cookie from base64. */
     cookie = atob(cookie)
-    console.log('COOKIE (decoded):', cookie)
+    // console.log('COOKIE (decoded):', cookie)
 
     /* Request session. */
     session = await sessionsDb
@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
         sig,
         `causes.cash_nexid_reg_${challenge}`,
     ]
-    console.log('AUTH PARAMS', params)
+    // console.log('AUTH PARAMS', params)
 
     /* Request message verification (from node). */
     success = await Rpc

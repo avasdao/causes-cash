@@ -7,12 +7,16 @@ import { v4 as uuidv4 } from 'uuid'
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
 
 export default defineEventHandler(async (event) => {
+    let headers
+    let logDetails
+    let success
+
     /* Set headers. */
-    const headers = event.node.req.headers
+    headers = event.node.req.headers
     // console.log('HEADERS', headers)
 
     /* Build log details. */
-    const logDetails = {
+    logDetails = {
         i18n: headers['accept-language'],
         client: headers['user-agent'],
         referer: headers['referer'],
@@ -23,7 +27,7 @@ export default defineEventHandler(async (event) => {
     }
     // console.info('LOG (api):', logDetails)
 
-    const success = await logsDb
+    success = await logsDb
         .put({
             _id: uuidv4(),
             source: 'headers',

@@ -112,6 +112,7 @@ const pollForAuth = async () => {
 
         // let sig = session.
         console.log('AUTH SESSION', session)
+        console.log('AUTH SESSION (auth)', session.auth)
 
         /* Initialize wallet. */
         Wallet.setEntropy

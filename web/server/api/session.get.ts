@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
     /* Sanitize session. */
     delete session._id
     delete session._rev
-    delete session.auth
+    // delete session.auth
     delete session.session
 
     /* Return session. */

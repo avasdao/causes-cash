@@ -100,13 +100,13 @@ export default defineEventHandler(async (event) => {
         ...session,
         updatedAt: moment().unix(),
     }
-    console.log('AUTH SESSION', session)
+    // console.log('AUTH SESSION', session)
 
     /* Request session update. */
     result = await sessionsDb
         .put(session)
         .catch(err => console.error(err))
-    console.log('SESSION UPDATE:', result)
+    // console.log('SESSION UPDATE:', result)
 
     /* Request profile. */
     profile = await profilesDb

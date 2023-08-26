@@ -55,7 +55,7 @@ const createSession = async (_event) => {
     success = await sessionsDb
         .put(session)
         .catch(err => console.error(err))
-    console.log('SUCCESS', success)
+    // console.log('SUCCESS', success)
 
     /* Return session. */
     return session
@@ -80,7 +80,7 @@ export default defineEventHandler(async (event) => {
     session = await sessionsDb
         .get(sessionid)
         .catch(err => console.error(err))
-    console.log('SESSION (api):', session)
+    // console.log('SESSION (api):', session)
 
     /* Validate session. */
     if (!session?.isActive) {

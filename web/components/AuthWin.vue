@@ -10,6 +10,9 @@ const props = defineProps({
 
 /* Initialize stores. */
 import { useProfileStore } from '@/stores/profile'
+import { useWalletStore } from '@/stores/wallet'
+const Profile = useProfileStore()
+const Wallet = useWalletStore()
 
 /* Set constants. */
 const NEXID_ENDPOINT = 'nexid://causes.cash/_nexid'
@@ -22,9 +25,6 @@ let pollingid
 /* Initialize (reactive) holders. */
 // let challenge = ref(null)
 const nexidUri = ref(null)
-
-/* Initialize Profile store. */
-const Profile = useProfileStore()
 
 const isLoading = ref(true)
 
@@ -98,7 +98,7 @@ const pollForAuth = async () => {
     // console.log('TARGET', target)
 
     const session = await $fetch(target)
-    // console.log('SESSION', session)
+    console.log('FETCHED SESSION', session)
 
     /* Validate authorized session. */
     if (session?.profileid) {
@@ -109,6 +109,12 @@ const pollForAuth = async () => {
 
         /* Save session to profile. */
         Profile.saveSession(session)
+
+        // let sig = session.
+        console.log('AUTH SESSION', session)
+
+        /* Initialize wallet. */
+        Wallet.setEntropy
     }
 
     /* Handle loading flag. */
@@ -173,6 +179,12 @@ const init = async () => {
     }
 }
 
+const signout = () => {
+    Profile.deleteSession()
+
+    Wallet.destroy()
+}
+
 onMounted(() => {
     init()
 })
@@ -190,10 +202,20 @@ onMounted(() => {
         </h2>
 
         <NuxtLink :to="'https://explorer.nexa.org/address/' + Profile.session.profileid" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
+            NexID
             {{Profile.session.profileid}}
         </NuxtLink>
 
-        <button @click="Profile.deleteSession()" class="px-5 py-2 w-fit flex text-xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg shadow">
+        <NuxtLink :to="'https://explorer.nexa.org/address/' + Wallet.address" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
+            Wallet
+            {{Wallet.address}}
+        </NuxtLink>
+
+        <small class="text-sm font-medium">
+            Entropy {{Wallet.entropy}}
+        </small>
+
+        <button @click="signout" class="px-5 py-2 w-fit flex text-xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg shadow">
             Signout
         </button>
     </main>

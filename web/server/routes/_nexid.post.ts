@@ -86,7 +86,7 @@ export default defineEventHandler(async (event) => {
             password: 'password',
         })
         .catch(err => console.error(err))
-    console.log('AUTH VERIFICATION SUCCESS', success)
+    // console.log('AUTH VERIFICATION SUCCESS', success)
 
     /* Verify challenge. */
     if (success !== true) {
@@ -100,18 +100,19 @@ export default defineEventHandler(async (event) => {
         ...session,
         updatedAt: moment().unix(),
     }
+    console.log('AUTH SESSION', session)
 
     /* Request session update. */
     result = await sessionsDb
         .put(session)
         .catch(err => console.error(err))
-    console.log('SESSION UPDATE:', result)
+    // console.log('SESSION UPDATE:', result)
 
     /* Request profile. */
     profile = await profilesDb
         .get(addr)
         .catch(err => console.error(err))
-    console.log('PROFILE:', profile)
+    // console.log('PROFILE:', profile)
 
     if (!profile) {
         /* Create NEW profile. */
@@ -134,7 +135,7 @@ export default defineEventHandler(async (event) => {
     result = await profilesDb
         .put(profile)
         .catch(err => console.error(err))
-    console.log('PROFILE UPDATE:', result)
+    // console.log('PROFILE UPDATE:', result)
 
     profile = {
         id: profile._id,

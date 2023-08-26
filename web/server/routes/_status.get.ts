@@ -1,4 +1,23 @@
-export default defineEventHandler((event) => {
+/* Import modules. */
+import moment from 'moment'
+import PouchDB from 'pouchdb'
+import { Rpc } from '@nexajs/rpc'
+
+/* Initialize databases. */
+const systemDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/system`)
+
+export default defineEventHandler(async (event) => {
+    let response
+    let statusCheck
+
+    /* Request system status. */
+    response = await systemDb.get('0')
+        .catch(err => console.error(err))
+    console.log('RESPONSE', response)
+
+    /* Set status check. */
+    statusCheck = response.statusCheck
+
     /* Set daily active users (DAU). */
     // FIXME FOR DEV PURPOSES ONLY
     const dau = 888
@@ -25,6 +44,7 @@ export default defineEventHandler((event) => {
 
     /* Build statistics. */
     const stats = {
+        statusCheck,
         dau,
         campaigns,
         mau,

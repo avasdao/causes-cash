@@ -57,39 +57,19 @@ export const useProfileStore = defineStore('profile', {
 
     getters: {
         challenge(_state) {
-            return _state._session?.challenge
+            return _state._session?.challenge || null
         },
 
         session(_state) {
-            return _state._session
+            return _state._session || null
         },
 
         sessionid(_state) {
-            return _state._session?.id
+            return _state._session?.id || null
         },
     },
 
     actions: {
-        async initSession () {
-            console.log('INIT SESSION (before):', this._session)
-            /* Check for existing session. */
-            if (this._session) {
-                return this._session
-            }
-
-            /* Request new session. */
-            const session = await $fetch('/api/sessions', {
-                method: 'POST',
-            })
-            console.log('INIT SESSION (after fetch):', session)
-
-            /* Set session. */
-            this._setSession(session)
-
-            /* Return session. */
-            return session
-        },
-
         deleteSession() {
             /* Set session. */
             this._setSession(null)

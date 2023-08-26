@@ -1,5 +1,6 @@
 /* Import modules. */
 import moment from 'moment'
+import { sha256 } from '@nexajs/crypto'
 import PouchDB from 'pouchdb'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -13,6 +14,7 @@ const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env
  */
 const createSession = async (_event) => {
     /* Initialize locals. */
+    let challenge
     let headers
     let logDetails
     let session
@@ -34,13 +36,19 @@ const createSession = async (_event) => {
     }
     // console.info('LOG (api):', logDetails)
 
+    /* Create new challenge (string). */
+    // NOTE: Used for (optional) secure authentication.
+    challenge = sha256(uuidv4()).slice(0, 40)
+
     /* Create (new) session. */
     session = {
         _id: uuidv4(),
         ...logDetails,
+        challenge,
         isActive: true,
         createdAt: moment().unix(),
         expiresAt: moment().add(1, 'days').unix(),
+        killedAt: moment().add(7, 'days').unix(),
     }
 
     /* Save session to database. */
@@ -58,11 +66,10 @@ export default defineEventHandler(async (event) => {
     let body
     let session
     let sessionid
-    let success
 
     /* Set (request) body. */
     body = await readBody(event)
-    // console.log('SESSIONS.POST (body):', body)
+    console.log('SESSIONS.POST (body):', body)
 
     /* Set session id. */
     sessionid = body?.sessionid
@@ -75,12 +82,13 @@ export default defineEventHandler(async (event) => {
     console.log('SESSION (api):', session)
 
     /* Validate session. */
-    if (!session || !session?.isActive) {
+    if (!session?.isActive) {
         session = await createSession(event)
     } else {
         /* Update timestamp. */
         session = {
             ...session,
+            expiresAt: moment().add(1, 'days').unix(),
             updatedAt: moment().unix(),
         }
 

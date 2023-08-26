@@ -15,18 +15,11 @@ import { useProfileStore } from '@/stores/profile'
 const NEXID_ENDPOINT = 'nexid://causes.cash/_nexid'
 
 /* Initialize (reactive) holders. */
-let regLink = ref(null)
+// let challenge = ref(null)
+const nexidUri = ref(null)
 
 /* Initialize Profile store. */
 const Profile = useProfileStore()
-console.log('SESSION ID', Profile.sessionid)
-console.log('CHALLENGE', Profile.challenge)
-
-// NOTE: We ONLY request Session from the Client.
-if (!Profile.sessionid) {
-    const session = await Profile.initSession()
-    console.log('NEW SESSION (auth page):', session)
-}
 
 /**
  * QR Code
@@ -34,20 +27,19 @@ if (!Profile.sessionid) {
  * Displays a QR code, used to authenticate users.
  */
 const qr = computed(() => {
-    /* Initialize data string. */
+    /* Initialize locals. */
     let dataString
+    let params
+    let strValue
 
     /* Initialize (string) value. */
-    let strValue = ''
+    strValue = ''
 
-    regLink.value = `${NEXID_ENDPOINT}?op=reg&proto=http&chal=${Profile.challenge}&cookie=${Profile.sessionid}&hdl=r&email=o`
-    console.log('CHALLENGE STRING', Profile.challenge)
-    console.log('REG STRING', regLink.value)
-
-    dataString = regLink.value
+    /* Set registration link. */
+    nexidUri.value = `${NEXID_ENDPOINT}?op=reg&chal=${Profile.challenge}&cookie=${Profile.sessionid}&hdl=r&email=o&sm=o&realname=o&ava=o`
 
     /* Initialize scanner parameters. */
-    const params = {
+    params = {
         type: 'svg',
         width: 300,
         height: 300,
@@ -57,7 +49,7 @@ const qr = computed(() => {
         }
     }
 
-    QRCode.toString(dataString, params, (err, value) => {
+    QRCode.toString(nexidUri.value, params, (err, value) => {
         if (err) {
             return console.error('QR Code ERROR:', err) // eslint-disable-line no-console
         }
@@ -70,10 +62,25 @@ const qr = computed(() => {
     return strValue
 })
 
-// onMounted(() => {
-//     console.log('Mounted!')
-//     // Now it's safe to perform setup operations.
-// })
+const init = async () => {
+    console.log('SESSION', Profile.session)
+
+    let session
+
+    // session = await $fetch('/api/session', {
+    //     method: 'POST',
+    // })
+    // .catch(err => console.error(err))
+    // console.log('SESSION', session)
+
+    // if (session) {
+    //     challenge.value = session.challenge
+    // }
+}
+
+onMounted(() => {
+    init()
+})
 
 // onBeforeUnmount(() => {
 //     console.log('Before Unmount!')
@@ -193,7 +200,7 @@ const qr = computed(() => {
                 If you're using the Wally mobile wallet, just click the link below
             </p>
 
-            <NuxtLink :to="regLink" class="px-5 py-2 flex justify-center bg-yellow-400 border-4 border-yellow-700 rounded-lg">
+            <NuxtLink :to="nexidUri" class="px-5 py-2 flex justify-center bg-yellow-400 border-4 border-yellow-700 rounded-lg">
                 <span class="text-lg text-yellow-900 font-medium">
                     Wallet Wallet Login
                 </span>
@@ -215,8 +222,8 @@ const qr = computed(() => {
                 </span>
 
                 <span class="block font-bold">
-                    <a :href="regLink" class="text-sm text-blue-500 hover:underline">
-                        {{regLink}}
+                    <a :href="nexidUri" class="text-sm text-blue-500 hover:underline">
+                        {{nexidUri}}
                     </a>
                 </span>
             </section>

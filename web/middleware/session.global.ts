@@ -16,15 +16,16 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     // NOTE: Manage (non-blocking) sessions.
     // ;(async () => {
         /* Manage session. */
-        session = await $fetch('/api/sessions', {
+        session = await $fetch('/api/session', {
             method: 'POST',
             body: { sessionid: Profile.sessionid },
         })
+        console.log('GLOBAL SESSION', session)
 
         /* Update (client-side) session. */
         /* Sanitize client-side session. */
         session = {
-            id: session._id,
+            id: session?._id,
             ...session,
         }
 

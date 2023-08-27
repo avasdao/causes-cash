@@ -52,6 +52,12 @@ const init = async () => {
         // this.$store.dispatch('setProfileTagline', profileInfo.tagline)
     }
 }
+
+const destroyWallet = () => {
+    if (confirm(`Are you sure you want to do that?`)) {
+        Wallet.destroy()
+    }
+}
 </script>
 
 <template>
@@ -71,14 +77,13 @@ const init = async () => {
                 <div class="space-y-8">
                     <Activity />
 
+                    <!-- <pre class="bg-rose-500">Session - {{ Profile.session }}</pre> -->
 
-                    <pre class="bg-rose-500">Session - {{ Profile.session }}</pre>
+                    <!-- <pre class="bg-yellow-500">Mnemonic - {{ Wallet.mnemonic }}</pre> -->
 
-                    <pre class="bg-yellow-500">Entropy - {{ Profile._entropy }}</pre>
+                    <!-- <pre class="bg-sky-500">Address - {{ Wallet.address }}</pre> -->
 
-                    <pre class="bg-sky-500">Address - {{ Wallet.address }}</pre>
-
-                    <button @click="Wallet.destroy()" class="px-5 py-2 text-2xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg">
+                    <button @click="destroyWallet" class="px-5 py-2 text-2xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg">
                         Destroy Wallet
                     </button>
                 </div>

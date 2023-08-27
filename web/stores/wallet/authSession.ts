@@ -20,7 +20,7 @@ export default async function () {
     console.log('PROFILE SESSION', Profile.session)
 
     let messageHash
-    let nonce
+    let timestamp
     let response
     let secp256k1
     let signature
@@ -32,17 +32,17 @@ export default async function () {
     /* Set unit separator. */
     unitSeparator = '1f'
 
-    /* Set (nonce) timestamp.*/
-    nonce = moment().unix()
-    console.log('NONCE-1', nonce)
-    nonce = nonce.toString(16)
-    console.log('NONCE-2', nonce)
+    /* Set (timestamp) timestamp.*/
+    timestamp = moment().unix()
+    console.log('TIMESTAMP-1', timestamp)
+    timestamp = timestamp.toString(16)
+    console.log('TIMESTAMP-2', timestamp)
 
     console.log('\n\nPRIVATE KEY', this.wallet.privateKey)
 
     // NOTE: Format is <timestamp> <0x1F> <challenge>
     // NOTE: We use 0x1F as the default "unit separator".
-    messageHash = hexToBin(`${nonce}${unitSeparator}${Profile.challenge}`)
+    messageHash = hexToBin(`${timestamp}${unitSeparator}${Profile.challenge}`)
     console.log('\n\nMESSAGE HASH', binToHex(messageHash))
 
     // Generate a signature over the "sighash" using the passed private key.
@@ -56,7 +56,7 @@ export default async function () {
             sessionid: Profile.sessionid,
             publicKey: binToHex(this.wallet.publicKey),
             signature: binToHex(signature),
-            nonce,
+            timestamp,
         },
     })
     console.log('AUTH SESSIONS (response):', response)

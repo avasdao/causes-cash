@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
     let logPkg
     let messageHash
     let nickname
-    let nonce
+    let timestamp
     let params
     let profile
     let publicKey
@@ -55,7 +55,7 @@ export default defineEventHandler(async (event) => {
     sessionid = body.sessionid
     publicKey = hexToBin(body.publicKey)
     signature = hexToBin(body.signature)
-    nonce = body.nonce
+    timestamp = body.timestamp
 
     logPkg = {
         _id: uuidv4(),
@@ -103,7 +103,9 @@ export default defineEventHandler(async (event) => {
         }
     }
 
-    messageHash = hexToBin(`${nonce}${unitSeparator}${challenge}`)
+    // TODO Verify that the timestamp is within +/- 15-second window.
+
+    messageHash = hexToBin(`${timestamp}${unitSeparator}${challenge}`)
 
     success = secp256k1.verifySignatureSchnorr(signature, publicKey, messageHash)
     console.log('AUTH VERIFICATION SUCCESS', success)

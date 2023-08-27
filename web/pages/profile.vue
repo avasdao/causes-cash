@@ -1,13 +1,9 @@
 <script setup>
-/* Import modules. */
-import { ref } from 'vue'
-import { Wallet } from '@nexajs/wallet'
-
 /* Initialize stores. */
 import { useProfileStore } from '@/stores/profile'
-
-/* Initialize Profile. */
+import { useWalletStore } from '@/stores/wallet'
 const Profile = useProfileStore()
+const Wallet = useWalletStore()
 
 let web3Address = ref(null)
 
@@ -56,12 +52,6 @@ const init = async () => {
         // this.$store.dispatch('setProfileTagline', profileInfo.tagline)
     }
 }
-
-// init()
-// console.log('Profile.mnemonic', Profile.mnemonic)
-// const wallet = new Wallet(Profile.mnemonic)
-// console.log('WALLET', wallet)
-// console.log('ADDRESS', wallet.address)
 </script>
 
 <template>
@@ -88,9 +78,9 @@ const init = async () => {
 
                     <pre class="bg-sky-500">Address - {{ Wallet.address }}</pre>
 
-                    <!-- <button @click="Profile.createWallet()" class="px-3 py-1 bg-sky-500 rounded-lg">
-                        Create Wallet
-                    </button> -->
+                    <button @click="Wallet.destroy()" class="px-3 py-1 bg-sky-500 rounded-lg">
+                        Destroy Wallet
+                    </button>
                 </div>
             </div>
         </section>

@@ -149,27 +149,26 @@ const setTab = (_tab) => {
     }
 }
 
-const createWallet = () => {
-    console.log('a wallet')
-}
-
 const init = async () => {
     /* Set (default) tab. */
     setTab('assets')
 
-    // /* Initialize tokens. */
-    tokens.value = {}
+    /* Validate tokens. */
+    if (Wallet.tokens) {
+        // /* Initialize tokens. */
+        tokens.value = {}
 
-    // /* Handle tokens. */
-    Wallet.tokens.forEach(_token => {
-        if (!tokens.value[_token.tokenid]) {
-            tokens.value[_token.tokenid] = BigInt(0)
-        }
+        // /* Handle tokens. */
+        Wallet.tokens.forEach(_token => {
+            if (!tokens.value[_token.tokenid]) {
+                tokens.value[_token.tokenid] = BigInt(0)
+            }
 
-        /* Add tokens to total. */
-        tokens.value[_token.tokenid] += _token.tokens
-    })
-    // console.log('WALLET TOKENS', Wallet.tokens)
+            /* Add tokens to total. */
+            tokens.value[_token.tokenid] += _token.tokens
+        })
+        // console.log('WALLET TOKENS', Wallet.tokens)
+    }
 }
 
 onMounted(() => {
@@ -189,9 +188,6 @@ onMounted(() => {
         </p>
 
         <div @click="Wallet.createWallet" class="cursor-pointer px-3 py-2 text-2xl text-blue-100 font-medium bg-blue-500 border-2 border-blue-700 rounded-lg shadow hover:bg-blue-400">
-            Create New Wallet
-        </div>
-        <div @click="createWallet" class="cursor-pointer px-3 py-2 text-2xl text-blue-100 font-medium bg-blue-500 border-2 border-blue-700 rounded-lg shadow hover:bg-blue-400">
             Create New Wallet
         </div>
 

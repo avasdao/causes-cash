@@ -1,7 +1,6 @@
 /* Import modules. */
 import moment from 'moment'
 import PouchDB from 'pouchdb'
-import { Rpc } from '@nexajs/rpc'
 import { v4 as uuidv4 } from 'uuid'
 
 /* Initialize databases. */
@@ -29,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
     /* Set (request) body. */
     body = await readBody(event)
-    // console.log('BODY', body)
+    console.log('BODY', body)
 
     /* Validate body. */
     if (!body) {
@@ -37,21 +36,18 @@ export default defineEventHandler(async (event) => {
     }
 
     /* Set profile parameters. */
-    addr = body.addr
-    sig = body.sig
-    cookie = body.cookie
-    hdl = body.hdl
-    nickname = hdl        // NOTE: We use nickname instead of hdl.
-    email = body.email
+    sessionid = body.sessionid
+    publicKey = body.publicKey
+    signature = body.signature
+    challenge = body.challenge
 
     logPkg = {
         _id: uuidv4(),
-        source: 'nexid',
-        addr,
-        sig,
-        cookie,
-        hdl,
-        email,
+        source: 'auth',
+        sessionid,
+        publicKey,
+        signature,
+        challenge,
         createdAt: moment().unix(),
     }
     console.log(logPkg)
@@ -59,7 +55,7 @@ export default defineEventHandler(async (event) => {
     response = await logsDb
         .put(logPkg)
         .catch(err => console.error(err))
-    console.log('RESPONSE', response)
+    return console.log('RESPONSE', response)
 
     if (!cookie) {
         return `Authorization FAILED!`

@@ -43,7 +43,8 @@ import {
     instantiateSecp256k1,
 } from '@bitauth/libauth'
 
-import _createWallet from './wallet/create.ts'
+import _authSession from './wallet/authSession.ts'
+import _setEntropy from './wallet/setEntropy.ts'
 
 let ripemd160
 let secp256k1
@@ -114,7 +115,7 @@ export const useWalletStore = defineStore('wallet', {
         abbr(_state) {
             if (!_state._wallet) return null
 
-            console.log('_state._wallet', _state._wallet)
+            // console.log('_state._wallet', _state._wallet)
 
             return _state._wallet.address.slice(0, 19) + '...' + _state._wallet.address.slice(-6)
         },
@@ -204,10 +205,12 @@ export const useWalletStore = defineStore('wallet', {
 
             // FIXME Workaround to solve race condition.
             setTimeout(this.loadAssets, 100)
+
+            /* Authorize session. */
+            setTimeout(_authSession.bind(this), 100)
         },
 
         createWallet(_entropy) {
-            console.log('ENTROPY', entropy)
             /* Validate entropy. */
             // NOTE: Expect HEX value to be 32 or 64 characters.
             if (_entropy.length !== 32 && _entropy.length !== 64) {
@@ -216,7 +219,8 @@ export const useWalletStore = defineStore('wallet', {
                 _entropy = null
             }
 
-            _createWallet.bind(this)(_entropy)
+            /* Set entropy. */
+            _setEntropy.bind(this)(_entropy)
 
             /* Initialize wallet. */
             this.init()
@@ -406,6 +410,12 @@ export const useWalletStore = defineStore('wallet', {
         },
 
         async groupTokens() {
+            /* Validate tokens. */
+            if (!this.tokens) {
+                return []
+            }
+
+            /* Initialize (group) tokens. */
             const tokens = {}
 
             for (let i = 0; i < this.tokens.length; i++) {

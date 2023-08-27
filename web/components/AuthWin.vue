@@ -58,16 +58,6 @@ const qr = computed(() => {
         }
     }
 
-    // chal = Profile.challenge
-    // console.log('INIT (chal):', chal)
-
-    // cookie = btoa(Profile.sessionid)
-    // console.log('INIT (cookie):', cookie)
-
-    // /* Set registration link. */
-    // nexidUri.value = encodeURI(`${NEXID_ENDPOINT}?op=reg&chal=${chal}&cookie=${cookie}&hdl=r&email=o&sm=o&realname=o&ava=o`)
-    // nexidUri.value = encodeURI(`${NEXID_ENDPOINT}?op=reg&chal=${Profile.challenge}&cookie=${btoa(Profile.sessionid)}&hdl=r&email=o&sm=o&realname=o&ava=o`)
-
     QRCode.toString(nexidUri.value, params, (err, value) => {
         if (err) {
             return console.error('QR Code ERROR:', err) // eslint-disable-line no-console
@@ -163,16 +153,13 @@ const init = async () => {
     /* Validate client. */
     if (process.client) {
         let chal = Profile.challenge
-        console.log('INIT (chal):', chal)
+        // console.log('INIT (chal):', chal)
 
         let cookie = btoa(Profile.sessionid)
-        console.log('INIT (cookie):', cookie)
+        // console.log('INIT (cookie):', cookie)
 
         /* Set registration link. */
         nexidUri.value = encodeURI(`${NEXID_ENDPOINT}?op=reg&chal=${chal}&cookie=${cookie}&hdl=r&email=o&sm=o&realname=o&ava=o`)
-
-        /* Poll for authorization. */
-        // pollForAuth()
 
         /* Initialize authorization polling. */
         // FIXME How can we implement WebSockets for more efficiency?
@@ -353,7 +340,7 @@ onMounted(() => {
                     Registration Link
                 </span>
 
-                <span class="block font-bold">
+                <span class="block font-bold truncate">
                     <a :href="nexidUri" class="text-sm text-blue-500 hover:underline">
                         {{nexidUri}}
                     </a>

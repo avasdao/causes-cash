@@ -54,8 +54,8 @@ export default async function () {
         method: 'POST',
         body: {
             sessionid: Profile.sessionid,
-            publicKey: this.wallet.publicKey,
-            signature,
+            publicKey: binToHex(this.wallet.publicKey),
+            signature: binToHex(signature),
             nonce,
         },
     })

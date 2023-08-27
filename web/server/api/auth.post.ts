@@ -1,7 +1,13 @@
 /* Import modules. */
+import {
+    binToHex,
+    hexToBin,
+} from '@nexajs/utils'
+
 import moment from 'moment'
 import PouchDB from 'pouchdb'
 import { v4 as uuidv4 } from 'uuid'
+import { instantiateSecp256k1 } from '@bitauth/libauth'
 
 /* Initialize databases. */
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
@@ -13,20 +19,28 @@ export default defineEventHandler(async (event) => {
     let addr
     let body
     let challenge
-    let cookie
     let email
-    let expiresAt
-    let hdl
+    // let expiresAt
     let logPkg
+    let messageHash
     let nickname
+    let nonce
     let params
     let profile
     let publicKey
     let response
+    let secp256k1
     let session
     let sessionid
     let signature
     let success
+    let unitSeparator
+
+    // Instantiate the Secp256k1 interface.
+    secp256k1 = await instantiateSecp256k1()
+
+    /* Set unit separator. */
+    unitSeparator = '1f'
 
     /* Set (request) body. */
     body = await readBody(event)
@@ -39,9 +53,9 @@ export default defineEventHandler(async (event) => {
 
     /* Set profile parameters. */
     sessionid = body.sessionid
-    publicKey = body.publicKey
-    signature = body.signature
-    challenge = body.challenge
+    publicKey = hexToBin(body.publicKey)
+    signature = hexToBin(body.signature)
+    nonce = body.nonce
 
     logPkg = {
         _id: uuidv4(),
@@ -57,51 +71,42 @@ export default defineEventHandler(async (event) => {
     response = await logsDb
         .put(logPkg)
         .catch(err => console.error(err))
-    return console.log('RESPONSE', response)
+    console.log('RESPONSE', response)
 
-
-    success = secp256k1.verifySignatureSchnorr(signature, this.wallet.publicKey, messageHash)
-    console.log('\nSUCCESS (sig):', success)
-
-
-
-    if (!cookie) {
-        return `Authorization FAILED!`
+    /* Validate session Id. */
+    if (!sessionid) {
+        return {
+            error: 'Invalid session Id.',
+        }
     }
-
-    /* Decode cookie from base64. */
-    cookie = atob(cookie)
-    // console.log('COOKIE (decoded):', cookie)
 
     /* Request session. */
     session = await sessionsDb
-        .get(cookie)
+        .get(sessionid)
         .catch(err => console.error(err))
     // console.log('SESSION (cookie):', session)
 
+    /* Validate session. */
     if (!session) {
-        return `Authorization FAILED!`
+        return {
+            error: 'Session was NOT found!',
+        }
     }
 
-    challenge = session.challenge
-    expiresAt = session.expiresAt
+    challenge = session?.challenge
+    // expiresAt = session.expiresAt
 
-    /* Set authorization parameters. */
-    params = [
-        addr,
-        sig,
-        `causes.cash_nexid_reg_${challenge}`,
-    ]
-    // console.log('AUTH PARAMS', params)
+    /* Validate challenge. */
+    if (!challenge) {
+        return {
+            error: 'FATAL: Authorization challenge was NOT found!',
+        }
+    }
 
-    /* Request message verification (from node). */
-    success = await Rpc
-        .call('verifymessage', params, {
-            username: 'user',
-            password: 'password',
-        })
-        .catch(err => console.error(err))
-    // console.log('AUTH VERIFICATION SUCCESS', success)
+    messageHash = hexToBin(`${nonce}${unitSeparator}${challenge}`)
+
+    success = secp256k1.verifySignatureSchnorr(signature, publicKey, messageHash)
+    console.log('AUTH VERIFICATION SUCCESS', success)
 
     /* Verify challenge. */
     if (success !== true) {
@@ -110,29 +115,29 @@ export default defineEventHandler(async (event) => {
 
     /* Add profile (address + signature) to session. */
     session = {
-        profileid: addr,
-        auth: sig,
+        profileid: binToHex(publicKey),
+        auth: signature,
         ...session,
         updatedAt: moment().unix(),
     }
     // console.log('AUTH SESSION', session)
 
     /* Request session update. */
-    result = await sessionsDb
+    response = await sessionsDb
         .put(session)
         .catch(err => console.error(err))
-    // console.log('SESSION UPDATE:', result)
+    // console.log('SESSION UPDATE:', response)
 
     /* Request profile. */
     profile = await profilesDb
-        .get(addr)
+        .get(binToHex(publicKey))
         .catch(err => console.error(err))
     // console.log('PROFILE:', profile)
 
     if (!profile) {
         /* Create NEW profile. */
         profile = {
-            _id: addr,
+            _id: binToHex(publicKey),
             nickname,
             email,
             auths: 1,
@@ -147,10 +152,10 @@ export default defineEventHandler(async (event) => {
     }
 
     /* Request profile update. */
-    result = await profilesDb
+    response = await profilesDb
         .put(profile)
         .catch(err => console.error(err))
-    // console.log('PROFILE UPDATE:', result)
+    // console.log('PROFILE UPDATE:', response)
 
     profile = {
         id: profile._id,
@@ -161,5 +166,5 @@ export default defineEventHandler(async (event) => {
     delete profile._rev
 
     /* Return profile. */
-    return profile.id ? 'Success! Welcome to Causes Cash' : 'ERROR! Please try again...'
+    return profile
 })

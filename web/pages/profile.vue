@@ -78,7 +78,7 @@ const init = async () => {
 
                     <pre class="bg-sky-500">Address - {{ Wallet.address }}</pre>
 
-                    <button @click="Wallet.destroy()" class="px-3 py-1 bg-sky-500 rounded-lg">
+                    <button @click="Wallet.destroy()" class="px-5 py-2 text-2xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg">
                         Destroy Wallet
                     </button>
                 </div>

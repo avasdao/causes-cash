@@ -1,10 +1,63 @@
 /* Import modules. */
-import { Wallet } from '@nexajs/wallet'
+import moment from 'moment'
 
-export default function () {
+import {
+    binToHex,
+    hexToBin,
+} from '@nexajs/utils'
+
+import { instantiateSecp256k1 } from '@bitauth/libauth'
+
+/* Initialize stores. */
+import { useProfileStore } from '@/stores/profile'
+const Profile = useProfileStore()
+
+export default async function () {
     console.log('WALLET', this.wallet)
 
     console.log('ADDRESS', this.address)
     console.log('PUBLIC KEY', this.wallet.publicKey)
+    console.log('PROFILE SESSION', Profile.session)
 
+    let messageHash
+    let nonce
+    let response
+    let secp256k1
+    let signature
+    let unitSeparator
+
+    // Instantiate the Secp256k1 interface.
+    secp256k1 = await instantiateSecp256k1()
+
+    /* Set unit separator. */
+    unitSeparator = '1f'
+
+    /* Set (nonce) timestamp.*/
+    nonce = moment().unix()
+    console.log('NONCE-1', nonce)
+    nonce = nonce.toString(16)
+    console.log('NONCE-2', nonce)
+
+    console.log('\n\nPRIVATE KEY', this.wallet.privateKey)
+
+    // NOTE: Format is <timestamp> <0x1F> <challenge>
+    // NOTE: We use 0x1F as the default "unit separator".
+    messageHash = hexToBin(`${nonce}${unitSeparator}${Profile.challenge}`)
+    console.log('\n\nMESSAGE HASH', binToHex(messageHash))
+
+    // Generate a signature over the "sighash" using the passed private key.
+    signature = secp256k1.signMessageHashSchnorr(this.wallet.privateKey, messageHash)
+    console.log('SIGNATURE BIN', signature)
+    console.log('SIGNATURE HEX', binToHex(signature))
+
+    response = await $fetch('/api/auth', {
+        method: 'POST',
+        body: {
+            sessionid: Profile.sessionid,
+            publicKey: this.wallet.publicKey,
+            signature,
+            nonce,
+        },
+    })
+    console.log('AUTH SESSIONS (response):', response)
 }

@@ -21,14 +21,16 @@ export default defineEventHandler(async (event) => {
     let nickname
     let params
     let profile
+    let publicKey
     let response
     let session
-    let sig
+    let sessionid
+    let signature
     let success
 
     /* Set (request) body. */
     body = await readBody(event)
-    console.log('BODY', body)
+    // console.log('BODY', body)
 
     /* Validate body. */
     if (!body) {
@@ -50,12 +52,18 @@ export default defineEventHandler(async (event) => {
         challenge,
         createdAt: moment().unix(),
     }
-    console.log(logPkg)
+    console.log('LOGS PKG', logPkg)
 
     response = await logsDb
         .put(logPkg)
         .catch(err => console.error(err))
     return console.log('RESPONSE', response)
+
+
+    success = secp256k1.verifySignatureSchnorr(signature, this.wallet.publicKey, messageHash)
+    console.log('\nSUCCESS (sig):', success)
+
+
 
     if (!cookie) {
         return `Authorization FAILED!`

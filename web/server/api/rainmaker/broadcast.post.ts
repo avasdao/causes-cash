@@ -15,7 +15,6 @@ export default defineEventHandler(async (event) => {
     let campaign
     let campaignid
     let profiles
-    let profileid
     let receivers
     let response
     let txidem
@@ -33,15 +32,18 @@ export default defineEventHandler(async (event) => {
     txidem = body.txidem
 
     profiles = receivers.map(_receiver => {
+        let profileid
+
         profileid = sha256(`${campaignid}:${_receiver.address}`)
-        // console.log('PROFILEID', profileid)
 
         return profileid
     })
 
-    profiles.forEach(async _profileid => {
+    for (let i = 0; i < profiles.length; i++) {
+        const profileid = profiles[i]
+
         const profile = await rainmakerProfilesDb
-            .get(_profileid)
+            .get(profileid)
             .catch(err => console.error(err))
         // console.log('PROFILE-1', profile)
 
@@ -49,14 +51,14 @@ export default defineEventHandler(async (event) => {
         if (profile) {
             profile.txs.push(txidem)
             profile.updatedAt = moment().unix()
-            console.log('PROFILE-2', profile)
+            // console.log('PROFILE-2', profile)
 
             response = await rainmakerProfilesDb
                 .put(profile)
                 .catch(err => console.error(err))
             // console.log('UPDATE PROFILE', response)
         }
-    })
+    }
 
     txPkg = {
         _id: txidem,
@@ -64,10 +66,12 @@ export default defineEventHandler(async (event) => {
         profiles,
         createdAt: moment().unix(),
     }
-    console.log('TX PKG', txPkg)
+    // console.log('TX PKG', txPkg)
 
     response = await rainmakerTxsDb
         .put(txPkg)
         .catch(err => console.error(err))
     // console.log('RESPONSE', response)
+
+    return txidem
 })

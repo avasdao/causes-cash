@@ -24,7 +24,7 @@ const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af
 
 const campaign = ref(null)
 const profiles = ref(null)
-const isAddingProfile= ref(false)
+const isAddingProfile= ref(true)
 
 const broadcast = async () => {
     if (!profiles.value) {

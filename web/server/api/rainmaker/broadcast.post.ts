@@ -5,6 +5,7 @@ import { sha256 } from '@nexajs/crypto'
 
 /* Initialize databases. */
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
+const rainmakerProfilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_profiles`)
 const rainmakerTxsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_txs`)
 
 export default defineEventHandler(async (event) => {
@@ -22,7 +23,7 @@ export default defineEventHandler(async (event) => {
 
     /* Set (request) body. */
     body = await readBody(event)
-    console.log('BROADCAST (body):', body)
+    // console.log('BROADCAST (body):', body)
 
     campaign = body.campaign
     campaignid = campaign.id
@@ -31,21 +32,30 @@ export default defineEventHandler(async (event) => {
 
     txidem = body.txidem
 
-
-    console.log('PARSED', {
-        campaign,
-        campaignid,
-        receivers,
-        txidem,
-        profileid,
-    })
-    // TODO Update profile records...
-
     profiles = receivers.map(_receiver => {
         profileid = sha256(`${campaignid}:${_receiver.address}`)
-        console.log('PROFILEID', profileid)
+        // console.log('PROFILEID', profileid)
 
         return profileid
+    })
+
+    profiles.forEach(async _profileid => {
+        const profile = await rainmakerProfilesDb
+            .get(_profileid)
+            .catch(err => console.error(err))
+        // console.log('PROFILE-1', profile)
+
+        /* Validate profile. */
+        if (profile) {
+            profile.txs.push(txidem)
+            profile.updatedAt = moment().unix()
+            console.log('PROFILE-2', profile)
+
+            response = await rainmakerProfilesDb
+                .put(profile)
+                .catch(err => console.error(err))
+            // console.log('UPDATE PROFILE', response)
+        }
     })
 
     txPkg = {
@@ -59,6 +69,5 @@ export default defineEventHandler(async (event) => {
     response = await rainmakerTxsDb
         .put(txPkg)
         .catch(err => console.error(err))
-    console.log('RESPONSE', response)
-
+    // console.log('RESPONSE', response)
 })

@@ -10,6 +10,10 @@ const displayName = ref(null)
 const nexaAddress = ref(null)
 
 const addProfile = async () => {
+    if (!nexaAddress.value) {
+        return alert(`Oops! You forgot to enter a Nexa address.`)
+    }
+
     /* Initialize locals. */
     let response
 
@@ -94,6 +98,7 @@ const reset = () => {
                                         v-model="nexaAddress"
                                         placeholder="(required) enter a nexa: address"
                                         class="px-3 py-2 w-full text-lg block w-full rounded-md border border-indigo-100 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6"
+                                        disabled
                                     />
                                 </div>
 
@@ -103,6 +108,7 @@ const reset = () => {
                                         v-model="username"
                                         placeholder="(optional) username"
                                         class="px-3 py-2 w-full text-lg block w-full rounded-md border border-indigo-100 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6"
+                                        disabled
                                     />
                                 </div>
 
@@ -112,6 +118,7 @@ const reset = () => {
                                         v-model="displayName"
                                         placeholder="(optional) display name"
                                         class="px-3 py-2 w-full text-lg block w-full rounded-md border border-indigo-100 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6"
+                                        disabled
                                     />
                                 </div>
 

@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
 
     /* Save (database) session. */
     response = await rainmakerProfilesDb
-        .allDocs({
+        .query('api/byUnsent', {
             include_docs: true,
         })
         .catch(err => {

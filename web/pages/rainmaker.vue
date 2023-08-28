@@ -24,7 +24,7 @@ const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af
 
 const campaign = ref(null)
 const profiles = ref(null)
-const isAddingProfile= ref(true)
+const isAddingProfile= ref(false)
 
 const broadcast = async () => {
     if (!profiles.value) {
@@ -33,9 +33,12 @@ const broadcast = async () => {
 
     /* Initialize locals. */
     let response
+    let txidem
 
+    /* Initialize receivers. */
     const receivers = []
 
+    /* Handle profiles. */
     profiles.value.forEach(_profile => {
         receivers.push({
             address: _profile.address,
@@ -44,29 +47,26 @@ const broadcast = async () => {
         })
     })
 
+    /* Broadcast (to profiles). */
     response = await Wallet.broadcast(receivers)
         .catch(err => console.error(err))
     console.log('RESPONSE', response)
 
-    return
-
-    receivers.push({
-        address: 'nexa:nqtsq5g5ufpzqu9mr4vutrdtas3yjujs2uyah9qxhnylf2ty',
-        tokens: 100 * 1e8, // NOTE: Promotional airdrop amount.
-    })
+    /* Set transaction idem. */
+    txidem = response.result
+    console.log('TXIDEM', txidem)
 
     /* Request rainmaker profile. */
     response = await $fetch('/api/rainmaker/broadcast', {
         method: 'POST',
         body: {
+            campaign: Rainmaker.campaign,
             receivers,
-            wif,
-            publicKey: Wallet.wallet?.publicKey,
+            txidem,
         },
     })
     .catch(err => console.error(err))
     console.log('BROADCAST (response):', response)
-
 }
 
 const reset = () => {

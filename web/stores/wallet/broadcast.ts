@@ -89,7 +89,7 @@ export default async function (_receivers) {
     receivers.push({
         address: this.address,
     })
-    return console.log('\n  Receivers:', receivers)
+    console.log('\n  Receivers:', receivers)
 
     /* Send UTXO request. */
     response = await sendToken(coins, tokens, receivers)

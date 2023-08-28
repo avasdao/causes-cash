@@ -11,13 +11,76 @@ useHead({
 })
 
 /* Initialize stores. */
+import { useProfileStore } from '@/stores/profile'
+import { useRainmakerStore } from '@/stores/rainmaker'
 import { useSystemStore } from '@/stores/system'
+import { useWalletStore } from '@/stores/wallet'
+const Profile = useProfileStore()
+const Rainmaker = useRainmakerStore()
 const System = useSystemStore()
+const Wallet = useWalletStore()
 
-// onMounted(() => {
-//     console.log('Mounted!')
-//     // Now it's safe to perform setup operations.
-// })
+const campaign = ref(null)
+const profiles = ref(null)
+const isAddingProfile= ref(false)
+
+const broadcast = async () => {
+    /* Initialize locals. */
+    let receivers
+    let response
+    let wif
+
+    receivers = []
+
+    return
+
+    receivers.push({
+        address: 'nexa:nqtsq5g5ufpzqu9mr4vutrdtas3yjujs2uyah9qxhnylf2ty',
+        tokens: 100 * 1e8, // NOTE: Promotional airdrop amount.
+    })
+
+        /* Encode Private Key WIF. */
+    wif = encodePrivateKeyWif({ hash: sha256 }, Wallet.wallet?.privateKey, 'mainnet')
+
+    /* Request rainmaker profile. */
+    response = await $fetch('/api/rainmaker/broadcast', {
+        method: 'POST',
+        body: {
+            receivers,
+            wif,
+            publicKey: Wallet.wallet?.publicKey,
+        },
+    })
+    .catch(err => console.error(err))
+    console.log('BROADCAST (response):', response)
+
+}
+
+const reset = () => {
+    // TODO
+}
+
+const init = async () => {
+    // const TOKEN_ID = 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x' // AVAS
+    // const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
+
+    /* Instantiate Libauth crypto interfaces. */
+    // let ripemd160
+    // ;(async () => {
+    //     ripemd160 = await instantiateRipemd160()
+    // })()
+
+    profiles.value = await $fetch('/api/rainmaker/broadcast?sid=' + Profile.sessionid)
+    .catch(err => console.error(err))
+    console.log('BROADCAST (response):', profiles.value)
+
+}
+
+onMounted(() => {
+    Rainmaker.init()
+
+    init()
+})
 
 // onBeforeUnmount(() => {
 //     console.log('Before Unmount!')
@@ -172,7 +235,7 @@ const System = useSystemStore()
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
-                                <tr>
+                                <tr v-for="profile of profiles" :key="profile.id">
                                     <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                                         <div class="flex items-center">
                                             <div class="h-11 w-11 flex-shrink-0">
@@ -183,6 +246,7 @@ const System = useSystemStore()
                                                 />
                                             </div>
                                             <div class="ml-4">
+                                                <div class="font-medium text-gray-900">{{profile.id}}</div>
                                                 <div class="font-medium text-gray-900">Lindsay Walton</div>
                                                 <div class="mt-1 text-gray-500">lindsay.walton@example.com</div>
                                             </div>
@@ -286,11 +350,15 @@ const System = useSystemStore()
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" class="text-xl font-semibold leading-6 text-gray-900">
+            <button
+                @click="reset"
+                class="text-xl font-semibold leading-6 text-gray-900"
+            >
                 Reset
             </button>
 
             <button
+                @click="broadcast"
                 class="rounded-2xl bg-indigo-600 border-2 border-indigo-800 px-5 py-3 text-xl font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
                 Start Broadcast
@@ -298,5 +366,8 @@ const System = useSystemStore()
         </div>
     </main>
 
-    <RainmakerAddProfile />
+    <RainmakerAddProfile
+        v-if="isAddingProfile"
+        :campaign="Rainmaker.campaign"
+    />
 </template>

@@ -44,6 +44,7 @@ import {
 } from '@bitauth/libauth'
 
 import _authSession from './wallet/authSession.ts'
+import _broadcast from './wallet/broadcast.ts'
 import _setEntropy from './wallet/setEntropy.ts'
 
 let ripemd160
@@ -83,7 +84,7 @@ export const useWalletStore = defineStore('wallet', {
         _wallet: null,
 
         /* Wallet import format (WIF) private key. */
-        _wif: null,
+        // _wif: null,
     }),
 
     getters: {
@@ -134,9 +135,9 @@ export const useWalletStore = defineStore('wallet', {
             return _state._wallet
         },
 
-        wif(_state) {
-            return _state._wif
-        },
+        // wif(_state) {
+        //     return _state._wif
+        // },
 
         asset(_state) {
             if (_state._assetid === null) {
@@ -176,6 +177,24 @@ export const useWalletStore = defineStore('wallet', {
 
         balance(_state) {
             // return _state._balance
+        },
+
+        publicKeyHash(_state) {
+            if (!_state.wallet?.publicKey) {
+                return null
+            }
+
+            const scriptPushPubKey = encodeDataPush(_state.wallet.publicKey)
+
+            return ripemd160.hash(sha256(scriptPushPubKey))
+        },
+
+        wif(_state) {
+            if (!_state.wallet?.privateKey) {
+                return null
+            }
+
+            return encodePrivateKeyWif({ hash: sha256 }, _state.wallet.privateKey, 'mainnet')
         },
 
     },
@@ -251,7 +270,7 @@ export const useWalletStore = defineStore('wallet', {
             }
 
             /* Encode Private Key WIF. */
-            this._wif = encodePrivateKeyWif({ hash: sha256 }, this._wallet.privateKey, 'mainnet')
+            // this._wif = encodePrivateKeyWif({ hash: sha256 }, this._wallet.privateKey, 'mainnet')
 
             // Fetch all unspent transaction outputs for the temporary in-browser wallet.
             unspent = await listUnspent(this.address)
@@ -279,7 +298,7 @@ export const useWalletStore = defineStore('wallet', {
                     return {
                         outpoint,
                         satoshis,
-                        wif: this._wif,
+                        wif: this.wif,
                     }
                 })
             // console.log('COINS', this.coins)
@@ -298,7 +317,7 @@ export const useWalletStore = defineStore('wallet', {
                         satoshis,
                         tokenid,
                         tokens,
-                        wif: this._wif,
+                        wif: this.wif,
                     }
                 })
             // console.log('TOKENS', this.tokens)
@@ -363,6 +382,11 @@ export const useWalletStore = defineStore('wallet', {
                 /* Send tokens. */
                 return await this.wallet.send(this.asset.token_id_hex, _receiver, _satoshis)
             }
+        },
+
+        broadcast(_receivers) {
+            /* Broadcast to receivers. */
+            return _broadcast.bind(this)(_receivers)
         },
 
         /**
@@ -454,7 +478,7 @@ export const useWalletStore = defineStore('wallet', {
             /* Reset wallet. */
             this._entropy = null
             this._wallet = null
-            this._wif = null
+            // this._wif = null
             this._coins = null
             this._tokens = null
 

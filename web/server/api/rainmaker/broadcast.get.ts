@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
     /* Set (request) query. */
     query = getQuery(event)
-    console.log('QUERY', query)
+    // console.log('QUERY', query)
 
     /* Set session id. */
     sessionid = query?.sid
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
             console.error(err)
             error = err
         })
-    console.log('RESPONSE (profiles):', response)
+    // console.log('RESPONSE (profiles):', response)
 
     /* Validate profiles. */
     if (!response) {
@@ -58,12 +58,6 @@ export default defineEventHandler(async (event) => {
 
         return doc
     })
-
-    /* Sanitize session. */
-    // delete session._id
-    // delete session._rev
-    // delete session.auth
-    // delete session.session
 
     /* Return session. */
     return profiles

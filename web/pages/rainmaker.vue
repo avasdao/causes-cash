@@ -20,17 +20,33 @@ const Rainmaker = useRainmakerStore()
 const System = useSystemStore()
 const Wallet = useWalletStore()
 
+const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
+
 const campaign = ref(null)
 const profiles = ref(null)
 const isAddingProfile= ref(false)
 
 const broadcast = async () => {
-    /* Initialize locals. */
-    let receivers
-    let response
-    let wif
+    if (!profiles.value) {
+        return alert('NO profiles available for broadcast.')
+    }
 
-    receivers = []
+    /* Initialize locals. */
+    let response
+
+    const receivers = []
+
+    profiles.value.forEach(_profile => {
+        receivers.push({
+            address: _profile.address,
+            tokenid: TOKEN_ID_HEX,
+            tokens: 100 * 1e8,
+        })
+    })
+
+    response = await Wallet.broadcast(receivers)
+        .catch(err => console.error(err))
+    console.log('RESPONSE', response)
 
     return
 
@@ -38,9 +54,6 @@ const broadcast = async () => {
         address: 'nexa:nqtsq5g5ufpzqu9mr4vutrdtas3yjujs2uyah9qxhnylf2ty',
         tokens: 100 * 1e8, // NOTE: Promotional airdrop amount.
     })
-
-        /* Encode Private Key WIF. */
-    wif = encodePrivateKeyWif({ hash: sha256 }, Wallet.wallet?.privateKey, 'mainnet')
 
     /* Request rainmaker profile. */
     response = await $fetch('/api/rainmaker/broadcast', {

@@ -9,7 +9,7 @@
     "@bitauth/libauth": "1.19.1",
     "eventsource": "2.0.2",
     "moment": "2.29.4",
-    "nexajs": "23.8.18",
+    "nexajs": "23.8.30",
     "node-fetch": "3.3.1",
     "numeral": "2.0.6",
     "pouchdb": "8.0.1",

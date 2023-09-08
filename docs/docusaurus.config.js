@@ -99,7 +99,7 @@ const config = {
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/0xShomari',
+                href: 'https://twitter.com/AvasDAO',
               },
             ],
           },

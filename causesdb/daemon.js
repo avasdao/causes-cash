@@ -5,13 +5,16 @@ import PouchDB from 'pouchdb'
 import {
     binToHex,
     decodeAddress,
-    Rpc,
 } from 'nexajs'
+import { Wallet } from '@nexajs/wallet'
 import { v4 as uuidv4 } from 'uuid'
 
-import getAddressHistory from './_getAddressHistory.js'
-// import getInfo from './_getInfo.js'
+/* Import libraries. */
 import parseTx from './libs/parseTx.js'
+
+/* Import source. */
+import getAddressHistory from './src/getAddressHistory.js'
+// import getInfo from './src/getInfo.js'
 
 /* Initialize sleep. */
 const sleep = ms => new Promise(r => setTimeout(r, ms))
@@ -29,23 +32,41 @@ console.log('Causes Cash DB is starting...')
 const AVAS_TOKEN_DECIMALS = 8 // TODO: Pull from `getInfo` dynamically
 
 
-const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, _startIdx) => {
+/**
+ * Do Work
+ *
+ * Handle the rewards processing.
+ */
+const doWork = async (
+    _vmid,
+    _campaignid,
+    _tokenid,
+    _receiver,
+    _rate,
+    _history,
+    _startIdx
+) => {
+    /* Initialize locals. */
+    let address
+    let payout
+    let pkScriptHash
+    let queue
     let response
+    let reward
     let snapshot
+    let source
     let txidem
+    let wallet
 
-    const queue = _history.slice(_startIdx)
-
+    queue = _history.slice(_startIdx)
     console.log('QUEUE', queue.length, queue)
 
     const { hash } = decodeAddress(_receiver)
     // console.log('HASH', binToHex(hash))
-    const pkScriptHash = binToHex(hash).slice(2)
 
-    // TODO Support the FULL queue.
-    // await sleep(3000) // 3-second pause
+    pkScriptHash = binToHex(hash)
 
-    const source = await parseTx(pkScriptHash, queue[0].tx_hash)
+    source = await parseTx(pkScriptHash, queue[0].tx_hash)
     console.log('SOURCE', source)
 
     /* Validate source. */
@@ -54,7 +75,7 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         snapshot = await vendingDb
             .get(_vmid)
             .catch(err => console.error(err))
-        console.log('SNAPSHOT-1', snapshot)
+        // console.log('SNAPSHOT-1', snapshot)
 
         snapshot.txCount++
         snapshot.updatedAt = moment().unix()
@@ -62,39 +83,28 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
         response = await vendingDb
             .put(snapshot)
             .catch(err => console.error(err))
-        console.log('UPDATE', response)
+        // console.log('UPDATE', response)
 
-        return console.log('Skipping SENT coins.')
+        return console.log('Skipping! SENT assets.')
     }
 
-    const reward = parseInt(source.satoshis * _rate)
-    console.log('REWARD', reward)
-
-    const rpcCmd = `nexa-cli token send ${_groupid} ${source.sender} ${reward}`
-    console.log('RPC CMD\n', rpcCmd)
+    reward = parseInt(source.satoshis * _rate)
+    console.log('REWARD', _rate, reward)
+// return
 
     try {
-        /* Set request parameters. */
-        const params = [
-            'send',
-            _groupid,
-            source.sender,
-            reward,
-        ]
-        console.log('AUTH PARAMS', params)
+        wallet = new Wallet(process.env.MNEMONIC)
+        // console.log('WALLET', wallet)
 
-        /* Send request to (local) node. */
-        const response = await Rpc
-            .call('token', params, {
-                username: 'user',
-                password: 'password',
-            })
-            .catch(err => console.error(err))
-        console.log('NODE RESPONSE', response)
+        address = wallet.address
+        console.log('ADDRESS', address)
+
+        response = await wallet.send(_tokenid, source.sender, BigInt(reward))
+        console.log('Send UTXO (response):', response)
 
         /* Handle response. */
-        if (response) {
-            txidem = response
+        if (response?.txidem) {
+            txidem = response.txidem
         } else {
             // TODO Add ADMIN email notifcation.
             return console.error(response?.error)
@@ -121,7 +131,7 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
             .catch(err => console.error(err))
         console.log('UPDATE (vending):', response)
 
-        const payout = {
+        payout = {
             _id: source.txidem,
             campaignid: _campaignid,
             txid: source.txid,
@@ -142,22 +152,27 @@ const doWork = async (_vmid, _campaignid, _groupid, _receiver, _rate, _history, 
             .catch(err => console.error(err))
         console.log('UPDATE (payout):', response)
     }
-
-    return txidem
 }
 
+/**
+ * Run Daemon
+ *
+ * Start the automated process handling procedures.
+ */
 const run = async () => {
+    /* Initialize locals. */
     let campaignid
-    let groupid
     let history
     let rate
     let receiver
     let results
+    let tokenid
     let txCount
     let vm
     let vmid
     let vms
 
+    /* Request "active" vending machines. */
     results = await vendingDb
         .query('api/isActive', {
             include_docs: true,
@@ -165,34 +180,46 @@ const run = async () => {
         .catch(err => console.error(err))
     // console.log('RESULTS', results)
 
+    /* Parse virtual machines. */
     vms = results.rows.map(_row => {
         return _row.doc
     })
-    // console.log('VENDING MACHINES', vms)
+    console.log('VENDING MACHINES', vms)
 
     /* Handle each vending machine. */
     for (let i = 0; i < vms.length; i++) {
         /* Set vending machine. */
         vm = vms[i]
 
-        vmid = vm._id
+        /* Assign variables. */
+        vmid       = vm._id
         campaignid = vm.campaignid
-        groupid = vm.groupid
-        rate = vm.rate
-        receiver = vm.receiver
+        tokenid    = vm.tokenid
+        rate       = vm.rate
+        receiver   = vm.receiver
 
+        /* Request history. */
         history = await getAddressHistory(receiver)
             .catch(err => console.error(err))
         // console.log('HISTORY for', receiver, history)
 
+        /* Set transaction count. */
         txCount = vm.txCount
 
+        /* Validate transaction count. */
         if (history.length > txCount) {
-            // console.log('WE GOT WORK TO DO!!!')
-
-            await doWork(vmid, campaignid, groupid, receiver, rate, history, txCount)
+            /* Do work! */
+            await doWork(
+                vmid,
+                campaignid,
+                tokenid,
+                receiver,
+                rate,
+                history,
+                txCount
+            )
         } else {
-            console.log('All caught up.')
+            console.log(campaignid, 'is all caught up!')
         }
 
         /* Validate "next" VM. */
@@ -200,25 +227,26 @@ const run = async () => {
             await sleep(3000) // 3-second pause
         }
     }
-
-    return true
 }
 
-let lastVendingAt
+/* Initialize response holder. */
 let response
 
 while (true) {
+// while (!response) {
     // console.time('\n\n\n  Starting next run...\n\n\n')
     await run()
 
-    response = await systemDb.get('0')
+    response = await systemDb
+        .get('0')
         .catch(err => console.error(err))
     // console.log('RESPONSE', response)
 
     if (response) {
         response.lastVendingAt = moment().unix()
 
-        response = await systemDb.put(response)
+        response = await systemDb
+            .put(response)
             .catch(err => console.error(err))
         // console.log('UPDATED', response)
     }

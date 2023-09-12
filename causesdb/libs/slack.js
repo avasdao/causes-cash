@@ -16,16 +16,6 @@ const Slack = async function (_txt, _json) {
     /* Set url. */
     const url = 'https://slack.com/api/chat.postMessage'
 
-    // const url = 'https://slack.com/api/conversations.open'
-    // BOT POST RESPONSE {
-    //     "ok": true,
-    //     "no_op": true,
-    //     "already_open": true,
-    //     "channel": {
-    //         "id": "D01F06QTRFC"
-    //     }
-    // }
-
     const users = 'UVB8TA16X' // Shomari
 
     /* Set group channel. */
@@ -39,18 +29,18 @@ const Slack = async function (_txt, _json) {
 
     if (_json) {
         blocks = [{
-            type: "section",
+            type: 'section',
             text: {
-                type: "mrkdwn",
-                text: _txt + "\n```" + JSON.stringify(_json, null, 2) + "```"
+                type: 'mrkdwn',
+                text: _txt + '\n```' + JSON.stringify(_json, null, 2) + '```'
             }
         }]
     } else {
         blocks = [{
-            type: "section",
+            type: 'section',
             text: {
-                type: "mrkdwn",
-                text: _txt
+                type: 'mrkdwn',
+                text: _txt,
             }
         }]
     }
@@ -60,7 +50,7 @@ const Slack = async function (_txt, _json) {
         channel,
         text,
         users,
-        blocks
+        blocks,
     }
 
     try {
@@ -72,17 +62,9 @@ const Slack = async function (_txt, _json) {
             .set('Authorization', `Bearer ${token}`)
             .end((err, json) => {
                 // console.log('\nBOT POST RESPONSE', JSON.stringify(json.body, null, 4))
-
-                /* Return the json body. */
-                // return res.json(json.body)
             })
     } catch (err) {
         console.error('BOT POST ERROR', err)
-
-        /* Return the error. */
-        // return res.json({
-        //     error: err
-        // })
     }
 
 }

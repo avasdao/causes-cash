@@ -70,25 +70,21 @@ const displayTokenName = (_tokenid) => {
 }
 
 const displayDecimalAmount = (_token) => {
-    if (!_token.decimals || _token.decimals === 0) {
-        return _token.tokens
-    }
-
     let decimalValue
     let bigIntValue
 
     decimalValue = _token.tokens * BigInt(1e4)
 
-    bigIntValue = decimalValue / BigInt(10**_token.decimals)
+    if (_token.decimals > 0) {
+        bigIntValue = decimalValue / BigInt(10**_token.decimals)
+    } else {
+        bigIntValue = decimalValue
+    }
 
-    return numeral(parseFloat(bigIntValue) / 1e4).format('0,0.00[000000]')
+    return numeral(parseFloat(bigIntValue) / 1e4).format('0,0[.]00000000')
 }
 
 const displayDecimalAmountUsd = (_token) => {
-    if (!_token.decimals || _token.decimals === 0) {
-        return _token.tokens
-    }
-
     let decimalValue
     let bigIntValue
     let price
@@ -96,7 +92,11 @@ const displayDecimalAmountUsd = (_token) => {
 
     decimalValue = _token.tokens * BigInt(1e4)
 
-    bigIntValue = decimalValue / BigInt(10**_token.decimals)
+    if (_token.decimals > 0) {
+        bigIntValue = decimalValue / BigInt(10**_token.decimals)
+    } else {
+        bigIntValue = decimalValue
+    }
 
     price = _token.ticker?.price || 0.00
 

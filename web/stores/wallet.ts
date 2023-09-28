@@ -43,7 +43,7 @@ import {
     instantiateSecp256k1,
 } from '@bitauth/libauth'
 
-import _authSession from './wallet/authSession.ts'
+import _authSession from './profile/authSession.ts'
 import _broadcast from './wallet/broadcast.ts'
 import _setEntropy from './wallet/setEntropy.ts'
 

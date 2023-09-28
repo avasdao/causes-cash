@@ -23,7 +23,8 @@ const Rainmaker = useRainmakerStore()
 const System = useSystemStore()
 const Wallet = useWalletStore()
 
-const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
+// const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
+const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000' // STUDIO
 
 const campaign = ref(null)
 const profiles = ref(null)
@@ -48,7 +49,8 @@ const airdrop = async () => {
         receivers.push({
             address: _profile.address,
             tokenid: TOKEN_ID_HEX,
-            tokens: 100 * 1e8,
+            // tokens: 100 * 1e8, // 100 AVAS
+            tokens: 1000000, // 1M STUDIO
         })
     })
 
@@ -61,17 +63,19 @@ const airdrop = async () => {
     txidem.value = response.result
     console.log('TXIDEM', txidem.value)
 
-    /* Request rainmaker profile. */
-    response = await $fetch('/api/rainmaker/broadcast', {
-        method: 'POST',
-        body: {
-            campaign: Rainmaker.campaign,
-            receivers,
-            txidem: txidem.value,
-        },
-    })
-    .catch(err => console.error(err))
-    console.log('BROADCAST (response):', response)
+    if (txidem.value) {
+        /* Request rainmaker profile. */
+        response = await $fetch('/api/rainmaker/broadcast', {
+            method: 'POST',
+            body: {
+                campaign: Rainmaker.campaign,
+                receivers,
+                txidem: txidem.value,
+            },
+        })
+        .catch(err => console.error(err))
+        console.log('BROADCAST (response):', response)
+    }
 }
 
 const reset = () => {
@@ -88,7 +92,8 @@ const init = async () => {
     //     ripemd160 = await instantiateRipemd160()
     // })()
 
-    profiles.value = await $fetch('/api/rainmaker/broadcast?sid=' + Profile.sessionid)
+    profiles.value = await $fetch('/api/rainmaker/broadcast?cid=' + Rainmaker.campaign.id)
+    // profiles.value = await $fetch('/api/rainmaker/broadcast?sid=' + Profile.sessionid)
     .catch(err => console.error(err))
     console.log('BROADCAST (response):', profiles.value)
 

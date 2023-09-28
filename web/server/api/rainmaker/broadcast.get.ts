@@ -7,6 +7,7 @@ const rainmakerTxsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process
 
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
+    let campaignid
     let error
     let profiles
     let response
@@ -18,6 +19,9 @@ export default defineEventHandler(async (event) => {
     // console.log('QUERY', query)
 
     /* Set session id. */
+    campaignid = query?.cid
+    console.log('CAMPAIGN ID', campaignid)
+
     sessionid = query?.sid
     console.log('SESSION ID', sessionid)
 
@@ -29,16 +33,30 @@ export default defineEventHandler(async (event) => {
     //     }
     // }
 
-    /* Save (database) session. */
-    response = await rainmakerProfilesDb
-        .query('api/byUnsent', {
-            include_docs: true,
-        })
-        .catch(err => {
-            console.error(err)
-            error = err
-        })
-    // console.log('RESPONSE (profiles):', response)
+    if (campaignid) {
+        /* Save (database) session. */
+        response = await rainmakerProfilesDb
+            .query('api/byCampaignid', {
+                key: campaignid,
+                include_docs: true,
+            })
+            .catch(err => {
+                console.error(err)
+                error = err
+            })
+        // console.log('RESPONSE (profiles):', response)
+    } else {
+        /* Save (database) session. */
+        response = await rainmakerProfilesDb
+            .query('api/byUnsent', {
+                include_docs: true,
+            })
+            .catch(err => {
+                console.error(err)
+                error = err
+            })
+        // console.log('RESPONSE (profiles):', response)
+    }
 
     /* Validate profiles. */
     if (!response) {

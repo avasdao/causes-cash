@@ -22,7 +22,7 @@ const addProfile = async () => {
         method: 'POST',
         body: {
             campaign: Rainmaker.campaign,
-            network: Rainmaker.network,
+            // network: Rainmaker.network,
             address: nexaAddress.value,
         },
     })

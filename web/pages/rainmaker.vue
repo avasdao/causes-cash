@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /* Import modules. */
 import makeBlockie from 'ethereum-blockies-base64'
+import numeral from 'numeral'
 
 definePageMeta({
     layout: 'admin',
@@ -31,10 +32,21 @@ const profiles = ref(null)
 const isAddingProfile = ref(false)
 const txidem = ref(null)
 
+const TOKENS_PER_RECEIVER = 10000000
 
 const airdrop = async () => {
     if (!profiles.value) {
         return alert('NO profiles available for airdrop.')
+    }
+
+    const msg = `Your Rainmaker Airdrop is ready to broadcast to Nexa Mainnet. Are you sure you want to continue?
+
+        ↪ You are sending ( ${numeral((TOKENS_PER_RECEIVER * profiles.value.length)).format('0,0[.]0000')} ) $STUDIO
+        ↪ You are sending to ( ${profiles.value.length} ) wallets
+        ↪ Each wallet will receive ( ${numeral(TOKENS_PER_RECEIVER).format('0,0[.]0000')} ) $STUDIO
+    `
+    if (!confirm(msg)) {
+        return
     }
 
     /* Initialize locals. */
@@ -50,7 +62,7 @@ const airdrop = async () => {
             address: _profile.address,
             tokenid: TOKEN_ID_HEX,
             // tokens: 100 * 1e8, // 100 AVAS
-            tokens: 1000000, // 1M STUDIO
+            tokens: 10000000, // 10M STUDIO
         })
     })
 
@@ -83,15 +95,6 @@ const reset = () => {
 }
 
 const init = async () => {
-    // const TOKEN_ID = 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x' // AVAS
-    // const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
-
-    /* Instantiate Libauth crypto interfaces. */
-    // let ripemd160
-    // ;(async () => {
-    //     ripemd160 = await instantiateRipemd160()
-    // })()
-
     profiles.value = await $fetch('/api/rainmaker/broadcast?cid=' + Rainmaker.campaign.id)
     // profiles.value = await $fetch('/api/rainmaker/broadcast?sid=' + Profile.sessionid)
     .catch(err => console.error(err))

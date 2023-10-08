@@ -8,10 +8,11 @@ const Wallet = useWalletStore()
 let web3Address = ref(null)
 
 /* Import components. */
-import Account from './profile/Account'
-import Activity from './profile/Activity'
-import General from './profile/General'
-import Notes from './profile/Notes'
+import Account from './account'
+import Activity from './activity'
+import General from './general'
+import Notes from './notes'
+// import Transfer from './transfer'
 
 
 /**
@@ -67,15 +68,16 @@ const destroyWallet = () => {
 
             <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                 <div class="space-y-6 lg:col-start-1 lg:col-span-2">
-                    <ProfileWallet />
-
                     <General :web3Address="web3Address" />
 
                     <Notes />
                 </div>
 
                 <div class="space-y-8">
-                    <Activity />
+                    <div class="-mt-40 px-3 py-3 bg-gradient-to-b from-green-400 to-green-600 rounded-2xl border border-green-700 shadow">
+                        <!-- <Activity /> -->
+                        <ProfileWallet />
+                    </div>
 
                     <!-- <pre class="bg-rose-500">Session - {{ Profile.session }}</pre> -->
 

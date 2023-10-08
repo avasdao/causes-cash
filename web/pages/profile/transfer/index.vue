@@ -1,3 +1,12 @@
+<script setup>
+/* Import components. */
+import Deposit from './deposit'
+import History from './history'
+import Settings from './settings'
+import Withdraw from './withdraw'
+
+</script>
+
 <template>
     <main class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -101,12 +110,6 @@
 </template>
 
 <script>
-/* Import components. */
-import Deposit from './transfer/Deposit'
-import History from './transfer/History'
-import Settings from './transfer/Settings'
-import Withdraw from './transfer/Withdraw'
-
 export default {
     props: {
         bchAddress: String,

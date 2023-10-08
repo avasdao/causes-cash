@@ -11,6 +11,7 @@ const loadCampaigns = async () => {
 
     /* Initialize spotlight campaign ids. */
     const spotlights = [
+        '9b269bb0-bccf-4990-ac6b-a1ae69371754',
         'f900d1b8-1ae0-4e18-8a2f-212631b62562',
         'b4240af8-a027-4f8a-9088-2ae97c53cf63',
         // 'b8fac25d-e619-4ddf-b474-af084e8250ce',

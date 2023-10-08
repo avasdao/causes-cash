@@ -17,7 +17,7 @@ import {
 } from '@bitauth/libauth'
 
 /* Import components. */
-import Transfer from './Transfer'
+import Transfer from './transfer'
 
 /* Initialize stores. */
 import { useProfileStore } from '@/stores/profile'
@@ -131,7 +131,7 @@ const init = async () => {
     }
 
     if (!accounts || accounts.length < 1) {
-        return alert('Please connect your MetaMask account to continue.')
+        return alert('Please connect your MetaNet account to continue.')
     }
 
     /* Initialize provider. */
@@ -459,9 +459,9 @@ onMounted(() => {
                     {{nickname}}
                 </h1>
 
-                <!-- MetaMask (injected) Account / Address -->
+                <!-- MetaNet (injected) Account / Address -->
                 <a href="javascript://" class="flex items-center sm:text-sm lg:text-lg font-medium text-gray-500 hover:underline">
-                    MetaMask
+                    MetaNet
                     <svg class="inline w-4 h-4 mx-1 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     n/a
                 </a>
@@ -474,21 +474,21 @@ onMounted(() => {
                 </a>
 
                 <!-- Bitcoin Cash Address -->
-                <a href="javascript://" class="flex items-center sm:text-sm lg:text-lg font-medium text-gray-500 hover:underline">
+                <!-- <a href="javascript://" class="flex items-center sm:text-sm lg:text-lg font-medium text-gray-500 hover:underline">
                     BitcoinCash
                     <svg class="inline w-4 h-4 mx-1 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     n/a
-                </a>
+                </a> -->
             </div>
         </div>
 
-        <div class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
+        <!-- <div class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
             <button
                 type="button"
                 class="inline-flex items-center justify-center px-8 py-2 border border-gray-300 shadow-sm text-xl font-medium rounded-md text-gray-800 bg-green-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
                 disabled
             >
-                {{displayBalance}} BCH
+                {{displayBalance}} NEXA
             </button>
 
             <button
@@ -498,7 +498,7 @@ onMounted(() => {
             >
                 Transfer
             </button>
-        </div>
+        </div> -->
     </main>
 
     <Transfer

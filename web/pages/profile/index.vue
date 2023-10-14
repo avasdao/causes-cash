@@ -11,7 +11,7 @@ let web3Address = ref(null)
 import Account from './account'
 import Activity from './activity'
 import General from './general'
-import Notes from './notes'
+// import Notes from './notes'
 // import Transfer from './transfer'
 
 
@@ -70,7 +70,7 @@ const destroyWallet = () => {
                 <div class="space-y-6 lg:col-start-1 lg:col-span-2">
                     <General :web3Address="web3Address" />
 
-                    <Notes />
+                    <!-- <Notes /> -->
                 </div>
 
                 <div class="space-y-8">

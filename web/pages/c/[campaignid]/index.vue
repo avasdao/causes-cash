@@ -11,7 +11,13 @@ const System = useSystemStore()
 
 import loadingIcon from '@/assets/loading_icon.gif'
 
+/* Set constants. */
+const RETRY_DELAY = 500 // 0.5 seconds
+
 /* Import responsive holders. */
+const isActive = ref(null)
+const isLoading = ref(null)
+
 const description = ref(null)
 const usd = ref(0.0)
 
@@ -26,9 +32,7 @@ const supporters = ref(null)
 const isPledging = ref(false)
 const hasFeedback = ref(false)
 
-/* Set constants. */
-const RETRY_DELAY = 500 // 0.5 seconds
-
+/* Manage banner. */
 const banner = computed(() => {
     if (!campaign.value?.media?.poster) {
         return loadingIcon
@@ -37,6 +41,7 @@ const banner = computed(() => {
     return campaign.value?.media?.poster
 })
 
+/* Manage summary. */
 const summary = computed(() => {
     return System.summary
 })
@@ -99,10 +104,15 @@ const campaign = ref()
 
 const loadCampaign = async () => {
     campaign.value = await $fetch(`/v1/campaign/${campaignid}`)
-    // console.log('CAMPAIGN (page):', campaign.value)
+    console.log('CAMPAIGN (page):', campaign.value)
 
-    // FIXME FOR DEV PURPOSES ONLY
-    // campaign.value.receiver = 'nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz'
+    /* Validate campaign status. */
+    if (campaign.value?.isActive === true) {
+        isActive.value = true
+    }
+
+    /* Set loading flag. */
+    isLoading.value = false
 }
 
 const loadMarket = async () => {
@@ -117,16 +127,22 @@ const copyToClipboard = () => {
     alert(`${campaign.value?.receiver} has been copied to your clipboard.`)
 }
 
-// const loadWallet = async () => {
-//     const success = await $fetch('/api/wallet', {
-//         method: 'POST',
-//     })
-//     // console.log('SUCCESS', success)
-// }
+onMounted(() => {
+    /* Set flags. */
+    isActive.value = false
+    isLoading.value = true
 
-loadCampaign() // NOTE: This is non-blocking.
-loadMarket() // NOTE: This is non-blocking.
-// loadWallet() // NOTE: This is non-blocking.
+    /* Load campaign. */
+    loadCampaign() // NOTE: This is non-blocking.
+
+    /* Load market data. */
+    loadMarket() // NOTE: This is non-blocking.
+})
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
 </script>
 
 <template>
@@ -232,7 +248,6 @@ loadMarket() // NOTE: This is non-blocking.
                     <CampaignShare />
 
                     <CampaignDisclaimer />
-
                 </div>
 
                 <div class="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-4">

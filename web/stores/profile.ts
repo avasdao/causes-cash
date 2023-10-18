@@ -21,14 +21,6 @@ export const useProfileStore = defineStore('profile', {
         _email: null,
 
         /**
-         * Master Seed
-         *
-         * A 32-byte seed, which can be generated randomly, or by importing
-         * from an existing wallet.
-         */
-        // _masterSeed: null,
-
-        /**
          * Metadata
          *
          * Used to store (user-defined) data for:

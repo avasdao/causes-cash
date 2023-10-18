@@ -115,43 +115,33 @@ const pollForAuth = async () => {
 }
 
 const init = async () => {
-    console.log('AUTH WIN (Profile.session):', Profile.session)
-
-    /* Validate authorization elements. */
-    // NOTE: Reset legacy session details.
-    if (Profile.sessionid && !Profile.challenge) {
-        /* Delete (browser) session. */
-        Profile.deleteSession()
-
-        /* Re-call initialization. */
-        return setTimeout(init, POLLING_FREQUENCY)
-    }
-
-    /* Initialize locals. */
-    let session
-
-    /* Manage session. */
-    session = await $fetch('/api/session', {
-        method: 'POST',
-        body: { sessionid: Profile.sessionid },
-    })
-    console.log('GLOBAL SESSION', session)
-
-    /* Update (client-side) session. */
-    // NOTE: Sanitize client-side session.
-    session = {
-        id: session?._id,
-        ...session,
-    }
-
-    delete session._id
-    delete session._rev
-
-    /* Save session. */
-    Profile.saveSession(session)
-
     /* Validate client. */
     if (process.client) {
+        console.log('AUTH WIN (Profile.session):', Profile.session)
+
+        /* Initialize locals. */
+        let session
+
+        /* Validate authorization elements. */
+        // NOTE: Reset legacy session details.
+        if (Profile.sessionid && !Profile.challenge) {
+            /* Delete (browser) session. */
+            Profile.deleteSession()
+
+            /* Re-call initialization. */
+            return setTimeout(init, POLLING_FREQUENCY)
+        }
+
+        /* Manage session. */
+        session = await $fetch('/api/session', {
+            method: 'POST',
+            body: { sessionid: Profile.sessionid },
+        })
+        console.log('GLOBAL SESSION', session)
+
+        /* Save session. */
+        Profile.saveSession(session)
+
         let chal = Profile.challenge
         // console.log('INIT (chal):', chal)
 
@@ -168,8 +158,10 @@ const init = async () => {
 }
 
 const signout = () => {
+    /* Delete active session. */
     Profile.deleteSession()
 
+    /* Destroy current wallet. */
     Wallet.destroy()
 }
 

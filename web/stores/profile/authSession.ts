@@ -14,11 +14,11 @@ const Profile = useProfileStore()
 
 export default async function () {
     console.log('WALLET', this.wallet)
-
     console.log('ADDRESS', this.address)
     console.log('PUBLIC KEY', this.wallet.publicKey)
     console.log('PROFILE SESSION', Profile.session)
 
+    /* Initialize locals. */
     let messageHash
     let timestamp
     let response

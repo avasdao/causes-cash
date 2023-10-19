@@ -183,7 +183,7 @@ onMounted(() => {
 <template>
     <main v-if="!Wallet.isReady" class="flex flex-col gap-5">
         <p class="px-3 py-2 bg-yellow-100 text-base font-medium border-2 border-yellow-200 rounded-lg shadow-md">
-            Welcome to your Nexa Exchange wallet.
+            Welcome to your Causes Cash wallet.
             Click the button below to create a new wallet and begin trading.
         </p>
 
@@ -194,7 +194,7 @@ onMounted(() => {
         <hr />
 
         <p class="px-3 py-2 bg-yellow-100 text-base font-medium border-2 border-yellow-200 rounded-lg shadow-md">
-            Import your existing wallet into Nexa Exchange.
+            Import your existing wallet into Causes Cash.
         </p>
 
         <textarea

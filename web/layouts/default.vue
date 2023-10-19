@@ -61,9 +61,11 @@ watch([Profile.$state, System.$state, Wallet.$state], (_state) => {
     )
 })
 
-onMounted(() => {
+onMounted(async () => {
     /* Initailize system. */
     System.init()
+
+    await Profile.init()
 
     /* Initialize wallet. */
     Wallet.init()

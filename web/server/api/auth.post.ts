@@ -15,24 +15,24 @@ const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COU
 const profilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/profiles`)
 const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/sessions`)
 
-
-const getProfile = async () => {
-
-}
-
-
-export default defineEventHandler(async (event) => {
+/**
+ * Get Profile
+ *
+ * Retrieves the full profile of the (authorized) public key.
+ */
+const getProfile = async (
+    _sessionid,
+    _publicKey,
+    _signature,
+    _timestamp,
+) => {
     /* Initialize locals. */
-    let addr
-    let body
     let challenge
     let email
-    // let expiresAt
     let logPkg
     let messageHash
     let nickname
     let timestamp
-    let params
     let profile
     let publicKey
     let response
@@ -43,26 +43,16 @@ export default defineEventHandler(async (event) => {
     let success
     let unitSeparator
 
+    sessionid = _sessionid
+    publicKey = hexToBin(_publicKey)
+    signature = hexToBin(_signature)
+    timestamp = _timestamp
+
     // Instantiate the Secp256k1 interface.
     secp256k1 = await instantiateSecp256k1()
 
     /* Set unit separator. */
     unitSeparator = '1f'
-
-    /* Set (request) body. */
-    body = await readBody(event)
-    // console.log('BODY', body)
-
-    /* Validate body. */
-    if (!body) {
-        return `Authorization FAILED!`
-    }
-
-    /* Set profile parameters. */
-    sessionid = body.sessionid
-    publicKey = hexToBin(body.publicKey)
-    signature = hexToBin(body.signature)
-    timestamp = body.timestamp
 
     logPkg = {
         _id: uuidv4(),
@@ -73,12 +63,12 @@ export default defineEventHandler(async (event) => {
         challenge,
         createdAt: moment().unix(),
     }
-    console.log('LOGS PKG', logPkg)
+    // console.log('LOGS PKG', logPkg)
 
     response = await logsDb
         .put(logPkg)
         .catch(err => console.error(err))
-    console.log('RESPONSE', response)
+    // console.log('RESPONSE', response)
 
     /* Validate session Id. */
     if (!sessionid) {
@@ -115,7 +105,7 @@ export default defineEventHandler(async (event) => {
     messageHash = hexToBin(`${timestamp}${unitSeparator}${challenge}`)
 
     success = secp256k1.verifySignatureSchnorr(signature, publicKey, messageHash)
-    console.log('AUTH VERIFICATION SUCCESS', success)
+    // console.log('AUTH VERIFICATION SUCCESS', success)
 
     /* Verify challenge. */
     if (success !== true) {
@@ -125,7 +115,7 @@ export default defineEventHandler(async (event) => {
     /* Add profile (address + signature) to session. */
     session = {
         profileid: binToHex(publicKey),
-        auth: signature,
+        auth: binToHex(signature),
         ...session,
         updatedAt: moment().unix(),
     }
@@ -169,6 +159,7 @@ export default defineEventHandler(async (event) => {
 
     profile = {
         id: profile._id,
+        sessionid,
         ...profile,
     }
 
@@ -177,4 +168,36 @@ export default defineEventHandler(async (event) => {
 
     /* Return profile. */
     return profile
+}
+
+
+export default defineEventHandler(async (event) => {
+    /* Initialize locals. */
+    let body
+    let publicKey
+    let sessionid
+    let signature
+    let timestamp
+
+    /* Set (request) body. */
+    body = await readBody(event)
+
+    /* Validate body. */
+    if (!body) {
+        return `Authorization FAILED!`
+    }
+
+    /* Set profile parameters. */
+    sessionid = body.sessionid
+    publicKey = body.publicKey
+    signature = body.signature
+    timestamp = body.timestamp
+
+    // NOTE: Returns a promise.
+    return getProfile(
+        sessionid,
+        publicKey,
+        signature,
+        timestamp,
+    )
 })

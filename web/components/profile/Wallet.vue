@@ -27,37 +27,35 @@ const isShowingHistory = ref(false)
 const isShowingSwap = ref(false)
 
 const displayBalance = computed(() => {
-    if (!Wallet.coins) {
+    /* Validate asset. */
+    if (!Wallet.asset) {
         return '0.00'
     }
 
-    const satoshis = Wallet.coins.reduce(
-        (totalSatoshis, coin) => (totalSatoshis + coin.satoshis), BigInt(0)
-    )
+    /* Initialize locals. */
+    let balance
 
-    /* Calculate (NEX) total. */
-    const nex = (parseInt(satoshis) / 100.0)
+    /* Set balance. */
+    balance = Wallet.asset?.amount || 0.00
 
-    /* Return formatted value. */
-    return numeral(nex).format('0,0.00')
+    /* Return (formatted) balance. */
+    return numeral(balance).format('0,0[.]00[0000]')
 })
 
 const displayBalanceUsd = computed(() => {
-    if (!Wallet.coins) {
+    /* Validate asset. */
+    if (!Wallet.asset) {
         return '0.00'
     }
 
-    const satoshis = Wallet.coins.reduce(
-        (totalSatoshis, coin) => (totalSatoshis + coin.satoshis), BigInt(0)
-    )
+    /* Initialize locals. */
+    let balanceUsd
 
-    /* Calculate (NEX) total. */
-    const mex = (parseInt(satoshis) / 10**8)
-
-    const mexUsd = mex * System.usd
+    /* Set balance. */
+    balanceUsd = Wallet.asset?.fiat?.USD || 0.00
 
     /* Return formatted value. */
-    return numeral(mexUsd).format('$0,0.00')
+    return numeral(balanceUsd).format('$0,0.00[0000]')
 })
 
 const pendingBalance = computed(() => {
@@ -85,11 +83,6 @@ const tokensBalanceUsd = computed(() => {
     Object.keys(tokens.value).forEach(_tokenid => {
         decimals = 0 // FOR DEV PURPOSES ONLY
         tokenUsd = 0.00 // FOR DEV PURPOSES ONLY
-
-        // if (_tokenid === AVAS) {
-        //     decimals = 8 // FOR DEV PURPOSES ONLY
-        //     tokenUsd = 0.33 // FOR DEV PURPOSES ONLY
-        // }
 
         /* Set total tokens. */
         totalTokens += tokens.value[_tokenid]
@@ -154,21 +147,21 @@ const init = async () => {
     setTab('assets')
 
     /* Validate tokens. */
-    if (Wallet.tokens) {
-        // /* Initialize tokens. */
-        tokens.value = {}
+    // if (Wallet.tokens) {
+    //     // /* Initialize tokens. */
+    //     tokens.value = {}
 
-        // /* Handle tokens. */
-        Wallet.tokens.forEach(_token => {
-            if (!tokens.value[_token.tokenid]) {
-                tokens.value[_token.tokenid] = BigInt(0)
-            }
+    //     // /* Handle tokens. */
+    //     Wallet.tokens.forEach(_token => {
+    //         if (!tokens.value[_token.tokenid]) {
+    //             tokens.value[_token.tokenid] = BigInt(0)
+    //         }
 
-            /* Add tokens to total. */
-            tokens.value[_token.tokenid] += _token.tokens
-        })
-        // console.log('WALLET TOKENS', Wallet.tokens)
-    }
+    //         /* Add tokens to total. */
+    //         tokens.value[_token.tokenid] += _token.tokens
+    //     })
+    //     // console.log('WALLET TOKENS', Wallet.tokens)
+    // }
 }
 
 onMounted(() => {
@@ -181,32 +174,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <main v-if="!Wallet.isReady" class="flex flex-col gap-5">
-        <p class="px-3 py-2 bg-yellow-100 text-base font-medium border-2 border-yellow-200 rounded-lg shadow-md">
-            Welcome to your Causes Cash wallet.
-            Click the button below to create a new wallet and begin your journey.
-        </p>
+    <Loading v-if="Wallet.isLoading" />
 
-        <div @click="Wallet.createWallet" class="cursor-pointer px-3 py-2 text-2xl text-blue-100 font-medium bg-blue-500 border-2 border-blue-700 rounded-lg shadow hover:bg-blue-400">
-            Create New Wallet
-        </div>
-
-        <hr />
-
-        <p class="px-3 py-2 bg-yellow-100 text-base font-medium border-2 border-yellow-200 rounded-lg shadow-md">
-            Import your existing wallet into Causes Cash
-        </p>
-
-        <textarea
-            placeholder="Seed #1 Seed #2 Seed #3 ..."
-            v-model="mnemonic"
-            class="px-3 py-2 border-2 border-amber-500 rounded-lg shadow"
-        />
-
-        <div @click="importWallet" class="cursor-pointer px-3 py-2 text-2xl text-blue-100 font-medium bg-blue-500 border-2 border-blue-700 rounded-lg shadow hover:bg-blue-400">
-            Import Existing Wallet
-        </div>
-    </main>
+    <ProfileWalletSetup v-else-if="!Wallet.isReady" />
 
     <main v-else class="">
         <section @click="setTab('assets')" class="cursor-pointer group px-5 py-3 bg-gradient-to-b from-sky-100 to-sky-50 border-t border-x border-sky-400 rounded-t-lg rounded-x-lg shadow-md hover:bg-sky-100">

@@ -1,10 +1,7 @@
 /* Import modules. */
 import { defineStore } from 'pinia'
 
-import {
-    encodeAddress,
-    listUnspent,
-} from '@nexajs/address'
+import { listUnspent } from '@nexajs/address'
 
 import { sha256 } from '@nexajs/crypto'
 
@@ -17,22 +14,11 @@ import {
 import { getCoins } from '@nexajs/purse'
 
 import {
-    getTip,
     getTokenInfo,
     subscribeAddress,
 } from '@nexajs/rostrum'
 
 import { OP } from '@nexajs/script'
-
-import {
-    getTokens,
-    sendToken,
-} from '@nexajs/token'
-
-import {
-    binToHex,
-    hexToBin,
-} from '@nexajs/utils'
 
 import { Wallet } from '@nexajs/wallet'
 
@@ -65,20 +51,20 @@ const AVAS_TOKENID = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af
 export const useWalletStore = defineStore('wallet', {
     state: () => ({
         /* Currently active asset id. */
-        _assetid: null,
+        // _assetid: null,
 
         /* Directory of (owned) asset details (metadata). */
-        _assets: null,
+        // _assets: null,
 
         /* List of all (value-based) UTXOs. */
-        _coins: null,
+        // _coins: null,
 
         /* Initialize entropy (used for HD wallet). */
         // NOTE: This is a cryptographically-secure "random" 32-byte (256-bit) value. */
         _entropy: null,
 
         /* List of all (token-based) UTXOs. */
-        _tokens: null,
+        // _tokens: null,
 
         /* Wallet object. */
         _wallet: null,
@@ -88,115 +74,60 @@ export const useWalletStore = defineStore('wallet', {
     }),
 
     getters: {
-        /**
-         * Is Ready?
-         *
-         * Flag to indicate when the wallet is ready for use.
-         */
-        isReady(_state) {
-            /* Validate entropy. */
-            if (
-                !this._entropy ||
-                typeof this._entropy !== 'string' ||
-                (this._entropy.length !== 32 && this._entropy.length !== 64)
-            ) {
-                return false
+        /* Return (abbreviated) wallet status. */
+        abbr(_state) {
+            return _state.wallet?.abbr
+        },
+
+        /* Return wallet status. */
+        address(_state) {
+            return _state.wallet?.address
+        },
+
+        /* Return NexaJS wallet instance. */
+        asset(_state) {
+            if (!this.assets) {
+                return null
             }
 
-            /* Wallet is ready. */
-            return true
+            return this.wallet.assets[this.wallet.assetid]
         },
 
-        address(_state) {
-            if (!_state._wallet) return null
+        /* Return wallet status. */
+        assets(_state) {
+            if (!this.wallet) {
+                return null
+            }
 
-            return _state._wallet.address
+            return this.wallet.assets
         },
 
-        abbr(_state) {
-            if (!_state._wallet) return null
+        /* Return wallet status. */
+        isLoading(_state) {
+            if (!this.wallet) {
+                return true
+            }
 
-            // console.log('_state._wallet', _state._wallet)
-
-            return _state._wallet.address.slice(0, 19) + '...' + _state._wallet.address.slice(-6)
+            return this.wallet.isLoading
         },
 
-        mnemonic(_state) {
-            if (!_state._entropy) return null
+        /* Return wallet status. */
+        isReady(_state) {
+            if (this.wallet?._entropy) {
+                return true
+            }
 
-            return entropyToMnemonic(_state._entropy)
+            return this.wallet.isReady
         },
 
-        entropy(_state) {
-            return _state._entropy
-        },
-
+        /* Return NexaJS wallet instance. */
         wallet(_state) {
             return _state._wallet
         },
 
-        // wif(_state) {
-        //     return _state._wif
-        // },
-
-        asset(_state) {
-            if (_state._assetid === null) {
-                /* Return Nexa (static) details. */
-                return {
-                    group: '0',
-                    name: `Nexa`,
-                    ticker: 'NEXA',
-                    iconUrl: '/nexa.svg',
-                    token_id_hex: '0x',
-                    decimal_places: 2,
-                    document_hash: null,
-                    document_url: null,
-                }
-            }
-
-            /* Validate asset details (in directory). */
-            if (!_state._assets[_state._assetid]) {
-                return null
-            }
-
-            /* Return asset details. */
-            return _state._assets[_state._assetid]
+        WalletStatus() {
+            return WalletStatus
         },
-
-        assets(_state) {
-            return _state._assets
-        },
-
-        coins(_state) {
-            return _state._coins
-        },
-
-        tokens(_state) {
-            return _state._tokens
-        },
-
-        balance(_state) {
-            // return _state._balance
-        },
-
-        publicKeyHash(_state) {
-            if (!_state.wallet?.publicKey) {
-                return null
-            }
-
-            const scriptPushPubKey = encodeDataPush(_state.wallet.publicKey)
-
-            return ripemd160.hash(sha256(scriptPushPubKey))
-        },
-
-        wif(_state) {
-            if (!_state.wallet?.privateKey) {
-                return null
-            }
-
-            return encodePrivateKeyWif({ hash: sha256 }, _state.wallet.privateKey, 'mainnet')
-        },
-
     },
 
     actions: {
@@ -212,21 +143,20 @@ export const useWalletStore = defineStore('wallet', {
             console.info('Initializing wallet...')
 
             if (this._entropy === null) {
-                throw new Error('Missing wallet entropy.')
+                this._wallet = 'NEW' // FIXME TEMP NEW WALLET FLAG
+                // throw new Error('Missing wallet entropy.')
+                return console.error('Missing wallet entropy.')
             }
 
-            if (!this.mnemonic) {
-                throw new Error('Missing mnemonic (seed) phrase.')
-            }
+            /* Request a wallet instance (by mnemonic). */
+            this._wallet = await Wallet.init(this._entropy, true)
+            console.log('(Initialized) wallet', this._wallet)
 
-            this._wallet = new Wallet(this.mnemonic)
-            // console.log('RE-CREATED WALLET', this._wallet)
-
-            // FIXME Workaround to solve race condition.
-            setTimeout(this.loadAssets, 100)
+            /* Set (default) asset. */
+            this._wallet.setAsset('0')
 
             /* Authorize session. */
-            setTimeout(_authSession.bind(this), 100)
+            _authSession.bind(this)
         },
 
         createWallet(_entropy) {

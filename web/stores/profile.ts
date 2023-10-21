@@ -66,46 +66,30 @@ export const useProfileStore = defineStore('profile', {
 
     actions: {
         async init() {
-            /* Validate client. */
-            // if (process.client) {
-                console.log('AUTH WIN (this.session):', this.session)
+            console.log('AUTH WIN (this.session):', this.session)
 
-                /* Initialize locals. */
-                let session
+            /* Initialize locals. */
+            let session
 
-                /* Validate authorization elements. */
-                // NOTE: Reset legacy session details.
-                if (this.sessionid && !this.challenge) {
-                    /* Delete (browser) session. */
-                    this.deleteSession()
+            /* Validate authorization elements. */
+            // NOTE: Reset legacy session details.
+            if (this.sessionid && !this.challenge) {
+                /* Delete (browser) session. */
+                this.deleteSession()
 
-                    /* Re-call initialization. */
-                    return setTimeout(this.init, POLLING_FREQUENCY)
-                }
+                /* Re-call initialization. */
+                return setTimeout(this.init, POLLING_FREQUENCY)
+            }
 
-                /* Manage session. */
-                session = await $fetch('/api/session', {
-                    method: 'POST',
-                    body: { sessionid: this.sessionid },
-                })
-                console.log('GLOBAL SESSION', session)
+            /* Manage session. */
+            session = await $fetch('/api/session', {
+                method: 'POST',
+                body: { sessionid: this.sessionid },
+            })
+            console.log('GLOBAL SESSION', session)
 
-                /* Save session. */
-                this.saveSession(session)
-
-                // let chal = this.challenge
-                // console.log('INIT (chal):', chal)
-
-                // let cookie = btoa(this.sessionid)
-                // console.log('INIT (cookie):', cookie)
-
-                /* Set registration link. */
-                // nexidUri.value = encodeURI(`${NEXID_ENDPOINT}?op=reg&chal=${chal}&cookie=${cookie}&hdl=r&email=o&sm=o&realname=o&ava=o`)
-
-                /* Initialize authorization polling. */
-                // FIXME How can we implement WebSockets for more efficiency?
-                // pollingid = setInterval(pollForAuth, POLLING_FREQUENCY)
-            // }
+            /* Save session. */
+            this.saveSession(session)
         },
 
         deleteSession() {

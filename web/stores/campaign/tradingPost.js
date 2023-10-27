@@ -36,13 +36,13 @@ import {
 } from '@nexajs/script'
 
 const PRIVATE_KEY = 'baa017c1c3458fc80c31c7b5a2ce833a3af44d3c172bff3981103d272f9a5a3c' // nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz
-const NEXA_RECEIVING_ADDRESS = 'nexa:nqtsq5g57qupnngwws0rlvsevggu6zxqc0tmk7d3v5ulpfh6'
 const NEXA_DUMP_ADDRESS = 'nexa:nqtsq5g57qupnngwws0rlvsevggu6zxqc0tmk7d3v5ulpfh6'
 const STUDIO_ID = 'nexa:tztnyazksgqpkphrx2m2fgxapllufqmuwp6k07xtlc8k4xcjpqqqq99lxywr8'
 const STUDIO_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
 const SATOSHIS = 1337n
 const TOKENS = 1337n
 
+const ROBIN_HOOD_ADDR = 'nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug'
 const PROVIDER_ADDRESS = 'nexa:nqtsq5g5x7evefxhusyp08wmk6xtu9rqee64uk0uaq28jnlk'
 const PROVIDER_PUB_KEY_HASH = '37b2cca4d7e408179ddbb68cbe1460ce755e59fc'
 const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd517f7c76010087636d00677f7501207f756888030051147c7e51cd8851cc767b9652cd517f7c76010087636d00677f77517f7c76010087636d00677f75816868789d00c7517f7c76010087636d00677f77517f7c76010087636d00677f758168689f6300cd01217f76517f6e7c817f7700c701217f76517f6e7c817f775979557988557978886d6d6d6d6d687b950210279602220278a16353cc78a2690300511452797e53cd7888756855c478a169c4788ca26353cd517f7c76010087636d00677f7501207f756881009d68c49c6354cd517f7c76010087636d00677f7501207f756881009d686d'
@@ -146,6 +146,7 @@ export default async () => {
 
     /* Set provider fee. */
     fee = hexToBin(0x2c01) // 300 (3.00%)
+    console.log('***FEE***', fee)
     // fee = 0x0 // 0 (0.00%) FOR DEV PURPOSES ONLY
 
     /* Build script public key. */
@@ -204,28 +205,27 @@ export default async () => {
     // console.log('HEX DATA', nullData)
 
     receivers = [
-        {
-            data: nullData
-        },
         // {
-        //     address: contractAddress,
-        //     // address: 'nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz',
-        //     tokenid: STUDIO_ID_HEX,
-        //     tokens: 600n,
+        //     data: nullData
         // },
         {
-            address: NEXA_RECEIVING_ADDRESS,
-            satoshis: 600n,
+            address: contractAddress,
+            tokenid: STUDIO_ID_HEX,
+            tokens: BigInt(600),
+        },
+        {
+            address: ROBIN_HOOD_ADDR,
+            satoshis: BigInt(1400),
         },
         {
             address: NEXA_DUMP_ADDRESS,
             tokenid: STUDIO_ID_HEX,
-            tokens: 600n,
+            tokens: BigInt(1400),
         },
-        {
-            address: PROVIDER_ADDRESS,
-            satoshis: 600n,
-        },
+        // {
+        //     address: PROVIDER_ADDRESS,
+        //     satoshis: BigInt(600),
+        // },
     ]
 
     // FIXME: FOR DEV PURPOSES ONLY
@@ -249,7 +249,7 @@ export default async () => {
         if (txResult.error) {
             console.error(txResult.error)
         } else {
-            expect(txResult.result).to.have.length(64)
+            console.info(txResult.result)
         }
     } catch (err) {
         console.error(err)

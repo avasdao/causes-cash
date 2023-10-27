@@ -67,12 +67,20 @@ watch([Profile.$state, System.$state, Wallet.$state], (_state) => {
     // watch additional states here...
 })
 
-onMounted(() => {
+const init = async () => {
     /* Initailize system. */
     System.init()
 
+    /* Initailize system. */
+    await Profile.init()
+
     /* Initialize wallet. */
     Wallet.init()
+}
+
+
+onMounted(() => {
+    init()
 })
 
 // onBeforeUnmount(() => {

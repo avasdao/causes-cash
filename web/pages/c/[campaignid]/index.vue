@@ -17,6 +17,7 @@ const RETRY_DELAY = 500 // 0.5 seconds
 /* Import responsive holders. */
 const isActive = ref(null)
 const isLoading = ref(null)
+const isContract = ref(null)
 
 const description = ref(null)
 const usd = ref(0.0)
@@ -29,6 +30,7 @@ const showReportCards = ref(false)
 const contributors = ref(null)
 const supporters = ref(null)
 
+const isExecuting = ref(false)
 const isPledging = ref(false)
 const hasFeedback = ref(false)
 
@@ -84,6 +86,10 @@ const closePledge = () => {
     isPledging.value = false
 }
 
+const closeContract = () => {
+    isExecuting.value = false
+}
+
 /**
  * Edit Pledge
  *
@@ -93,7 +99,17 @@ const makePledge = async () => {
     /* Set pledging flag. */
     // TODO Set to state.
     isPledging.value = true
-    // document.location = campaign?.receiver
+}
+
+/**
+ * Manage "Wise" Contract
+ *
+ * Open a side panel with options for managing a contract.
+ */
+const manageContract = async () => {
+    /* Set pledging flag. */
+    // TODO Set to state.
+    isExecuting.value = true
 }
 
 const route = useRoute()
@@ -130,6 +146,7 @@ const copyToClipboard = () => {
 onMounted(() => {
     /* Set flags. */
     isActive.value = false
+    isContract.value = true // FOR DEV ONLY
     isLoading.value = true
 
     /* Load campaign. */
@@ -180,7 +197,31 @@ onMounted(() => {
                         :campaign="campaign"
                     />
 
-                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                    <div v-if="isContract" class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                        <button
+                            @click="manageContract"
+                            type="button"
+                            class="sm:col-span-2 w-full bg-sky-600 border border-sky-800 rounded-md py-3 px-3 flex flex-col items-center justify-center text-base font-medium text-indigo-700 shadow hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                        >
+
+                            <h3 class="text-2xl text-sky-50 font-medium">
+                                Open <em>"Wise"</em> Contract Window
+                            </h3>
+
+                            <h3 class="text-sky-200 font-medium">
+                                Primary address for recipient is:
+                            </h3>
+
+                            <span class="sm:hidden text-sm text-sky-50 font-medium truncate">
+                                {{campaign?.receiver?.slice(0, 20)}} ... {{campaign?.receiver?.slice(-15)}}
+                            </span>
+                            <span class="hidden sm:inline text-sm text-sky-50 font-medium truncate">
+                                {{campaign?.receiver}}
+                            </span>
+                        </button>
+                    </div>
+
+                    <div v-else class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                         <button
                             @click="copyToClipboard"
                             type="button"
@@ -218,7 +259,6 @@ onMounted(() => {
                         >
                             Reclaim Pledge
                         </button>
-
                     </div>
 
                     <CampaignMonitor class="hidden" />
@@ -278,6 +318,13 @@ onMounted(() => {
 
         <CampaignPledgeWin
             :isPledging="isPledging"
+            :usd="usd"
+            :campaign="campaign"
+            @close="closePledge"
+        />
+
+        <CampaignContractWin
+            :isExecuting="isExecuting"
             :usd="usd"
             :campaign="campaign"
             @close="closePledge"

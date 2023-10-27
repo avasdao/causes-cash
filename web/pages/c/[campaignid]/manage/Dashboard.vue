@@ -4,62 +4,62 @@ import { ethers } from 'ethers'
 import moment from 'moment'
 
 /* Initialize stores. */
-import { useCampaignsStore } from '@/stores/campaigns'
+import { useCampaignStore } from '@/stores/campaign'
 
-/* Initialize Campaigns. */
-const Campaigns = useCampaignsStore()
+/* Initialize Campaign. */
+const Campaign = useCampaignStore()
 
 const campaignid = computed(() => {
-    if (!Campaigns.campaignid) return null
+    if (!Campaign.campaignid) return null
 
-    return Campaigns.campaignid
+    return Campaign.campaignid
 })
 
 const displayCategory = computed(() => {
-    if (!Campaigns.category) return ''
+    if (!Campaign.category) return ''
 
-    return Campaigns
-        .getCategoryById(Campaigns.category)
+    return Campaign
+        .getCategoryById(Campaign.category)
 })
 
 const displayTitle = computed(() => {
-    if (!Campaigns.title) return ''
+    if (!Campaign.title) return ''
 
-    return Campaigns.title
+    return Campaign.title
 })
 
 const displaySummary = computed(() => {
-    if (!Campaigns.summary) return ''
+    if (!Campaign.summary) return ''
 
-    return Campaigns.summary
+    return Campaign.summary
 })
 
 const displayFundingGoal = computed(() => {
-    if (!Campaigns.fundingGoal) return 0
+    if (!Campaign.fundingGoal) return 0
 
     /* Set funding goal. */
-    const fundingGoal = ethers.BigNumber.from(Campaigns.fundingGoal)
+    const fundingGoal = ethers.BigNumber.from(Campaign.fundingGoal)
     // console.log('FUNDING GOAL', fundingGoal)
 
-    const bchFundingGoal = fundingGoal.div(Campaigns.ONE_SMART_BITCOIN)
+    const bchFundingGoal = fundingGoal.div(Campaign.ONE_SMART_BITCOIN)
 
     return bchFundingGoal + ' BCH'
 })
 
 const displayStarting = computed(() => {
-    if (!Campaigns.starting) return 0
+    if (!Campaign.starting) return 0
 
     /* Set starting time. */
-    const starting = Campaigns.starting
+    const starting = Campaign.starting
 
     return moment.unix(starting).format('LLLL')
 })
 
 const displayExpiration = computed(() => {
-    if (!Campaigns.expiration) return 0
+    if (!Campaign.expiration) return 0
 
     /* Set expiration time. */
-    const expiration = Campaigns.expiration
+    const expiration = Campaign.expiration
 
     return moment.unix(expiration).format('LLLL')
 })
@@ -71,7 +71,7 @@ const displayExpiration = computed(() => {
         <div class="mt-5 bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-2xl leading-6 font-medium text-gray-900">
-                    Campaigns Dashboard
+                    Campaign Dashboard
                 </h3>
 
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">
@@ -83,7 +83,7 @@ const displayExpiration = computed(() => {
                 <dl>
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
-                            Campaigns Title
+                            Campaign Title
                         </dt>
 
                         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">

@@ -41,7 +41,9 @@ const wallet = ref(null)
 const depositAddress = ref(null)
 
 /* Initialize stores. */
+import { useCampaignStore } from '@/stores/campaign'
 import { useProfileStore } from '@/stores/profile'
+const Campaign = useCampaignStore()
 const Profile = useProfileStore()
 
 const numChars = computed(() => {
@@ -262,10 +264,14 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
 
 
 const init = async () => {
-    wallet.value = await Wallet.init({
-        path: `m/44'/29223'/${ACTIVE_ACCOUNT_IDX}'/0/0`,
-        mnemonic: process.env.MNEMONIC,
-    }, false)
+    // wallet.value = await Wallet.init({
+    //     path: `m/44'/29223'/${ACTIVE_ACCOUNT_IDX}'/0/0`,
+    //     mnemonic: process.env.MNEMONIC,
+    // }, false)
+}
+
+const swap = async () => {
+    Campaign.tradingPost('swap me!')
 }
 
 onMounted(() => {
@@ -331,6 +337,10 @@ onMounted(() => {
                                         >
                                     </div>
                                 </section>
+
+                                <button @click="swap" class="bg-rose-200 text-2xl font-medium">
+                                    Swap Asset
+                                </button>
 
                                 <section class="pb-1 sm:pb-6">
                                     <div class="sm:flex-1">

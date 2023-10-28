@@ -145,7 +145,7 @@ export default async () => {
     providerPubKeyHash = hexToBin(PROVIDER_PUB_KEY_HASH)
 
     /* Set provider fee. */
-    fee = hexToBin(0x2c01) // 300 (3.00%)
+    fee = hexToBin('2c01') // 300 (3.00%)
     console.log('***FEE***', fee)
     // fee = 0x0 // 0 (0.00%) FOR DEV PURPOSES ONLY
 
@@ -205,27 +205,27 @@ export default async () => {
     // console.log('HEX DATA', nullData)
 
     receivers = [
+        {
+            data: nullData
+        },
         // {
-        //     data: nullData
+        //     address: contractAddress,
+        //     tokenid: STUDIO_ID_HEX,
+        //     tokens: BigInt(600),
         // },
         {
-            address: contractAddress,
-            tokenid: STUDIO_ID_HEX,
-            tokens: BigInt(600),
-        },
-        {
             address: ROBIN_HOOD_ADDR,
-            satoshis: BigInt(1400),
+            satoshis: BigInt(20000),
         },
         {
             address: NEXA_DUMP_ADDRESS,
             tokenid: STUDIO_ID_HEX,
-            tokens: BigInt(1400),
+            tokens: BigInt(20000),
         },
-        // {
-        //     address: PROVIDER_ADDRESS,
-        //     satoshis: BigInt(600),
-        // },
+        {
+            address: PROVIDER_ADDRESS,
+            satoshis: BigInt(600),
+        },
     ]
 
     // FIXME: FOR DEV PURPOSES ONLY

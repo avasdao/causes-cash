@@ -273,10 +273,30 @@ const init = async () => {
 const swap = async () => {
     /* Initialize locals. */
     let response
+    let txResult
 
-    response = await Campaign.tradingPost(props.campaign)
+    if (!amount.value || amount.value === null) {
+        return alert(`Oops! You MUST enter an amount to continue.`)
+    }
+
+    response = await Campaign
+        .tradingPost(props.campaign, amount.value)
         .catch(err => console.error(err))
     console.log('SWAP RESPONSE', response)
+
+    try {
+        txResult = JSON.parse(response)
+        console.log('TX RESULT', txResult)
+
+        if (txResult.error?.message) {
+            alert(txResult.error.message)
+        } else {
+            alert(txResult.result)
+        }
+    } catch (err) {
+        console.error(err)
+    }
+
 }
 
 onMounted(() => {
@@ -314,16 +334,16 @@ onMounted(() => {
                                 </div>
                             </header>
 
-                            <div class="px-3 py-2">
+                            <div class="px-3 py-2 flex flex-col gap-4">
 
                                 <label for="project-name" class="flex flex-col sm:flex-row sm:items-center">
                                     <span class="text-xl font-medium text-gray-700">
-                                        How much do you want to trade?
+                                        How many $STUDIO do you want?
                                     </span>
                                 </label>
 
-                                <section class="mt">
-                                    <div class="text-sm font-medium text-gray-500 sm:flex-shrink-0">
+                                <section class="">
+                                    <!-- <div class="text-sm font-medium text-gray-500 sm:flex-shrink-0">
                                         Pledge Amount ( in
                                         <span class="font-medium text-sm text-green-300">
                                             <a href="javascript://" @click="setNEXA" :class="{ 'font-bold text-base text-green-500' : currency === 'NEXA'}">NEXA</a>
@@ -331,9 +351,9 @@ onMounted(() => {
                                             <a href="javascript://" @click="setUSD" :class="{ 'font-bold text-base text-green-500' : currency === 'USD' }">USD</a>
                                         </span>
                                         )
-                                    </div>
+                                    </div> -->
 
-                                    <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
+                                    <div class="text-sm text-gray-900 sm:col-span-2">
                                         <input
                                             v-model="amount"
                                             type="number"
@@ -350,7 +370,7 @@ onMounted(() => {
                                     Make Swap
                                 </button>
 
-                                <div class="mt-3 sm:mt-0 flex justify-center">
+                                <!-- <div class="mt-3 sm:mt-0 flex justify-center">
                                     <h2 class="text-2xl font-medium">
                                         - OR - Scan Below
                                     </h2>
@@ -364,7 +384,7 @@ onMounted(() => {
                                         class="my-5 w-64 h-64 border-2 border-yellow-500 rounded-lg"
                                     />
                                 </NuxtLink>
-
+ -->
                             </div>
 
                         </div>

@@ -29,7 +29,7 @@ export const useCampaignStore = defineStore('campaign', {
             return 'My Category'
         },
 
-        async tradingPost(_campaign) {
+        async tradingPost(_campaign, _amount) {
             /* Initialize locals. */
             let response
             let scriptArgs
@@ -38,7 +38,7 @@ export const useCampaignStore = defineStore('campaign', {
             scriptArgs = _campaign.scriptArgs
 
             /* Request trading post (swap). */
-            response = await tradingPost(scriptArgs)
+            response = await tradingPost(scriptArgs, _amount)
                 .catch(err => console.error(err))
             // console.log('RESPONSE', response)
 

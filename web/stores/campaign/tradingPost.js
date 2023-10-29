@@ -49,25 +49,29 @@ const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd51
 const ripemd160 = await instantiateRipemd160()
 const secp256k1 = await instantiateSecp256k1()
 
-export default async (_scriptArgs) => {
+export default async (_scriptArgs, _amount) => {
     console.log('TRADING POST (script args):', _scriptArgs)
+    console.log('TRADING POST (amount):', _amount)
 
     /* Initialize locals.*/
+    let amountBuyer
+    let amountProvider
+    let amountSeller
     let coins
-    let coinsGuest
     let contractAddress
+    let contractChange
     let fee
     let lockingScript
     let nullData
-    let providerPubKeyHash
+    let providerAddress
+    let providerPkh
     let rate
     let receivers
     let response
     let scriptHash
     let scriptPubKey
-    let sellerPubKeyHash
+    let sellerPkh
     let tokens
-    let txResult
     let unspentTokens
     let userData
 
@@ -87,16 +91,8 @@ export default async (_scriptArgs) => {
 
     /* Set Seller public key hash. */
     // nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug (Robin Hood Acct)
-    // sellerPubKeyHash = hexToBin('b2912c4cc61f1b8cbe5c77ebd5eeea2641645f10')
-    sellerPubKeyHash = hexToBin(_scriptArgs?.sellerHash)
-
-    // FIXME Use a "better" method (but good until block 0xFFFFFF).
-    // rate = hexToBin(
-    //     _scriptArgs?.rate
-    //         .toString(16)
-    //         // .padStart(6, '0') // 12-bits
-    // ).reverse()
-    // console.log('*RATE*', binToHex(rate))
+    // sellerPkh = hexToBin('b2912c4cc61f1b8cbe5c77ebd5eeea2641645f10')
+    sellerPkh = hexToBin(_scriptArgs?.sellerHash)
 
     /* Set exchange rate. */
     rate = _scriptArgs?.rate.toString(16)
@@ -106,16 +102,24 @@ export default async (_scriptArgs) => {
     rate = hexToBin(rate).reverse()
     rate = encodeDataPush(rate) // FIXME Add support for OP.ZERO
     console.log('RATE', binToHex(rate))
-    // rate = hexToBin('01') // 1 (1 satoshi per 1 token)        -- nexa:npzsq9x0e0dzeshwa3mkhu62578d6k7qch0mr0qqzjefztzvcc03hr97t3m7h40wagnyzezlzpg3gdajejjd0eqgz7wahd5vhc2xpnn4tevlcq3vqy487l2uxv
-    // rate = hexToBin('0a') // 10 (10 satoshi per 1 token)      -- nexa:npzsq9x0e0dzeshwa3mkhu62578d6k7qch0mr0qqzjefztzvcc03hr97t3m7h40wagnyzezlzpdpgdajejjd0eqgz7wahd5vhc2xpnn4tevlcq3vqys7r4j73h
-    // rate = hexToBin('14') // 20 (20 satoshi per 1 token)      --
-    // rate = hexToBin('1e') // 30 (30 satoshi per 1 token)      --
-    // rate = hexToBin('28') // 40 (40 satoshi per 1 token)      --
-    // rate = hexToBin('32') // 50 (50 satoshi per 1 token)      --
 
     /* Set provider public key hash. */
     // nexa:nqtsq5g5x7evefxhusyp08wmk6xtu9rqee64uk0uaq28jnlk
-    providerPubKeyHash = hexToBin(_scriptArgs?.providerHash)
+    providerPkh = hexToBin(_scriptArgs?.providerHash)
+
+    scriptPubKey = new Uint8Array([
+        OP.ZERO,
+        OP.ONE,
+        ...encodeDataPush(providerPkh),
+    ])
+    // console.info('\n  Script Public Key:', binToHex(scriptPubKey))
+
+    /* Encode the public key hash into a P2PKH nexa address. */
+    providerAddress = encodeAddress(
+        'nexa',
+        'TEMPLATE',
+        scriptPubKey,
+    )
 
     /* Set provider fee. */
     fee = _scriptArgs?.fee.toString(16)
@@ -131,9 +135,9 @@ export default async (_scriptArgs) => {
         OP.ZERO, // groupid or empty stack item
         ...encodeDataPush(scriptHash), // script hash
         OP.ZERO, // arguments hash or empty stack item
-        ...encodeDataPush(sellerPubKeyHash), // The Sellers' public key hash.
+        ...encodeDataPush(sellerPkh), // The Sellers' public key hash.
         ...rate, // The rate of exchange, charged by the Seller. (measured in <satoshis> per asset)
-        ...encodeDataPush(providerPubKeyHash), // An optional 3rd-party (specified by the Seller) used to facilitate the tranaction.
+        ...encodeDataPush(providerPkh), // An optional 3rd-party (specified by the Seller) used to facilitate the tranaction.
         ...fee, // An optional amount charged by the Provider. (measured in <basis points> (bp), eg. 5.25% = 525bp)
     ])
     console.info('\n  Script Public Key:', binToHex(scriptPubKey))
@@ -150,9 +154,9 @@ export default async (_scriptArgs) => {
         .catch(err => console.error(err))
     console.log('\n  Coins:', coins)
 
-    coinsGuest = await getCoins(Wallet.wallet.wif, scriptPubKey)
-        .catch(err => console.error(err))
-    console.log('\n  Coins GUEST:', coinsGuest)
+    // coinsGuest = await getCoins(Wallet.wallet.wif, scriptPubKey)
+    //     .catch(err => console.error(err))
+    // console.log('\n  Coins GUEST:', coinsGuest)
 
     tokens = await getTokens(Wallet.wallet.wif, scriptPubKey)
         .catch(err => console.error(err))
@@ -181,6 +185,18 @@ export default async (_scriptArgs) => {
     nullData = encodeNullData(userData)
     // console.log('HEX DATA', nullData)
 
+    contractChange = unspentTokens - BigInt(_amount)
+    console.log('CONTRACT CHANGE', contractChange)
+
+    amountBuyer = BigInt(_amount)
+    console.log('AMOUNT BUYER', amountBuyer)
+
+    amountSeller = BigInt(_amount) * BigInt(_scriptArgs?.rate)
+    console.log('AMOUNT SELLER', amountSeller)
+
+    amountProvider = (BigInt(_amount) * BigInt(_scriptArgs?.fee)) / BigInt(10000)
+    console.log('AMOUNT PROVIDER', amountProvider)
+
     receivers = [
         // {
         //     data: nullData
@@ -188,22 +204,25 @@ export default async (_scriptArgs) => {
         {
             address: contractAddress,
             tokenid: STUDIO_ID_HEX,
-            tokens: BigInt(800),
+            tokens: BigInt(contractChange),
         },
         {
             address: ROBIN_HOOD_ADDR,
-            satoshis: BigInt(1000),
+            satoshis: BigInt(amountSeller),
         },
         {
             address: Wallet.address,
             tokenid: STUDIO_ID_HEX,
-            tokens: BigInt(100),
+            tokens: BigInt(amountBuyer),
         },
-        // {
-        //     address: PROVIDER_ADDRESS,
-        //     satoshis: BigInt(600),
-        // },
     ]
+
+    if (amountProvider > BigInt(546)) {
+        receivers.push({
+            address: providerAddress,
+            satoshis: BigInt(amountProvider),
+        })
+    }
 
     // FIXME: FOR DEV PURPOSES ONLY
     receivers.push({
@@ -217,18 +236,8 @@ export default async (_scriptArgs) => {
         tokens,
         receivers,
     })
-    console.log('Send UTXO (response):', response)
+    // console.log('Send UTXO (response):', response)
 
-    try {
-        txResult = JSON.parse(response)
-        console.log('TX RESULT', txResult)
-
-        if (txResult.error) {
-            console.error(txResult.error)
-        } else {
-            console.info(txResult.result)
-        }
-    } catch (err) {
-        console.error(err)
-    }
+    /* Return transaction result. */
+    return response
 }

@@ -271,7 +271,12 @@ const init = async () => {
 }
 
 const swap = async () => {
-    Campaign.tradingPost('swap me!')
+    /* Initialize locals. */
+    let response
+
+    response = await Campaign.tradingPost(props.campaign)
+        .catch(err => console.error(err))
+    console.log('SWAP RESPONSE', response)
 }
 
 onMounted(() => {
@@ -313,7 +318,7 @@ onMounted(() => {
 
                                 <label for="project-name" class="flex flex-col sm:flex-row sm:items-center">
                                     <span class="text-xl font-medium text-gray-700">
-                                        What is your Pledge amount?
+                                        How much do you want to trade?
                                     </span>
                                 </label>
 
@@ -338,22 +343,12 @@ onMounted(() => {
                                     </div>
                                 </section>
 
-                                <button @click="swap" class="bg-rose-200 text-2xl font-medium">
-                                    Swap Asset
+                                <button
+                                    @click="swap"
+                                    class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
+                                >
+                                    Make Swap
                                 </button>
-
-                                <section class="pb-1 sm:pb-6">
-                                    <div class="sm:flex-1">
-                                        <div class="mt-5 flex flex-wrap space-y-3 sm:space-y-0 sm:space-x-3">
-
-                                            <NuxtLink :to="depositAddress"
-                                                class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
-                                            >
-                                                Click Here To Open Wallet
-                                            </NuxtLink>
-                                        </div>
-                                    </div>
-                                </section>
 
                                 <div class="mt-3 sm:mt-0 flex justify-center">
                                     <h2 class="text-2xl font-medium">
@@ -370,60 +365,6 @@ onMounted(() => {
                                     />
                                 </NuxtLink>
 
-                                <div class="pt-5 pb-5 sm:px-0 sm:pt-0">
-                                    <div class="space-y-8 px-4 sm:px-6 sm:space-y-6">
-
-                                        <div v-if="numChars" class="flex justify-center px-3 py-1 bg-rose-200 border-2 border-rose-400 rounded-md">
-                                            <h3 class="text-rose-700 text-sm">
-                                                Your pledge message is <span class="text-base font-bold">{{numChars}}</span> characters of {{MAX_MESSAGE_LENGTH}} max
-                                            </h3>
-                                        </div>
-
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-500 sm:flex-shrink-0">
-                                                Display Name (optional)
-                                            </div>
-
-                                            <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                                <input
-                                                    v-model="label"
-                                                    type="text"
-                                                    class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-                                                >
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
-                                                Comment (optional)
-                                            </div>
-
-                                            <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                                <textarea
-                                                    v-model="comment"
-                                                    rows="3"
-                                                    class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
-                                                </textarea>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-500 sm:flex-shrink-0">
-                                                Website / URL (optional)
-                                            </div>
-
-                                            <div class="mt-1 text-sm text-gray-900 sm:col-span-2">
-                                                <input
-                                                    v-model="url"
-                                                    type="text"
-                                                    class="px-3 py-2 bg-yellow-200 border-2 border-yellow-400 w-full shadow-sm text-xl text-yellow-700 font-medium focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
-                                                >
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
                             </div>
 
                         </div>

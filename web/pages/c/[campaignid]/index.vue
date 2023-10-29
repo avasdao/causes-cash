@@ -327,7 +327,7 @@ onMounted(() => {
             :isExecuting="isExecuting"
             :usd="usd"
             :campaign="campaign"
-            @close="closePledge"
+            @close="closeContract"
         />
     </main>
 </template>

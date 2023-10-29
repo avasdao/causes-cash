@@ -35,15 +35,14 @@ import {
     OP,
 } from '@nexajs/script'
 
+/* Initialize stores. */
+import { useWalletStore } from '@/stores/wallet'
+const Wallet = useWalletStore()
+
 const PRIVATE_KEY = 'baa017c1c3458fc80c31c7b5a2ce833a3af44d3c172bff3981103d272f9a5a3c' // nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz
-const NEXA_DUMP_ADDRESS = 'nexa:nqtsq5g57qupnngwws0rlvsevggu6zxqc0tmk7d3v5ulpfh6'
-const STUDIO_ID = 'nexa:tztnyazksgqpkphrx2m2fgxapllufqmuwp6k07xtlc8k4xcjpqqqq99lxywr8'
 const STUDIO_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
-const SATOSHIS = 1337n
-const TOKENS = 1337n
 
 const ROBIN_HOOD_ADDR = 'nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug'
-const PROVIDER_ADDRESS = 'nexa:nqtsq5g5x7evefxhusyp08wmk6xtu9rqee64uk0uaq28jnlk'
 const PROVIDER_PUB_KEY_HASH = '37b2cca4d7e408179ddbb68cbe1460ce755e59fc'
 const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd517f7c76010087636d00677f7501207f756888030051147c7e51cd8851cc767b9652cd517f7c76010087636d00677f77517f7c76010087636d00677f75816868789d00c7517f7c76010087636d00677f77517f7c76010087636d00677f758168689f6300cd01217f76517f6e7c817f7700c701217f76517f6e7c817f775979557988557978886d6d6d6d6d687b950210279602220278a16353cc78a2690300511452797e53cd7888756855c478a169c4788ca26353cd517f7c76010087636d00677f7501207f756881009d68c49c6354cd517f7c76010087636d00677f7501207f756881009d686d'
 
@@ -51,7 +50,10 @@ const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd51
 const ripemd160 = await instantiateRipemd160()
 const secp256k1 = await instantiateSecp256k1()
 
-export default async () => {
+export default async (_scriptArgs) => {
+    console.log('TRADING POST (script args):', _scriptArgs)
+
+    /* Initialize locals.*/
     let coins
     let coinsGuest
     let constraintData
@@ -79,32 +81,8 @@ export default async () => {
     let userData
     let wif
 
-    /* Encode Private Key WIF. */
-    wif = encodePrivateKeyWif({ hash: sha256 }, hexToBin(PRIVATE_KEY), 'mainnet')
-    // console.log('WALLET IMPORT FORMAT', wif)
-
-    /* Derive the corresponding public key. */
-    publicKey = secp256k1.derivePublicKeyCompressed(hexToBin(PRIVATE_KEY))
-
-    /* Hash the public key hash according to the P2PKH/P2PKT scheme. */
-    scriptData = encodeDataPush(publicKey)
-
-    publicKeyHash = ripemd160.hash(sha256(scriptData))
-
-    scriptPubKey = new Uint8Array([
-        OP.ZERO,
-        OP.ONE,
-        ...encodeDataPush(publicKeyHash),
-    ])
-    // console.info('\n  Script Public Key:', binToHex(scriptPubKey))
-
-    /* Encode the public key hash into a P2PKH nexa address. */
-    nexaAddress = encodeAddress(
-        'nexa',
-        'TEMPLATE',
-        scriptPubKey,
-    )
-    console.info('\n  Nexa address:', nexaAddress)
+    console.info('\n  Nexa address:', Wallet.address)
+    console.info('\n  WIF', Wallet.wallet.wif)
 
 //----------------------------------
 
@@ -117,8 +95,10 @@ export default async () => {
     // console.log('SCRIPT HASH:', scriptHash)
     console.log('SCRIPT HASH (hex):', binToHex(scriptHash))
 
+    console.log('Wallet.wallet.privateKey', Wallet.wallet.privateKey)
     /* Derive the corresponding public key. */
-    publicKey = secp256k1.derivePublicKeyCompressed(hexToBin(PRIVATE_KEY))
+    // publicKey = secp256k1.derivePublicKeyCompressed(hexToBin(PRIVATE_KEY))
+    publicKey = secp256k1.derivePublicKeyCompressed(Wallet.wallet.privateKey)
     // console.log('PUBLIC KEY (hex)', binToHex(publicKey))
 
     /* Hash the public key hash according to the P2PKH/P2PKT scheme. */
@@ -133,12 +113,15 @@ export default async () => {
     sellerPubKeyHash = hexToBin('b2912c4cc61f1b8cbe5c77ebd5eeea2641645f10')
 
     /* Set exchange rate. */
-    rate = 0x01 // 1 (1 satoshi per 1 token)
-    // rate = 0x0a // 10 (10 satoshi per 1 token)
-    // rate = 0x14 // 20 (20 satoshi per 1 token)
-    // rate = 0x1e // 30 (30 satoshi per 1 token)
-    // rate = 0x28 // 40 (40 satoshi per 1 token)
-    // rate = 0x32 // 50 (50 satoshi per 1 token)
+    // rate = hexToBin('01') // 1 (1 satoshi per 1 token)        -- nexa:npzsq9x0e0dzeshwa3mkhu62578d6k7qch0mr0qqzjefztzvcc03hr97t3m7h40wagnyzezlzpg3gdajejjd0eqgz7wahd5vhc2xpnn4tevlcq3vqy487l2uxv
+    rate = hexToBin('0a') // 10 (10 satoshi per 1 token)      -- nexa:npzsq9x0e0dzeshwa3mkhu62578d6k7qch0mr0qqzjefztzvcc03hr97t3m7h40wagnyzezlzpdpgdajejjd0eqgz7wahd5vhc2xpnn4tevlcq3vqys7r4j73h
+    // rate = hexToBin('14') // 20 (20 satoshi per 1 token)      --
+    // rate = hexToBin('1e') // 30 (30 satoshi per 1 token)      --
+    // rate = hexToBin('28') // 40 (40 satoshi per 1 token)      --
+    // rate = hexToBin('32') // 50 (50 satoshi per 1 token)      --
+
+    rate = encodeDataPush(rate) // FIXME Add support for OP.ZERO
+    console.log('***RATE***', binToHex(rate))
 
     /* Set provider public key hash. */
     // nexa:nqtsq5g5x7evefxhusyp08wmk6xtu9rqee64uk0uaq28jnlk
@@ -146,8 +129,10 @@ export default async () => {
 
     /* Set provider fee. */
     fee = hexToBin('2c01') // 300 (3.00%)
-    console.log('***FEE***', fee)
-    // fee = 0x0 // 0 (0.00%) FOR DEV PURPOSES ONLY
+    // fee = hexToBin('00') // 0 (0.00%) FOR DEV PURPOSES ONLY
+
+    fee = encodeDataPush(fee) // FIXME Add support for OP.ZERO
+    console.log('***FEE***', binToHex(fee))
 
     /* Build script public key. */
     scriptPubKey = new Uint8Array([
@@ -155,9 +140,9 @@ export default async () => {
         ...encodeDataPush(scriptHash), // script hash
         OP.ZERO, // arguments hash or empty stack item
         ...encodeDataPush(sellerPubKeyHash), // The Sellers' public key hash.
-        OP.ONE, // The rate of exchange, charged by the Seller. (measured in <satoshis> per asset)
+        ...rate, // The rate of exchange, charged by the Seller. (measured in <satoshis> per asset)
         ...encodeDataPush(providerPubKeyHash), // An optional 3rd-party (specified by the Seller) used to facilitate the tranaction.
-        ...encodeDataPush(fee), // An optional amount charged by the Provider. (measured in <basis points> (bp), eg. 5.25% = 525bp)
+        ...fee, // An optional amount charged by the Provider. (measured in <basis points> (bp), eg. 5.25% = 525bp)
     ])
     console.info('\n  Script Public Key:', binToHex(scriptPubKey))
 
@@ -169,15 +154,15 @@ export default async () => {
     )
     console.info('\n  Contract address:', contractAddress)
 
-    coins = await getCoins(wif)
+    coins = await getCoins(Wallet.wallet.wif)
         .catch(err => console.error(err))
     console.log('\n  Coins:', coins)
 
-    coinsGuest = await getCoins(wif, scriptPubKey)
+    coinsGuest = await getCoins(Wallet.wallet.wif, scriptPubKey)
         .catch(err => console.error(err))
     console.log('\n  Coins GUEST:', coinsGuest)
 
-    tokens = await getTokens(wif, scriptPubKey)
+    tokens = await getTokens(Wallet.wallet.wif, scriptPubKey)
         .catch(err => console.error(err))
 
     // FOR DEV PURPOSES ONLY -- take the LARGEST input
@@ -205,32 +190,32 @@ export default async () => {
     // console.log('HEX DATA', nullData)
 
     receivers = [
-        {
-            data: nullData
-        },
         // {
-        //     address: contractAddress,
-        //     tokenid: STUDIO_ID_HEX,
-        //     tokens: BigInt(600),
+        //     data: nullData
         // },
         {
-            address: ROBIN_HOOD_ADDR,
-            satoshis: BigInt(20000),
-        },
-        {
-            address: NEXA_DUMP_ADDRESS,
+            address: contractAddress,
             tokenid: STUDIO_ID_HEX,
-            tokens: BigInt(20000),
+            tokens: BigInt(800),
         },
         {
-            address: PROVIDER_ADDRESS,
-            satoshis: BigInt(600),
+            address: ROBIN_HOOD_ADDR,
+            satoshis: BigInt(1000),
         },
+        {
+            address: Wallet.address,
+            tokenid: STUDIO_ID_HEX,
+            tokens: BigInt(100),
+        },
+        // {
+        //     address: PROVIDER_ADDRESS,
+        //     satoshis: BigInt(600),
+        // },
     ]
 
     // FIXME: FOR DEV PURPOSES ONLY
     receivers.push({
-        address: nexaAddress,
+        address: Wallet.address,
     })
     console.log('\n  Receivers:', receivers)
 

@@ -45,9 +45,14 @@ const ROBIN_HOOD_ADDR = 'nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug'
 // const PROVIDER_PUB_KEY_HASH = '37b2cca4d7e408179ddbb68cbe1460ce755e59fc'
 const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd517f7c76010087636d00677f7501207f756888030051147c7e51cd8851cc767b9652cd517f7c76010087636d00677f77517f7c76010087636d00677f75816868789d00c7517f7c76010087636d00677f77517f7c76010087636d00677f758168689f6300cd01217f76517f6e7c817f7700c701217f76517f6e7c817f775979557988557978886d6d6d6d6d687b950210279602220278a16353cc78a2690300511452797e53cd7888756855c478a169c4788ca26353cd517f7c76010087636d00677f7501207f756881009d68c49c6354cd517f7c76010087636d00677f7501207f756881009d686d'
 
-/* Instantiate Libauth crypto interfaces. */
-const ripemd160 = await instantiateRipemd160()
-const secp256k1 = await instantiateSecp256k1()
+let ripemd160
+let secp256k1
+
+;(async () => {
+    /* Instantiate Libauth crypto interfaces. */
+    ripemd160 = await instantiateRipemd160()
+    secp256k1 = await instantiateSecp256k1()
+})()
 
 export default async (_scriptArgs, _amount) => {
     console.log('TRADING POST (script args):', _scriptArgs)

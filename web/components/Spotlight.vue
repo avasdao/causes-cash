@@ -12,6 +12,12 @@ const loadCampaigns = async () => {
     /* Initialize spotlight campaign ids. */
     const spotlights = [
         '9b269bb0-bccf-4990-ac6b-a1ae69371754',
+        '3cf3685a-d9dd-4a6b-bde2-07407455ebc6',
+        'a94dfb40-97c6-406b-8b8f-63996ab60118',
+        'bb8c71e1-32d1-471a-9ce4-aabbd0592d9d',
+        '1c820698-5ad4-4fe6-a3dd-029d99cbc9ca',
+        'e90c7ade-8715-41b9-8e9b-8b365c6e165b',
+
         'f900d1b8-1ae0-4e18-8a2f-212631b62562',
         'b4240af8-a027-4f8a-9088-2ae97c53cf63',
         // 'b8fac25d-e619-4ddf-b474-af084e8250ce',

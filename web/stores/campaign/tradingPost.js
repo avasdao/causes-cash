@@ -10,7 +10,12 @@ import { encodePrivateKeyWif } from '@nexajs/hdnode'
 /* Import library modules. */
 import { getCoins } from '@nexajs/purse'
 
-import { getTip } from '@nexajs/rostrum'
+/* Import (individual) modules. */
+import {
+    encodeDataPush,
+    encodeNullData,
+    OP,
+} from '@nexajs/script'
 
 import {
     getTokens,
@@ -20,6 +25,7 @@ import {
 import {
     binToHex,
     hexToBin,
+    reverseHex,
 } from '@nexajs/utils'
 
 /* Libauth helpers. */
@@ -27,13 +33,6 @@ import {
     instantiateRipemd160,
     instantiateSecp256k1,
 } from '@bitauth/libauth'
-
-/* Import (individual) modules. */
-import {
-    encodeDataPush,
-    encodeNullData,
-    OP,
-} from '@nexajs/script'
 
 /* Initialize stores. */
 import { useWalletStore } from '@/stores/wallet'
@@ -43,7 +42,7 @@ const PRIVATE_KEY = 'baa017c1c3458fc80c31c7b5a2ce833a3af44d3c172bff3981103d272f9
 const STUDIO_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
 
 const ROBIN_HOOD_ADDR = 'nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug'
-const PROVIDER_PUB_KEY_HASH = '37b2cca4d7e408179ddbb68cbe1460ce755e59fc'
+// const PROVIDER_PUB_KEY_HASH = '37b2cca4d7e408179ddbb68cbe1460ce755e59fc'
 const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd517f7c76010087636d00677f7501207f756888030051147c7e51cd8851cc767b9652cd517f7c76010087636d00677f77517f7c76010087636d00677f75816868789d00c7517f7c76010087636d00677f77517f7c76010087636d00677f758168689f6300cd01217f76517f6e7c817f7700c701217f76517f6e7c817f775979557988557978886d6d6d6d6d687b950210279602220278a16353cc78a2690300511452797e53cd7888756855c478a169c4788ca26353cd517f7c76010087636d00677f7501207f756881009d68c49c6354cd517f7c76010087636d00677f7501207f756881009d686d'
 
 /* Instantiate Libauth crypto interfaces. */
@@ -56,30 +55,21 @@ export default async (_scriptArgs) => {
     /* Initialize locals.*/
     let coins
     let coinsGuest
-    let constraintData
-    let constraintHash
     let contractAddress
     let fee
     let lockingScript
-    let nexaAddress
     let nullData
     let providerPubKeyHash
-    let publicKey
-    let publicKeyHash
     let rate
     let receivers
     let response
-    let scriptData
     let scriptHash
     let scriptPubKey
     let sellerPubKeyHash
     let tokens
-    let tokensGuest
     let txResult
-    let unlockingScript
     let unspentTokens
     let userData
-    let wif
 
     console.info('\n  Nexa address:', Wallet.address)
     console.info('\n  WIF', Wallet.wallet.wif)
@@ -89,50 +79,52 @@ export default async (_scriptArgs) => {
     // NOTE: NexScript v0.1.0 offers a less-than optimized version
     //       of this (script) contract (w/ the addition of `OP_SWAP`).
     lockingScript = hexToBin(TRADING_POST_HEX)
-    console.info('\n  Script / Contract:', binToHex(lockingScript))
+    // console.info('\n  Script / Contract:', binToHex(lockingScript))
 
     scriptHash = ripemd160.hash(sha256(lockingScript))
     // console.log('SCRIPT HASH:', scriptHash)
-    console.log('SCRIPT HASH (hex):', binToHex(scriptHash))
-
-    console.log('Wallet.wallet.privateKey', Wallet.wallet.privateKey)
-    /* Derive the corresponding public key. */
-    // publicKey = secp256k1.derivePublicKeyCompressed(hexToBin(PRIVATE_KEY))
-    publicKey = secp256k1.derivePublicKeyCompressed(Wallet.wallet.privateKey)
-    // console.log('PUBLIC KEY (hex)', binToHex(publicKey))
-
-    /* Hash the public key hash according to the P2PKH/P2PKT scheme. */
-    constraintData = encodeDataPush(publicKey)
-    // console.log('\n  Arguments Data:', constraintData)
-
-    constraintHash = ripemd160.hash(sha256(constraintData))
-    console.log('CONSTRAINT HASH (hex):', binToHex(constraintHash))
+    // console.log('SCRIPT HASH (hex):', binToHex(scriptHash))
 
     /* Set Seller public key hash. */
     // nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug (Robin Hood Acct)
-    sellerPubKeyHash = hexToBin('b2912c4cc61f1b8cbe5c77ebd5eeea2641645f10')
+    // sellerPubKeyHash = hexToBin('b2912c4cc61f1b8cbe5c77ebd5eeea2641645f10')
+    sellerPubKeyHash = hexToBin(_scriptArgs?.sellerHash)
+
+    // FIXME Use a "better" method (but good until block 0xFFFFFF).
+    // rate = hexToBin(
+    //     _scriptArgs?.rate
+    //         .toString(16)
+    //         // .padStart(6, '0') // 12-bits
+    // ).reverse()
+    // console.log('*RATE*', binToHex(rate))
 
     /* Set exchange rate. */
+    rate = _scriptArgs?.rate.toString(16)
+    if (rate.length % 2 === 1) {
+        rate = '0' + rate
+    }
+    rate = hexToBin(rate).reverse()
+    rate = encodeDataPush(rate) // FIXME Add support for OP.ZERO
+    console.log('RATE', binToHex(rate))
     // rate = hexToBin('01') // 1 (1 satoshi per 1 token)        -- nexa:npzsq9x0e0dzeshwa3mkhu62578d6k7qch0mr0qqzjefztzvcc03hr97t3m7h40wagnyzezlzpg3gdajejjd0eqgz7wahd5vhc2xpnn4tevlcq3vqy487l2uxv
-    rate = hexToBin('0a') // 10 (10 satoshi per 1 token)      -- nexa:npzsq9x0e0dzeshwa3mkhu62578d6k7qch0mr0qqzjefztzvcc03hr97t3m7h40wagnyzezlzpdpgdajejjd0eqgz7wahd5vhc2xpnn4tevlcq3vqys7r4j73h
+    // rate = hexToBin('0a') // 10 (10 satoshi per 1 token)      -- nexa:npzsq9x0e0dzeshwa3mkhu62578d6k7qch0mr0qqzjefztzvcc03hr97t3m7h40wagnyzezlzpdpgdajejjd0eqgz7wahd5vhc2xpnn4tevlcq3vqys7r4j73h
     // rate = hexToBin('14') // 20 (20 satoshi per 1 token)      --
     // rate = hexToBin('1e') // 30 (30 satoshi per 1 token)      --
     // rate = hexToBin('28') // 40 (40 satoshi per 1 token)      --
     // rate = hexToBin('32') // 50 (50 satoshi per 1 token)      --
 
-    rate = encodeDataPush(rate) // FIXME Add support for OP.ZERO
-    console.log('***RATE***', binToHex(rate))
-
     /* Set provider public key hash. */
     // nexa:nqtsq5g5x7evefxhusyp08wmk6xtu9rqee64uk0uaq28jnlk
-    providerPubKeyHash = hexToBin(PROVIDER_PUB_KEY_HASH)
+    providerPubKeyHash = hexToBin(_scriptArgs?.providerHash)
 
     /* Set provider fee. */
-    fee = hexToBin('2c01') // 300 (3.00%)
-    // fee = hexToBin('00') // 0 (0.00%) FOR DEV PURPOSES ONLY
-
+    fee = _scriptArgs?.fee.toString(16)
+    if (fee.length % 2 === 1) {
+        fee = '0' + fee
+    }
+    fee = hexToBin(fee).reverse()
     fee = encodeDataPush(fee) // FIXME Add support for OP.ZERO
-    console.log('***FEE***', binToHex(fee))
+    console.log('FEE', binToHex(fee))
 
     /* Build script public key. */
     scriptPubKey = new Uint8Array([

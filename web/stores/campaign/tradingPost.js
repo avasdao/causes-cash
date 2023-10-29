@@ -38,10 +38,10 @@ import {
 import { useWalletStore } from '@/stores/wallet'
 const Wallet = useWalletStore()
 
-const PRIVATE_KEY = 'baa017c1c3458fc80c31c7b5a2ce833a3af44d3c172bff3981103d272f9a5a3c' // nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz
+// const PRIVATE_KEY = 'baa017c1c3458fc80c31c7b5a2ce833a3af44d3c172bff3981103d272f9a5a3c' // nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz
 const STUDIO_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
 
-const ROBIN_HOOD_ADDR = 'nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug'
+// const ROBIN_HOOD_ADDR = 'nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug'
 // const PROVIDER_PUB_KEY_HASH = '37b2cca4d7e408179ddbb68cbe1460ce755e59fc'
 const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd517f7c76010087636d00677f7501207f756888030051147c7e51cd8851cc767b9652cd517f7c76010087636d00677f77517f7c76010087636d00677f75816868789d00c7517f7c76010087636d00677f77517f7c76010087636d00677f758168689f6300cd01217f76517f6e7c817f7700c701217f76517f6e7c817f775979557988557978886d6d6d6d6d687b950210279602220278a16353cc78a2690300511452797e53cd7888756855c478a169c4788ca26353cd517f7c76010087636d00677f7501207f756881009d68c49c6354cd517f7c76010087636d00677f7501207f756881009d686d'
 
@@ -75,6 +75,7 @@ export default async (_scriptArgs, _amount) => {
     let response
     let scriptHash
     let scriptPubKey
+    let sellerAddress
     let sellerPkh
     let tokens
     let unspentTokens
@@ -98,6 +99,20 @@ export default async (_scriptArgs, _amount) => {
     // nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug (Robin Hood Acct)
     // sellerPkh = hexToBin('b2912c4cc61f1b8cbe5c77ebd5eeea2641645f10')
     sellerPkh = hexToBin(_scriptArgs?.sellerHash)
+
+    scriptPubKey = new Uint8Array([
+        OP.ZERO,
+        OP.ONE,
+        ...encodeDataPush(sellerPkh),
+    ])
+    // console.info('\n  Script Public Key:', binToHex(scriptPubKey))
+
+    /* Encode the public key hash into a P2PKH nexa address. */
+    sellerAddress = encodeAddress(
+        'nexa',
+        'TEMPLATE',
+        scriptPubKey,
+    )
 
     /* Set exchange rate. */
     rate = _scriptArgs?.rate.toString(16)
@@ -202,25 +217,33 @@ export default async (_scriptArgs, _amount) => {
     amountProvider = (BigInt(_amount) * BigInt(_scriptArgs?.fee)) / BigInt(10000)
     console.log('AMOUNT PROVIDER', amountProvider)
 
-    receivers = [
-        // {
-        //     data: nullData
-        // },
-        {
+    receivers = []
+
+    /* Validate (contract) change. */
+    if (contractChange === BigInt(0)) {
+        /* Add (Buyout) null data. */
+        receivers.push({
+            data: nullData
+        })
+    } else {
+        /* Add contract change. */
+        receivers.push({
             address: contractAddress,
             tokenid: STUDIO_ID_HEX,
             tokens: BigInt(contractChange),
-        },
-        {
-            address: ROBIN_HOOD_ADDR,
-            satoshis: BigInt(amountSeller),
-        },
-        {
-            address: Wallet.address,
-            tokenid: STUDIO_ID_HEX,
-            tokens: BigInt(amountBuyer),
-        },
-    ]
+        })
+    }
+
+    receivers.push({
+        address: sellerAddress,
+        satoshis: BigInt(amountSeller),
+    })
+
+    receivers.push({
+        address: Wallet.address,
+        tokenid: STUDIO_ID_HEX,
+        tokens: BigInt(amountBuyer),
+    })
 
     if (amountProvider > BigInt(546)) {
         receivers.push({

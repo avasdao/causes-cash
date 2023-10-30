@@ -181,7 +181,7 @@
                         </textarea>
                     </div>
 
-                    <div class="sm:col-span-2">
+                    <div class="hidden sm:col-span-2">
                         <dt class="text-lg font-medium text-gray-500">
                             My Links <span class="text-sm">( up to 10 )</span>
                         </dt>

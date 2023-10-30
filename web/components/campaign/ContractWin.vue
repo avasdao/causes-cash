@@ -431,12 +431,12 @@ onMounted(() => {
                                     </div>
                                 </section>
 
-                                <section v-if="error" class="my-10">
-                                    <div>
-                                        <h2>Transaction failed!</h2>
+                                <section v-if="error" class="flex flex-col gap-4 my-10">
+                                    <p>{{error}}</p>
 
-                                        <pre>{{JSON.stringify(error, null, 2)}}</pre>
-                                    </div>
+                                    <NuxtLink to="/profile" class="px-3 py-2 bg-sky-200 border-2 border-sky-400 rounded-lg shadow hover:bg-sky-300">
+                                        Open Causes Wallet
+                                    </NuxtLink>
                                 </section>
 
                                 <!-- <div class="mt-3 sm:mt-0 flex justify-center">

@@ -305,9 +305,9 @@ onMounted(() => {
 
             <CampaignPolicy class="hidden" />
 
-            <CampaignRelated />
+            <!-- <CampaignRelated /> -->
 
-            <CTA class="mt-20 rounded-3xl overflow-hidden" />
+            <!-- <CTA class="mt-20 rounded-3xl overflow-hidden" /> -->
 
         </section>
 

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 /* Import modules. */
+import numeral from 'numeral'
+
 import { decodeAddress } from '@nexajs/address'
 
 import {
@@ -8,10 +10,13 @@ import {
     getTransaction,
 } from '@nexajs/rostrum'
 
-import { binToHex } from '@nexajs/utils'
+import {
+    binToHex,
+    hexToBin,
+} from '@nexajs/utils'
 
-import moment from 'moment'
-import numeral from 'numeral'
+import { getTokens } from '@nexajs/token'
+
 
 const props = defineProps({
     campaign: Object,
@@ -19,12 +24,15 @@ const props = defineProps({
     usd: Number,
 })
 
+import { useWalletStore } from '@/stores/wallet'
+const Wallet = useWalletStore()
+
 const campaignPledged = ref(0)
 const campaignGoals = ref(null)
 const campaignGoalIdx = ref(null)
 const expiration = ref(0)
 
-
+const availAssets = ref(null)
 
 
 watch(() => props.campaign, async (_campaign) => {
@@ -84,10 +92,64 @@ watch(() => props.campaign, async (_campaign) => {
         campaignPledged.value = balance.confirmed || balance
     }
 })
+
+/* Monitor (user-defined) amount. */
+watch(() => Wallet.address, async (_address) => {
+    console.log('CAMPAIGN ADDRESS HAS CHANGED', _address)
+
+    console.log('INIT', props.campaign)
+
+    let scriptPubKey
+    let tokens
+    let unspentTokens
+
+    scriptPubKey = hexToBin(props.campaign?.scriptPubKey)
+console.log('WALLET', Wallet.wallet)
+console.log('PK', Wallet.wallet.privateKey)
+console.log('WIF', Wallet.wallet.wif)
+    tokens = await getTokens(Wallet.wallet.wif, scriptPubKey)
+        .catch(err => console.error(err))
+
+    // FOR DEV PURPOSES ONLY -- take the LARGEST input
+    tokens = [tokens.sort((a, b) => Number(b.tokens) - Number(a.tokens))[0]]
+    // FOR DEV PURPOSES ONLY -- add scripts
+    console.log('\n  Tokens GUEST:', tokens)
+
+    /* Calculate the total balance of the unspent outputs. */
+    // FIXME: Add support for BigInt.
+    unspentTokens = tokens
+        .reduce(
+            (totalValue, unspentOutput) => (totalValue + unspentOutput.tokens), BigInt(0)
+        )
+    console.log('UNSPENT TOKENS', unspentTokens)
+
+    availAssets.value = numeral(unspentTokens).format('0,0')
+
+})
 </script>
 
 <template>
-    <main class="mt-5">
+    <main v-if="props.campaign?.scriptHash" class="mt-5">
+        <h4 class="sr-only">Status</h4>
+        <p class="text-3xl text-center font-medium text-gray-700">
+            {{availAssets}} $STUDIO remaining
+        </p>
+
+        <div class="mt-6" aria-hidden="true">
+            <div class="bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-2 bg-green-600 rounded-full" :style="{ width: pctCompleted + '%' }"></div>
+            </div>
+
+            <div class="text-sm text-center font-medium text-gray-600 mt-1 pl-5">
+                <div class="text-green-600">
+                    <span class="text-xl">{{pctCompleted}}</span> complete with <span class="text-xl">{{expirationDisplay}}</span> to go
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <main v-else class="mt-5">
         <h4 class="sr-only">Status</h4>
 
         <p class="text-3xl text-center font-medium text-gray-700">

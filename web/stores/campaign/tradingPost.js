@@ -214,7 +214,7 @@ export default async (_scriptArgs, _amount) => {
     amountSeller = BigInt(_amount) * BigInt(_scriptArgs?.rate)
     console.log('AMOUNT SELLER', amountSeller)
 
-    amountProvider = (BigInt(_amount) * BigInt(_scriptArgs?.fee)) / BigInt(10000)
+    amountProvider = (amountSeller * BigInt(_scriptArgs?.fee)) / BigInt(10000)
     console.log('AMOUNT PROVIDER', amountProvider)
 
     receivers = []

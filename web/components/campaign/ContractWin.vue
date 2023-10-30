@@ -42,7 +42,8 @@ const pledgeUrl = ref(null)
 const wallet = ref(null)
 const depositAddress = ref(null)
 
-const confirmation = ref(null)
+const error = ref(null)
+const txidem = ref(null)
 
 /* Initialize stores. */
 import { useCampaignStore } from '@/stores/campaign'
@@ -294,10 +295,10 @@ const swap = async () => {
 
         if (txResult.error?.message) {
             // alert(txResult.error.message)
-            confirmation.value = txResult.error.message
+            error.value = txResult.error.message
         } else {
             // alert(txResult.result)
-            confirmation.value = txResult.result
+            txidem.value = txResult.result
         }
     } catch (err) {
         console.error(err)
@@ -380,13 +381,23 @@ onMounted(() => {
                                     <h3>{{amountNex}} NEXA</h3>
                                 </div>
 
-                                <div v-if="confirmation" class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
-                                    <NuxtLink v-if="confirmation.length === 64" :to="'https://explorer.nexa.org/tx/' + confirmation" target="_blank">
-                                        {{confirmation}}
-                                    </NuxtLink>
+                                <section v-if="txidem" class="my-10">
+                                    <div>
+                                        <h3 class="text-sm text-gray-500 font-medium">Swap complted successfully!</h3>
 
-                                    <h3 v-else>{{confirmation}}</h3>
-                                </div>
+                                        <NuxtLink :to="'https://explorer.nexa.org/tx/' + txidem" target="_blank" class="text-blue-500 font-medium hover:underline">
+                                            Click here to OPEN transaction details
+                                        </NuxtLink>
+                                    </div>
+                                </section>
+
+                                <section v-if="error" class="my-10">
+                                    <div>
+                                        <h2>Transaction failed!</h2>
+
+                                        <pre>{{JSON.stringify(error, null, 2)}}</pre>
+                                    </div>
+                                </section>
 
                                 <!-- <div class="mt-3 sm:mt-0 flex justify-center">
                                     <h2 class="text-2xl font-medium">

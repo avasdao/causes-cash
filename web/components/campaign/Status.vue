@@ -7,6 +7,7 @@ import { decodeAddress } from '@nexajs/address'
 import {
     getAddressBalance,
     getAddressHistory,
+    getAddressTokenBalance,
     getTransaction,
 } from '@nexajs/rostrum'
 
@@ -34,6 +35,8 @@ const expiration = ref(0)
 
 const availAssets = ref(null)
 
+const STUDIO_TOKENID = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
+
 
 watch(() => props.campaign, async (_campaign) => {
     // console.log('CAMPAIGN HAS CHANGED', _campaign)
@@ -43,6 +46,19 @@ watch(() => props.campaign, async (_campaign) => {
 
     /* Set expiration. */
     expiration.value = _campaign.expiresAt
+
+    if (_campaign?.scriptHash) {
+        /* Request token info. */
+        const result = await getAddressTokenBalance(_campaign?.address)
+        console.log('TOKEN (address) BALANCE', result)
+
+        const balance = result?.confirmed[STUDIO_TOKENID]
+        console.log('BALANCE', balance)
+
+        availAssets.value = numeral(balance).format('0,0')
+
+        return
+    }
 
     if (_campaign.goals?.length > 1) {
         const decoded = decodeAddress(_campaign.receiver)
@@ -93,39 +109,16 @@ watch(() => props.campaign, async (_campaign) => {
     }
 })
 
-/* Monitor (user-defined) amount. */
-watch(() => Wallet.address, async (_address) => {
-    console.log('CAMPAIGN ADDRESS HAS CHANGED', _address)
 
-    console.log('INIT', props.campaign)
-
-    let scriptPubKey
-    let tokens
-    let unspentTokens
-
-    scriptPubKey = hexToBin(props.campaign?.scriptPubKey)
-console.log('WALLET', Wallet.wallet)
-console.log('PK', Wallet.wallet.privateKey)
-console.log('WIF', Wallet.wallet.wif)
-    tokens = await getTokens(Wallet.wallet.wif, scriptPubKey)
-        .catch(err => console.error(err))
-
-    // FOR DEV PURPOSES ONLY -- take the LARGEST input
-    tokens = [tokens.sort((a, b) => Number(b.tokens) - Number(a.tokens))[0]]
-    // FOR DEV PURPOSES ONLY -- add scripts
-    console.log('\n  Tokens GUEST:', tokens)
-
-    /* Calculate the total balance of the unspent outputs. */
-    // FIXME: Add support for BigInt.
-    unspentTokens = tokens
-        .reduce(
-            (totalValue, unspentOutput) => (totalValue + unspentOutput.tokens), BigInt(0)
-        )
-    console.log('UNSPENT TOKENS', unspentTokens)
-
-    availAssets.value = numeral(unspentTokens).format('0,0')
-
+onMounted(() => {
+    // init()
 })
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
+
 </script>
 
 <template>

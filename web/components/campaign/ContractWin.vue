@@ -10,7 +10,10 @@ import { encodePrivateKeyWif } from '@nexajs/hdnode'
 
 import { sendCoin } from '@nexajs/purse'
 
-import { subscribeAddress } from '@nexajs/rostrum'
+import {
+    getAddressTokenBalance,
+    subscribeAddress,
+} from '@nexajs/rostrum'
 
 import { getTokens } from '@nexajs/token'
 
@@ -26,6 +29,8 @@ const props = defineProps({
     campaign: Object,
     usd: Number,
 })
+
+const STUDIO_TOKENID = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
 
 const MAX_MESSAGE_LENGTH = 220
 const DUST_LIMIT = 546
@@ -235,6 +240,17 @@ watch(() => props.isExecuting, async (_status) => {
     }
 })
 
+watch(() => props.campaign, async (_campaign) => {
+    /* Request token info. */
+    const result = await getAddressTokenBalance(_campaign?.address)
+    console.log('TOKEN (address) BALANCE', result)
+
+    const balance = result?.confirmed[STUDIO_TOKENID]
+    console.log('BALANCE', balance)
+
+    availAssets.value = numeral(balance).format('0,0')
+})
+
 /* Monitor (user-defined) amount. */
 watch(() => amount.value, (_amount) => {
     console.log('AMOUNT HAS CHANGED', _amount)
@@ -254,40 +270,6 @@ watch(() => amount.value, (_amount) => {
 
     /* Update QR code. */
     updateQrCode()
-})
-
-/* Monitor (user-defined) amount. */
-watch(() => Wallet.address, async (_address) => {
-    console.log('CAMPAIGN ADDRESS HAS CHANGED', _address)
-
-    console.log('INIT', props.campaign)
-
-    let scriptPubKey
-    let tokens
-    let unspentTokens
-
-    scriptPubKey = hexToBin(props.campaign?.scriptPubKey)
-console.log('WALLET', Wallet.wallet)
-console.log('PK', Wallet.wallet.privateKey)
-console.log('WIF', Wallet.wallet.wif)
-    tokens = await getTokens(Wallet.wallet.wif, scriptPubKey)
-        .catch(err => console.error(err))
-
-    // FOR DEV PURPOSES ONLY -- take the LARGEST input
-    tokens = [tokens.sort((a, b) => Number(b.tokens) - Number(a.tokens))[0]]
-    // FOR DEV PURPOSES ONLY -- add scripts
-    console.log('\n  Tokens GUEST:', tokens)
-
-    /* Calculate the total balance of the unspent outputs. */
-    // FIXME: Add support for BigInt.
-    unspentTokens = tokens
-        .reduce(
-            (totalValue, unspentOutput) => (totalValue + unspentOutput.tokens), BigInt(0)
-        )
-    console.log('UNSPENT TOKENS', unspentTokens)
-
-    availAssets.value = unspentTokens
-
 })
 
 const setNEXA = () => {

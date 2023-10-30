@@ -1,5 +1,7 @@
 <script setup lang="ts">
 /* Import modules. */
+import numeral from 'numeral'
+
 import { listUnspent } from '@nexajs/address'
 
 import { sha256 } from '@nexajs/crypto'
@@ -39,6 +41,8 @@ const dataUrl = ref(null)
 const pledgeUrl = ref(null)
 const wallet = ref(null)
 const depositAddress = ref(null)
+
+const confirmation = ref(null)
 
 /* Initialize stores. */
 import { useCampaignStore } from '@/stores/campaign'
@@ -184,7 +188,7 @@ const depositHandler = async (_updatedInfo) => {
 
 /* Monitor pledging flag. */
 watch(() => props.isExecuting, async (_status) => {
-    console.log('PLEDGING HAS CHANGED', _status)
+    console.log('EXECUTING HAS CHANGED', _status)
 
     if (_status) {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-0'
@@ -232,7 +236,7 @@ watch(() => amount.value, (_amount) => {
         // TODO Calculate KEX value.
         // amountNex.value = _amount
 
-        amountNex.value = ((amount.value / props.usd) * 1000000).toFixed(2)
+        amountNex.value = numeral(amount.value * props.campaign?.scriptArgs.rate).format('0,0')
     }
     console.log('AMOUNT NEX', amountNex.value)
 
@@ -289,9 +293,11 @@ const swap = async () => {
         console.log('TX RESULT', txResult)
 
         if (txResult.error?.message) {
-            alert(txResult.error.message)
+            // alert(txResult.error.message)
+            confirmation.value = txResult.error.message
         } else {
-            alert(txResult.result)
+            // alert(txResult.result)
+            confirmation.value = txResult.result
         }
     } catch (err) {
         console.error(err)
@@ -369,6 +375,18 @@ onMounted(() => {
                                 >
                                     Make Swap
                                 </button>
+
+                                <div class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
+                                    <h3>{{amountNex}} NEXA</h3>
+                                </div>
+
+                                <div v-if="confirmation" class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
+                                    <NuxtLink v-if="confirmation.length === 64" :to="'https://explorer.nexa.org/tx/' + confirmation" target="_blank">
+                                        {{confirmation}}
+                                    </NuxtLink>
+
+                                    <h3 v-else>{{confirmation}}</h3>
+                                </div>
 
                                 <!-- <div class="mt-3 sm:mt-0 flex justify-center">
                                     <h2 class="text-2xl font-medium">

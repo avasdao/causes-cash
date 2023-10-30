@@ -12,6 +12,10 @@ import { sendCoin } from '@nexajs/purse'
 
 import { subscribeAddress } from '@nexajs/rostrum'
 
+import { getTokens } from '@nexajs/token'
+
+import { hexToBin } from '@nexajs/utils'
+
 // import { Wallet } from '@nexajs/wallet'
 
 import QRCode from 'qrcode'
@@ -44,6 +48,8 @@ const depositAddress = ref(null)
 
 const error = ref(null)
 const txidem = ref(null)
+
+const availAssets = ref(null)
 
 /* Initialize stores. */
 import { useCampaignStore } from '@/stores/campaign'
@@ -250,6 +256,40 @@ watch(() => amount.value, (_amount) => {
     updateQrCode()
 })
 
+/* Monitor (user-defined) amount. */
+watch(() => Wallet.address, async (_address) => {
+    console.log('CAMPAIGN ADDRESS HAS CHANGED', _address)
+
+    console.log('INIT', props.campaign)
+
+    let scriptPubKey
+    let tokens
+    let unspentTokens
+
+    scriptPubKey = hexToBin(props.campaign?.scriptPubKey)
+console.log('WALLET', Wallet.wallet)
+console.log('PK', Wallet.wallet.privateKey)
+console.log('WIF', Wallet.wallet.wif)
+    tokens = await getTokens(Wallet.wallet.wif, scriptPubKey)
+        .catch(err => console.error(err))
+
+    // FOR DEV PURPOSES ONLY -- take the LARGEST input
+    tokens = [tokens.sort((a, b) => Number(b.tokens) - Number(a.tokens))[0]]
+    // FOR DEV PURPOSES ONLY -- add scripts
+    console.log('\n  Tokens GUEST:', tokens)
+
+    /* Calculate the total balance of the unspent outputs. */
+    // FIXME: Add support for BigInt.
+    unspentTokens = tokens
+        .reduce(
+            (totalValue, unspentOutput) => (totalValue + unspentOutput.tokens), BigInt(0)
+        )
+    console.log('UNSPENT TOKENS', unspentTokens)
+
+    availAssets.value = unspentTokens
+
+})
+
 const setNEXA = () => {
     if (currency.value !== 'NEXA') {
         currency.value = 'NEXA'
@@ -291,6 +331,10 @@ const swap = async () => {
         .catch(err => console.error(err))
     console.log('SWAP RESPONSE', response)
 
+    if (!response) {
+        return
+    }
+
     try {
         txResult = JSON.parse(response)
         console.log('TX RESULT', txResult)
@@ -304,6 +348,8 @@ const swap = async () => {
         }
     } catch (err) {
         console.error(err)
+
+        error.value = response
     }
 
 }
@@ -354,6 +400,12 @@ onMounted(() => {
                                         How many $STUDIO do you want?
                                     </span>
                                 </label>
+
+                                <div v-if="availAssets" class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
+                                    <h3>
+                                        <span class="font-bold text-lg">{{numeral(availAssets).format('0,0')}}</span> $STUDIO available
+                                    </h3>
+                                </div>
 
                                 <section class="">
                                     <!-- <div class="text-sm font-medium text-gray-500 sm:flex-shrink-0">

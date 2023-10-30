@@ -31,6 +31,7 @@ export const useCampaignStore = defineStore('campaign', {
 
         async tradingPost(_campaign, _amount) {
             /* Initialize locals. */
+            let error
             let response
             let scriptArgs
 
@@ -39,11 +40,14 @@ export const useCampaignStore = defineStore('campaign', {
 
             /* Request trading post (swap). */
             response = await tradingPost(scriptArgs, _amount)
-                .catch(err => console.error(err))
+                .catch(err => {
+                    console.error('ERROR', err)
+                    error = err
+                })
             // console.log('RESPONSE', response)
 
             /* Return response. */
-            return response
+            return error || response
         },
 
     },

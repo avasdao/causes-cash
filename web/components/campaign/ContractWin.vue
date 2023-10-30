@@ -12,7 +12,7 @@ import { sendCoin } from '@nexajs/purse'
 
 import { subscribeAddress } from '@nexajs/rostrum'
 
-import { Wallet } from '@nexajs/wallet'
+// import { Wallet } from '@nexajs/wallet'
 
 import QRCode from 'qrcode'
 
@@ -48,8 +48,10 @@ const txidem = ref(null)
 /* Initialize stores. */
 import { useCampaignStore } from '@/stores/campaign'
 import { useProfileStore } from '@/stores/profile'
+import { useWalletStore } from '@/stores/wallet'
 const Campaign = useCampaignStore()
 const Profile = useProfileStore()
+const Wallet = useWalletStore()
 
 const numChars = computed(() => {
     /* Set label length. */
@@ -87,11 +89,11 @@ const depositHandler = async (_updatedInfo) => {
     let unspent
 
     /* Encode Private Key WIF. */
-    const wif = encodePrivateKeyWif(sha256, wallet.value.privateKey, 'mainnet')
+    const wif = encodePrivateKeyWif(sha256, Wallet.wallet.privateKey, 'mainnet')
     console.log('PRIVATE KEY (WIF):', wif)
 
     // Fetch all unspent transaction outputs for the temporary in-browser wallet.
-    unspent = await listUnspent(wallet.value.address)
+    unspent = await listUnspent(Wallet.address)
     console.log('\n  Unspent outputs:\n', unspent)
 
     /* Filter out ANY tokens. */
@@ -197,10 +199,13 @@ watch(() => props.isExecuting, async (_status) => {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
     }
 
-    wallet.value = new Wallet(Profile.mnemonic)
-    console.log('WALLET', wallet.value)
+    console.log('WALLET', Wallet.wallet)
 
-    depositAddress.value = wallet.value.address
+    if (Wallet.wallet === 'NEW') {
+        return
+    }
+
+    depositAddress.value = Wallet.address
     console.log('DEPOSIT ADDRESS', depositAddress.value)
 
     /* Update QR code. */
@@ -269,10 +274,7 @@ winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-70
 
 
 const init = async () => {
-    // wallet.value = await Wallet.init({
-    //     path: `m/44'/29223'/${ACTIVE_ACCOUNT_IDX}'/0/0`,
-    //     mnemonic: process.env.MNEMONIC,
-    // }, false)
+
 }
 
 const swap = async () => {
@@ -341,7 +343,11 @@ onMounted(() => {
                                 </div>
                             </header>
 
-                            <div class="px-3 py-2 flex flex-col gap-4">
+                            <Loading v-if="Wallet.isLoading" />
+
+                            <CampaignWalletSetup v-else-if="!Wallet.isReady" />
+
+                            <section v-else class="px-3 py-2 flex flex-col gap-4">
 
                                 <label for="project-name" class="flex flex-col sm:flex-row sm:items-center">
                                     <span class="text-xl font-medium text-gray-700">
@@ -414,7 +420,7 @@ onMounted(() => {
                                     />
                                 </NuxtLink>
  -->
-                            </div>
+                            </section>
 
                         </div>
                     </div>

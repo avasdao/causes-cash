@@ -85,7 +85,7 @@ const destroyWallet = () => {
 
                     <!-- <pre class="bg-sky-500">Address - {{ Wallet.address }}</pre> -->
 
-                    <button @click="destroyWallet" class="px-5 py-2 text-2xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg">
+                    <button v-if="Wallet.address" @click="destroyWallet" class="px-5 py-2 text-2xl text-red-50 font-medium bg-red-500 border-2 border-red-700 rounded-lg">
                         Destroy Wallet
                     </button>
                 </div>

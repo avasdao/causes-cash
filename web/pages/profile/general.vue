@@ -242,7 +242,7 @@
                 </dl>
             </div>
 
-            <div class="my-5 flex justify-end px-4">
+            <!-- <div class="my-5 flex justify-end px-4">
                 <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-lg font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                     Reset
                 </button>
@@ -253,9 +253,9 @@
                 >
                     Save Your Changes
                 </button>
-            </div>
+            </div> -->
 
-            <div>
+            <!-- <div>
                 <a
                     @click="openPortal"
                     href="javascript://"
@@ -263,7 +263,7 @@
                 >
                     Go To My (Public) Portal
                 </a>
-            </div>
+            </div> -->
         </div>
     </main>
 </template>

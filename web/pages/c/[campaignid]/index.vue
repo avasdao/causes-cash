@@ -265,7 +265,7 @@ onMounted(() => {
 
                     <CampaignHighlights />
 
-                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                    <div class="hidden mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                         <button
                             @click="sendFeedback"
                             type="button"
@@ -283,9 +283,9 @@ onMounted(() => {
                         </button> -->
                     </div>
 
-                    <CampaignSponsors />
+                    <!-- <CampaignSponsors /> -->
 
-                    <CampaignShare />
+                    <!-- <CampaignShare /> -->
 
                     <CampaignDisclaimer />
                 </div>

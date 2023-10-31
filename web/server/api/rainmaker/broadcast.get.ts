@@ -2,15 +2,19 @@
 import PouchDB from 'pouchdb'
 
 /* Initialize databases. */
+const rainmakerCampaignsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_campaigns`)
 const rainmakerProfilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_profiles`)
-const rainmakerTxsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_txs`)
+const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/sessions`)
 
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
     let campaignid
+    let campaigns
     let error
     let profiles
+    let publickey
     let response
+    let session
     let sessionid
     let query
 
@@ -32,6 +36,47 @@ export default defineEventHandler(async (event) => {
     //         query,
     //     }
     // }
+
+    if (sessionid) {
+        session = await sessionsDb
+            .get(sessionid)
+            .catch(err => console.error(err))
+        console.log('SESSION', session)
+
+        /* Set public key. */
+        publickey = session.profileid
+
+        /* Save (database) session. */
+        campaigns = await rainmakerCampaignsDb
+            .query('api/byOwner', {
+                key: publickey,
+                include_docs: true,
+            })
+            .catch(err => {
+                console.error(err)
+                error = err
+            })
+        console.log('CAMPAIGNS:', campaigns)
+
+        if (campaigns) {
+            campaigns = campaigns.rows.map(_campaign => {
+                let doc
+
+                doc = _campaign.doc
+
+                doc = {
+                    id: doc._id,
+                    ...doc,
+                }
+
+                delete doc._id
+                delete doc._rev
+
+                return doc
+            })
+        }
+
+    }
 
     if (campaignid) {
         /* Save (database) session. */
@@ -77,6 +122,11 @@ export default defineEventHandler(async (event) => {
         return doc
     })
 
+    response = {
+        campaigns,
+        profiles,
+    }
+
     /* Return session. */
-    return profiles
+    return response
 })

@@ -28,6 +28,7 @@ const Wallet = useWalletStore()
 const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000' // STUDIO
 
 const campaign = ref(null)
+const campaigns = ref(null)
 const profiles = ref(null)
 const isAddingProfile = ref(false)
 const txidem = ref(null)
@@ -95,11 +96,17 @@ const reset = () => {
 }
 
 const init = async () => {
-    profiles.value = await $fetch('/api/rainmaker/broadcast?cid=' + Rainmaker.campaign.id)
-    // profiles.value = await $fetch('/api/rainmaker/broadcast?sid=' + Profile.sessionid)
-    .catch(err => console.error(err))
-    console.log('BROADCAST (response):', profiles.value)
+    let response
 
+    response = await $fetch('/api/rainmaker/broadcast?sid=' + Profile.sessionid)
+        .catch(err => console.error(err))
+    console.log('RAINMAKER:', response)
+
+    /* Set campaigns. */
+    campaigns.value = response?.campaigns
+
+    /* Set profiles. */
+    profiles.value = response?.profiles
 }
 
 onMounted(() => {
@@ -224,7 +231,34 @@ onMounted(() => {
         <section class="my-5 px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
             <h2>Select a Campaign</h2>
 
+            <div class="mt-3 flex flex-col gap-3">
+                <NuxtLink
+                    v-for="campaign of campaigns" :key="campaign.id"
+                    :to="'https://explorer.nexa.org/address/' + campaign.address" target="_blank"
+                    class="px-3 hover:bg-amber-200"
+                >
+                    <div class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                        <div class="flex items-center truncate">
+                            <img
+                                class="h-16 w-auto lg:h-20 rounded-full object-cover"
+                                :src="makeBlockie(campaign.id)"
+                                :alt="campaign.id"
+                            />
 
+                            <div class="ml-4">
+                                <div class="mt-1 text-gray-500 truncate">
+                                    Campaign Id: {{campaign.id}}
+                                </div>
+
+                                <span class="font-medium text-blue-500 hover:blue-text-400 truncate">
+                                    <pre>{{campaign}}</pre>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                </NuxtLink>
+            </div>
         </section>
 
         <div class="mt-6 py-5 bg-amber-50 border-2 border-amber-400 rounded-xl shadow-md">

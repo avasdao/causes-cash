@@ -156,7 +156,7 @@ export const useWalletStore = defineStore('wallet', {
             this._wallet.setAsset('0')
 
             /* Authorize session. */
-            _authSession.bind(this)
+            _authSession.bind(this)()
         },
 
         createWallet(_entropy) {

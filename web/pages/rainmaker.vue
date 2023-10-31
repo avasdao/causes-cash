@@ -221,6 +221,12 @@ onMounted(() => {
             </div>
         </fieldset>
 
+        <section class="my-5 px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
+            <h2>Select a Campaign</h2>
+
+
+        </section>
+
         <div class="mt-6 py-5 bg-amber-50 border-2 border-amber-400 rounded-xl shadow-md">
             <div class="px-3 sm:flex sm:items-center">
                 <div class="">
@@ -237,6 +243,7 @@ onMounted(() => {
 
                 <div class="mt-4 mx-5 sm:mt-0 sm:flex-none">
                     <button
+                        @click="isAddingProfile = true"
                         type="button"
                         class="block rounded-md bg-lime-600 px-3 py-2 text-center text-lg font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600"
                     >
@@ -300,6 +307,7 @@ onMounted(() => {
 
     <RainmakerAddProfile
         v-if="isAddingProfile"
+        @close="isAddingProfile = false"
         :campaign="Rainmaker.campaign"
     />
 </template>

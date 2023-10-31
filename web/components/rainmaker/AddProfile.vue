@@ -137,6 +137,13 @@ const reset = () => {
                         >
                             Reset
                         </button>
+
+                        <button
+                            @click="$emit('close')"
+                            class="mt-3 inline-flex w-full justify-center rounded-md bg-rose-400 px-3 py-2 text-2xl font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-rose-300 sm:col-start-1 sm:mt-0"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>

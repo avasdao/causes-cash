@@ -2,7 +2,6 @@
 import moment from 'moment'
 import PouchDB from 'pouchdb'
 import { sha256 } from '@nexajs/crypto'
-import { v4 as uuidv4 } from 'uuid'
 
 /* Initialize databases. */
 const rainmakerProfilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_profiles`)

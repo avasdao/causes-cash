@@ -71,12 +71,20 @@ const isShowingMenu = ref(false)
 const isShowingProfileMenu = ref(false)
 
 
-onMounted(() => {
+const init = async () => {
     /* Initailize system. */
     System.init()
 
+    /* Initailize system. */
+    await Profile.init()
+
     /* Initialize wallet. */
     Wallet.init()
+}
+
+
+onMounted(() => {
+    init()
 })
 
 // onBeforeUnmount(() => {

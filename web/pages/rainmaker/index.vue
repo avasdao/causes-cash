@@ -101,8 +101,8 @@ const init = async () => {
 
     /* Request campaigns. */
     response = await $fetch('/api/rainmaker/campaigns', {
-        method: 'GET',
-        query: {
+        method: 'POST',
+        body: {
             sessionid: Profile.sessionid,
         },
     })
@@ -238,7 +238,7 @@ onMounted(() => {
             <div class="mt-3 flex flex-col gap-3">
                 <NuxtLink
                     v-for="campaign of campaigns" :key="campaign.id"
-                    :to="'https://explorer.nexa.org/address/' + campaign.address" target="_blank"
+                    :to="'/rainmaker/' + campaign.id"
                     class="px-3 hover:bg-amber-200"
                 >
                     <div class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">

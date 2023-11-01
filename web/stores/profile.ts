@@ -66,7 +66,7 @@ export const useProfileStore = defineStore('profile', {
 
     actions: {
         async init() {
-            console.log('AUTH WIN (this.session):', this.session)
+            console.log('PROFILE (session):', this.session)
 
             /* Initialize locals. */
             let session
@@ -84,7 +84,9 @@ export const useProfileStore = defineStore('profile', {
             /* Manage session. */
             session = await $fetch('/api/session', {
                 method: 'POST',
-                body: { sessionid: this.sessionid },
+                body: {
+                    sessionid: this.sessionid,
+                },
             })
             console.log('GLOBAL SESSION', session)
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-    title: `Blank — Causes Cash`,
+    title: `Campaign Manager — Causes Cash`,
     meta: [
         { name: 'description', content: `Causes Cash makes building your next BIG idea effortless.` }
     ],
@@ -18,24 +18,27 @@ const Wallet = useWalletStore()
 
 const route = useRoute()
 const campaignid = ref(route.params.campaignid)
-console.log('RAINMAKER (campaignid):', campaignid.value)
+// console.log('RAINMAKER (campaignid):', campaignid.value)
 
 const profiles = ref(null)
 
 const init = async () => {
+    if (!Profile.sessionid) {
+        throw new Error('Oops! You MUST sign-in to continue.')
+    }
     /* Initialize locals. */
     let response
 
     /* Request profiles. */
-    response = await $fetch('/api/rainmaker/profiles', {
-        method: 'GET',
-        query: {
+    response = await $fetch('/api/rainmaker/campaign', {
+        method: 'POST',
+        body: {
             sessionid: Profile.sessionid,
             campaignid: campaignid.value,
         },
     })
     .catch(err => console.error(err))
-    console.log('RAINMAKER (profiles):', response)
+    console.log('RAINMAKER (campaign):', response)
 
     /* Set profiles. */
     profiles.value = response

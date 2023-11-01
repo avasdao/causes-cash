@@ -18,7 +18,6 @@ const createSession = async (_source, _headers) => {
     let headers
     let logDetails
     let session
-    let success
 
     /* Set headers. */
     headers = _headers
@@ -27,12 +26,12 @@ const createSession = async (_source, _headers) => {
     /* Build log details. */
     logDetails = {
         source: _source,
-        i18n: _headers['accept-language'],
-        client: _headers['user-agent'],
-        referer: _headers['referer'],
-        host: _headers['host'],
-        ip: _headers['x-real-ip'],
-        ip_fwd: _headers['x-forwarded-for'],
+        i18n: headers['accept-language'],
+        client: headers['user-agent'],
+        referer: headers['referer'],
+        host: headers['host'],
+        ip: headers['x-real-ip'],
+        ip_fwd: headers['x-forwarded-for'],
     }
     // console.info('LOG (api):', logDetails)
 
@@ -71,6 +70,7 @@ export default defineEventHandler(async (event) => {
     let sessionid
     let success
 
+console.log('\n\n***HEADERS', event.node.req?.headers)
     /* Set (request) body. */
     body = await readBody(event)
     // console.log('SESSIONS.POST (body):', body)

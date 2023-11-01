@@ -20,23 +20,16 @@ export default defineEventHandler(async (event) => {
 
     /* Set (request) query. */
     query = getQuery(event)
-    // console.log('QUERY', query)
+    console.log('PROFILES (query):', query)
 
     /* Set session id. */
     campaignid = query?.cid
-    console.log('CAMPAIGN ID', campaignid)
+    // console.log('CAMPAIGN ID', campaignid)
 
     sessionid = query?.sid
-    console.log('SESSION ID', sessionid)
+    // console.log('SESSION ID', sessionid)
 
     /* Validate session id. */
-    // if (!sessionid) {
-    //     return {
-    //         error: 'Not found',
-    //         query,
-    //     }
-    // }
-
     if (sessionid) {
         session = await sessionsDb
             .get(sessionid)
@@ -56,22 +49,28 @@ export default defineEventHandler(async (event) => {
                 console.error(err)
                 error = err
             })
-        console.log('CAMPAIGNS:', campaigns)
+        // console.log('CAMPAIGNS:', campaigns)
 
+        /* Validate campaigns. */
         if (campaigns) {
             campaigns = campaigns.rows.map(_campaign => {
+                /* Initialize locals. */
                 let doc
 
+                /* Set document. */
                 doc = _campaign.doc
 
+                /* Re-format document. */
                 doc = {
                     id: doc._id,
                     ...doc,
                 }
 
+                /* Cleanup document. */
                 delete doc._id
                 delete doc._rev
 
+                /* Return document. */
                 return doc
             })
         }

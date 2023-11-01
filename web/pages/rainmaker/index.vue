@@ -96,17 +96,21 @@ const reset = () => {
 }
 
 const init = async () => {
+    /* Initialize locals. */
     let response
 
-    response = await $fetch('/api/rainmaker/broadcast?sid=' + Profile.sessionid)
+    /* Request campaigns. */
+    response = await $fetch('/api/rainmaker/campaigns', {
+        method: 'GET',
+        query: {
+            sessionid: Profile.sessionid,
+        },
+    })
         .catch(err => console.error(err))
-    console.log('RAINMAKER:', response)
+    console.log('RAINMAKER (campaigns):', response)
 
     /* Set campaigns. */
-    campaigns.value = response?.campaigns
-
-    /* Set profiles. */
-    profiles.value = response?.profiles
+    campaigns.value = response
 }
 
 onMounted(() => {

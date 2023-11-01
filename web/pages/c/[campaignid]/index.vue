@@ -11,6 +11,10 @@ const System = useSystemStore()
 
 import loadingIcon from '@/assets/loading_icon.gif'
 
+const route = useRoute()
+const campaignid = route.params.campaignid
+// console.log('Campaign ID:', campaignid)
+
 /* Set constants. */
 const RETRY_DELAY = 500 // 0.5 seconds
 
@@ -27,6 +31,7 @@ const showDescription = ref(true)
 const showFeedback = ref(false)
 const showReportCards = ref(false)
 
+const campaign = ref(null)
 const contributors = ref(null)
 const supporters = ref(null)
 
@@ -111,12 +116,6 @@ const manageContract = async () => {
     // TODO Set to state.
     isExecuting.value = true
 }
-
-const route = useRoute()
-const campaignid = route.params.campaignid
-// console.log('Campaign ID:', campaignid)
-
-const campaign = ref()
 
 const loadCampaign = async () => {
     campaign.value = await $fetch(`/v1/campaign/${campaignid}`)

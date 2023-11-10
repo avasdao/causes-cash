@@ -70,7 +70,6 @@ export default defineEventHandler(async (event) => {
     let sessionid
     let success
 
-console.log('\n\n***HEADERS', event.node.req?.headers)
     /* Set (request) body. */
     body = await readBody(event)
     // console.log('SESSIONS.POST (body):', body)

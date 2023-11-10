@@ -59,6 +59,8 @@ export default async (_scriptArgs, _amount) => {
     console.log('TRADING POST (amount):', _amount)
 
     /* Initialize locals.*/
+    let adminAddress
+    let adminPkh
     let amountBuyer
     let amountProvider
     let amountSeller
@@ -68,8 +70,6 @@ export default async (_scriptArgs, _amount) => {
     let fee
     let lockingScript
     let nullData
-    let providerAddress
-    let providerPkh
     let rate
     let receivers
     let response
@@ -123,25 +123,25 @@ export default async (_scriptArgs, _amount) => {
     rate = encodeDataPush(rate) // FIXME Add support for OP.ZERO
     console.log('RATE', binToHex(rate))
 
-    /* Set provider public key hash. */
+    /* Set admin public key hash. */
     // nexa:nqtsq5g5x7evefxhusyp08wmk6xtu9rqee64uk0uaq28jnlk
-    providerPkh = hexToBin(_scriptArgs?.providerHash)
+    adminPkh = hexToBin(_scriptArgs?.adminHash)
 
     scriptPubKey = new Uint8Array([
         OP.ZERO,
         OP.ONE,
-        ...encodeDataPush(providerPkh),
+        ...encodeDataPush(adminPkh),
     ])
     // console.info('\n  Script Public Key:', binToHex(scriptPubKey))
 
     /* Encode the public key hash into a P2PKH nexa address. */
-    providerAddress = encodeAddress(
+    adminAddress = encodeAddress(
         'nexa',
         'TEMPLATE',
         scriptPubKey,
     )
 
-    /* Set provider fee. */
+    /* Set admin fee. */
     fee = _scriptArgs?.fee.toString(16)
     if (fee.length % 2 === 1) {
         fee = '0' + fee
@@ -157,7 +157,7 @@ export default async (_scriptArgs, _amount) => {
         OP.ZERO, // arguments hash or empty stack item
         ...encodeDataPush(sellerPkh), // The Sellers' public key hash.
         ...rate, // The rate of exchange, charged by the Seller. (measured in <satoshis> per asset)
-        ...encodeDataPush(providerPkh), // An optional 3rd-party (specified by the Seller) used to facilitate the tranaction.
+        ...encodeDataPush(adminPkh), // An optional 3rd-party (specified by the Seller) used to facilitate the tranaction.
         ...fee, // An optional amount charged by the Provider. (measured in <basis points> (bp), eg. 5.25% = 525bp)
     ])
     console.info('\n  Script Public Key:', binToHex(scriptPubKey))
@@ -247,7 +247,7 @@ export default async (_scriptArgs, _amount) => {
 
     if (amountProvider > BigInt(546)) {
         receivers.push({
-            address: providerAddress,
+            address: adminAddress,
             satoshis: BigInt(amountProvider),
         })
     }

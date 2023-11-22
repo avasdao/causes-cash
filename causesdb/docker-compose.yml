@@ -20,7 +20,7 @@ services:
         max-size: '10m'
   couchdb:
     image: couchdb
-    container_name: db
+    container_name: couchdb
     restart: unless-stopped
     ports:
       - '127.0.0.1:5984:5984'

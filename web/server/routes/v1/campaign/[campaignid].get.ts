@@ -206,22 +206,22 @@ export default defineEventHandler(async (event) => {
         cache[campaignid].txs = []
 
         decoded = decodeAddress(campaign.receiver)
-        console.log('DECODED', decoded)
+        // console.log('DECODED', decoded)
 
-        scriptPubKey = binToHex(decoded.hash).slice(2)
-        console.log('scriptPubKey', scriptPubKey)
+        scriptPubKey = binToHex(decoded.hash)
+        // console.log('scriptPubKey', scriptPubKey)
 
         checkpoint = campaign?.checkpoint || 0
 
         if (!cache[campaignid]?.updatedAt || cache[campaignid].updatedAt + CACHE_REFRESH_DELAY < moment().unix()) {
             history = await getAddressHistory(receiver)
                 .catch(err => console.error(err))
-            console.log('HISTORY', history)
+            // console.log('HISTORY', history)
 
             history = history.filter(_tx => {
                 return _tx.height > checkpoint
             })
-            console.log('HISTORY (filtered)', history)
+            // console.log('HISTORY (filtered)', history)
 
             /* Handle NEW history. */
             for (let i = 0; i < history.length; i++) {
@@ -255,18 +255,18 @@ export default defineEventHandler(async (event) => {
         /* Initialize received amount (in satoshis). */
         received = campaign?.received || 0
 
-        console.log('CACHE CAMPAIGN', cache[campaignid])
+        // console.log('CACHE CAMPAIGN', cache[campaignid])
 
         for (let i = 0; i < cache[campaignid].txs.length; i++) {
             tx = cache[campaignid].txs[i]
 
             for (let j = 0; j < tx.vout.length; j++) {
                 output = tx.vout[j]
-                console.log('OUTPUT', output)
+                // console.log('OUTPUT', output)
 
                 if (output.scriptPubKey.hex === scriptPubKey) {
                     received += output.value_satoshi
-                    console.log('RECEIVED', received)
+                    // console.log('RECEIVED', received)
                 }
 
                 /* Add received amount to transaction. */
@@ -284,7 +284,7 @@ export default defineEventHandler(async (event) => {
         response = await campaignsDb
             .put(campaign)
             .catch(err => console.error(err))
-        console.error('DB UPDATE', response)
+        // console.error('DB UPDATE', response)
 
         /* Delete database fields. */
         delete campaign._id

@@ -206,10 +206,10 @@ export default defineEventHandler(async (event) => {
         cache[campaignid].txs = []
 
         decoded = decodeAddress(campaign.receiver)
-        // console.log('DECODED', decoded)
+        console.log('DECODED', decoded)
 
         scriptPubKey = binToHex(decoded.hash).slice(2)
-        // console.log('scriptPubKey', scriptPubKey)
+        console.log('scriptPubKey', scriptPubKey)
 
         checkpoint = campaign?.checkpoint || 0
 

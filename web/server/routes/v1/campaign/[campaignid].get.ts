@@ -255,18 +255,18 @@ export default defineEventHandler(async (event) => {
         /* Initialize received amount (in satoshis). */
         received = campaign?.received || 0
 
-        // console.log('CACHE CAMPAIGN', cache[campaignid])
+        console.log('CACHE CAMPAIGN', cache[campaignid])
 
         for (let i = 0; i < cache[campaignid].txs.length; i++) {
             tx = cache[campaignid].txs[i]
 
             for (let j = 0; j < tx.vout.length; j++) {
                 output = tx.vout[j]
-                // console.log('OUTPUT', output)
+                console.log('OUTPUT', output)
 
                 if (output.scriptPubKey.hex === scriptPubKey) {
                     received += output.value_satoshi
-                    // console.log('RECEIVED', received)
+                    console.log('RECEIVED', received)
                 }
 
                 /* Add received amount to transaction. */

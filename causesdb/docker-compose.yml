@@ -5,7 +5,7 @@ services:
     build: .
     image: causesdb
     container_name: causesdb
-    restart: always
+    restart: unless-stopped
     network_mode: 'host'
     # ports:
     #   - '127.0.0.1:3000:3000'
@@ -20,7 +20,8 @@ services:
         max-size: '10m'
   couchdb:
     image: couchdb
-    restart: always
+    container_name: db
+    restart: unless-stopped
     ports:
       - '127.0.0.1:5984:5984'
       - '127.0.0.1:4369:4369'

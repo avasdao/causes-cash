@@ -42,6 +42,27 @@ export default defineNuxtConfig({
         },
     },
 
+    /* Progressive Web Application Settings */
+    pwa: {
+        manifest: {
+            name: 'Causes Cash — Uncensorable Funding For Radical Creators',
+            short_name: 'Causes Cash',
+            description: `An uncensorable funding platform for radical creators and unstoppable service providers.`,
+            // lang: 'en',
+            // useWebmanifestExtension: false,
+        },
+        meta: {
+            name: 'Causes Cash — Uncensorable Funding For Radical Creators',
+            description: `An uncensorable funding platform for radical creators and unstoppable service providers.`,
+            author: `Ava's DAO`,
+        },
+        // icon: false, // disables the icon module
+        workbox: {
+            // workboxURL: 'TBD',
+            // enabled: true, // FOR DEV PURPOSES ONLY
+        },
+    },
+
     /* Modules */
     modules: [
         /* Tailwind CSS */
@@ -52,6 +73,9 @@ export default defineNuxtConfig({
 
         /* Internationalization for Nuxt */
         '@nuxtjs/i18n',
+
+        /* Progressive Web Application */
+        '@kevinmarrec/nuxt-pwa',
     ],
 
     plugins: [

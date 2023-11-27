@@ -54,7 +54,7 @@ export default defineNuxtConfig({
         meta: {
             name: 'Causes Cash — Uncensorable Funding For Radical Creators',
             description: `An uncensorable funding platform for radical creators and unstoppable service providers.`,
-            author: `Ava's DAO`,
+            author: `Causes Cash DAO`,
         },
         // icon: false, // disables the icon module
         workbox: {

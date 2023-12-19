@@ -78,9 +78,36 @@ export default defineNuxtConfig({
         '@kevinmarrec/nuxt-pwa',
     ],
 
+    /* Plugins */
     plugins: [
         // { src: '@/plugins/bugsnag', ssr: false }
     ],
+
+    /* Runtime Configuration */
+    runtimeConfig: {
+        public: {
+            /* Networks */
+            MAINNET: process.env.MAINNET,
+            TESTNET: process.env.TESTNET,
+            REGTEST: process.env.REGTEST,
+
+            /* Data Source */
+            ROSTRUM: process.env.ROSTRUM,
+
+            /* Mnemonic */
+            MNEMONIC: process.env.MNEMONIC,
+
+            /* Private Keys (The 3 Nexicans) */
+            ALICE_WIF: process.env.ALICE_WIF,
+            BOB_WIF: process.env.BOB_WIF,
+            CHARLIE_WIF: process.env.CHARLIE_WIF,
+
+            /* Assets / Tokens (The 3 Nexicans) */
+            ALICE_TOKENID_HEX: process.env.ALICE_TOKENID_HEX,
+            BOB_TOKENID_HEX: process.env.BOB_TOKENID_HEX,
+            CHARLIE_TOKENID_HEX: process.env.CHARLIE_TOKENID_HEX,
+        }
+    },
 
     /* Route Rules */
     routeRules: {

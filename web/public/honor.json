@@ -1,0 +1,13 @@
+[{
+  "ticker": "HONOR",
+  "name": "Nexican Honor Society",
+  "summary": "",
+  "description": "",
+  "legal": "Each token is equal to one vote.",
+  "creator": "Ava's DAO",
+  "contact": { "address": "3455 Peachtree Rd NE, Suite #500, Atlanta, GA 30326", "email": "support@avasdao.org", "twitter.com": "@AvasDAO" },
+  "icon": "/honor.svg",
+  "category": "NFT"
+},
+"<base64-signature-here>"
+]

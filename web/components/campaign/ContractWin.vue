@@ -255,16 +255,22 @@ watch(() => props.campaign, async (_campaign) => {
 watch(() => amount.value, (_amount) => {
     console.log('AMOUNT HAS CHANGED', _amount)
 
+    let scriptAmount
+
     if (currency.value === 'NEXA') {
         // TODO Calculate KEX value.
-        amountNex.value = _amount
+        amountNex.value = _amount / 100.0
     }
 
     if (currency.value === 'USD') {
         // TODO Calculate KEX value.
         // amountNex.value = _amount
 
-        amountNex.value = numeral(amount.value * props.campaign?.scriptArgs.rate).format('0,0')
+        scriptAmount = amount.value * props.campaign?.scriptArgs.rate
+
+        scriptAmount = scriptAmount / 100.0
+
+        amountNex.value = numeral(scriptAmount).format('0,0.00[00]')
     }
     console.log('AMOUNT NEX', amountNex.value)
 

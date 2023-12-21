@@ -30,7 +30,15 @@ const props = defineProps({
     usd: Number,
 })
 
-const STUDIO_TOKENID = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
+/* Initialize stores. */
+import { useCampaignStore } from '@/stores/campaign'
+import { useProfileStore } from '@/stores/profile'
+import { useWalletStore } from '@/stores/wallet'
+const Campaign = useCampaignStore()
+const Profile = useProfileStore()
+const Wallet = useWalletStore()
+
+// const STUDIO_TOKENID = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
 
 const MAX_MESSAGE_LENGTH = 220
 const DUST_LIMIT = 546
@@ -56,14 +64,6 @@ const txidem = ref(null)
 
 const availAssets = ref(null)
 
-/* Initialize stores. */
-import { useCampaignStore } from '@/stores/campaign'
-import { useProfileStore } from '@/stores/profile'
-import { useWalletStore } from '@/stores/wallet'
-const Campaign = useCampaignStore()
-const Profile = useProfileStore()
-const Wallet = useWalletStore()
-
 const numChars = computed(() => {
     /* Set label length. */
     const labelLen = label.value?.length || 0
@@ -79,6 +79,15 @@ const numChars = computed(() => {
 
     /* Return total count. */
     return totalCount || 0
+})
+
+const ticker = computed(() => {
+    let rewards
+    if (props.campaign?.rewards) {
+        rewards = props.campaign?.rewards
+
+        return rewards[0].ticker
+    }
 })
 
 const updateQrCode = async () => {
@@ -242,10 +251,14 @@ watch(() => props.isExecuting, async (_status) => {
 
 watch(() => props.campaign, async (_campaign) => {
     /* Request token info. */
+    console.log('WHY IS THIS ADDR NOT WORKING??', _campaign?.address)
     const result = await getAddressTokenBalance(_campaign?.address)
     console.log('TOKEN (address) BALANCE', result)
 
-    const balance = result?.confirmed[STUDIO_TOKENID]
+    let tokenidHex = _campaign?.rewards[0].tokenidHex
+    console.log('TOKENID HEX', tokenidHex)
+
+    const balance = result?.confirmed[tokenidHex]
     console.log('BALANCE', balance)
 
     availAssets.value = numeral(balance).format('0,0')
@@ -385,7 +398,7 @@ onMounted(() => {
 
                                 <label for="project-name" class="flex flex-col sm:flex-row sm:items-center">
                                     <span class="text-xl font-medium text-gray-700">
-                                        How many $STUDIO do you want?
+                                        How many ${{ticker}} do you want?
                                     </span>
                                 </label>
 
@@ -439,11 +452,11 @@ onMounted(() => {
 
                                 <section v-if="error" class="flex flex-col gap-4 my-10">
                                     <p>{{error}}</p>
-
-                                    <NuxtLink to="/profile" class="px-3 py-2 bg-sky-200 border-2 border-sky-400 rounded-lg shadow hover:bg-sky-300">
-                                        Open Causes Wallet
-                                    </NuxtLink>
                                 </section>
+
+                                <NuxtLink to="/profile" class="mt-10 flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1">
+                                    Go to Profile / Wallet
+                                </NuxtLink>
 
                                 <!-- <div class="mt-3 sm:mt-0 flex justify-center">
                                     <h2 class="text-2xl font-medium">

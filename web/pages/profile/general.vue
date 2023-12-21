@@ -1,3 +1,51 @@
+<script setup lang="ts">
+/* Initialize stores. */
+import { useSystemStore } from '@/stores/system'
+import { useWalletStore } from '@/stores/wallet'
+const System = useSystemStore()
+const Wallet = useWalletStore()
+
+const about = ref()
+const avatar = ref()
+const homepage = ref()
+const nickname = ref()
+const tagline = ref()
+const showSeed = ref()
+
+
+const seed = computed(() => {
+    if (showSeed.value) {
+        return Wallet.wallet?.mnemonic
+    } else {
+        return ''
+    }
+})
+
+const toggleSecurity = () => {
+    if (showSeed.value) {
+        /* Toggle seed display flag. */
+        showSeed.value = false
+    } else {
+        /* Toggle seed display flag. */
+        showSeed.value = true
+    }
+}
+
+const init = () => {
+    /* Initialize seed display flag. */
+    showSeed.value = false
+}
+
+onMounted(() => {
+    init()
+})
+
+// onBeforeUnmount(() => {
+//     console.log('Before Unmount!')
+//     // Now is the time to perform all cleanup operations.
+// })
+</script>
+
 <template>
     <main>
         <nav class="hidden px-3">
@@ -267,264 +315,3 @@
         </div>
     </main>
 </template>
-
-<script>
-/* global BigInt ethereum */
-
-/* Import modules. */
-import { ethers } from 'ethers'
-
-/* Import components. */
-// import HelloWorld from '@/components/HelloWorld'
-
-export default {
-    props: {
-        web3Address: String,
-    },
-    components: {
-        // HelloWorld
-    },
-    data: () => {
-        return {
-            about: null,
-            avatar: null,
-            homepage: null,
-            nickname: null,
-            tagline: null,
-            showSeed: null
-        }
-    },
-    watch: {
-        displayAbout: {
-            handler(_about) {
-                this.about = _about
-            },
-            immediate: true,
-        },
-
-        displayAvatar: {
-            handler(_avatar) {
-                this.avatar = _avatar
-            },
-            immediate: true,
-        },
-
-        displayHomepage: {
-            handler(_homepage) {
-                this.homepage = _homepage
-            },
-            immediate: true,
-        },
-
-        displayNickname: {
-            handler(_nickname) {
-                this.nickname = _nickname
-            },
-            immediate: true,
-        },
-
-        displayTagline: {
-            handler(_tagline) {
-                this.tagline = _tagline
-            },
-            immediate: true,
-        },
-
-    },
-    computed: {
-        seed() {
-            if (this.showSeed) {
-                return this.$store?.state?.seed
-            } else {
-                return ''
-            }
-        },
-
-        displayAbout() {
-            if (!this.$store?.state?.profileAbout) return ''
-
-            return this.$store?.state?.profileAbout
-        },
-
-        displayAvatar() {
-            if (!this.$store?.state?.profileAvatar) return ''
-
-            return this.$store?.state?.profileAvatar
-        },
-
-        displayHomepage() {
-            if (!this.$store?.state?.profileHomepage) return ''
-
-            return this.$store?.state?.profileHomepage
-        },
-
-        displayNickname() {
-            if (!this.$store?.state?.profileNickname) return ''
-
-            return this.$store?.state?.profileNickname
-        },
-
-        displayTagline() {
-            if (!this.$store?.state?.profileTagline) return ''
-
-            return this.$store?.state?.profileTagline
-        },
-
-    },
-    methods: {
-        toggleSecurity() {
-            if (this.showSeed) {
-                /* Toggle seed display flag. */
-                this.showSeed = false
-            } else {
-                /* Toggle seed display flag. */
-                this.showSeed = true
-            }
-        },
-
-        openPortal() {
-            this.$router.push(`/portal/${this.web3Address}`)
-            // window.open(`https://causes.cash/portal/${this.web3Address}`)
-        },
-
-        async update() {
-            console.log('Updating profile..')
-
-            /* Validate embedded Web3 objects. */
-            if (!window.ethereum && !window.bitcoin) {
-                /* Validate embedded ethereum object. */
-                if (window.bitcoin) {
-                    console.info('Found Bitcoin provider.')
-                } else if (window.ethereum) {
-                    console.info('Found Ethereum provider.')
-                } else {
-                    return console.error('No Web3 provider found.')
-                }
-            }
-
-            /* Connect accounts. */
-            const accounts = await ethereum.request({
-                method: 'eth_requestAccounts'
-            })
-            // console.info('Connected Web3 accounts:', accounts)
-
-            if (!accounts || accounts.length < 1) {
-                return alert('Please connect your MetaMask account to continue.')
-            }
-
-            /* Initialize provider. */
-            const provider = new ethers
-                .providers
-                .Web3Provider(window.ethereum, 'any')
-
-            /* Set signer. */
-            const signer = provider.getSigner()
-            // console.log('SIGNER', signer)
-
-            /* Set Campaign ABI. */
-            const abi = this.$store.getters.getCausesAbi
-
-            /* Initialize campaign instance. */
-            const causes = new ethers.Contract(
-                this.$store.getters.getCausesAddr, abi, signer)
-            // console.log('CONTRACT (campaign):', campaign)
-
-            const about = this.about || ''
-            const avatar = this.avatar || ''
-            const homepage = this.homepage || ''
-            const nickname = this.nickname || ''
-            const tagline = this.tagline || ''
-
-            /* Set gas price. */
-            // NOTE: Current minimum is 1.05 gWei (1,050,000,000)
-            const gasPrice = BigInt(1050000000)
-
-            /* Set contract options. */
-            const contractOptions = {
-                gasPrice,
-                // value,
-            }
-            // console.log('CONTRACT OPTIONS', contractOptions)
-
-            /* Make pledge. */
-            const response = await causes
-                .saveProfile(
-                    about,
-                    avatar,
-                    homepage,
-                    nickname,
-                    tagline,
-                    { ...contractOptions }
-                )
-                .catch(err => {
-                    console.error(err)
-
-                    /* Initialize message. */
-                    let message = ''
-
-                    /* Validate message. */
-                    if (err.message) {
-                        message += err.message
-
-                        /* Validate account permissions. */
-                        if (err.message.includes('execution reverted')) {
-                            message = `Oops! You don't have permission to perform that update. Check your account and try again..`
-                        }
-                    }
-
-                    /* Validate data message. */
-                    if (err.data && err.data.message) {
-                        message += ' - ' + err.data.message
-                    }
-
-                    /* Send notification request. */
-                    this.$store.dispatch('showNotif', {
-                        icon: 'error',
-                        title: 'MetaMask Error!',
-                        message,
-                    })
-                })
-            // console.log('DEPLOY RESPONSE', response)
-
-            /* Validate transaction hash. */
-            if (response && response.hash) {
-                /* Send notification request. */
-                this.$store.dispatch('showNotif', {
-                    icon: 'success',
-                    title: 'Profile Manager',
-                    message: `Your profile update has been submitted to the blockchain.`,
-                })
-
-                /* Wait for confirmation. */
-                const confirmation = await response
-                    .wait()
-                    .catch(err => {
-                        this.$store.dispatch('showNotif', {
-                            icon: 'error',
-                            title: 'Profile Manager',
-                            message: err.message,
-                        })
-                    })
-                // console.log('CONFIRMATION', confirmation)
-
-                if (confirmation && confirmation.blockNumber) {
-                    /* Send notification request. */
-                    this.$store.dispatch('showNotif', {
-                        icon: 'success',
-                        title: 'Profile Manager',
-                        message: `Your profile was updated successfully in block # ${confirmation.blockNumber}.`,
-                    })
-                }
-            }
-        },
-
-    },
-    created: function () {
-        /* Initialize seed display flag. */
-        this.showSeed = false
-    },
-    mounted: function () {
-        //
-    },
-}
-</script>

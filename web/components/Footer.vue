@@ -110,13 +110,19 @@
                             <ul role="list" class="mt-6 space-y-4">
                                 <li>
                                     <NuxtLink to="/about" class="text-base leading-6 text-gray-300 hover:text-white">
-                                        About
+                                        About us
+                                    </NuxtLink>
+                                </li>
+
+                                <li>
+                                    <NuxtLink to="/honors" class="text-base leading-6 text-gray-300 hover:text-white">
+                                        Honor Society
                                     </NuxtLink>
                                 </li>
 
                                 <li>
                                     <a href="javascript://" class="text-base leading-6 text-gray-300 hover:text-white">
-                                        Join Us
+                                        How to contribute
                                     </a>
                                 </li>
 
@@ -126,11 +132,6 @@
                                     </a>
                                 </li>
 
-                                <li>
-                                    <a href="javascript://" class="text-base leading-6 text-gray-300 hover:text-white">
-                                        Our Partners
-                                    </a>
-                                </li>
                             </ul>
                         </div>
 

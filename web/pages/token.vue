@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useHead({
-    title: `$HONOR Rewards Token — Causes Cash`,
+    title: `$HONOR Society Token — Causes Cash`,
     meta: [
         { name: 'description', content: `An uncensorable funding platform for radical creators and unstoppable service providers.` }
     ],
@@ -22,13 +22,13 @@ const System = useSystemStore()
 </script>
 
 <template>
-    <main class="max-w-7xl mx-auto py-5">
+    <main class="max-w-7xl mx-auto px-3 py-5 flex flex-col gap-4">
         <h1 class="text-5xl font-medium">
-            $HONOR Reward Tokens
+            $HONOR Society Token
         </h1>
 
         <p>
-            HONOR are minted at the same schedule as NexaPoW; by means of the Nexa Token Mining (NexaTM) protocol.
+            $HONORs are minted at the same schedule as NexaPoW; by means of the Nexa Token Mining (NexaTM) protocol.
         </p>
     </main>
 </template>

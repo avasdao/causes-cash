@@ -22,7 +22,7 @@ const System = useSystemStore()
 </script>
 
 <template>
-    <main class="max-w-7xl mx-auto py-5">
+    <main class="max-w-7xl mx-auto py-5 flex flex-col gap-4">
         <h1 class="text-5xl font-medium">
             Nexican Honor Society
         </h1>
@@ -32,7 +32,7 @@ const System = useSystemStore()
         </p>
 
         <p class="w-full lg:w-2/3 px-5 py-2">
-            Creators and Providers receive (sponsored) daily payouts in NEXA, based on the amount of HONOR they're pledged, and their overall Report Card rating.
+            Creators and Providers receive (sponsored) daily payouts in $NEXA, based on the amount of <NuxtLink to="/token" class="text-lg text-blue-500 font-bold">$HONOR</NuxtLink> they're pledged, and their overall Report Card rating.
         </p>
 
         <ol class="my-5 pl-20 list-disc space-y-5">

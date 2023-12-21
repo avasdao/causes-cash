@@ -1,7 +1,7 @@
 <template>
     <main class="bg-gradient-to-r from-lime-600 to-green-600 border-b-4 border-lime-700">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
-            <div class="w-full py-6 flex flex-col sm:flex-row items-center justify-between border-b border-indigo-500 lg:border-none">
+            <div class="w-full py-6 flex flex-col lg:flex-row items-center justify-between border-b border-indigo-500 lg:border-none">
                 <div class="flex items-center">
                     <NuxtLink to="/" class="flex flex-row sm:flex-col items-center">
                         <span class="sr-only">Causes Cash</span>
@@ -14,12 +14,12 @@
                     </NuxtLink>
 
                     <div class="hidden ml-10 space-x-8 lg:flex items-center">
-                        <NuxtLink to="/reports" class="text-2xl font-medium text-white hover:text-indigo-50" key="Reporting">
-                            Report Cards
-                        </NuxtLink>
-
                         <NuxtLink to="/spotlight" class="text-2xl font-medium text-white hover:text-indigo-50" key="Spotlight">
                             Spotlight
+                        </NuxtLink>
+
+                        <NuxtLink to="/reports" class="text-2xl font-medium text-white hover:text-indigo-50" key="Reporting">
+                            Report Cards
                         </NuxtLink>
 
                         <NuxtLink to="/help" class="text-base font-medium text-white hover:text-indigo-50" key="Support">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="mt-3 sm:mt-0 sm:ml-10 space-x-4">
+                <div class="mt-3 sm:mt-0 sm:ml-10 gap-4 flex flex-col lg:flex-row">
                     <NuxtLink to="/profile" class="inline-block bg-lime-600 py-2 px-4 border-4 border-lime-300 rounded-xl hover:bg-lime-700 hover:border-lime-500">
                         <span class="flex items-center gap-3 text-2xl font-bold text-gray-50 tracking-tighter">
                             <svg class="w-6 h-auto" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -51,6 +51,20 @@
 
                             👀
                         </span>
+                    </NuxtLink>
+                </div>
+
+                <div class="flex mt-10 space-x-8 lg:hidden items-center">
+                    <NuxtLink to="/spotlight" class="text-2xl font-medium text-white hover:text-indigo-50" key="Spotlight">
+                        Spotlight
+                    </NuxtLink>
+
+                    <NuxtLink to="/reports" class="text-2xl font-medium text-white hover:text-indigo-50" key="Reporting">
+                        Report Cards
+                    </NuxtLink>
+
+                    <NuxtLink to="/help" class="text-base font-medium text-white hover:text-indigo-50" key="Support">
+                        Need help?
                     </NuxtLink>
                 </div>
             </div>

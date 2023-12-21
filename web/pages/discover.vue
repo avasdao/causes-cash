@@ -24,7 +24,7 @@ const System = useSystemStore()
 </script>
 
 <template>
-    <main class="max-w-7xl mx-auto py-5 flex flex-col gap-4">
+    <main class="max-w-7xl mx-auto px-3 py-5 flex flex-col gap-4">
         <h1 class="text-5xl font-medium">
             Discover
         </h1>

@@ -5,7 +5,7 @@
 
         <div class="relative max-w-2xl mx-auto pt-16 px-4 text-center sm:pt-32 sm:px-6 lg:max-w-7xl lg:px-8">
             <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
-                <span class="block lg:inline">Compare Your Campaign Options</span>
+                <span class="block lg:inline">Compare Your Pricing Options</span>
             </h1>
 
             <p class="mt-4 text-xl text-indigo-100 font-bold">

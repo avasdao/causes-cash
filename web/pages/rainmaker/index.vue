@@ -10,7 +10,7 @@ definePageMeta({
 useHead({
     title: `Rainmaker — Causes Cash`,
     meta: [
-        { name: 'description', content: `Causes Cash makes building your next BIG idea effortless.` }
+        { name: 'description', content: `An uncensorable funding platform for radical creators and unstoppable service providers.` }
     ],
 })
 

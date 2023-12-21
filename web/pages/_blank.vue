@@ -2,7 +2,7 @@
 useHead({
     title: `Blank — Causes Cash`,
     meta: [
-        { name: 'description', content: `Causes Cash makes building your next BIG idea effortless.` }
+        { name: 'description', content: `An uncensorable funding platform for radical creators and unstoppable service providers.` }
     ],
 })
 
@@ -22,7 +22,7 @@ const System = useSystemStore()
 </script>
 
 <template>
-    <main class="max-w-7xl mx-auto py-5">
+    <main class="max-w-7xl mx-auto py-5 flex flex-col gap-4">
         <h1 class="text-5xl font-medium">
             Blank
         </h1>

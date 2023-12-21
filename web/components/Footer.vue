@@ -127,9 +127,9 @@
                                 </li>
 
                                 <li>
-                                    <a href="javascript://" class="text-base leading-6 text-gray-300 hover:text-white">
-                                        Media Kit
-                                    </a>
+                                    <NuxtLink to="/sponsors" class="text-base leading-6 text-gray-300 hover:text-white">
+                                        Sponsors
+                                    </NuxtLink>
                                 </li>
 
                             </ul>

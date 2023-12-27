@@ -99,6 +99,9 @@ const init = async () => {
     /* Initialize locals. */
     let response
 
+    /* Initialize globals. */
+    campaigns.value = []
+
     /* Request campaigns. */
     response = await $fetch('/api/rainmaker/campaigns', {
         method: 'POST',
@@ -185,8 +188,11 @@ onMounted(() => {
                                 Last campaign updated 2 minutes ago
                             </span>
 
-                            <span id="project-type-0-description-1" class="mt-2 text-xl font-medium text-gray-600">
-                                <span class="text-3xl text-amber-500">12</span> campaigns
+                            <span v-if="campaigns" id="project-type-0-description-1" class="mt-2 text-xl font-medium text-gray-600">
+                                <span class="text-3xl text-amber-500">{{campaigns.length}}</span> campaigns
+                            </span>
+                            <span v-else id="project-type-0-description-1" class="mt-2 text-xl font-medium text-gray-600 italic">
+                                loading...
                             </span>
                         </span>
                     </span>
@@ -251,12 +257,36 @@ onMounted(() => {
 
                             <div class="ml-4">
                                 <div class="mt-1 text-gray-500 truncate">
-                                    Campaign Id: {{campaign.id}}
+                                    Campaign Id: {{campaign?.id}}
                                 </div>
 
-                                <span class="font-medium text-blue-500 hover:blue-text-400 truncate">
+                                <div class="mt-1 text-gray-500 truncate">
+                                    Owner Id: {{campaign?.ownerid}}
+                                </div>
+
+                                <div class="mt-1 text-gray-500 truncate">
+                                    Title: {{campaign?.title}}
+                                </div>
+
+                                <div class="mt-1 text-gray-500 truncate">
+                                    # of receivers {{Object.keys(campaign?.receivers || {}).length}}
+                                </div>
+
+                                <div class="mt-1 text-gray-500 truncate">
+                                    Completed? {{campaign?.isCompleted}}
+                                </div>
+
+                                <div class="mt-1 text-gray-500 truncate">
+                                    Created {{campaign?.createdAt}}
+                                </div>
+
+                                <div class="mt-1 text-gray-500 truncate">
+                                    Updated {{campaign?.updatedAt}}
+                                </div>
+
+                                <!-- <span class="font-medium text-blue-500 hover:blue-text-400 truncate">
                                     <pre>{{campaign}}</pre>
-                                </span>
+                                </span> -->
 
                             </div>
                         </div>

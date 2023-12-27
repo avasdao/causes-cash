@@ -39,7 +39,7 @@ import { useWalletStore } from '@/stores/wallet'
 const Wallet = useWalletStore()
 
 // const PRIVATE_KEY = 'baa017c1c3458fc80c31c7b5a2ce833a3af44d3c172bff3981103d272f9a5a3c' // nexa:nqtsq5g5sjkqk7wzd9wwh9423rr0tda7m027ryljkfy84cjz
-const STUDIO_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
+// const STUDIO_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
 
 // const ROBIN_HOOD_ADDR = 'nexa:nqtsq5g5k2gjcnxxrudce0juwl4atmh2yeqkghcs46snrqug'
 // const PROVIDER_PUB_KEY_HASH = '37b2cca4d7e408179ddbb68cbe1460ce755e59fc'
@@ -77,12 +77,16 @@ export default async (_scriptArgs, _amount) => {
     let scriptPubKey
     let sellerAddress
     let sellerPkh
+    let tokenidHex
     let tokens
     let unspentTokens
     let userData
 
     console.info('\n  Nexa address:', Wallet.address)
     console.info('\n  WIF', Wallet.wallet.wif)
+
+    /* Set token id (hex). */
+    tokenidHex = _scriptArgs.tokenidHex
 
 //----------------------------------
 
@@ -184,7 +188,7 @@ export default async (_scriptArgs, _amount) => {
     // FOR DEV PURPOSES ONLY -- take the LARGEST input
     tokens = [tokens.sort((a, b) => Number(b.tokens) - Number(a.tokens))[0]]
     // FOR DEV PURPOSES ONLY -- add scripts
-    tokens[0].locking = encodeDataPush(lockingScript)
+    tokens[0].locking = lockingScript
     tokens[0].unlocking = false
     console.log('\n  Tokens GUEST:', tokens)
 
@@ -229,7 +233,7 @@ export default async (_scriptArgs, _amount) => {
         /* Add contract change. */
         receivers.push({
             address: contractAddress,
-            tokenid: STUDIO_ID_HEX,
+            tokenid: tokenidHex,
             tokens: BigInt(contractChange),
         })
     }
@@ -241,7 +245,7 @@ export default async (_scriptArgs, _amount) => {
 
     receivers.push({
         address: Wallet.address,
-        tokenid: STUDIO_ID_HEX,
+        tokenid: tokenidHex,
         tokens: BigInt(amountBuyer),
     })
 

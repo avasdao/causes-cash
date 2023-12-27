@@ -10,11 +10,11 @@ import { Wallet } from '@nexajs/wallet'
 console.log('Starting NexaJS Daemon...')
 
 const IS_LIVE_BROADCAST = false
-const ACTIVE_ACCOUNT_IDX = 2
-// 0 - nexa:... (master)
-// 1 - nexa:... (minting)
-// 2 - nexa:... (melting)
-// 3 - nexa:... (signing)
+const ACTIVE_ACCOUNT_IDX = 3
+// 0 - nexa:nqtsq5g5czrrjztetwg3xhn2k9xmenlm8j6c744awg383n5a (master)
+// 1 - nexa:nqtsq5g5l3n7dtqd8mfdx5dnsem7fpnzzjx3xyca09u9f632 (minting)
+// 2 - nexa:nqtsq5g5x7evefxhusyp08wmk6xtu9rqee64uk0uaq28jnlk (~melting~ TradingPost Admin)
+// 3 - nexa:nqtsq5g5h2a30rguxxnq40y2lsg5znx2nqrepqp7kllyc698 (signing)
 
 ;(async () => {
     /* Initialize locals. */

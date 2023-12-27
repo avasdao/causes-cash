@@ -34,9 +34,15 @@ export const useCampaignStore = defineStore('campaign', {
             let error
             let response
             let scriptArgs
+            let tokenid
 
             /* Set script arguments. */
             scriptArgs = _campaign.scriptArgs
+
+            /* Handle token id. */
+            if (_campaign.rewards) {
+                scriptArgs.tokenidHex = _campaign.rewards[0].tokenidHex
+            }
 
             /* Request trading post (swap). */
             response = await tradingPost(scriptArgs, _amount)

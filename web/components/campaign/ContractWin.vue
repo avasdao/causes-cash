@@ -38,8 +38,6 @@ const Campaign = useCampaignStore()
 const Profile = useProfileStore()
 const Wallet = useWalletStore()
 
-// const STUDIO_TOKENID = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
-
 const MAX_MESSAGE_LENGTH = 220
 const DUST_LIMIT = 546
 
@@ -251,7 +249,6 @@ watch(() => props.isExecuting, async (_status) => {
 
 watch(() => props.campaign, async (_campaign) => {
     /* Request token info. */
-    console.log('WHY IS THIS ADDR NOT WORKING??', _campaign?.address)
     const result = await getAddressTokenBalance(_campaign?.address)
     console.log('TOKEN (address) BALANCE', result)
 
@@ -326,7 +323,7 @@ const swap = async () => {
     if (!amount.value || amount.value === null) {
         return alert(`Oops! You MUST enter an amount to continue.`)
     }
-
+console.log('***PROPS CAMPAIGN***', props.campaign)
     response = await Campaign
         .tradingPost(props.campaign, amount.value)
         .catch(err => console.error(err))
@@ -404,7 +401,7 @@ onMounted(() => {
 
                                 <div v-if="availAssets" class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
                                     <h3>
-                                        <span class="font-bold text-lg">{{numeral(availAssets).format('0,0')}}</span> $STUDIO available
+                                        <span class="font-bold text-lg">{{numeral(availAssets).format('0,0')}}</span> ${{ticker}} available
                                     </h3>
                                 </div>
 

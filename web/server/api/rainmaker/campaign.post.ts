@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
             console.error(err)
             error = err
         })
-    console.log('CAMPAIGNS', campaigns)
+    // console.log('CAMPAIGNS', campaigns)
 
     /* Validate campaigns. */
     if (campaigns) {

@@ -5,6 +5,7 @@ import { sha256 } from '@nexajs/crypto'
 
 /* Initialize databases. */
 const rainmakerProfilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_profiles`)
+const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/sessions`)
 
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
@@ -12,9 +13,13 @@ export default defineEventHandler(async (event) => {
     let body
     let campaign
     let campaignid
+    let error
     let pkg
     let profileid
+    let ownerid
     let response
+    let session
+    let sessionid
 
     /* Set (request) body. */
     body = await readBody(event)
@@ -29,8 +34,35 @@ export default defineEventHandler(async (event) => {
     address = body.address
     // console.log('ADDRESS', address)
 
-    profileid = sha256(`${campaignid}:${address}`)
-    // console.log('PROFILEID', profileid)
+    sessionid = body?.sessionid
+    // console.log('SESSION ID', sessionid)
+
+    /* Validate session id. */
+    if (!sessionid || typeof sessionid === 'undefined') {
+        return {
+            error: 'Session NOT found!',
+            body,
+        }
+    }
+
+    /* Request session. */
+    session = await sessionsDb
+        .get(sessionid)
+        .catch(err => {
+            console.error(err)
+            error = err
+        })
+    // console.log('SESSION', session)
+
+    // TODO Validate session.
+
+    /* Set profile id. */
+    // NOTE: This is typically a (33-byte) public key.
+    ownerid = session.profileid
+    console.log('OWNERID', ownerid)
+
+    profileid = sha256(`${ownerid}:${address}`)
+    console.log('PROFILEID', profileid)
 
     response = await rainmakerProfilesDb
         .get(profileid)

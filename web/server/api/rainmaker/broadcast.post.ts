@@ -14,9 +14,12 @@ export default defineEventHandler(async (event) => {
     let body
     let campaign
     let campaignid
+    let ownerid
     let profiles
     let receivers
     let response
+    let session
+    let sessionid
     let txidem
     let txPkg
 
@@ -31,10 +34,37 @@ export default defineEventHandler(async (event) => {
 
     txidem = body.txidem
 
+    sessionid = body?.sessionid
+    // console.log('SESSION ID', sessionid)
+
+    /* Validate session id. */
+    if (!sessionid || typeof sessionid === 'undefined') {
+        return {
+            error: 'Session NOT found!',
+            body,
+        }
+    }
+
+    /* Request session. */
+    session = await sessionsDb
+        .get(sessionid)
+        .catch(err => {
+            console.error(err)
+            error = err
+        })
+    // console.log('SESSION', session)
+
+    // TODO Validate session.
+
+    /* Set profile id. */
+    // NOTE: This is typically a (33-byte) public key.
+    ownerid = session.profileid
+    console.log('OWNERID', ownerid)
+
     profiles = receivers.map(_receiver => {
         let profileid
 
-        profileid = sha256(`${campaignid}:${_receiver.address}`)
+        profileid = sha256(`${ownerid}:${_receiver.address}`)
 
         return profileid
     })

@@ -10,13 +10,13 @@ export default defineEventHandler(async (event) => {
     let body
     let campaigns
     let error
-    let profileid
+    let ownerid
     let session
     let sessionid
 
     /* Set (request) body. */
     body = await readBody(event)
-    console.log('CAMPAIGNS (body):', body)
+    // console.log('CAMPAIGNS (body):', body)
 
     sessionid = body?.sessionid
     // console.log('SESSION ID', sessionid)
@@ -38,15 +38,17 @@ export default defineEventHandler(async (event) => {
         })
     // console.log('SESSION', session)
 
+    // TODO Validate session.
+
     /* Set profile id. */
     // NOTE: This is typically a (33-byte) public key.
-    profileid = session.profileid
-    // console.log('PROFILEID', profileid)
+    ownerid = session.profileid
+    // console.log('OWNERID', ownerid)
 
     /* Save (database) session. */
     campaigns = await rainmakerCampaignsDb
         .query('api/byOwner', {
-            key: profileid,
+            key: ownerid,
             include_docs: true,
         })
         .catch(err => {

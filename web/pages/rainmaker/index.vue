@@ -138,8 +138,8 @@ onMounted(() => {
         </header>
 
         <fieldset class="mt-5">
-            <legend class="pl-5 text-base font-semibold leading-6 text-gray-900">
-                Select a Social Network
+            <legend class="pl-5 text-xs font-medium tracking-widest text-gray-400 uppercase">
+                Choose a Manager
             </legend>
 
             <div class="mt-1 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
@@ -148,16 +148,16 @@ onMounted(() => {
                     <input type="radio" name="project-type" value="Newsletter" class="sr-only" aria-labelledby="project-type-0-label" aria-describedby="project-type-0-description-0 project-type-0-description-1" />
                     <span class="flex flex-1">
                         <span class="flex flex-col">
-                            <span id="project-type-0-label" class="block text-sm font-medium text-gray-900">
-                                Twitter
+                            <span id="project-type-0-label" class="block text-lg font-medium text-gray-900">
+                                Profile Manager
                             </span>
 
-                            <span id="project-type-0-description-0" class="mt-1 flex items-center text-xs text-gray-500">
-                                Last message sent an hour ago
+                            <span id="project-type-0-description-0" class="-mt-1 flex items-center text-xs text-gray-500 italic">
+                                Last profile added an hour ago
                             </span>
 
-                            <span id="project-type-0-description-1" class="mt-3 text-sm font-medium text-gray-900">
-                                2,740 profiles
+                            <span id="project-type-0-description-1" class="mt-2 text-xl font-medium text-gray-600">
+                                <span class="text-3xl text-amber-500">2,740</span> profiles
                             </span>
                         </span>
                     </span>
@@ -177,16 +177,16 @@ onMounted(() => {
                     <input type="radio" name="project-type" value="Existing Customers" class="sr-only" aria-labelledby="project-type-1-label" aria-describedby="project-type-1-description-0 project-type-1-description-1" />
                     <span class="flex flex-1">
                         <span class="flex flex-col">
-                            <span id="project-type-1-label" class="block text-sm font-medium text-gray-900">
-                                Telegram
+                            <span id="project-type-1-label" class="block text-lg font-medium text-gray-900">
+                                Campaign Manager
                             </span>
 
-                            <span id="project-type-1-description-0" class="mt-1 flex items-center text-xs text-gray-500">
-                                Last message sent 2 minutes ago
+                            <span id="project-type-1-description-0" class="-mt-1 flex items-center text-xs text-gray-500 italic">
+                                Last campaign updated 2 minutes ago
                             </span>
 
-                            <span id="project-type-1-description-1" class="mt-3 text-sm font-medium text-gray-900">
-                                1,200 profiles
+                            <span id="project-type-0-description-1" class="mt-2 text-xl font-medium text-gray-600">
+                                <span class="text-3xl text-amber-500">12</span> campaigns
                             </span>
                         </span>
                     </span>
@@ -206,16 +206,16 @@ onMounted(() => {
                     <input type="radio" name="project-type" value="Trial Users" class="sr-only" aria-labelledby="project-type-2-label" aria-describedby="project-type-2-description-0 project-type-2-description-1" />
                     <span class="flex flex-1">
                         <span class="flex flex-col">
-                            <span id="project-type-2-label" class="block text-sm font-medium text-gray-900">
-                                Discord
+                            <span id="project-type-2-label" class="block text-lg font-medium text-gray-900">
+                                Media Manager
                             </span>
 
-                            <span id="project-type-2-description-0" class="mt-1 flex items-center text-xs text-gray-500">
-                                Last message sent 4 hours ago
+                            <span id="project-type-2-description-0" class="-mt-1 flex items-center text-xs text-gray-500 italic">
+                                Last asset added 4 hours ago
                             </span>
 
-                            <span id="project-type-2-description-1" class="mt-3 text-sm font-medium text-gray-900">
-                                621 profiles
+                            <span id="project-type-0-description-1" class="mt-2 text-xl font-medium text-gray-600">
+                                <span class="text-3xl text-amber-500">621</span> assets
                             </span>
                         </span>
                     </span>

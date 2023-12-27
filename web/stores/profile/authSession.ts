@@ -13,10 +13,9 @@ import { useProfileStore } from '@/stores/profile'
 const Profile = useProfileStore()
 
 export default async function () {
-    console.log('WALLET', this.wallet)
-    console.log('ADDRESS', this.address)
-    console.log('PUBLIC KEY', this.wallet.publicKey)
-    console.log('PROFILE SESSION', Profile.session)
+    // console.log('ADDRESS', this.address)
+    // console.log('PUBLIC KEY', this.wallet.publicKey)
+    // console.log('SESSION', Profile.session)
 
     /* Initialize locals. */
     let messageHash
@@ -34,22 +33,18 @@ export default async function () {
 
     /* Set (timestamp) timestamp.*/
     timestamp = moment().unix()
-    console.log('TIMESTAMP-1', timestamp)
-    timestamp = timestamp.toString(16)
-    console.log('TIMESTAMP-2', timestamp)
 
-    console.log('\n\nPRIVATE KEY', this.wallet.privateKey)
+    /* Convert timestamp to hex. */
+    timestamp = timestamp.toString(16)
 
     // NOTE: Format is <timestamp> <0x1F> <challenge>
     // NOTE: We use 0x1F as the default "unit separator".
     messageHash = hexToBin(`${timestamp}${unitSeparator}${Profile.challenge}`)
-    console.log('\n\nMESSAGE HASH', binToHex(messageHash))
 
-    // Generate a signature over the "sighash" using the passed private key.
+    /* Generate a signature over the "sighash" using the passed private key. */
     signature = secp256k1.signMessageHashSchnorr(this.wallet.privateKey, messageHash)
-    console.log('SIGNATURE BIN', signature)
-    console.log('SIGNATURE HEX', binToHex(signature))
 
+    /* Make authorization request. */
     response = await $fetch('/api/auth', {
         method: 'POST',
         body: {
@@ -59,5 +54,5 @@ export default async function () {
             timestamp,
         },
     })
-    console.log('AUTH SESSIONS (response):', response)
+    // console.log('AUTH SESSIONS (response):', response)
 }

@@ -66,7 +66,7 @@ export const useProfileStore = defineStore('profile', {
 
     actions: {
         async init() {
-            console.log('PROFILE (session):', this.session)
+            // console.log('EXISTING SESSION', this.session)
 
             /* Initialize locals. */
             let session
@@ -88,7 +88,7 @@ export const useProfileStore = defineStore('profile', {
                     sessionid: this.sessionid,
                 },
             })
-            console.log('GLOBAL SESSION', session)
+            // console.log('SESSION', session)
 
             /* Save session. */
             this.saveSession(session)
@@ -112,7 +112,7 @@ export const useProfileStore = defineStore('profile', {
         _setSession (_session) {
             /* Set session. */
             this._session = _session
-            console.log('SET SESSION', this._session)
+            // console.log('SET SESSION', this._session)
         },
     },
 })

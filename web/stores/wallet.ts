@@ -1,123 +1,83 @@
 /* Import modules. */
 import { defineStore } from 'pinia'
 
-import { listUnspent } from '@nexajs/address'
-
-import { sha256 } from '@nexajs/crypto'
-
-import {
-    encodePrivateKeyWif,
-    entropyToMnemonic,
-    mnemonicToEntropy,
-} from '@nexajs/hdnode'
-
-import { getCoins } from '@nexajs/purse'
-
-import {
-    getTokenInfo,
-    subscribeAddress,
-} from '@nexajs/rostrum'
-
-import { OP } from '@nexajs/script'
+import { mnemonicToEntropy } from '@nexajs/hdnode'
 
 import { Wallet } from '@nexajs/wallet'
-
-/* Libauth helpers. */
-import {
-    encodeDataPush,
-    instantiateRipemd160,
-    instantiateSecp256k1,
-} from '@bitauth/libauth'
 
 import _authSession from './profile/authSession.ts'
 import _broadcast from './wallet/broadcast.ts'
 import _setEntropy from './wallet/setEntropy.ts'
-
-let ripemd160
-let secp256k1
-
-;(async () => {
-    /* Instantiate Libauth crypto interfaces. */
-    ripemd160 = await instantiateRipemd160()
-    secp256k1 = await instantiateSecp256k1()
-})()
-
-/* Set ($AVAS) token id. */
-const AVAS_TOKENID = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000'
 
 /**
  * Wallet Store
  */
 export const useWalletStore = defineStore('wallet', {
     state: () => ({
-        /* Currently active asset id. */
-        // _assetid: null,
-
-        /* Directory of (owned) asset details (metadata). */
-        // _assets: null,
-
-        /* List of all (value-based) UTXOs. */
-        // _coins: null,
-
-        /* Initialize entropy (used for HD wallet). */
-        // NOTE: This is a cryptographically-secure "random" 32-byte (256-bit) value. */
+        _assets: null,
         _entropy: null,
-
-        /* List of all (token-based) UTXOs. */
-        // _tokens: null,
-
-        /* Wallet object. */
         _wallet: null,
-
-        /* Wallet import format (WIF) private key. */
-        // _wif: null,
     }),
 
     getters: {
         /* Return (abbreviated) wallet status. */
         abbr(_state) {
-            return _state.wallet?.abbr
+            if (!_state._wallet) {
+                return null
+            }
+
+            return _state._wallet.abbr
         },
 
         /* Return wallet status. */
         address(_state) {
-            return _state.wallet?.address
+            if (!_state._wallet) {
+                return null
+            }
+
+            return _state._wallet.address
         },
 
-        /* Return NexaJS wallet instance. */
         asset(_state) {
-            if (!this.assets) {
+            if (!this.assets || !this.wallet) {
                 return null
             }
 
-            return this.wallet.assets[this.wallet.assetid]
+            return this.assets[this.wallet.assetid]
         },
 
-        /* Return wallet status. */
         assets(_state) {
-            if (!this.wallet) {
+            if (_state._assets) {
+                return _state._assets
+            }
+
+            if (!_state._wallet) {
                 return null
             }
 
-            return this.wallet.assets
+            return _state._wallet.assets
         },
 
         /* Return wallet status. */
         isLoading(_state) {
-            if (!this.wallet) {
+            if (!_state._wallet) {
                 return true
             }
 
-            return this.wallet.isLoading
+            return _state._wallet.isLoading
         },
 
         /* Return wallet status. */
         isReady(_state) {
-            if (this.wallet?._entropy) {
+            if (!_state._wallet) {
+                return false
+            }
+
+            if (_state._wallet._entropy) {
                 return true
             }
 
-            return this.wallet.isReady
+            return _state._wallet.isReady
         },
 
         /* Return NexaJS wallet instance. */
@@ -150,13 +110,22 @@ export const useWalletStore = defineStore('wallet', {
 
             /* Request a wallet instance (by mnemonic). */
             this._wallet = await Wallet.init(this._entropy, true)
-            console.log('(Initialized) wallet', this._wallet)
+            // console.log('(Initialized) wallet', this._wallet)
 
             /* Set (default) asset. */
             this._wallet.setAsset('0')
 
             /* Authorize session. */
             _authSession.bind(this)()
+
+            /* Handle balance updates. */
+            this.wallet.on('balances', async (_assets) => {
+                console.log('Wallet Balances (onChanges):', _assets)
+
+                /* Close asset locally. */
+// FIXME Read ASSETS directly from library (getter).
+                this._assets = { ..._assets }
+            })
         },
 
         createWallet(_entropy) {
@@ -173,134 +142,6 @@ export const useWalletStore = defineStore('wallet', {
 
             /* Initialize wallet. */
             this.init()
-        },
-
-        /**
-         * Load Assets
-         *
-         * Retrieves all spendable UTXOs.
-         */
-        async loadAssets(_isReloading = false) {
-            // console.info('Wallet address:', this.address)
-            // console.info('Wallet address (1):', this.getAddress(1))
-            // console.info('Wallet address (2):', this.getAddress(2))
-            // console.info('Wallet address (3):', this.getAddress(3))
-
-            /* Initialize locals. */
-            let unspent
-
-            /* Validate coin re-loading. */
-            // FIXME: What happens if we re-subscribe??
-            if (_isReloading === false) {
-                /* Start monitoring address. */
-                await subscribeAddress(
-                    this.address,
-                    () => this.loadAssets.bind(this)(true),
-                )
-            }
-
-            /* Encode Private Key WIF. */
-            // this._wif = encodePrivateKeyWif({ hash: sha256 }, this._wallet.privateKey, 'mainnet')
-
-            // Fetch all unspent transaction outputs for the temporary in-browser wallet.
-            unspent = await listUnspent(this.address)
-                .catch(err => console.error(err))
-            // console.log('UNSPENT', unspent)
-
-            /* Validate unspent outputs. */
-            if (unspent.length === 0) {
-                /* Clear (saved) coins. */
-                this._coins = []
-
-                /* Clear (saved) tokens. */
-                this._tokens = []
-
-                return console.error('There are NO unspent outputs available.')
-            }
-
-            /* Retrieve coins. */
-            this._coins = unspent
-                .filter(_unspent => _unspent.hasToken === false)
-                .map(_unspent => {
-                    const outpoint = _unspent.outpoint
-                    const satoshis = _unspent.satoshis
-
-                    return {
-                        outpoint,
-                        satoshis,
-                        wif: this.wif,
-                    }
-                })
-            // console.log('COINS', this.coins)
-
-            /* Retrieve tokens. */
-            this._tokens = unspent
-                .filter(_unspent => _unspent.hasToken === true)
-                .map(_unspent => {
-                    const outpoint = _unspent.outpoint
-                    const satoshis = _unspent.satoshis
-                    const tokenid = _unspent.tokenid
-                    const tokens = _unspent.tokens
-
-                    return {
-                        outpoint,
-                        satoshis,
-                        tokenid,
-                        tokens,
-                        wif: this.wif,
-                    }
-                })
-            // console.log('TOKENS', this.tokens)
-
-            /* Vaildate assets (directory) is initialized. */
-            if (!this.assets) {
-                this._assets = {}
-            }
-
-            console.log('ASSETS', this.assets)
-
-            /* Handle (metadata) token details. */
-            this.tokens.forEach(async _token => {
-                let doc
-                let docUrl
-                let iconUrl
-
-                // console.log('TOKEN', _token)
-                // FIXME: Update after ttl (24 hours).
-                // if (!this.assets[_token.tokenid]) {
-                if (!this.assets[_token.tokenid]?.iconUrl) {
-                    /* Set (genesis) token details to (saved) directory. */
-                    this._assets[_token.tokenid] = await getTokenInfo(_token.tokenid)
-                        .catch(err => console.error(err))
-                    // console.log('TOKEN DETAILS', this._assets[_token.tokenid])
-
-                    /* Set document URL. */
-                    docUrl = this.assets[_token.tokenid].document_url
-
-                    /* Validate document URL. */
-                    if (docUrl) {
-                        doc = await $fetch(docUrl)
-                            .catch(err => console.error(err))
-
-                        if (doc) {
-                            /* Set icon URL. */
-                            iconUrl = doc[0]?.icon
-
-                            /* Validate full URI. */
-                            if (!iconUrl.includes('http')) {
-                                // console.log('BASE URL', new URL(docUrl), docUrl, iconUrl)
-
-                                /* Re-set icon URL. */
-                                iconUrl = (new URL(docUrl)).origin + iconUrl
-                            }
-
-                            /* Save to assets. */
-                            this._assets[_token.tokenid].iconUrl = iconUrl
-                        }
-                    }
-
-                }
-            })
         },
 
         async transfer(_receiver, _satoshis) {
@@ -359,50 +200,50 @@ export const useWalletStore = defineStore('wallet', {
             return this.wallet
         },
 
-        getAddress(_accountIdx) {
-            return this.wallet.getAddress(_accountIdx)
-        },
+        // getAddress(_accountIdx) {
+        //     return this.wallet.getAddress(_accountIdx)
+        // },
 
-        async groupTokens() {
-            /* Validate tokens. */
-            if (!this.tokens) {
-                return []
-            }
+        // async groupTokens() {
+        //     /* Validate tokens. */
+        //     if (!this.tokens) {
+        //         return []
+        //     }
 
-            /* Initialize (group) tokens. */
-            const tokens = {}
+        //     /* Initialize (group) tokens. */
+        //     const tokens = {}
 
-            for (let i = 0; i < this.tokens.length; i++) {
-                const token = this.tokens[i]
-                // console.log('TOKEN (grouped):', token)
+        //     for (let i = 0; i < this.tokens.length; i++) {
+        //         const token = this.tokens[i]
+        //         // console.log('TOKEN (grouped):', token)
 
-                // console.log('DETAILS', this.assets[token.tokenid])
-                if (!tokens[token.tokenid]) {
-                    let tokenidHex
-                    let ticker
+        //         // console.log('DETAILS', this.assets[token.tokenid])
+        //         if (!tokens[token.tokenid]) {
+        //             let tokenidHex
+        //             let ticker
 
-                    tokenidHex = this.assets[token.tokenid]?.token_id_hex
+        //             tokenidHex = this.assets[token.tokenid]?.token_id_hex
 
-                    if (tokenidHex) {
-                        ticker = await $fetch(`https://nexa.exchange/v1/ticker/quote/${tokenidHex}`)
-                            .catch(err => console.error(err))
-                    }
+        //             if (tokenidHex) {
+        //                 ticker = await $fetch(`https://nexa.exchange/v1/ticker/quote/${tokenidHex}`)
+        //                     .catch(err => console.error(err))
+        //             }
 
-                    tokens[token.tokenid] = {
-                        name: this.assets[token.tokenid]?.name || 'Unknown Asset',
-                        decimals: this.assets[token.tokenid]?.decimal_places || 0,
-                        iconUrl: this.assets[token.tokenid]?.iconUrl || '',
-                        tokens: token.tokens,
-                        tokenidHex,
-                        ticker,
-                    }
-                } else {
-                    tokens[token.tokenid].tokens += token.tokens
-                }
-            }
+        //             tokens[token.tokenid] = {
+        //                 name: this.assets[token.tokenid]?.name || 'Unknown Asset',
+        //                 decimals: this.assets[token.tokenid]?.decimal_places || 0,
+        //                 iconUrl: this.assets[token.tokenid]?.iconUrl || '',
+        //                 tokens: token.tokens,
+        //                 tokenidHex,
+        //                 ticker,
+        //             }
+        //         } else {
+        //             tokens[token.tokenid].tokens += token.tokens
+        //         }
+        //     }
 
-            return tokens
-        },
+        //     return tokens
+        // },
 
         destroy() {
             /* Reset wallet. */

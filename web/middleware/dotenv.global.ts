@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     // console.log('MIDDLEWHARE RUNTIME', runtimeConfig)
 
     /* Validate environment. */
-    if (process && runtimeConfig) {
+    if (typeof process !== 'undefined' && runtimeConfig) {
         /* Set "public" configuration to "client" environment. */
         process.env = runtimeConfig.public
         // console.log('MIDDLEWARE PROCESS', process)

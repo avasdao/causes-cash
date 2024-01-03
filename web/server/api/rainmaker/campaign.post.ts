@@ -9,6 +9,7 @@ const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
     let body
+    let campaign
     let campaignid
     let campaigns
     let error
@@ -90,14 +91,15 @@ export default defineEventHandler(async (event) => {
             return doc
         })
     }
+    console.log('CAMPAIGNS', campaigns)
 
 // FIXME; MUST AUTHENTICATE THIS ACCOUNT BEFORE ACCESS CAMPAIGN DATA
 console.log('CAMPAIGN ID', campaignid)
 
     /* Save (database) session. */
     response = await rainmakerProfilesDb
-        .query('api/byCampaignid', {
-            key: campaignid,
+        .query('api/byOwner', {
+            key: profileid,
             include_docs: true,
         })
         .catch(err => {
@@ -127,10 +129,10 @@ console.log('CAMPAIGN ID', campaignid)
     console.log('PROFILES', profiles)
 
     response = {
-        campaigns,
+        campaign: campaigns.find(_campaign => _campaign.id === campaignid),
         profiles,
     }
 
-    /* Return session. */
+    /* Return response. */
     return response
 })

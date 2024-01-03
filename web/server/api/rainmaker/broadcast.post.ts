@@ -61,34 +61,71 @@ export default defineEventHandler(async (event) => {
     ownerid = session.profileid
     console.log('OWNERID', ownerid)
 
-    profiles = receivers.map(_receiver => {
-        let profileid
+    /* Save (database) session. */
+    // campaigns = await rainmakerCampaignsDb
+    //     .query('api/byOwner', {
+    //         key: profileid,
+    //         include_docs: true,
+    //     })
+    //     .catch(err => {
+    //         console.error(err)
+    //         error = err
+    //     })
+    // console.log('CAMPAIGNS', campaigns)
 
-        profileid = sha256(`${ownerid}:${_receiver.address}`)
+    /* Validate campaigns. */
+    // if (campaigns) {
+    //     campaigns = campaigns.rows.map(_campaign => {
+    //         /* Initialize locals. */
+    //         let doc
 
-        return profileid
-    })
+    //         /* Set document. */
+    //         doc = _campaign.doc
 
-    for (let i = 0; i < profiles.length; i++) {
-        const profileid = profiles[i]
+    //         /* Re-format document. */
+    //         doc = {
+    //             id: doc._id,
+    //             ...doc,
+    //         }
 
-        const profile = await rainmakerProfilesDb
-            .get(profileid)
-            .catch(err => console.error(err))
-        // console.log('PROFILE-1', profile)
+    //         /* Cleanup document. */
+    //         delete doc._id
+    //         delete doc._rev
 
-        /* Validate profile. */
-        if (profile) {
-            profile.txs.push(txidem)
-            profile.updatedAt = moment().unix()
-            // console.log('PROFILE-2', profile)
+    //         /* Return document. */
+    //         return doc
+    //     })
+    // }
+    // console.log('CAMPAIGNS', campaigns)
 
-            response = await rainmakerProfilesDb
-                .put(profile)
-                .catch(err => console.error(err))
-            // console.log('UPDATE PROFILE', response)
-        }
-    }
+    // profiles = receivers.map(_receiver => {
+    //     let profileid
+
+    //     profileid = sha256(`${ownerid}:${_receiver.address}`)
+
+    //     return profileid
+    // })
+
+    // for (let i = 0; i < profiles.length; i++) {
+    //     const profileid = profiles[i]
+
+    //     const profile = await rainmakerProfilesDb
+    //         .get(profileid)
+    //         .catch(err => console.error(err))
+    //     // console.log('PROFILE-1', profile)
+
+    //     /* Validate profile. */
+    //     if (profile) {
+    //         profile.txs.push(txidem)
+    //         profile.updatedAt = moment().unix()
+    //         // console.log('PROFILE-2', profile)
+
+    //         response = await rainmakerProfilesDb
+    //             .put(profile)
+    //             .catch(err => console.error(err))
+    //         // console.log('UPDATE PROFILE', response)
+    //     }
+    // }
 
     txPkg = {
         _id: txidem,
@@ -98,9 +135,9 @@ export default defineEventHandler(async (event) => {
     }
     // console.log('TX PKG', txPkg)
 
-    response = await rainmakerTxsDb
-        .put(txPkg)
-        .catch(err => console.error(err))
+    // response = await rainmakerTxsDb
+    //     .put(txPkg)
+    //     .catch(err => console.error(err))
     // console.log('RESPONSE', response)
 
     return txidem

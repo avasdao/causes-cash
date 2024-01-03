@@ -27,9 +27,6 @@ import {
     // instantiateRipemd160,
 } from '@bitauth/libauth'
 
-// const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
-const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000' // STUDIO
-
 export default async function (_receivers) {
     /* Initialize locals. */
     let body
@@ -42,31 +39,36 @@ export default async function (_receivers) {
     let response
     let scriptPubKey
     // let scriptPushPubKey
+    let tokenidHex
     let tokens
     let txResult
     let userData
     // let wif
 
-    console.info('\n  Nexa address:', this.address)
+    console.info('ADDRESS', this.address)
+    console.info('WIF', this.wallet.wif)
 
-    coins = await getCoins(this.wif)
+    /* Set token id. */
+    tokenidHex = _receivers[0].tokenid
+
+    coins = await getCoins(this.wallet.wif)
         .catch(err => console.error(err))
     console.log('\n  Coins:', coins)
 
-    tokens = await getTokens(this.wif)
+    tokens = await getTokens(this.wallet.wif)
         .catch(err => console.error(err))
     console.log('\n  Tokens:', tokens)
 
     /* Filter tokens. */
     // NOTE: Currently limited to a "single" Id.
     tokens = tokens.filter(_token => {
-        return _token.tokenidHex === TOKEN_ID_HEX
+        return _token.tokenidHex === tokenidHex
     })
     console.log('\n  Tokens (filtered):', tokens)
 
     userData = [
         'RAIN',
-        `$STUDIO Telegram Airdrop`,
+        `$NXL Holiday Airdrop`,
     ]
 
     /* Initialize hex data. */
@@ -76,16 +78,17 @@ export default async function (_receivers) {
         {
             data: nullData,
         },
+        ..._receivers,
     ]
 
-    _receivers.forEach(_receiver => {
-        receivers.push(        {
-            address: _receiver.address,
-            tokenid: TOKEN_ID_HEX, // TODO Allow auto-format conversion.
-            tokens: BigInt(_receiver.tokens),
-        },
-)
-    })
+//     _receivers.forEach(_receiver => {
+//         receivers.push(        {
+//             address: _receiver.address,
+//             tokenid: tokenidHex, // TODO Allow auto-format conversion.
+//             tokens: BigInt(_receiver.tokens),
+//         },
+// )
+//     })
 
     receivers.push({
         address: this.address,

@@ -57,10 +57,10 @@ const airdrop = async () => {
     Object.keys(profiles.value).forEach(_profileid => {
         /* Set profile. */
         const profile = profiles.value[_profileid]
-        console.log('PROFILE', profile)
+        // console.log('PROFILE', profile)
 
         const found = campaign.value.profiles.find(_profile => _profile.id === profile.id)
-        console.log('FOUND', found)
+        // console.log('FOUND', found)
 
         receivers.push({
             address: found.address,

@@ -4,38 +4,28 @@ import PouchDB from 'pouchdb'
 import { sha256 } from '@nexajs/crypto'
 
 /* Initialize databases. */
-const rainmakerProfilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_profiles`)
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/profiles`)
 const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/sessions`)
 
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
     let address
+    let adminid
     let body
-    let campaign
     let campaignid
     let error
     let pkg
     let profileid
-    let ownerid
     let response
     let session
     let sessionid
 
     /* Set (request) body. */
     body = await readBody(event)
-    // console.log('RAINMAKER (body):', body)
-
-    campaign = body.campaign
-    // console.log('CAMPAIGN', campaign)
-
-    campaignid = campaign.id
-    // console.log('CAMPAIGNID', campaignid)
-
-    address = body.address
-    // console.log('ADDRESS', address)
+    console.log('PROFILES (body):', body)
 
     sessionid = body?.sessionid
-    // console.log('SESSION ID', sessionid)
+    console.log('SESSION ID', sessionid)
 
     /* Validate session id. */
     if (!sessionid || typeof sessionid === 'undefined') {
@@ -58,52 +48,48 @@ export default defineEventHandler(async (event) => {
 
     /* Set profile id. */
     // NOTE: This is typically a (33-byte) public key.
-    ownerid = session.profileid
-    console.log('OWNERID', ownerid)
+    adminid = session.profileid
+    console.log('ADMINID', adminid)
+    console.log('ADMINS', process.env.ADMINS)
 
-    profileid = sha256(`${ownerid}:${address}`)
-    console.log('PROFILEID', profileid)
+    if (!process.env.ADMINS?.includes(adminid)) {
+        return {
+            error: 'User is NOT authorized to access this data.',
+            adminid,
+        }
+    }
 
-    response = await rainmakerProfilesDb
-        .get(profileid)
+    response = await profilesDb
+        .allDocs({
+            include_docs: true,
+        })
         .catch(err => console.error(err))
     // console.log('RESPONSE', response)
 
     /* Validate response. */
-    if (response) {
-        pkg = {
-            id: response._id,
-            ...response
-        }
+    // if (response) {
+    //     pkg = {
+    //         id: response._id,
+    //         ...response
+    //     }
 
-        delete pkg._id
-        delete pkg._rev
+    //     delete pkg._id
+    //     delete pkg._rev
 
-        return pkg
-    }
+    //     return pkg
+    // }
 
     /* Build (profile) package. */
     pkg = {
-        _id: profileid,
-        campaignid,
-        address,
-        txs: [], // NOTE: Will hold txidems.
+        numProfiles: response.total_rows,
+        data: response.rows,
+        // _id: profileid,
+        // campaignid,
+        // address,
+        // txs: [], // NOTE: Will hold txidems.
         createdAt: moment().unix(),
     }
-    // console.log('PROFILE PKG', pkg)
-
-    /* Add profile to database. */
-    response = await rainmakerProfilesDb
-        .put(pkg)
-        .catch(err => console.error(err))
-    // console.log('RESPONSE', response)
-
-    pkg = {
-        id: pkg._id,
-        ...pkg
-    }
-
-    delete pkg._id
+    console.log('PROFILE PKG', pkg)
 
     /* Return response. */
     return pkg

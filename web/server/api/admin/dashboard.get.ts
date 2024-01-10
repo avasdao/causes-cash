@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
         pkg.numProfiles = response.rows.length
         pkg.numProfilesChg = 0.01337
 
-        pkg.rows = response.rows
+        pkg.data = response.rows
 
         pkg.createdAt = moment().unix()
     }

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/* Import modules. */
+import numeral from 'numeral'
+
 definePageMeta({
     layout: 'admin',
 })
@@ -14,10 +17,33 @@ useHead({
 import { useSystemStore } from '@/stores/system'
 const System = useSystemStore()
 
-// onMounted(() => {
-//     console.log('Mounted!')
-//     // Now it's safe to perform setup operations.
-// })
+const dashboard = ref()
+
+const displayNumProfiles = computed(() => {
+    if (!dashboard.value) {
+        return 'loading...'
+    }
+
+    return numeral(dashboard.value.numProfiles).format('0,0')
+})
+
+const displayNumProfilesChg = computed(() => {
+    if (!dashboard.value) {
+        return 'n/a'
+    }
+
+    return '+' + numeral(dashboard.value.numProfilesChg).format('0.00%')
+})
+
+const init = async () => {
+    dashboard.value = await $fetch('/api/admin/dashboard')
+        .catch(err => console.error(err))
+    console.log('ADMIN DASHBOARD', dashboard.value)
+}
+
+onMounted(() => {
+    init()
+})
 
 // onBeforeUnmount(() => {
 //     console.log('Before Unmount!')
@@ -30,33 +56,75 @@ const System = useSystemStore()
 
 
         <dl class="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
+            <NuxtLink to="/admin/profiles" class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8 hover:bg-lime-50">
+                <dt class="text-sm font-medium leading-6 text-gray-500">
+                    Platform Profiles
+                </dt>
+
+                <dd class="text-xs font-medium text-gray-700">
+                    {{displayNumProfilesChg}}
+                </dd>
+
+                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+                    {{displayNumProfiles}}
+                </dd>
+            </NuxtLink>
+
             <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-                <dt class="text-sm font-medium leading-6 text-gray-500">Revenue</dt>
-                <dd class="text-xs font-medium text-gray-700">+4.75%</dd>
-                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">$405,091.00</dd>
+                <dt class="text-sm font-medium leading-6 text-gray-500">
+                    Overdue invoices
+                </dt>
+
+                <dd class="text-xs font-medium text-rose-600">
+                    +54.02%
+                </dd>
+
+                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+                    $12,787.00
+                </dd>
             </div>
+
             <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-                <dt class="text-sm font-medium leading-6 text-gray-500">Overdue invoices</dt>
-                <dd class="text-xs font-medium text-rose-600">+54.02%</dd>
-                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">$12,787.00</dd>
+                <dt class="text-sm font-medium leading-6 text-gray-500">
+                    Outstanding invoices
+                </dt>
+
+                <dd class="text-xs font-medium text-gray-700">
+                    -1.39%
+                </dd>
+
+                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+                    $245,988.00
+                </dd>
             </div>
+
             <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-                <dt class="text-sm font-medium leading-6 text-gray-500">Outstanding invoices</dt>
-                <dd class="text-xs font-medium text-gray-700">-1.39%</dd>
-                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">$245,988.00</dd>
-            </div>
-            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-                <dt class="text-sm font-medium leading-6 text-gray-500">Expenses</dt>
-                <dd class="text-xs font-medium text-rose-600">+10.18%</dd>
-                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">$30,156.00</dd>
+                <dt class="text-sm font-medium leading-6 text-gray-500">
+                    Expenses
+                </dt>
+
+                <dd class="text-xs font-medium text-rose-600">
+                    +10.18%
+                </dd>
+
+                <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+                    $30,156.00
+                </dd>
             </div>
         </dl>
 
 <!--  -->
 
         <div>
-            <h2 class="text-base font-semibold leading-6 text-gray-900">Projects</h2>
-            <p class="mt-1 text-sm text-gray-500">You haven’t created a project yet. Get started by selecting a template or start from an empty project.</p>
+            <h2 class="text-base font-semibold leading-6 text-gray-900">
+                Administrators ONLY
+            </h2>
+
+            <p class="w-1/2 mt-1 text-sm text-gray-500">
+                You MUST have the required access level to access these areas.
+                Get started by selecting a template or start from an empty project.
+            </p>
+
             <ul role="list" class="mt-6 grid grid-cols-1 gap-6 border-b border-t border-gray-200 py-6 sm:grid-cols-2">
                 <li class="flow-root">
                     <div class="relative -m-2 flex items-center space-x-4 rounded-xl p-2 focus-within:ring-2 focus-within:ring-indigo-500 hover:bg-gray-50">
@@ -66,14 +134,19 @@ const System = useSystemStore()
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-900">
-                                <a href="#" class="focus:outline-none">
+                            <h3 class="text-lg font-medium text-gray-900">
+                                <NuxtLink to="/admin/profiles" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
-                                    <span>Create a List</span>
+                                    <span>
+                                        View Profiles
+                                    </span>
                                     <span aria-hidden="true"> &rarr;</span>
-                                </a>
+                                </NuxtLink>
                             </h3>
-                            <p class="mt-1 text-sm text-gray-500">Another to-do system you’ll try but eventually give up on.</p>
+
+                            <p class="mt-1 text-sm text-gray-500">
+                                Another to-do system you’ll try but eventually give up on.
+                            </p>
                         </div>
                     </div>
                 </li>
@@ -90,7 +163,7 @@ const System = useSystemStore()
                         </div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="#" class="focus:outline-none">
+                                <a href="javascript://" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>Create a Calendar</span>
                                     <span aria-hidden="true"> &rarr;</span>
@@ -113,7 +186,7 @@ const System = useSystemStore()
                         </div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="#" class="focus:outline-none">
+                                <a href="javascript://" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>Create a Gallery</span>
                                     <span aria-hidden="true"> &rarr;</span>
@@ -136,7 +209,7 @@ const System = useSystemStore()
                         </div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="#" class="focus:outline-none">
+                                <a href="javascript://" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>Create a Board</span>
                                     <span aria-hidden="true"> &rarr;</span>
@@ -159,7 +232,7 @@ const System = useSystemStore()
                         </div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="#" class="focus:outline-none">
+                                <a href="javascript://" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>Create a Spreadsheet</span>
                                     <span aria-hidden="true"> &rarr;</span>
@@ -178,7 +251,7 @@ const System = useSystemStore()
                         </div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="#" class="focus:outline-none">
+                                <a href="javascript://" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>Create a Timeline</span>
                                     <span aria-hidden="true"> &rarr;</span>
@@ -190,7 +263,7 @@ const System = useSystemStore()
                 </li>
             </ul>
             <div class="mt-4 flex">
-                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="javascript://" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                     Or start from an empty project
                     <span aria-hidden="true"> &rarr;</span>
                 </a>

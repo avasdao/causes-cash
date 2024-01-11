@@ -68,7 +68,7 @@ export default async function (_receivers) {
 
     userData = [
         'RAIN',
-        `$NXL Holiday Airdrop`,
+        `$NXL Twitter / X Airdrop`,
     ]
 
     /* Initialize hex data. */

@@ -27,7 +27,7 @@ const campaignid = ref(route.params.campaignid)
 // const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
 // const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000' // STUDIO
 const TOKEN_ID_HEX = 'a15c9e7e68170259fd31bc26610b542625c57e13fdccb5f3e1cb7fb03a420000' // NXL
-const TOKENS_PER_RECEIVER = '1234567890'
+const TOKENS_PER_RECEIVER = '1250000'
 
 const campaign = ref(null)
 const profiles = ref(null)
@@ -36,6 +36,7 @@ const txidem = ref(null)
 const isAddingReceiver = ref(false)
 
 const airdrop = async () => {
+    // console.log('PROFILES', profiles.value)
     if (!profiles.value) {
         return alert('NO profiles available for airdrop.')
     }
@@ -54,25 +55,26 @@ const airdrop = async () => {
     let response
 
     /* Initialize receivers. */
-    const receivers = []
+    const walletReceivers = []
 
     Object.keys(profiles.value).forEach(_profileid => {
         /* Set profile. */
         const profile = profiles.value[_profileid]
         // console.log('PROFILE', profile)
 
-        const found = campaign.value.profiles.find(_profile => _profile.id === profile.id)
+        // const found = campaign.value.receivers.find(_receiver => _receiver.id === profile.id)
         // console.log('FOUND', found)
 
-        receivers.push({
-            address: found.address,
+        walletReceivers.push({
+            address: profile.address,
             tokenid: TOKEN_ID_HEX, // TODO Allow auto-format conversion.
+            // tokenid: campaign.value.tokenid,
             tokens: BigInt(profile.tokens),
         })
     })
 
     /* Broadcast (to profiles). */
-    response = await Wallet.broadcast(receivers)
+    response = await Wallet.broadcast(walletReceivers)
         .catch(err => console.error(err))
     console.log('RESPONSE', response)
 
@@ -99,11 +101,9 @@ const init = async () => {
     if (!Profile.sessionid) {
         throw new Error('Oops! You MUST sign-in to continue.')
     }
-    /* Initialize locals. */
-    let response
 
     /* Request campaign. */
-    response = await $fetch('/api/rainmaker/campaigns', {
+    campaign.value = await $fetch('/api/rainmaker/campaigns', {
         method: 'POST',
         body: {
             sessionid: Profile.sessionid,
@@ -111,21 +111,18 @@ const init = async () => {
         },
     })
     .catch(err => console.error(err))
-    console.log('RAINMAKER (campaign):', response)
-
-    /* Set campaign. */
-    campaign.value = response
+    console.log('RAINMAKER (campaign):', campaign.value)
 
     profiles.value = []
 
     /* Validate receivers. */
-    if (!response.campaign?.receivers) {
+    if (!campaign.value?.receivers) {
         return
     }
 
     /* Set profiles. */
-    Object.keys(response.campaign.receivers).forEach(_receiverid => {
-        const receiver = response.campaign.receivers[_receiverid]
+    Object.keys(campaign.value.receivers).forEach(_receiverid => {
+        const receiver = campaign.value.receivers[_receiverid]
 
         profiles.value.push({
             id: _receiverid,
@@ -166,22 +163,18 @@ onMounted(() => {
             </button>
         </div>
 
-        <div v-if="profiles">
-            Total Receivers: {{Object.keys(profiles).length}}
-        </div>
-
         <div v-if="txidem" class="mt-5 truncate">
             <NuxtLink :to="'https://explorer.nexa.org/tx/' + txidem" target="_blank" class="text-lg text-blue-500 font-medium hover:text-blue-400">
                 {{txidem}}
             </NuxtLink>
         </div>
 
-        <div class="mt-6 py-5 bg-amber-50 border-2 border-amber-400 rounded-xl shadow-md">
+        <div v-if="campaign?.receivers" class="mt-6 py-5 bg-amber-50 border-2 border-amber-400 rounded-xl shadow-md">
             <div class="px-3 sm:flex sm:items-center">
                 <div class="">
                     <h1 class="text-2xl font-semibold leading-6 text-gray-900">
-                        Profiles
-                        <span class="">( {{profiles?.length}} )</span>
+                        Receivers
+                        <span class="">( {{Object.keys(campaign.receivers).length}} )</span>
                     </h1>
 
                     <p class="mt-2 text-sm text-gray-700">

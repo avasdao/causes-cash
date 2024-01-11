@@ -1,13 +1,17 @@
 /* Import modules. */
+import { log } from 'console'
 import PouchDB from 'pouchdb'
 
 /* Initialize databases. */
 const rainmakerCampaignsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_campaigns`)
+const rainmakerReceiversDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_receivers`)
 const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/sessions`)
 
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
     let body
+    let campaign
+    let campaignid
     let campaigns
     let error
     let ownerid
@@ -17,6 +21,9 @@ export default defineEventHandler(async (event) => {
     /* Set (request) body. */
     body = await readBody(event)
     // console.log('CAMPAIGNS (body):', body)
+
+    campaignid = body?.campaignid
+    console.log('CAMPAIGN ID', campaignid)
 
     sessionid = body?.sessionid
     // console.log('SESSION ID', sessionid)
@@ -45,6 +52,49 @@ export default defineEventHandler(async (event) => {
     ownerid = session.profileid
     // console.log('OWNERID', ownerid)
 
+    if (campaignid) {
+        campaign = await rainmakerCampaignsDb
+            .get(campaignid)
+            .catch(err => console.error(err))
+
+        delete campaign._id
+        delete campaign._rev
+
+        let profiles
+        let receiver
+        let receiverid
+
+        let ids = []
+
+        Object.keys(campaign.receivers).map(async _receiverid => {
+            // console.log('RECEIVER ID', _receiverid)
+
+            ids.push(_receiverid)
+
+        })
+        console.log('THIS DOES NOT WAIT!!!', ids)
+
+        profiles = await rainmakerReceiversDb
+            .allDocs({
+                keys: ids,
+                include_docs: true,
+            })
+            .catch(err => console.error(err))
+        // console.log('PROFILES-1', profiles)
+
+        /* Handle profiles. */
+        profiles.rows.forEach(_profile => {
+            console.log('PROFILE (matching):', _profile)
+
+            /* Set receiver address. */
+            campaign.receivers[_profile.id].address = _profile.doc.address
+        })
+        // console.log('PROFILES-2', profiles)
+
+        /* Return campaign. */
+        return campaign
+    }
+
     /* Save (database) session. */
     campaigns = await rainmakerCampaignsDb
         .query('api/byOwner', {
@@ -55,7 +105,7 @@ export default defineEventHandler(async (event) => {
             console.error(err)
             error = err
         })
-    // console.log('CAMPAIGNS:', campaigns)
+    // console.log('CAMPAIGNS', campaigns)
 
     /* Validate campaigns. */
     if (campaigns) {

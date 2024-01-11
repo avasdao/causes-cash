@@ -34,13 +34,13 @@ export default defineEventHandler(async (event) => {
     // console.log('CAMPAIGN', campaign)
 
     campaignid = body?.campaignid
-    console.log('CAMPAIGNID', campaignid)
+    // console.log('CAMPAIGNID', campaignid)
 
     address = body?.address
-    console.log('ADDRESS', address)
+    // console.log('ADDRESS', address)
 
     sessionid = body?.sessionid
-    console.log('SESSION ID', sessionid)
+    // console.log('SESSION ID', sessionid)
 
     /* Validate session id. */
     if (!sessionid || typeof sessionid === 'undefined') {
@@ -64,10 +64,10 @@ export default defineEventHandler(async (event) => {
     /* Set profile id. */
     // NOTE: This is typically a (33-byte) public key.
     ownerid = session.profileid
-    console.log('OWNERID', ownerid)
+    // console.log('OWNERID', ownerid)
 
     receiverid = ripemd160(sha256(`${ownerid}:${address}`))
-    console.log('RECEIVERID', receiverid)
+    // console.log('RECEIVERID', receiverid)
 
     response = await rainmakerReceiversDb
         .get(receiverid)
@@ -96,22 +96,22 @@ export default defineEventHandler(async (event) => {
             txs: [], // NOTE: Will hold txidems.
             createdAt: moment().unix(),
         }
-        console.log('RECEIVER PKG', pkg)
+        // console.log('RECEIVER PKG', pkg)
 
         /* Add profile to database. */
         response = await rainmakerReceiversDb
             .put(pkg)
             .catch(err => console.error(err))
-        console.log('RESPONSE', response)
+        // console.log('RESPONSE', response)
     }
 
     campaign = await rainmakerCampaignsDb
         .get(campaignid)
         .catch(err => console.error(err))
-    console.log('CAMPAIGN', campaign)
+    // console.log('CAMPAIGN', campaign)
 
     receivers = campaign?.receivers
-    console.log('RECEIVERS-1', receivers)
+    // console.log('RECEIVERS-1', receivers)
 
     /* Validate receivers. */
     if (!receivers) {
@@ -122,7 +122,7 @@ export default defineEventHandler(async (event) => {
         satoshis: campaign.satoshis,
         tokens: campaign.tokens,
     }
-    console.log('RECEIVERS-2', receivers)
+    // console.log('RECEIVERS-2', receivers)
 
     /* Update receivers. */
     campaign.receivers = receivers

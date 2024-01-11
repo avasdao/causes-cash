@@ -42,11 +42,11 @@ onMounted(() => {
 
 <template>
     <main class="max-w-7xl mx-auto px-3 py-5 flex flex-col gap-4">
-        <ul v-if="campaigns" role="list" class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-            <h3>
-                {{campaigns.length}} campaigns found
-            </h3>
+        <h3 class="text-xl font-medium text-gray-500 tracking-widest">
+            {{campaigns.length}} campaigns found
+        </h3>
 
+        <ul v-if="campaigns" role="list" class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
             <li v-for="campaign of campaigns" :key="campaign.id" class="overflow-hidden rounded-xl border border-gray-200">
                 <div class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
                     <img src="https://tailwindui.com/img/logos/48x48/tuple.svg" alt="Tuple" class="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10" />
@@ -57,7 +57,7 @@ onMounted(() => {
                         </h1>
 
                         <span class="text-sm font-medium leading-6 text-gray-900">
-                            {{campaign.summary}}
+                            TBD
                         </span>
                     </div>
 
@@ -96,6 +96,10 @@ onMounted(() => {
 
                 <dl class="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
                     <div class="flex justify-between gap-x-4 py-3">
+                        {{campaign.summary}}
+                    </div>
+
+                    <div class="flex justify-between gap-x-4 py-3">
                         <dt class="text-gray-500">
                             Funding Goal
                         </dt>
@@ -108,9 +112,9 @@ onMounted(() => {
                     </div>
 
                     <div class="flex justify-between gap-x-4 py-3">
-                        <div class="font-medium text-gray-900">
+                        <span class="font-medium text-gray-900 truncate">
                             {{campaign.owner}}
-                        </div>
+                        </span>
                     </div>
 
                     <div class="flex justify-between gap-x-4 py-3">

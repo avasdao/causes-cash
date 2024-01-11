@@ -30,8 +30,9 @@ const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12
 const campaign = ref(null)
 const campaigns = ref(null)
 const profiles = ref(null)
-const isAddingProfile = ref(false)
 const txidem = ref(null)
+
+const isAddingCampaign = ref(false)
 
 const TOKENS_PER_RECEIVER = 10000000
 
@@ -182,6 +183,18 @@ onMounted(() => {
             </div>
         </fieldset>
 
+        <div class="my-5 px-3 sm:flex sm:items-center">
+            <div class="mt-4 mx-5 sm:mt-0 sm:flex-none">
+                <button
+                    @click="isAddingCampaign = true"
+                    type="button"
+                    class="block rounded-md bg-lime-600 px-3 py-2 text-center text-lg font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600"
+                >
+                    Add Campaign
+                </button>
+            </div>
+        </div>
+
         <section class="my-5 px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
             <h2>Select a Campaign</h2>
 
@@ -241,9 +254,9 @@ onMounted(() => {
 
     </main>
 
-    <RainmakerAddProfile
-        v-if="isAddingProfile"
-        @close="isAddingProfile = false"
+    <RainmakerAddCampaign
+        v-if="isAddingCampaign"
+        @close="isAddingCampaign = false"
         :campaign="Rainmaker.campaign"
     />
 </template>

@@ -33,6 +33,8 @@ const campaign = ref(null)
 const profiles = ref(null)
 const txidem = ref(null)
 
+const isAddingReceiver = ref(false)
+
 const airdrop = async () => {
     if (!profiles.value) {
         return alert('NO profiles available for airdrop.')
@@ -101,7 +103,7 @@ const init = async () => {
     let response
 
     /* Request campaign. */
-    response = await $fetch('/api/rainmaker/campaign', {
+    response = await $fetch('/api/rainmaker/campaigns', {
         method: 'POST',
         body: {
             sessionid: Profile.sessionid,
@@ -115,6 +117,11 @@ const init = async () => {
     campaign.value = response
 
     profiles.value = []
+
+    /* Validate receivers. */
+    if (!response.campaign?.receivers) {
+        return
+    }
 
     /* Set profiles. */
     Object.keys(response.campaign.receivers).forEach(_receiverid => {
@@ -185,11 +192,11 @@ onMounted(() => {
 
                 <div class="mt-4 mx-5 sm:mt-0 sm:flex-none">
                     <button
-                        @click="isAddingProfile = true"
+                        @click="isAddingReceiver = true"
                         type="button"
                         class="block rounded-md bg-lime-600 px-3 py-2 text-center text-lg font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600"
                     >
-                        Add Profile
+                        Add Receiver
                     </button>
                 </div>
             </div>
@@ -224,4 +231,9 @@ onMounted(() => {
             </div>
         </div>
     </main>
+
+    <RainmakerAddReceiver
+        v-if="isAddingReceiver"
+        @close="isAddingReceiver = false"
+    />
 </template>

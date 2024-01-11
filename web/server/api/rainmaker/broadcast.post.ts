@@ -5,7 +5,7 @@ import { sha256 } from '@nexajs/crypto'
 
 /* Initialize databases. */
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
-const rainmakerProfilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_profiles`)
+const rainmakerReceiversDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_receivers`)
 const rainmakerTxsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/rainmaker_txs`)
 
 export default defineEventHandler(async (event) => {
@@ -109,7 +109,7 @@ export default defineEventHandler(async (event) => {
     // for (let i = 0; i < profiles.length; i++) {
     //     const profileid = profiles[i]
 
-    //     const profile = await rainmakerProfilesDb
+    //     const profile = await rainmakerReceiversDb
     //         .get(profileid)
     //         .catch(err => console.error(err))
     //     // console.log('PROFILE-1', profile)
@@ -120,7 +120,7 @@ export default defineEventHandler(async (event) => {
     //         profile.updatedAt = moment().unix()
     //         // console.log('PROFILE-2', profile)
 
-    //         response = await rainmakerProfilesDb
+    //         response = await rainmakerReceiversDb
     //             .put(profile)
     //             .catch(err => console.error(err))
     //         // console.log('UPDATE PROFILE', response)

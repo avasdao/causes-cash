@@ -42,11 +42,17 @@ export default defineEventHandler(async (event) => {
         })
     // console.log('SESSION', session)
 
-    // TODO Validate session.
+    /* Validate session id. */
+    if (!session) {
+        return {
+            error: 'Session NOT found!',
+            sessionid,
+        }
+    }
 
     /* Set profile id. */
     // NOTE: This is typically a (33-byte) public key.
-    adminid = session.profileid
+    adminid = session?.profileid
     console.log('ADMINID', adminid)
     console.log('ADMINS', process.env.ADMINS)
 

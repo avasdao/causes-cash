@@ -42,7 +42,7 @@ onMounted(() => {
 
 <template>
     <main class="max-w-7xl mx-auto px-3 py-5 flex flex-col gap-4">
-        <h3 class="text-xl font-medium text-gray-500 tracking-widest">
+        <h3 v-if="campaigns" class="text-xl font-medium text-gray-500 tracking-widest">
             {{campaigns.length}} campaigns found
         </h3>
 

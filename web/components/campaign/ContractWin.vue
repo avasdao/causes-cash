@@ -174,47 +174,48 @@ const trade = async () => {
         return alert(`Oops! You MUST enter an amount to continue.`)
     }
 
-    /* Request asset trade. */
-    response = await Campaign
-        .tradingPost(props.campaign, amount.value)
-        .catch(err => console.error(err))
-    console.log('TRADE RESPONSE', response)
+    if (confirm(`Are you sure you want to continue with your trade?`)) {
+        /* Request asset trade. */
+        response = await Campaign
+            .tradingPost(props.campaign, amount.value)
+            .catch(err => console.error(err))
+        console.log('TRADE RESPONSE', response)
 
-    /* Vaildate response. */
-    if (!response) {
-        return
-    }
-
-    try {
-        /* Parse response. */
-        txResult = JSON.parse(response)
-        console.log('TX RESULT', txResult)
-
-        /* Validate error message. */
-        if (txResult.error?.message) {
-            // alert(txResult.error.message)
-            error.value = txResult.error.message
-        } else {
-            // alert(txResult.result)
-            txidem.value = txResult.result
-
-            // BURST CONFETTI
-            jsConfetti.addConfetti({
-                // emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
-                // confettiColors: [
-                //     '#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7',
-                // ],
-                // confettiRadius: 6,
-                confettiNumber: 300,
-            })
+        /* Vaildate response. */
+        if (!response) {
+            return
         }
-    } catch (err) {
-        console.error(err)
 
-        /* Set error. */
-        error.value = response
+        try {
+            /* Parse response. */
+            txResult = JSON.parse(response)
+            console.log('TX RESULT', txResult)
+
+            /* Validate error message. */
+            if (txResult.error?.message) {
+                // alert(txResult.error.message)
+                error.value = txResult.error.message
+            } else {
+                // alert(txResult.result)
+                txidem.value = txResult.result
+
+                // BURST CONFETTI
+                jsConfetti.addConfetti({
+                    // emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
+                    // confettiColors: [
+                    //     '#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7',
+                    // ],
+                    // confettiRadius: 6,
+                    confettiNumber: 300,
+                })
+            }
+        } catch (err) {
+            console.error(err)
+
+            /* Set error. */
+            error.value = response
+        }
     }
-
 }
 
 const init = async () => {

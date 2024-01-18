@@ -52,8 +52,8 @@ export default async (_scriptArgs, _amount) => {
     /* Initialize locals.*/
     let adminAddress
     let adminPkh
+    let amountAdmin
     let amountBuyer
-    let amountProvider
     let amountSeller
     let coins
     let contractAddress
@@ -174,12 +174,24 @@ export default async (_scriptArgs, _amount) => {
     tokens = await getTokens(Wallet.wallet.wif, scriptPubKey)
         .catch(err => console.error(err))
 
+    /* Filter tokens. */
+    tokens = tokens.filter(_token => {
+        return _token.tokenidHex === tokenidHex
+    })
+    console.log('TOKENS (guest) FILTERED', tokens)
+
+    if (!tokens.length) {
+        throw new Error(`Oops! This Trading Post (contract) is empty.`)
+    }
+
     // FOR DEV PURPOSES ONLY -- take the LARGEST input
     tokens = [tokens.sort((a, b) => Number(b.tokens) - Number(a.tokens))[0]]
+    console.log('TOKENS (guest) MAX', tokens)
+
     // FOR DEV PURPOSES ONLY -- add scripts
     tokens[0].locking = lockingScript
     tokens[0].unlocking = false
-    console.log('\n  Tokens GUEST:', tokens)
+    console.log('TOKENS (guest) FINAL', tokens)
 
     /* Calculate the total balance of the unspent outputs. */
     // FIXME: Add support for BigInt.
@@ -220,9 +232,9 @@ export default async (_scriptArgs, _amount) => {
     amountSeller = BigInt(satoshis)
     console.log('AMOUNT SELLER', amountSeller)
 
-    /* Calculate Provider amount. */
-    amountProvider = ((amountSeller * BigInt(_scriptArgs?.fee)) / BigInt(10000))
-    console.log('AMOUNT PROVIDER', amountProvider)
+    /* Calculate Admin (fee/payout) amount. */
+    amountAdmin = ((amountSeller * BigInt(_scriptArgs?.fee)) / BigInt(10000))
+    console.log('AMOUNT ADMIN', amountAdmin)
 
     /* Initialize receivers. */
     receivers = []
@@ -256,11 +268,11 @@ export default async (_scriptArgs, _amount) => {
     })
 
     /* Validate Admin fee. */
-    if (amountProvider > BigInt(546)) {
+    if (amountAdmin > BigInt(546)) {
         /* Add Admin fee output. */
         receivers.push({
             address: adminAddress,
-            satoshis: BigInt(amountProvider),
+            satoshis: BigInt(amountAdmin),
         })
     }
 

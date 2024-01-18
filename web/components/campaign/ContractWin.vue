@@ -164,7 +164,7 @@ const setUSD = () => {
     }
 }
 
-const swap = async () => {
+const trade = async () => {
     /* Initialize locals. */
     let response
     let txResult
@@ -305,10 +305,10 @@ onMounted(() => {
                                 </section>
 
                                 <button
-                                    @click="swap"
+                                    @click="trade"
                                     class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
                                 >
-                                    Make Swap
+                                    Make Trade
                                 </button>
 
                                 <div class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
@@ -317,7 +317,7 @@ onMounted(() => {
 
                                 <section v-if="txidem" class="my-10">
                                     <div>
-                                        <h3 class="text-sm text-gray-500 font-medium">Swap complted successfully!</h3>
+                                        <h3 class="text-sm text-gray-500 font-medium">Trade completed successfully!</h3>
 
                                         <NuxtLink :to="'https://explorer.nexa.org/tx/' + txidem" target="_blank" class="text-blue-500 font-medium hover:underline">
                                             Click here to OPEN transaction details

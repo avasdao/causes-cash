@@ -47,7 +47,7 @@ onMounted(() => {
         </h3>
 
         <ul v-if="campaigns" role="list" class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-            <li v-for="campaign of campaigns" :key="campaign.id" class="overflow-hidden rounded-xl border border-gray-200">
+            <li v-for="campaign of campaigns" :key="campaign.id" class="flex flex-col justify-between overflow-hidden rounded-xl border border-gray-200">
                 <div class="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
                     <img src="https://tailwindui.com/img/logos/48x48/tuple.svg" alt="Tuple" class="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10" />
 
@@ -117,6 +117,12 @@ onMounted(() => {
                         </span>
                     </div>
 
+                    <NuxtLink v-if="campaign.address" :to="'https://nexa.exchange/address/' + campaign.address" target="_blank" class="group flex justify-center gap-x-4 py-3 bg-sky-300 rounded-lg shadow hover:bg-sky-200">
+                        <span class="text-sky-700 font-medium text-xl group-hover:text-sky-900">
+                            Open Address Details
+                        </span>
+                    </NuxtLink>
+
                     <div class="flex justify-between gap-x-4 py-3">
                         <dt class="text-gray-500">
                             Expiration
@@ -133,6 +139,12 @@ onMounted(() => {
                         </dd>
                     </div>
                 </dl>
+
+                <NuxtLink :to="'/c/' + campaign._id" target="_blank" class="py-3 group flex justify-center bg-amber-600 hover:bg-amber-500">
+                    <span class="text-amber-200 font-medium text-xl group-hover:text-amber-900">
+                        Open Campaign
+                    </span>
+                </NuxtLink>
             </li>
 
         </ul>

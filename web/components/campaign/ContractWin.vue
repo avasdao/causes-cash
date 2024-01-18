@@ -2,27 +2,11 @@
 /* Import modules. */
 import numeral from 'numeral'
 
-import { listUnspent } from '@nexajs/address'
-
-import { sha256 } from '@nexajs/crypto'
-
-import { encodePrivateKeyWif } from '@nexajs/hdnode'
-
-import { sendCoin } from '@nexajs/purse'
-
 import {
     getAddressTokenBalance,
-    subscribeAddress,
+    getAddressTokenHistory,
+    getTokenInfo,
 } from '@nexajs/rostrum'
-
-import { getTokens } from '@nexajs/token'
-
-import { hexToBin } from '@nexajs/utils'
-
-// import { Wallet } from '@nexajs/wallet'
-
-import QRCode from 'qrcode'
-
 
 const props = defineProps({
     isExecuting: Boolean,
@@ -32,180 +16,30 @@ const props = defineProps({
 
 /* Initialize stores. */
 import { useCampaignStore } from '@/stores/campaign'
-import { useProfileStore } from '@/stores/profile'
 import { useWalletStore } from '@/stores/wallet'
 const Campaign = useCampaignStore()
-const Profile = useProfileStore()
 const Wallet = useWalletStore()
 
-const MAX_MESSAGE_LENGTH = 220
-const DUST_LIMIT = 546
-
 const winHandler = ref(null)
-const cleanup = ref(null)
 
 const amount = ref(null)
 const amountNex = ref(0)
 const currency = ref(null)
 
-const label = ref(null)
-const comment = ref(null)
-const url = ref(null)
-
-const dataUrl = ref(null)
-const pledgeUrl = ref(null)
-const wallet = ref(null)
-const depositAddress = ref(null)
-
 const error = ref(null)
 const txidem = ref(null)
 
-const availAssets = ref(null)
-
-const numChars = computed(() => {
-    /* Set label length. */
-    const labelLen = label.value?.length || 0
-
-    /* Set comment length. */
-    const commentLen = comment.value?.length || 0
-
-    /* Set URL length. */
-    const urlLen = url.value?.length || 0
-
-    /* Calculate total count. */
-    const totalCount = labelLen + commentLen + urlLen
-
-    /* Return total count. */
-    return totalCount || 0
-})
+const availAssetAmount = ref(null)
 
 const ticker = computed(() => {
     let rewards
+
     if (props.campaign?.rewards) {
         rewards = props.campaign?.rewards
 
         return rewards[0].ticker
     }
 })
-
-const updateQrCode = async () => {
-    /* Handle (user-defined) amount. */
-    if (amountNex.value > 0) {
-        pledgeUrl.value = `${depositAddress.value}?amount=${amountNex.value}&label=Causes.Cash`
-    } else {
-        pledgeUrl.value = depositAddress.value
-    }
-    console.log('PLEDGE URL', pledgeUrl.value)
-
-    /* Set data URL. */
-    dataUrl.value = await QRCode.toDataURL(pledgeUrl.value)
-}
-
-const depositHandler = async (_updatedInfo) => {
-    console.log('PLEDGE HANDLER', _updatedInfo)
-
-    let unspent
-
-    /* Encode Private Key WIF. */
-    const wif = encodePrivateKeyWif(sha256, Wallet.wallet.privateKey, 'mainnet')
-    console.log('PRIVATE KEY (WIF):', wif)
-
-    // Fetch all unspent transaction outputs for the temporary in-browser wallet.
-    unspent = await listUnspent(Wallet.address)
-    console.log('\n  Unspent outputs:\n', unspent)
-
-    /* Filter out ANY tokens. */
-    // FIXME We should probably do something better than this, lol.
-    unspent = unspent.filter(_unspent => {
-        return _unspent.value > DUST_LIMIT
-    })
-
-    /* Validate unspent outputs. */
-    if (unspent.length === 0) {
-        return console.error('There are NO unspent outputs available.')
-    }
-
-    /* Build parameters. */
-    const coins = unspent.map(_unspent => {
-        const outpoint = _unspent.outpointHash
-        const satoshis = _unspent.value
-
-        return {
-            outpoint,
-            satoshis,
-            wif,
-        }
-    })
-    console.log('\n  Coins:', coins)
-
-    /* Initialize user data. */
-    let userData = ''
-
-    if (label.value && label.value !== '') {
-        userData += label.value
-    }
-
-    if (comment.value && comment.value !== '' && !userData) {
-        userData += comment.value
-    } else if (comment.value !== '') {
-        userData += '~~' + comment.value
-    }
-
-    if (url.value && url.value !== '' && !userData) {
-        userData += url.value
-    } else if (url.value !== '') {
-        userData += '~~' + url.value
-    }
-
-    /* Initialize receivers. */
-    const receivers = []
-
-    /* Validate user data. */
-    if (userData) {
-        console.log('USER DATA', userData)
-
-        /* Initialize hex data. */
-        let hexData = ''
-
-        /* Convert user data (string) to hex. */
-        for (let i = 0; i < userData.length; i++) {
-            /* Convert to hex code. */
-            let code = userData.charCodeAt(i).toString(16)
-
-            /* Add hex code to string. */
-            hexData += code
-        }
-        console.log('HEX DATA', hexData)
-
-        // TODO Validate data length is less than OP_RETURN max (220).
-
-        /* Add OP_RETURN data. */
-        receivers.push({
-            data: hexData,
-        })
-    }
-
-    /* Add value output. */
-    receivers.push({
-        address: props.campaign?.receiver,
-        satoshis: -1, // alias for send MAX
-    })
-    console.log('\n  Receivers:', receivers)
-
-    /* Set automatic fee (handling) flag. */
-    const autoFee = true
-
-    /* Send UTXO request. */
-    const response = await sendCoin(coins, receivers, autoFee)
-    console.log('Send UTXO (response):', response)
-
-    try {
-        const txResult = JSON.parse(response)
-        console.log('TX RESULT', txResult)
-    } catch (err) {
-        console.error(err)
-    }
-}
 
 /* Monitor pledging flag. */
 watch(() => props.isExecuting, async (_status) => {
@@ -222,70 +56,92 @@ watch(() => props.isExecuting, async (_status) => {
     if (Wallet.wallet === 'NEW') {
         return
     }
-
-    depositAddress.value = Wallet.address
-    console.log('DEPOSIT ADDRESS', depositAddress.value)
-
-    /* Update QR code. */
-    updateQrCode()
-
-    /* Handle pledging status. */
-    if (_status) {
-        // const myAddress = props.campaign?.receiver
-        // console.log('MY ADDRESS', myAddress)
-
-        /* Start monitoring address. */
-        cleanup.value = await subscribeAddress(depositAddress.value, depositHandler)
-        console.log('CLEANUP', cleanup.value)
-    } else {
-        console.log('CLEANUP MONITORING', cleanup.value)
-
-        // TODO Return cleanup method from `subscribeAddress`
-        // if (cleanup.value) {
-        //     cleanup.value() // Execute to cancel (and cleanup) an Address subscription.
-        // }
-    }
 })
 
 watch(() => props.campaign, async (_campaign) => {
-    /* Request token info. */
-    const result = await getAddressTokenBalance(_campaign?.address)
-    console.log('TOKEN (address) BALANCE', result)
+console.log('WATCHING PROPS (campaign)...', _campaign)
+console.log('CAMPAIGN ADDRESS', _campaign.address)
 
-    let tokenidHex = _campaign?.rewards[0].tokenidHex
-    console.log('TOKENID HEX', tokenidHex)
+    /* Initialize locals. */
+    let address
+    let balance
+    let balanceAmount
+    let balanceConfirmed
+    let decimals
+    let divisor
+    let history
+    let info
+    let tokenidHex
 
-    const balance = result?.confirmed[tokenidHex]
-    console.log('BALANCE', balance)
+    /* Set (default) divisor. */
+    divisor = 1 // no decimals
 
-    availAssets.value = numeral(balance).format('0,0')
+    /* Set address. */
+    address = _campaign.address
+
+    /* Request campaign (address) history. */
+    history = await getAddressTokenHistory(address)
+        .catch(err => console.error(err))
+    console.log('CONTRACT HISTORY', history)
+
+    /* Request token balance. */
+    balance = await getAddressTokenBalance(address)
+    console.log('CONTRACT BALANCE', balance)
+
+    /* Set token id (hex). */
+    tokenidHex = _campaign?.rewards[0].tokenidHex
+    console.log('REWARD TOKEN ID (hex):', tokenidHex)
+
+    /* Request campaign (address) history. */
+    info = await getTokenInfo(tokenidHex)
+        .catch(err => console.error(err))
+    console.log('REWARD TOKEN INFO', info)
+
+    /* Validate (token) info. */
+    if (info) {
+        /* Set (number of) decimals. */
+        decimals = info.decimal_places
+
+        /* Calculate (decimal) divisor. */
+        divisor = 10 ** decimals
+    }
+
+    /* Set confirmed (contract) balance. */
+    balanceConfirmed = balance?.confirmed[tokenidHex]
+    console.log('BALANCE (confirmed):', balanceConfirmed)
+
+    /* Calculate (decimal) balance amount. */
+    balanceAmount = (balanceConfirmed / divisor)
+
+    /* Set (formatted) available asset amount. */
+    availAssetAmount.value = numeral(balanceAmount).format('0,0')
 })
 
 /* Monitor (user-defined) amount. */
 watch(() => amount.value, (_amount) => {
     console.log('AMOUNT HAS CHANGED', _amount)
 
-    let scriptAmount
+    /* Initialize locals. */
+    let multiplier
+    let nex
+    let rate
+    let satoshis
 
-    if (currency.value === 'NEXA') {
-        // TODO Calculate KEX value.
-        amountNex.value = _amount / 100.0
-    }
+    /* Set (trade) rate. */
+    rate = parseFloat(props.campaign?.scriptArgs.rate)
 
-    if (currency.value === 'USD') {
-        // TODO Calculate KEX value.
-        // amountNex.value = _amount
+    /* Calculate multiplier. */
+    multiplier = rate / 10000.0
 
-        scriptAmount = amount.value * props.campaign?.scriptArgs.rate
+    /* Calculate satoshis. */
+    satoshis = amount.value * multiplier
 
-        scriptAmount = scriptAmount / 100.0
+    /* Calculate NEX. */
+    nex = (satoshis / 100.0)
 
-        amountNex.value = numeral(scriptAmount).format('0,0.00[00]')
-    }
-    console.log('AMOUNT NEX', amountNex.value)
-
-    /* Update QR code. */
-    updateQrCode()
+    /* Set NEX amount. */
+    amountNex.value = numeral(nex).format('0,0.00[00]')
+    console.log('AMOUNT NEXA', amountNex.value)
 })
 
 const setNEXA = () => {
@@ -304,39 +160,33 @@ const setUSD = () => {
     }
 }
 
-/* Set (default) currency. */
-currency.value = 'USD'
-
-/* Set initial window (class) handler. */
-winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
-
-
-const init = async () => {
-
-}
-
 const swap = async () => {
     /* Initialize locals. */
     let response
     let txResult
 
+    /* Validate amount. */
     if (!amount.value || amount.value === null) {
         return alert(`Oops! You MUST enter an amount to continue.`)
     }
-console.log('***PROPS CAMPAIGN***', props.campaign)
+
+    /* Request asset trade. */
     response = await Campaign
         .tradingPost(props.campaign, amount.value)
         .catch(err => console.error(err))
-    console.log('SWAP RESPONSE', response)
+    console.log('TRADE RESPONSE', response)
 
+    /* Vaildate response. */
     if (!response) {
         return
     }
 
     try {
+        /* Parse response. */
         txResult = JSON.parse(response)
         console.log('TX RESULT', txResult)
 
+        /* Validate error message. */
         if (txResult.error?.message) {
             // alert(txResult.error.message)
             error.value = txResult.error.message
@@ -347,9 +197,20 @@ console.log('***PROPS CAMPAIGN***', props.campaign)
     } catch (err) {
         console.error(err)
 
+        /* Set error. */
         error.value = response
     }
 
+}
+
+const init = async () => {
+    console.log('INIT (campaign):', props?.campaign)
+
+    /* Set (default) currency. */
+    currency.value = 'USD'
+
+    /* Set initial window (class) handler. */
+    winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
 }
 
 onMounted(() => {
@@ -399,9 +260,9 @@ onMounted(() => {
                                     </span>
                                 </label>
 
-                                <div v-if="availAssets" class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
+                                <div v-if="availAssetAmount" class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
                                     <h3>
-                                        <span class="font-bold text-lg">{{numeral(availAssets).format('0,0')}}</span> ${{ticker}} available
+                                        <span class="font-bold text-lg">{{numeral(availAssetAmount).format('0,0')}}</span> ${{ticker}} available
                                     </h3>
                                 </div>
 
@@ -455,21 +316,6 @@ onMounted(() => {
                                     Go to Profile / Wallet
                                 </NuxtLink>
 
-                                <!-- <div class="mt-3 sm:mt-0 flex justify-center">
-                                    <h2 class="text-2xl font-medium">
-                                        - OR - Scan Below
-                                    </h2>
-                                </div>
-
-                                <NuxtLink :to="depositAddress"
-                                    class="flex justify-center"
-                                >
-                                    <img
-                                        :src="dataUrl"
-                                        class="my-5 w-64 h-64 border-2 border-yellow-500 rounded-lg"
-                                    />
-                                </NuxtLink>
- -->
                             </section>
 
                         </div>

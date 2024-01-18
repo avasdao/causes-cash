@@ -17,17 +17,15 @@ const loadCampaigns = async () => {
         'a94dfb40-97c6-406b-8b8f-63996ab60118',
         'bb8c71e1-32d1-471a-9ce4-aabbd0592d9d',
 
+        'f900d1b8-1ae0-4e18-8a2f-212631b62562', // MetaNet
+
         '603f52d1-276a-4a15-928c-ec0a5e381835',
         '70175e0f-05d5-4722-bf67-08080bdf9941',
         'd3b88efa-b747-46f1-b0e7-95b313d05964',
         'a2e064ac-9cab-4f70-b87d-3b4c06e0ac53',
         'e6eb129a-425c-48e5-8af8-bf92d1abe64d',
 
-        'f900d1b8-1ae0-4e18-8a2f-212631b62562',
-        'b4240af8-a027-4f8a-9088-2ae97c53cf63',
-        // 'b8fac25d-e619-4ddf-b474-af084e8250ce',
-        // '707e2a8c-4eea-4c26-9ea2-c548e9e91726',
-        // '475b4cfc-ae95-419d-9681-cf378c083963',
+        'b4240af8-a027-4f8a-9088-2ae97c53cf63', // BU Marketing
     ]
 
     /* Add campaigns. */

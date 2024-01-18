@@ -8,16 +8,13 @@ import {
     getAddressBalance,
     getAddressHistory,
     getAddressTokenBalance,
+    getTokenInfo,
     getTransaction,
 } from '@nexajs/rostrum'
 
 import {
     binToHex,
-    hexToBin,
 } from '@nexajs/utils'
-
-import { getTokens } from '@nexajs/token'
-
 
 const props = defineProps({
     campaign: Object,
@@ -28,34 +25,71 @@ const props = defineProps({
 import { useWalletStore } from '@/stores/wallet'
 const Wallet = useWalletStore()
 
+const availAssets = ref(null)
 const campaignPledged = ref(0)
 const campaignGoals = ref(null)
 const campaignGoalIdx = ref(null)
 const expiration = ref(0)
-
-const availAssets = ref(null)
-
-const STUDIO_TOKENID = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000'
-
+const expirationDisplay = ref(null)
+const pctCompleted = ref(null)
 
 watch(() => props.campaign, async (_campaign) => {
     // console.log('CAMPAIGN HAS CHANGED', _campaign)
 
-    let balance = 0
+    /* Initialize locals. */
+    let address
+    let balance
+    let balanceAmount
+    let balanceConfirmed
+    let decimals
+    let divisor
     let history
+    let info
+    let tokenidHex
+
+    /* Set (default) divisor. */
+    divisor = 1 // no decimals
 
     /* Set expiration. */
     expiration.value = _campaign.expiresAt
 
+    /* Validate script hash. */
     if (_campaign?.scriptHash) {
-        /* Request token info. */
-        const result = await getAddressTokenBalance(_campaign?.address)
-        console.log('TOKEN (address) BALANCE', result)
 
-        const balance = result?.confirmed[STUDIO_TOKENID]
-        console.log('BALANCE', balance)
+        /* Set address. */
+        address = _campaign.address
 
-        availAssets.value = numeral(balance).format('0,0')
+        /* Request token balance. */
+        balance = await getAddressTokenBalance(address)
+        console.log('CONTRACT BALANCE', balance)
+
+        /* Set token id (hex). */
+        tokenidHex = _campaign?.rewards[0].tokenidHex
+
+        /* Request campaign (address) history. */
+        info = await getTokenInfo(tokenidHex)
+            .catch(err => console.error(err))
+        console.log('REWARD TOKEN INFO', info)
+
+        /* Validate (token) info. */
+        if (info) {
+            /* Set (number of) decimals. */
+            decimals = info.decimal_places
+
+            /* Calculate (decimal) divisor. */
+            divisor = 10 ** decimals
+        }
+        console.log('DIVISOR', divisor)
+
+        /* Set confirmed (contract) balance. */
+        balanceConfirmed = balance?.confirmed[tokenidHex]
+        console.log('BALANCE (confirmed):', balanceConfirmed)
+
+        /* Calculate (decimal) balance amount. */
+        balanceAmount = (balanceConfirmed / divisor)
+        console.log('BALANCE (amount):', balanceAmount)
+
+        availAssets.value = numeral(balanceAmount).format('0,0')
 
         return
     }

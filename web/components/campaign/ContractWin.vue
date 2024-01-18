@@ -1,5 +1,6 @@
 <script setup lang="ts">
 /* Import modules. */
+import JSConfetti from 'js-confetti'
 import numeral from 'numeral'
 
 import {
@@ -30,6 +31,9 @@ const error = ref(null)
 const txidem = ref(null)
 
 const availAssetAmount = ref(null)
+
+/* Initialize globals. */
+let jsConfetti
 
 const ticker = computed(() => {
     let rewards
@@ -134,13 +138,13 @@ watch(() => amount.value, (_amount) => {
     multiplier = rate / 10000.0
 
     /* Calculate satoshis. */
-    satoshis = amount.value * multiplier
+    satoshis = amount.value / multiplier
 
     /* Calculate NEX. */
     nex = (satoshis / 100.0)
 
     /* Set NEX amount. */
-    amountNex.value = numeral(nex).format('0,0.00[00]')
+    amountNex.value = numeral(nex).format('0,0.00')
     console.log('AMOUNT NEXA', amountNex.value)
 })
 
@@ -193,6 +197,16 @@ const swap = async () => {
         } else {
             // alert(txResult.result)
             txidem.value = txResult.result
+
+            // BURST CONFETTI
+            jsConfetti.addConfetti({
+                // emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
+                // confettiColors: [
+                //     '#ff0a54', '#ff477e', '#ff7096', '#ff85a1', '#fbb1bd', '#f9bec7',
+                // ],
+                // confettiRadius: 6,
+                confettiNumber: 300,
+            })
         }
     } catch (err) {
         console.error(err)
@@ -211,6 +225,9 @@ const init = async () => {
 
     /* Set initial window (class) handler. */
     winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
+
+    /* Initialize confetti. */
+    jsConfetti = new JSConfetti()
 }
 
 onMounted(() => {

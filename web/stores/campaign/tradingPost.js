@@ -60,10 +60,12 @@ export default async (_scriptArgs, _amount) => {
     let contractChange
     let fee
     let lockingScript
+    let multiplier
     let nullData
     let rate
     let receivers
     let response
+    let satoshis
     let scriptHash
     let scriptPubKey
     let sellerAddress
@@ -196,18 +198,33 @@ export default async (_scriptArgs, _amount) => {
     nullData = encodeNullData(userData)
     // console.log('HEX DATA', nullData)
 
+    /* Calculate contract change. */
     contractChange = unspentTokens - BigInt(_amount)
     console.log('CONTRACT CHANGE', contractChange)
 
+    /* Set Buyer amount. */
     amountBuyer = BigInt(_amount)
     console.log('AMOUNT BUYER', amountBuyer)
 
-    amountSeller = BigInt(_amount) * BigInt(_scriptArgs?.rate)
+    /* Set (contract trade) rate. */
+    rate = parseFloat(_scriptArgs?.rate)
+
+    /* Calculate (satoshis) multiplier. */
+    multiplier = (rate / 10000.0)
+
+    /* Calculate (Seller) satoshis. */
+    // FIXME We MUST round up or risk a (contract) script error.
+    satoshis = Math.ceil(_amount / multiplier)
+
+    /* Calculate Seller amount. */
+    amountSeller = BigInt(satoshis)
     console.log('AMOUNT SELLER', amountSeller)
 
-    amountProvider = (amountSeller * BigInt(_scriptArgs?.fee)) / BigInt(10000)
+    /* Calculate Provider amount. */
+    amountProvider = ((amountSeller * BigInt(_scriptArgs?.fee)) / BigInt(10000))
     console.log('AMOUNT PROVIDER', amountProvider)
 
+    /* Initialize receivers. */
     receivers = []
 
     /* Validate (contract) change. */
@@ -225,18 +242,22 @@ export default async (_scriptArgs, _amount) => {
         })
     }
 
+    /* Add Seller output. */
     receivers.push({
         address: sellerAddress,
         satoshis: BigInt(amountSeller),
     })
 
+    /* Add wallet change output. */
     receivers.push({
         address: Wallet.address,
         tokenid: tokenidHex,
         tokens: BigInt(amountBuyer),
     })
 
+    /* Validate Admin fee. */
     if (amountProvider > BigInt(546)) {
+        /* Add Admin fee output. */
         receivers.push({
             address: adminAddress,
             satoshis: BigInt(amountProvider),

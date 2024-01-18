@@ -34,7 +34,6 @@ export const useCampaignStore = defineStore('campaign', {
             let error
             let response
             let scriptArgs
-            let tokenid
 
             /* Set script arguments. */
             scriptArgs = _campaign.scriptArgs

@@ -13,6 +13,12 @@ const Wallet = useWalletStore()
 
 const mnemonic = ref(null)
 
+const importWallet = () => {
+    /* Set/save mnemonic. */
+    // NOTE: Will save `entropy` to the local storage.
+    Wallet.setMnemonic(mnemonic.value)
+}
+
 // onMounted(() => {
 //     console.log('Mounted!')
 //     // Now it's safe to perform setup operations.
@@ -27,7 +33,7 @@ const mnemonic = ref(null)
 <template>
     <main class="p-3 flex flex-col gap-5">
         <p class="px-3 py-2 bg-yellow-100 text-base font-medium border-2 border-yellow-200 rounded-lg shadow-md">
-            Welcome to Causes Cash.
+            Welcome to your Causes wallet.
             Click the button below to create a new wallet and begin your journey.
         </p>
 

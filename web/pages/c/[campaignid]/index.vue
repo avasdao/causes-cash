@@ -209,7 +209,7 @@ const loadCampaign = async () => {
         console.log('BALANCE (w/ decimals):', balanceAmount)
 
         /* Set (formatted) available asset amount. */
-        availAssetAmount.value = numeral(balanceAmount).format('0,0.00[0000]')
+        availAssetAmount.value = numeral(balanceAmount).format('0,0[.]000000')
 
         /* Convert to Number. */
         // availAssetAmount.value = parseFloat(availAssetAmount.value)
@@ -343,7 +343,6 @@ onMounted(() => {
                         :usd="usd"
                         :campaign="campaign"
                         :availAssetAmount="availAssetAmount"
-                        :tokenInfo="tokenInfo"
                     />
 
                     <div v-if="isContract" class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -478,6 +477,7 @@ onMounted(() => {
             :isExecuting="isExecuting"
             :usd="usd"
             :campaign="campaign"
+            :tokenInfo="tokenInfo"
             @close="closeContract"
         />
     </main>

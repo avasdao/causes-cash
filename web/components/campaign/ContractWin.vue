@@ -10,6 +10,7 @@ const props = defineProps({
     isLoading: Boolean,
     isExecuting: Boolean,
     campaign: Object,
+    tokenInfo: Object,
     usd: Number,
 })
 
@@ -71,20 +72,37 @@ watch(() => props.isExecuting, async (_status) => {
 watch(() => amount.value, (_amount) => {
     console.log('AMOUNT HAS CHANGED', _amount)
 
+    /* Clear all. */
+    error.value = null
+
     /* Initialize locals. */
+    let amountDec
+    let decimals
     let multiplier
     let nex
     let rate
     let satoshis
 
+    /* Set token decimals. */
+    decimals = props.tokenInfo?.decimal_places
+    console.log('DECIMALS', decimals)
+
+    /* Calculate (decimals) multiplier. */
+    multiplier = (10 ** decimals)
+    console.log('MULTIPLIER', multiplier)
+
+    /* Calculate (decimals) amount. */
+    amountDec = (amount.value * multiplier)
+    console.log('AMOUNT (decimals):', amountDec)
+
     /* Set (trade) rate. */
     rate = parseFloat(props.campaign?.scriptArgs.rate)
 
-    /* Calculate multiplier. */
-    multiplier = rate / 10000.0
+    /* Calculate (rate) multiplier. */
+    multiplier = (rate / 10000.0)
 
     /* Calculate satoshis. */
-    satoshis = amount.value / multiplier
+    satoshis = (amountDec / multiplier)
 
     /* Calculate NEX. */
     nex = (satoshis / 100.0)
@@ -112,8 +130,14 @@ const setUSD = () => {
 
 const trade = async () => {
     /* Initialize locals. */
+    let amountDec
+    let decimals
+    let multiplier
     let response
     let txResult
+
+    /* Clear all. */
+    error.value = null
 
     /* Validate amount. */
     if (!amount.value || amount.value === null) {
@@ -124,9 +148,21 @@ const trade = async () => {
         /* Set trading flag. */
         isTrading.value = true
 
+        /* Set token decimals. */
+        decimals = props.tokenInfo?.decimal_places
+        console.log('DECIMALS', decimals)
+
+        /* Calculate (decimals) multiplier. */
+        multiplier = (10 ** decimals)
+        console.log('MULTIPLIER', multiplier)
+
+        /* Calculate (decimals) amount. */
+        amountDec = (amount.value * multiplier)
+        console.log('AMOUNT (decimals):', amountDec)
+
         /* Request asset trade. */
         response = await Campaign
-            .tradingPost(props.campaign, amount.value)
+            .tradingPost(props.campaign, amountDec)
             .catch(err => console.error(err))
         console.log('TRADE RESPONSE', response)
 

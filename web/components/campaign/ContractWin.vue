@@ -4,12 +4,10 @@ import JSConfetti from 'js-confetti'
 import numeral from 'numeral'
 
 import {
-    getAddressTokenBalance,
-    getAddressTokenHistory,
-    getTokenInfo,
 } from '@nexajs/rostrum'
 
 const props = defineProps({
+    isLoading: Boolean,
     isExecuting: Boolean,
     campaign: Object,
     usd: Number,
@@ -22,6 +20,7 @@ const Campaign = useCampaignStore()
 const Wallet = useWalletStore()
 
 const winHandler = ref(null)
+const isTrading = ref(null)
 
 const amount = ref(null)
 const amountNex = ref(0)
@@ -36,90 +35,37 @@ const availAssetAmount = ref(null)
 let jsConfetti
 
 const ticker = computed(() => {
+    /* Initialize locals. */
     let rewards
 
+    /* Validate rewards. */
     if (props.campaign?.rewards) {
         rewards = props.campaign?.rewards
 
         return rewards[0].ticker
     }
+
+    /* Return null. */
+    return null
 })
 
 /* Monitor pledging flag. */
 watch(() => props.isExecuting, async (_status) => {
-    console.log('EXECUTING HAS CHANGED', _status)
+    // console.log('EXECUTING HAS CHANGED', _status)
 
+    /* Handle status. */
     if (_status) {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-0'
     } else {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
     }
-
-    console.log('WALLET', Wallet.wallet)
-
-    if (Wallet.wallet === 'NEW') {
-        return
-    }
 })
 
-watch(() => props.campaign, async (_campaign) => {
-console.log('WATCHING PROPS (campaign)...', _campaign)
-console.log('CAMPAIGN ADDRESS', _campaign.address)
+// watch(() => props.campaign, async (_campaign) => {
+// console.log('WATCHING PROPS (campaign)...', _campaign)
+// console.log('CAMPAIGN ADDRESS', _campaign.address)
 
-    /* Initialize locals. */
-    let address
-    let balance
-    let balanceAmount
-    let balanceConfirmed
-    let decimals
-    let divisor
-    let history
-    let info
-    let tokenidHex
-
-    /* Set (default) divisor. */
-    divisor = 1 // no decimals
-
-    /* Set address. */
-    address = _campaign.address
-
-    /* Request campaign (address) history. */
-    history = await getAddressTokenHistory(address)
-        .catch(err => console.error(err))
-    console.log('CONTRACT HISTORY', history)
-
-    /* Request token balance. */
-    balance = await getAddressTokenBalance(address)
-    console.log('CONTRACT BALANCE', balance)
-
-    /* Set token id (hex). */
-    tokenidHex = _campaign?.rewards[0].tokenidHex
-    console.log('REWARD TOKEN ID (hex):', tokenidHex)
-
-    /* Request campaign (address) history. */
-    info = await getTokenInfo(tokenidHex)
-        .catch(err => console.error(err))
-    console.log('REWARD TOKEN INFO', info)
-
-    /* Validate (token) info. */
-    if (info) {
-        /* Set (number of) decimals. */
-        decimals = info.decimal_places
-
-        /* Calculate (decimal) divisor. */
-        divisor = 10 ** decimals
-    }
-
-    /* Set confirmed (contract) balance. */
-    balanceConfirmed = balance?.confirmed[tokenidHex]
-    console.log('BALANCE (confirmed):', balanceConfirmed)
-
-    /* Calculate (decimal) balance amount. */
-    balanceAmount = (balanceConfirmed / divisor)
-
-    /* Set (formatted) available asset amount. */
-    availAssetAmount.value = numeral(balanceAmount).format('0,0')
-})
+// })
 
 /* Monitor (user-defined) amount. */
 watch(() => amount.value, (_amount) => {
@@ -175,6 +121,9 @@ const trade = async () => {
     }
 
     if (confirm(`Are you sure you want to continue with your trade?`)) {
+        /* Set trading flag. */
+        isTrading.value = true
+
         /* Request asset trade. */
         response = await Campaign
             .tradingPost(props.campaign, amount.value)
@@ -183,6 +132,9 @@ const trade = async () => {
 
         /* Vaildate response. */
         if (!response) {
+            /* Set trading flag. */
+            isTrading.value = false
+
             return
         }
 
@@ -215,11 +167,17 @@ const trade = async () => {
             /* Set error. */
             error.value = response
         }
+
+        /* Set trading flag. */
+        isTrading.value = false
     }
 }
 
 const init = async () => {
     console.log('INIT (campaign):', props?.campaign)
+
+    /* Set trading flag. */
+    isTrading.value = false
 
     /* Set (default) currency. */
     currency.value = 'USD'
@@ -307,18 +265,25 @@ onMounted(() => {
 
                                 <button
                                     @click="trade"
-                                    class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1"
+                                    class="flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-3 border border-transparent rounded-md shadow-sm bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 sm:flex-1"
+                                    :disabled="isTrading"
                                 >
-                                    Make Trade
+                                    <span class="text-3xl font-bold text-sky-50 tracking-wider" :class="[ isTrading ? 'opacity-50' : '' ]">
+                                        Make Trade
+                                    </span>
                                 </button>
 
                                 <div class="px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
-                                    <h3>{{amountNex}} NEXA</h3>
+                                    <h3>
+                                        {{amountNex}} NEXA
+                                    </h3>
                                 </div>
 
                                 <section v-if="txidem" class="my-10">
                                     <div>
-                                        <h3 class="text-sm text-gray-500 font-medium">Trade completed successfully!</h3>
+                                        <h3 class="text-sm text-gray-500 font-medium">
+                                            Trade completed successfully!
+                                        </h3>
 
                                         <NuxtLink :to="'https://explorer.nexa.org/tx/' + txidem" target="_blank" class="text-blue-500 font-medium hover:underline">
                                             Click here to OPEN transaction details
@@ -327,11 +292,15 @@ onMounted(() => {
                                 </section>
 
                                 <section v-if="error" class="flex flex-col gap-4 my-10">
-                                    <p>{{error}}</p>
+                                    <p>
+                                        {{error}}
+                                    </p>
                                 </section>
 
-                                <NuxtLink to="/profile" class="mt-10 flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:flex-1">
-                                    Go to Profile / Wallet
+                                <NuxtLink to="/profile" class="mt-10 flex-shrink-0 w-full inline-flex items-center justify-center px-4 py-3 border border-transparent rounded-md shadow-sm bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:flex-1">
+                                    <span class="text-xl font-medium text-white">
+                                        Go to Profile / Wallet
+                                    </span>
                                 </NuxtLink>
 
                             </section>

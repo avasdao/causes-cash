@@ -1,5 +1,15 @@
 <script setup>
 /* Import modules. */
+import numeral from 'numeral'
+
+import {
+    getAddressBalance,
+    getAddressHistory,
+    getAddressTokenBalance,
+    getAddressTokenHistory,
+    getTokenInfo,
+    getTransaction,
+} from '@nexajs/rostrum'
 
 definePageMeta({
     layout: 'campaign',
@@ -38,6 +48,20 @@ const supporters = ref(null)
 const isExecuting = ref(false)
 const isPledging = ref(false)
 const hasFeedback = ref(false)
+
+
+
+const availAssetAmount = ref(null)
+const campaignPledged = ref(0)
+const campaignGoals = ref(null)
+const campaignGoalIdx = ref(null)
+const expiration = ref(0)
+const expirationDisplay = ref(null)
+const pctCompleted = ref(null)
+
+const tokenidHex = ref(null)
+const tokenInfo = ref(null)
+const tokenTicker = ref(null)
 
 /* Manage banner. */
 const banner = computed(() => {
@@ -118,13 +142,132 @@ const manageContract = async () => {
 }
 
 const loadCampaign = async () => {
+    /* Initialize locals. */
+    let address
+    let balance
+    let balanceAmount
+    let balanceConfirmed
+    let decimals
+    let divisor
+    let history
+    let info
+
     campaign.value = await $fetch(`/v1/campaign/${campaignid}`)
-    console.log('CAMPAIGN (page):', campaign.value)
+    console.log('CAMPAIGN', campaign.value)
 
     /* Validate campaign status. */
     if (campaign.value?.isActive === true) {
         isActive.value = true
     }
+
+    /* Set (default) divisor. */
+    divisor = 1 // no decimals
+
+    /* Set expiration. */
+    expiration.value = campaign.value.expiresAt
+
+    /* Validate script hash. */
+    if (campaign.value?.scriptHash && campaign.value?.rewards) {
+        /* Set token id (hex). */
+        tokenidHex.value = campaign.value.rewards[0].tokenidHex
+        console.log('REWARD TOKEN ID (hex):', tokenidHex.value)
+
+        // TODO Validate address??
+
+        /* Request campaign (address) history. */
+        history = await getAddressTokenHistory(campaign.value.address)
+            .catch(err => console.error(err))
+        console.log('CONTRACT HISTORY', history)
+
+        /* Request token balance. */
+        balance = await getAddressTokenBalance(campaign.value.address)
+        console.log('CONTRACT BALANCE', balance)
+
+        /* Request campaign (address) history. */
+        tokenInfo.value = await getTokenInfo(tokenidHex.value)
+            .catch(err => console.error(err))
+        console.log('REWARD TOKEN INFO', tokenInfo.value)
+
+        /* Set (default) divisor. */
+        divisor = 1 // no decimals
+
+        /* Validate (token) info. */
+        if (tokenInfo.value) {
+            /* Set (number of) decimals. */
+            decimals = tokenInfo.value.decimal_places
+
+            /* Calculate (decimal) divisor. */
+            divisor = 10 ** decimals
+        }
+
+        /* Set confirmed (contract) balance. */
+        balanceConfirmed = balance?.confirmed[tokenidHex.value]
+        console.log('BALANCE (confirmed):', balanceConfirmed)
+
+        /* Calculate (decimal) balance amount. */
+        balanceAmount = (balanceConfirmed / divisor)
+        console.log('BALANCE (w/ decimals):', balanceAmount)
+
+        /* Set (formatted) available asset amount. */
+        availAssetAmount.value = numeral(balanceAmount).format('0,0.00[0000]')
+
+        /* Convert to Number. */
+        // availAssetAmount.value = parseFloat(availAssetAmount.value)
+
+        return
+    }
+
+    if (campaign.value.goals?.length > 1) {
+        const decoded = decodeAddress(campaign.value.receiver)
+        // console.log('DECODED', decoded)
+
+        const scriptPubKey = binToHex(decoded.hash).slice(2)
+        // console.log('scriptPubKey', scriptPubKey)
+
+        /* Request (receiver) address history. */
+        history = await getAddressHistory(campaign.value.receiver)
+            .catch(err => console.error(err))
+        // console.log('HISTORY', history)
+
+        for (let i = 0; i < history.length; i++) {
+            const tx = await getTransaction(history[i].tx_hash)
+            // console.log('TX', tx)
+
+            for (let j = 0; j < tx.vout.length; j++) {
+                const output = tx.vout[j]
+                // console.log('OUTPUT', output)
+
+                if (output.scriptPubKey.hex === scriptPubKey) {
+                    balance += output.value_satoshi
+                    // console.log('BALANCE', balance)
+                }
+            }
+        }
+        // console.log('BALANCE (final):', balance)
+
+        // FIXME Handle campaign index (using campaign.value.goals)
+        campaignGoalIdx.value = 0
+    } else {
+        /* Request (receiver) address balance. */
+        balance = await getAddressBalance(campaign.value.receiver)
+            .catch(err => console.error(err))
+        // console.log('BALANCE', balance)
+
+        // FIXME Handle campaign index (using campaign.value.goals)
+        campaignGoalIdx.value = 0
+    }
+
+    /* Set campaign goals. */
+    campaignGoals.value = campaign.value.goals
+
+    if (balance) {
+        /* Set campaign pledged amount. */
+        campaignPledged.value = balance.confirmed || balance
+    }
+
+
+
+
 
     /* Set loading flag. */
     isLoading.value = false
@@ -142,7 +285,7 @@ const copyToClipboard = () => {
     alert(`${campaign.value?.receiver} has been copied to your clipboard.`)
 }
 
-onMounted(() => {
+const init = async () => {
     /* Set flags. */
     isActive.value = false
     isContract.value = true // FOR DEV ONLY
@@ -153,6 +296,11 @@ onMounted(() => {
 
     /* Load market data. */
     loadMarket() // NOTE: This is non-blocking.
+
+}
+
+onMounted(() => {
+    init()
 })
 
 // onBeforeUnmount(() => {
@@ -194,6 +342,8 @@ onMounted(() => {
                     <CampaignStatus
                         :usd="usd"
                         :campaign="campaign"
+                        :availAssetAmount="availAssetAmount"
+                        :tokenInfo="tokenInfo"
                     />
 
                     <div v-if="isContract" class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
@@ -316,6 +466,7 @@ onMounted(() => {
         />
 
         <CampaignPledgeWin
+            :isLoading="isLoading"
             :isPledging="isPledging"
             :usd="usd"
             :campaign="campaign"
@@ -323,6 +474,7 @@ onMounted(() => {
         />
 
         <CampaignContractWin
+            :isLoading="isLoading"
             :isExecuting="isExecuting"
             :usd="usd"
             :campaign="campaign"

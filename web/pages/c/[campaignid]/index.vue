@@ -36,13 +36,13 @@ const isContract = ref(null)
 const description = ref(null)
 const usd = ref(0.0)
 
-const showPledges = ref(false)
+const showHistory = ref(false)
 const showDescription = ref(true)
 const showFeedback = ref(false)
 const showReportCards = ref(false)
 
 const campaign = ref(null)
-const contributors = ref(null)
+const history = ref(null)
 const supporters = ref(null)
 
 const isExecuting = ref(false)
@@ -86,15 +86,15 @@ const toggleMenu = (_selected) => {
     // console.log('TOGGLE MENU (selected):', _selected)
 
     /* Set all menu displays to false. */
-    showPledges.value = false
+    showHistory.value = false
     showDescription.value = false
     showFeedback.value = false
     showReportCards.value = false
 
     /* Handle user selection. */
     switch(_selected) {
-    case 'contributors':
-        return showPledges.value = true
+    case 'history':
+        return showHistory.value = true
     case 'description':
         return showDescription.value = true
     case 'feedback':
@@ -149,8 +149,10 @@ const loadCampaign = async () => {
     let balanceConfirmed
     let decimals
     let divisor
-    let history
+    // let history
     let info
+    let results
+    let tx
 
     campaign.value = await $fetch(`/v1/campaign/${campaignid}`)
     console.log('CAMPAIGN', campaign.value)
@@ -175,9 +177,32 @@ const loadCampaign = async () => {
         // TODO Validate address??
 
         /* Request campaign (address) history. */
-        history = await getAddressTokenHistory(campaign.value.address)
+        results = await getAddressTokenHistory(campaign.value.address)
             .catch(err => console.error(err))
-        console.log('CONTRACT HISTORY', history)
+        console.log('CONTRACT HISTORY', results)
+
+        /* Handle history. */
+        for (let i = 0; i < results.transactions.length; i++) {
+            /* Request transaction. */
+            tx = await getTransaction(results.transactions[i].tx_hash)
+            console.log('TX', tx)
+
+            history.value.push({
+                id: tx.txid,
+            })
+            continue
+
+            for (let j = 0; j < tx.vout.length; j++) {
+                const output = tx.vout[j]
+                // console.log('OUTPUT', output)
+
+                if (output.scriptPubKey.hex === scriptPubKey) {
+                    // balance += output.value_satoshi
+                    // console.log('BALANCE', balance)
+                }
+            }
+        }
+        // console.log('BALANCE (final):', balance)
 
         /* Request token balance. */
         balance = await getAddressTokenBalance(campaign.value.address)
@@ -225,12 +250,13 @@ const loadCampaign = async () => {
         // console.log('scriptPubKey', scriptPubKey)
 
         /* Request (receiver) address history. */
-        history = await getAddressHistory(campaign.value.receiver)
+        results = await getAddressHistory(campaign.value.receiver)
             .catch(err => console.error(err))
-        // console.log('HISTORY', history)
+        // console.log('HISTORY', results)
 
-        for (let i = 0; i < history.length; i++) {
-            const tx = await getTransaction(history[i].tx_hash)
+        /* Handle history. */
+        for (let i = 0; i < results.length; i++) {
+            const tx = await getTransaction(results[i].tx_hash)
             // console.log('TX', tx)
 
             for (let j = 0; j < tx.vout.length; j++) {
@@ -274,7 +300,7 @@ const loadCampaign = async () => {
 }
 
 const loadMarket = async () => {
-    usd.value = Number(await $fetch(`https://nexa.exchange/mex`))
+    usd.value = Number(await $fetch(`https://nexa.exchange/_mex`))
     // console.log('USD (mex):', usd.value)
 }
 
@@ -290,6 +316,8 @@ const init = async () => {
     isActive.value = false
     isContract.value = true // FOR DEV ONLY
     isLoading.value = true
+
+    history.value = []
 
     /* Load campaign. */
     loadCampaign() // NOTE: This is non-blocking.
@@ -440,13 +468,17 @@ onMounted(() => {
 
                 <div class="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-4">
                     <div>
-                        <CampaignMenu class="" @tabbed="toggleMenu" :contributors="contributors" :supporters="supporters" />
+                        <CampaignMenu
+                            class=""
+                            @tabbed="toggleMenu"
+                            :history="history"
+                            :supporters="supporters"
+                        />
 
                         <CampaignDescription v-if="showDescription" :campaign="campaign" />
-                        <CampaignPledges v-if="showPledges" :contributors="contributors" :usd="usd" />
+                        <CampaignHistory v-if="showHistory" :history="history" :usd="usd" />
                         <CampaignFeedback v-if="showFeedback" :supporters="supporters" />
                         <CampaignReportCards v-if="showReportCards" />
-
                     </div>
                 </div>
             </div>

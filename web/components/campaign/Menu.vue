@@ -2,28 +2,29 @@
 /* Define properties. */
 // https://vuejs.org/guide/components/props.html#props-declaration
 const props = defineProps({
-    contributors: Array,
+    history: Array,
     supporters: Array,
 })
 
-const numContributors = computed(() => {
-    /* Validate contributors. */
-    if (!props.contributors) return 0
+const numHistory = computed(() => {
+    /* Validate history. */
+    if (!props.history) return 0
 
-    /* Initialize contributors. */
-    let numContributors = 0
+    /* Initialize history. */
+    let numHistory = 0
 
-    /* Handle contributors. */
-    props.contributors.forEach(_contributor => {
+    /* Handle history. */
+    props.history.forEach(_transaction => {
+        numHistory++
         // NOTE: We filter out donation under 1 satoshi
 // FIXME Big integer literals are not available in the configured target environment ("es2019")
-        // if (_contributor.pledgeAmount.gt(10000000000n)) {
-        //     contributors.push(_contributor)
+        // if (_transaction.pledgeAmount.gt(10000000000n)) {
+        //     history.push(_transaction)
         // }
     })
 
-    /* Return count of contributors. */
-    return numContributors
+    /* Return count of history. */
+    return numHistory
 })
 
 const numSupporters = computed(() => {
@@ -63,9 +64,9 @@ const numSupporters = computed(() => {
                 aria-controls="tab-panel-reviews"
                 role="tab"
                 type="button"
-                @click="$emit('tabbed', 'contributors')"
+                @click="$emit('tabbed', 'history')"
             >
-                PLEDGES <small>({{numContributors}})</small>
+                HISTORY <small>({{numHistory}})</small>
             </button>
 
             <button

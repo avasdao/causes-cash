@@ -31,7 +31,7 @@ let campaignGoalIdx = 0 // FIXME: FOR DEV ONLY
 let usd
 
 const updateMarket = async () => {
-    usd = Number(await $fetch(`https://nexa.exchange/mex`))
+    usd = Number(await $fetch(`https://nexa.exchange/_mex`))
     console.log('USD (mex):', usd)
 }
 

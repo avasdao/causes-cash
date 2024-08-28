@@ -2,18 +2,17 @@
 /* Import modules. */
 import { ethers } from 'ethers'
 import makeBlockie from 'ethereum-blockies-base64'
-
 import {
-    hexToBin,
-} from '@nexajs/utils'
+    derivePublicKeyCompressed,
+    ripemd160,
+    sha256,
+} from '@nexajs/crypto'
+import { hexToBin } from '@nexajs/utils'
 
 /* Import library to manage bitcoin cash data structures. */
 import {
     CashAddressType,
     encodeCashAddress,
-    instantiateSha256,
-    instantiateSecp256k1,
-    instantiateRipemd160,
 } from '@bitauth/libauth'
 
 /* Import components. */
@@ -215,11 +214,6 @@ const initWallet = async () => {
     // bchAddress.value = bitcore.Address(pubkey).toString()
     // console.log('ADDRESS (Bitcoin Cash):', bchAddress.value)
 
-    /* Instantiate Libauth crypto interfaces. */
-    const secp256k1 = await instantiateSecp256k1()
-    const sha256 = await instantiateSha256()
-    const ripemd160 = await instantiateRipemd160()
-
     /* Generate signature hash and entropy. */
     const signatureHash = ethers.utils.id(seed)
     const signatureEntropy = ethers.BigNumber.from(signatureHash)
@@ -234,15 +228,14 @@ const initWallet = async () => {
         privateKeyEntropy.toHexString().substring(2))
 
     /* Derive the corresponding public key. */
-    const publicKey = secp256k1.derivePublicKeyCompressed(privateKey)
+    const publicKey = derivePublicKeyCompressed(privateKey)
 
     /* Hash the public key hash according to the P2PKH scheme. */
-    const publicKeyHash = ripemd160.hash(sha256.hash(publicKey))
+    const publicKeyHash = ripemd160(sha256(publicKey))
 
     /* Encode the public key hash into a P2PKH cash address. */
     bchAddress.value = encodeCashAddress(
             'bitcoincash', CashAddressType.P2PKH, publicKeyHash)
-    // const legacyAddress = encodeBase58Address(sha256, 'p2pkh', publicKeyHash);
 
     /* Initialize monitor. */
     // initElectrumMonitor() // bch.imaginary.cash

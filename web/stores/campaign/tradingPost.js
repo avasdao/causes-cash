@@ -1,35 +1,25 @@
-/* Import (test) modules. */
+/* Import modules. */
 import { v4 as uuidv4 } from 'uuid'
 
 import { encodeAddress } from '@nexajs/address'
-
 import {
     ripemd160,
     sha256,
 } from '@nexajs/crypto'
-
-/* Import library modules. */
 import { getCoins } from '@nexajs/purse'
-
-/* Import (individual) modules. */
 import {
     encodeDataPush,
     encodeNullData,
     OP,
 } from '@nexajs/script'
-
 import {
     getTokens,
     sendToken,
 } from '@nexajs/token'
-
 import {
     binToHex,
     hexToBin,
 } from '@nexajs/utils'
-
-/* Libauth helpers. */
-import { instantiateSecp256k1 } from '@bitauth/libauth'
 
 /* Initialize stores. */
 import { useWalletStore } from '@/stores/wallet'
@@ -37,13 +27,6 @@ const Wallet = useWalletStore()
 
 /* Initialize TradingPost (v2). */
 const TRADING_POST_HEX = '6c6c6c6c00c7517f7c76010087636d00677f7501207f756852cd517f7c76010087636d00677f7501207f756888030051147c7e51cd8851cc767b950210279652cd517f7c76010087636d00677f77517f7c76010087636d00677f7581686878a16900c7517f7c76010087636d00677f77517f7c76010087636d00677f758168689f6300cd01217f76517f6e7c817f7700c701217f76517f6e7c817f775979557988557978886d6d6d6d6d687b950210279602220278a16353cc78a2690300511452797e53cd7888756855c478a169c4788ca26353cd517f7c76010087636d00677f7501207f756881009d68c49c6354cd517f7c76010087636d00677f7501207f756881009d686d'
-
-let secp256k1
-
-;(async () => {
-    /* Instantiate Libauth crypto interfaces. */
-    secp256k1 = await instantiateSecp256k1()
-})()
 
 export default async (_scriptArgs, _amount) => {
     console.log('TRADING POST (script args):', _scriptArgs)

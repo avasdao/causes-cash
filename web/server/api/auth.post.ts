@@ -8,8 +8,6 @@ import {
     hexToBin,
 } from '@nexajs/utils'
 
-import { instantiateSecp256k1 } from '@bitauth/libauth'
-
 /* Initialize databases. */
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/logs`)
 const profilesDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/profiles`)
@@ -36,7 +34,6 @@ const getProfile = async (
     let profile
     let publicKey
     let response
-    let secp256k1
     let session
     let sessionid
     let signature
@@ -47,9 +44,6 @@ const getProfile = async (
     publicKey = hexToBin(_publicKey)
     signature = hexToBin(_signature)
     timestamp = _timestamp
-
-    // Instantiate the Secp256k1 interface.
-    secp256k1 = await instantiateSecp256k1()
 
     /* Set unit separator. */
     unitSeparator = '1f'
@@ -104,7 +98,7 @@ const getProfile = async (
 
     messageHash = hexToBin(`${timestamp}${unitSeparator}${challenge}`)
 
-    success = secp256k1.verifySignatureSchnorr(signature, publicKey, messageHash)
+    success = verifySignatureSchnorr(signature, publicKey, messageHash)
     // console.log('AUTH VERIFICATION SUCCESS', success)
 
     /* Verify challenge. */

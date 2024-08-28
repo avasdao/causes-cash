@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "24.1.18",
+  "version": "24.8.28",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@bitauth/libauth": "1.19.1",
-    "@pinia/nuxt": "0.4.7",
+    "@pinia/nuxt": "0.5.3",
     "dompurify": "3.0.0",
     "ethereum-blockies-base64": "1.0.2",
     "ethers": "5.7.2",
@@ -22,8 +22,8 @@
     "moment": "2.29.4",
     "nexajs": "23.12.29",
     "numeral": "2.0.6",
-    "nuxt": "3.2.2",
-    "pinia": "2.0.32",
+    "nuxt": "3.12.4",
+    "pinia": "2.2.2",
     "pouchdb": "8.0.1",
     "qr-scanner": "1.4.2",
     "qrcode": "1.5.1",

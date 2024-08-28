@@ -3,7 +3,10 @@ import PouchDB from 'pouchdb'
 
 import { encodeAddress } from '@nexajs/address'
 
-import { OP } from '@nexajs/script'
+import {
+    encodeDataPush,
+    OP,
+} from '@nexajs/script'
 
 import {
     binToHex,
@@ -12,25 +15,9 @@ import {
 
 import { Wallet } from '@nexajs/wallet'
 
-/* Libauth helpers. */
-import {
-    encodeDataPush,
-    instantiateRipemd160,
-    instantiateSecp256k1,
-} from '@bitauth/libauth'
-
 /* Set (test) constants. */
 const BASE_PAYOUT_SATOSHIS = 100000000n
 const DUST_LIMIT = 546n
-
-let ripemd160
-let secp256k1
-
-;(async () => {
-    /* Instantiate Libauth crypto interfaces. */
-    ripemd160 = await instantiateRipemd160()
-    secp256k1 = await instantiateSecp256k1()
-})()
 
 /* Initialize databases. */
 const payoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/payouts`)

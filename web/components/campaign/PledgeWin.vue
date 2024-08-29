@@ -190,7 +190,7 @@ watch(() => props.isPledging, async (_status) => {
         winHandler.value = 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
     }
 
-    wallet.value = new Wallet(Profile.mnemonic)
+    wallet.value = await new Wallet.init(Profile.mnemonic)
     console.log('WALLET', wallet.value)
 
     depositAddress.value = wallet.value.address

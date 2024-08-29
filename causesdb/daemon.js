@@ -93,7 +93,7 @@ const doWork = async (
 // return
 
     try {
-        wallet = new Wallet(process.env.MNEMONIC)
+        wallet = await new Wallet.init(process.env.MNEMONIC)
         // console.log('WALLET', wallet)
 
         address = wallet.address

@@ -97,7 +97,7 @@ const doWork = async (
         // console.log('WALLET', wallet)
 
         address = wallet.address
-        console.log('ADDRESS', address)
+        console.log('ADDRESS:', address)
 
         response = await wallet.send(_tokenid, source.sender, BigInt(reward))
         console.log('Send UTXO (response):', response)

@@ -8,12 +8,14 @@ import {
 
 /* Initialize stores. */
 import { useProfileStore } from '@/stores/profile'
-const Profile = useProfileStore()
 
 export default async function () {
     // console.log('ADDRESS', this.address)
     // console.log('PUBLIC KEY', this.wallet.publicKey)
     // console.log('SESSION', Profile.session)
+
+    /* Initialize profile. */
+    const Profile = useProfileStore()
 
     /* Initialize locals. */
     let messageHash

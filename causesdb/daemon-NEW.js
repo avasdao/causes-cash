@@ -7,7 +7,7 @@ import { Wallet } from '@nexajs/wallet'
 // import mintSubgroup from './src/mintSubgroup.js'
 // import signMessage from './src/signMessage.js'
 
-console.log('Starting NexaJS Daemon...')
+console.log('Starting Causes Cash Daemon...')
 
 const IS_LIVE_BROADCAST = false
 const ACTIVE_ACCOUNT_IDX = 3

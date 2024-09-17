@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
             console.error(err)
             error = err
         })
-    // console.log('SESSION', session)
+    console.log('SESSION', session)
 
     /* Validate session id. */
     if (!session) {

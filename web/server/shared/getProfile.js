@@ -1,24 +1,9 @@
-/* Import modules. */
-import moment from 'moment'
-import PouchDB from 'pouchdb'
-import { v4 as uuidv4 } from 'uuid'
-
-import {
-    binToHex,
-    hexToBin,
-} from '@nexajs/utils'
-
-/* Initialize databases. */
-const logsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
-const profilesDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/profiles`)
-const sessionsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/sessions`)
-
 /**
  * Get Profile
  *
  * Retrieves the full profile of the (authorized) public key.
  */
-const getProfile = async (
+export default async (
     _sessionid,
     _publicKey,
     _signature,
@@ -163,35 +148,3 @@ const getProfile = async (
     /* Return profile. */
     return profile
 }
-
-
-export default defineEventHandler(async (event) => {
-    /* Initialize locals. */
-    let body
-    let publicKey
-    let sessionid
-    let signature
-    let timestamp
-
-    /* Set (request) body. */
-    body = await readBody(event)
-
-    /* Validate body. */
-    if (!body) {
-        return `Authorization FAILED!`
-    }
-
-    /* Set profile parameters. */
-    sessionid = body.sessionid
-    publicKey = body.publicKey
-    signature = body.signature
-    timestamp = body.timestamp
-
-    // NOTE: Returns a promise.
-    return getProfile(
-        sessionid,
-        publicKey,
-        signature,
-        timestamp,
-    )
-})

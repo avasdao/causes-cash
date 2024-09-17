@@ -41,7 +41,7 @@ export default async function () {
     signature = signMessageHashSchnorr(this.wallet.privateKey, messageHash)
 
     /* Make authorization request. */
-    response = await $fetch('/api/auth', {
+    response = await $fetch('/api/session', {
         method: 'POST',
         body: {
             sessionid: Profile.sessionid,

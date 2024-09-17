@@ -27,7 +27,7 @@ const System = useSystemStore()
 
 <template>
     <main class="max-w-7xl mx-auto px-3 py-5 flex flex-col gap-4">
-        <!-- <AuthWin /> -->
+        <AuthWin />
 
         <div class="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
             <div>

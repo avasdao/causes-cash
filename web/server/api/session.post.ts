@@ -1,65 +1,33 @@
 /* Import modules. */
+import { ethers } from 'ethers'
 import moment from 'moment'
 import { sha256 } from '@nexajs/crypto'
 import PouchDB from 'pouchdb'
 import { v4 as uuidv4 } from 'uuid'
 
+import {
+    binToHex,
+    hexToBin,
+} from '@nexajs/utils'
+
+/* Import (local) modules. */
+import createSession from '../shared/createSession.js'
+import getProfile from '../shared/getProfile.js'
+
 /* Initialize databases. */
+const logsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
+const profilesDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.AVASDAODB_ENDPOINT}/profiles`)
 const sessionsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/sessions`)
 
 /**
- * Create Session
+ * Manage Session
  *
- * @returns session
+ * TBD...
  */
-const createSession = async (_source, _headers) => {
-    /* Initialize locals. */
-    let challenge
-    let headers
-    let logDetails
-    let session
-
-    /* Set headers. */
-    headers = _headers
-    // console.log('HEADERS', headers)
-
-    /* Build log details. */
-    logDetails = {
-        source: _source,
-        i18n: headers['accept-language'],
-        client: headers['user-agent'],
-        referer: headers['referer'],
-        host: headers['host'],
-        ip: headers['x-real-ip'],
-        ip_fwd: headers['x-forwarded-for'],
-    }
-    // console.info('LOG (api):', logDetails)
-
-    /* Create new challenge (string). */
-    // NOTE: Used for (optional) secure authentication.
-    challenge = sha256(uuidv4()).slice(0, 40)
-
-    /* Create (new) session. */
-    session = {
-        _id: uuidv4(),
-        ...logDetails,
-        challenge,
-        isActive: true,
-        createdAt: moment().unix(),
-        expiresAt: moment().add(1, 'days').unix(),
-        killedAt: moment().add(7, 'days').unix(),
-    }
-
-    /* Return session. */
-    return session
-}
-
 const manageSession = async () => {
     const monitor = setInterval(() => {
         console.log('monitoring sessions...')
     }, 60000)
-
-
 }
 
 export default defineEventHandler(async (event) => {
@@ -69,6 +37,16 @@ export default defineEventHandler(async (event) => {
     let session
     let sessionid
     let success
+
+    let publicKey
+    let signature
+    let timestamp
+
+    let message
+    let profile
+    let result
+    let sig
+    let profileid
 
     /* Set (request) body. */
     body = await readBody(event)
@@ -83,6 +61,104 @@ export default defineEventHandler(async (event) => {
         .get(sessionid)
         .catch(err => console.error(err))
     // console.log('SESSION (api):', session)
+
+
+
+
+
+    /* Set profile parameters. */
+    sessionid = body.sessionid
+    publicKey = body.publicKey
+    signature = body.signature
+    timestamp = body.timestamp
+
+    message = body.message
+    sig = body.sig
+
+    // console.log({
+    //     sessionid,
+    //     message,
+    //     sig,
+    // })
+
+    /* Request session. */
+    session = await sessionsDb
+        .get(sessionid)
+        .catch(err => console.error(err))
+    console.log('SESSION', session)
+
+    if (!session) {
+        return `Authorization FAILED!`
+    }
+
+    // FIXME Validate TIME!!
+    if (!message.includes('Causes Cash Authorization')) {
+        return `Authorization FAILED!`
+    }
+
+    profileid = ethers.verifyMessage(message, sig)
+    console.log('VERIF (profileid)', profileid)
+
+    /* Verify profile id. */
+    if (typeof profileid === 'undefined') {
+        return `Authorization FAILED!`
+    }
+
+    /* Add profile (address + signature) to session. */
+    session = {
+        profileid,
+        auth: sig,
+        ...session,
+        updatedAt: moment().unix(),
+    }
+
+    /* Request session update. */
+    result = await sessionsDb
+        .put(session)
+        .catch(err => console.error(err))
+    // console.log('SESSION UPDATE:', result)
+
+    /* Request profile. */
+    profile = await profilesDb
+        .get(profileid)
+        .catch(err => console.error(err))
+    // console.log('PROFILE:', profile)
+
+    if (!profile) {
+        /* Create NEW profile. */
+        profile = {
+            _id: profileid,
+            nickname: null,
+            auths: 1,
+            createdAt: moment().unix(),
+        }
+    } else {
+        profile = {
+            ...profile,
+            auths: profile.auths + 1,
+            updatedAt: moment().unix(),
+        }
+    }
+
+    /* Request profile update. */
+    result = await profilesDb
+        .put(profile)
+        .catch(err => console.error(err))
+    // console.log('PROFILE UPDATE:', result)
+
+    /* Return profile. */
+    return profile
+
+    return getProfile(
+        sessionid,
+        publicKey,
+        signature,
+        timestamp,
+    )
+
+
+
+
 
     /* Validate session. */
     if (!session?.isActive) {

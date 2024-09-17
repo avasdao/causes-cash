@@ -18,7 +18,7 @@ import {
 } from '@nexajs/utils'
 
 /* Initialize databases. */
-const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/campaigns`)
+const campaignsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/campaigns`)
 
 const CACHE_REFRESH_DELAY = 30 // default: 30 seconds
 const MARKET_UPDATE_DELAY = 30000 // default: 30 seconds

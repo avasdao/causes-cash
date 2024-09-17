@@ -2,7 +2,7 @@
 import PouchDB from 'pouchdb'
 
 /* Initialize databases. */
-const systemDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@127.0.0.1:5984/system`)
+const systemDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/system`)
 
 export default defineEventHandler(async (event) => {
     let response

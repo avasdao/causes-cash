@@ -10,6 +10,7 @@ const sessionsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.en
 export default defineEventHandler(async (event) => {
     /* Initialize locals. */
     let adminid
+    let admins
     let body
     let data
     let error
@@ -17,6 +18,12 @@ export default defineEventHandler(async (event) => {
     let response
     let session
     let sessionid
+
+// FOR DEV PURPOSES ONLY
+admins = [
+    '0xE2266286745fEFdDeC42D895abC85a33710a2078',
+]
+console.log('ADMINS', admins)
 
     /* Set (request) body. */
     body = await readBody(event)
@@ -54,21 +61,22 @@ export default defineEventHandler(async (event) => {
     // NOTE: This is typically a (33-byte) public key.
     adminid = session?.profileid
     console.log('ADMINID', adminid)
-    console.log('ADMINS', process.env.ADMINS)
 
-    if (!process.env.ADMINS?.includes(adminid)) {
+    /* Validate administrator. */
+    if (!admins || !admins.includes(adminid)) {
         return {
             error: 'User is NOT authorized to access this data.',
             adminid,
         }
     }
 
+    /* Request ALL campaigns. */
     response = await campaignsDb
         .allDocs({
             include_docs: true,
         })
         .catch(err => console.error(err))
-    // console.log('RESPONSE', response)
+    console.log('CAMPAIGNS (allDocs)', response)
 
     /* Validate response. */
     if (response) {

@@ -4,7 +4,7 @@ import PouchDB from 'pouchdb'
 import { v4 as uuidv4 } from 'uuid'
 
 /* Initialize databases. */
-const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
+const logsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
 
 export default defineEventHandler(async (event) => {
     let headers

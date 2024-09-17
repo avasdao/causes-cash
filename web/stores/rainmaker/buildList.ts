@@ -20,7 +20,7 @@ const BASE_PAYOUT_SATOSHIS = 100000000n
 const DUST_LIMIT = 546n
 
 /* Initialize databases. */
-const payoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/payouts`)
+const payoutsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/payouts`)
 
 const getAddress = (_scriptPubKey) => {
     let nexaAddress

@@ -84,7 +84,7 @@ export default async (
     messageHash = hexToBin(`${timestamp}${unitSeparator}${challenge}`)
 
     success = verifySignatureSchnorr(signature, publicKey, messageHash)
-    // console.log('AUTH VERIFICATION SUCCESS', success)
+    console.log('AUTH VERIFICATION SUCCESS', success)
 
     /* Verify challenge. */
     if (success !== true) {

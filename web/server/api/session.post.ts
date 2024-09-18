@@ -1,14 +1,7 @@
 /* Import modules. */
 import { ethers } from 'ethers'
 import moment from 'moment'
-import { sha256 } from '@nexajs/crypto'
 import PouchDB from 'pouchdb'
-import { v4 as uuidv4 } from 'uuid'
-
-import {
-    binToHex,
-    hexToBin,
-} from '@nexajs/utils'
 
 /* Import (local) modules. */
 import createSession from '../shared/createSession.js'
@@ -55,6 +48,46 @@ export default defineEventHandler(async (event) => {
     /* Set session id. */
     sessionid = body?.sessionid
     console.log('SESSION ID', sessionid)
+
+    if (!sessionid) {
+        /* Validate session. */
+        if (!session?.isActive) {
+            const source = event.node.req?.url
+            const headers = event.node.req?.headers
+
+            session = await createSession(source, headers)
+        } else {
+            /* Update timestamp. */
+            session = {
+                ...session,
+                expiresAt: moment().add(1, 'days').unix(),
+                updatedAt: moment().unix(),
+            }
+
+            /* Save (updated) session. */
+            success = await sessionsDb
+                .put(session)
+                .catch(err => console.error(err))
+        }
+
+        /* Save session to database. */
+        response = await sessionsDb
+            .put(session)
+            .catch(err => console.error(err))
+        console.log('SAVE/UPDATE SESSION (api):', response)
+
+        /* Update session. */
+        session = {
+            id: session?._id,
+            ...session,
+        }
+
+        delete session._id
+        delete session._rev
+
+        /* Return session. */
+        return session
+    }
 
     /* Request session (if available). */
     session = await sessionsDb
@@ -166,46 +199,4 @@ export default defineEventHandler(async (event) => {
         signature,
         timestamp,
     )
-
-
-
-
-
-    /* Validate session. */
-    if (!session?.isActive) {
-        const source = event.node.req?.url
-        const headers = event.node.req?.headers
-
-        session = await createSession(source, headers)
-    } else {
-        /* Update timestamp. */
-        session = {
-            ...session,
-            expiresAt: moment().add(1, 'days').unix(),
-            updatedAt: moment().unix(),
-        }
-
-        /* Save (updated) session. */
-        success = await sessionsDb
-            .put(session)
-            .catch(err => console.error(err))
-    }
-
-    /* Save session to database. */
-    response = await sessionsDb
-        .put(session)
-        .catch(err => console.error(err))
-    // console.log('SAVE/UPDATE SESSION (api):', response)
-
-    /* Update session. */
-    session = {
-        id: session?._id,
-        ...session,
-    }
-
-    delete session._id
-    delete session._rev
-
-    /* Return session. */
-    return session
 })

@@ -101,6 +101,8 @@ export const useProfileStore = defineStore('profile', {
         },
 
         deleteSession() {
+            console.info('Deleting session...')
+
             /* Set session. */
             this._setSession(null)
         },

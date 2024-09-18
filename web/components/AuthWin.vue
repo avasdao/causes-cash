@@ -120,9 +120,19 @@ const init = async () => {
     /* Validate client. */
     if (process.client) {
         console.log('AUTH WIN (Profile.session):', Profile.session)
+        console.log('SESSION ID', Profile.sessionid)
 
         /* Initialize locals. */
         let session
+
+        /* Validate authorization elements. */
+        if (Profile.session && !Profile.sessionid) {
+            /* Delete (browser) session. */
+            Profile.deleteSession()
+
+            /* Re-call initialization. */
+            return setTimeout(init, POLLING_FREQUENCY)
+        }
 
         /* Validate authorization elements. */
         // NOTE: Reset legacy session details.

@@ -118,9 +118,11 @@ export default async () => {
     // return console.error('SCRIPTS', scripts, scripts.length)
 
     qualified = scripts.filter(_script => {
-        return (_script?.scriptHash?.toLowerCase() === '103012fb192c7dc29fab0bf1126dfca42106a574') &&
-            (_script?.hex.slice(-6) === 'c71340') &&
-            (_script?.group === 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x')
+        if (_script && _script.scriptHash && _script.hex && _script.group) {
+            return (_script.scriptHash.toLowerCase() === '103012fb192c7dc29fab0bf1126dfca42106a574') &&
+                   (_script.hex.slice(-6) === 'c71340') &&
+                   (_script.group === 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x')
+        }
     })
     // return console.log('QUALIFIED', qualified, qualified.length)
 

@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
 
     /* Set session id. */
     sessionid = body?.sessionid
-    // console.log('SESSION ID', sessionid)
+    console.log('SESSION ID', sessionid)
 
     /* Request session (if available). */
     session = await sessionsDb
@@ -91,38 +91,49 @@ export default defineEventHandler(async (event) => {
         return `Authorization FAILED!`
     }
 
-    // FIXME Validate TIME!!
-    if (!message.includes('Causes Cash Authorization')) {
-        return `Authorization FAILED!`
-    }
+    /* Validate message. */
+    if (message) {
+        // FIXME Validate TIME!!
+        if (!message.includes('Causes Cash Authorization')) {
+            return `Authorization FAILED!`
+        }
 
-    profileid = ethers.verifyMessage(message, sig)
-    console.log('VERIF (profileid)', profileid)
+        profileid = ethers.verifyMessage(message, sig)
+        console.log('VERIF (profileid)', profileid)
 
-    /* Verify profile id. */
-    if (typeof profileid === 'undefined') {
-        return `Authorization FAILED!`
-    }
+        /* Verify profile id. */
+        if (typeof profileid === 'undefined') {
+            return `Authorization FAILED!`
+        }
 
-    /* Add profile (address + signature) to session. */
-    session = {
-        profileid,
-        auth: sig,
-        ...session,
-        updatedAt: moment().unix(),
+        /* Add profile (address + signature) to session. */
+        session = {
+            profileid,
+            auth: sig,
+            ...session,
+            updatedAt: moment().unix(),
+        }
+    } else {
+        /* Add profile (address + signature) to session. */
+        session = {
+            ...session,
+            updatedAt: moment().unix(),
+        }
     }
 
     /* Request session update. */
     result = await sessionsDb
         .put(session)
         .catch(err => console.error(err))
-    // console.log('SESSION UPDATE:', result)
+    console.log('SESSION UPDATE:', result)
 
-    /* Request profile. */
-    profile = await profilesDb
-        .get(profileid)
-        .catch(err => console.error(err))
-    // console.log('PROFILE:', profile)
+    if (profileid) {
+        /* Request profile. */
+        profile = await profilesDb
+            .get(profileid)
+            .catch(err => console.error(err))
+        // console.log('PROFILE:', profile)
+    }
 
     if (!profile) {
         /* Create NEW profile. */

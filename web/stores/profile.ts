@@ -65,13 +65,19 @@ export const useProfileStore = defineStore('profile', {
     },
 
     actions: {
+        /**
+         * Initialize
+         *
+         * Setup a new or existing Profile session.
+         */
         async init() {
-            // console.log('EXISTING SESSION', this.session)
+            console.log('EXISTING SESSION', this.session)
 
             /* Initialize locals. */
             let session
 
             /* Validate authorization elements. */
+            // FIXME Validate ALL required params.
             // NOTE: Reset legacy session details.
             if (this.sessionid && !this.challenge) {
                 /* Delete (browser) session. */
@@ -88,7 +94,7 @@ export const useProfileStore = defineStore('profile', {
                     sessionid: this.sessionid,
                 },
             })
-            // console.log('SESSION', session)
+            console.log('SESSION', session)
 
             /* Save session. */
             this.saveSession(session)

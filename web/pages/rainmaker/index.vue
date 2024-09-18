@@ -77,7 +77,7 @@ onMounted(() => {
     <main class="">
         <header>
             <h1 class="text-5xl font-medium text-gray-600">
-                Nexican Rainmaker ☔
+                Rainmaker ☔
             </h1>
 
             <h2 class="pl-1 text-xl font-medium">
@@ -205,7 +205,8 @@ onMounted(() => {
                     class="px-3 hover:bg-amber-200"
                 >
                     <div class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                        <div class="flex items-center truncate">
+                        campaign.id <pre>{{ campaign }}</pre>
+                        <div v-if="campaign.id" class="flex items-center truncate">
                             <img
                                 class="h-16 w-auto lg:h-20 rounded-full object-cover"
                                 :src="makeBlockie(campaign.id)"

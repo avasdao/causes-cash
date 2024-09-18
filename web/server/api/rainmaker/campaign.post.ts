@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
             console.error(err)
             error = err
         })
-    console.log('RESPONSE', response)
+    // console.log('RESPONSE', response)
 
 
     /* Return response. */

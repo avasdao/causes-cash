@@ -54,12 +54,12 @@ export default defineEventHandler(async (event) => {
         email,
         createdAt: moment().unix(),
     }
-    console.log(logPkg)
+    // console.log(logPkg)
 
     response = await logsDb
         .put(logPkg)
         .catch(err => console.error(err))
-    console.log('RESPONSE', response)
+    // console.log('RESPONSE', response)
 
     if (!cookie) {
         return `Authorization FAILED!`

@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
             include_docs: true,
         })
         .catch(err => console.error(err))
-    console.log('RESPONSE', response)
+    // console.log('RESPONSE', response)
 
     pkg = {}
 
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
 
         pkg.createdAt = moment().unix()
     }
-    console.log('DASHBOARD PKG', pkg)
+    // console.log('DASHBOARD PKG', pkg)
 
     /* Return response. */
     return pkg

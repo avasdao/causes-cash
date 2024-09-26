@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// FOR DEV PURPOSE ONLY
+import MetanetHistory from './metanet-causes-history.js'
+
 definePageMeta({
     layout: 'admin',
 })
@@ -18,10 +21,9 @@ const route = useRoute()
 const campaignid = route.params.campaignid
 // console.log('Campaign ID:', campaignid)
 
-// onMounted(() => {
-//     console.log('Mounted!')
-//     // Now it's safe to perform setup operations.
-// })
+onMounted(() => {
+    console.log('HISTORY', MetanetHistory)
+})
 
 // onBeforeUnmount(() => {
 //     console.log('Before Unmount!')

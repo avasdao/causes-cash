@@ -53,7 +53,7 @@ onMounted(() => {
             <ul v-if="vending" role="list" class="grid grid-cols-1 gap-x-6 gap-y-3 lg:grid-cols-3 xl:gap-x-8">
 
                 <li v-for="campaign of vending.campaigns" :key="campaign.campaignid" class="flex flex-col justify-between overflow-hidden rounded-xl border border-gray-200 shadow">
-                    <div class="px-3 py-2 flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-800">
+                    <NuxtLink :to="'/admin/vending/' + campaign.campaignid" class="px-3 py-2 flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-800">
                         <img
                             src="https://tailwindui.com/img/logos/48x48/tuple.svg"
                             alt="Tuple"
@@ -77,7 +77,7 @@ onMounted(() => {
                                 Rate: {{campaign.rate}}
                             </span>
                         </div>
-                    </div>
+                    </NuxtLink>
                 </li>
 
             </ul>

@@ -3,11 +3,11 @@
 import { ref } from 'vue'
 
 /* Import components. */
-import Dashboard from './manage/Dashboard'
-import Edit from './manage/Edit'
-import Feedback from './manage/Feedback'
-import Notifications from './manage/Notifications'
-import Reports from './manage/Reports'
+import Dashboard from './dashboard'
+import Edit from './edit'
+import Feedback from './feedback'
+import Notifications from './notifications'
+import Reports from './reports'
 
 definePageMeta({
     middleware: [

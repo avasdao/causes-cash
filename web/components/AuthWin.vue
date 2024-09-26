@@ -127,6 +127,8 @@ const init = async () => {
 
         /* Validate authorization elements. */
         if (Profile.session && !Profile.sessionid) {
+            console.error('BUG: Resetting session ID!')
+
             /* Delete (browser) session. */
             Profile.deleteSession()
 
@@ -137,6 +139,8 @@ const init = async () => {
         /* Validate authorization elements. */
         // NOTE: Reset legacy session details.
         if (Profile.sessionid && !Profile.challenge) {
+            console.error('LEGACY: Resetting session challenge!')
+
             /* Delete (browser) session. */
             Profile.deleteSession()
 
@@ -225,7 +229,7 @@ Requested on ${moment().format('LLLL')}`
 
     // Converting it to a Signature object provides more
     // flexibility, such as using it as a struct
-    const sig = ethers.Signature.from(rawSig);
+    const sig = ethers.Signature.from(rawSig)
     console.log('sig', sig)
     // Signature { r: "0xa617d0558818c7a479d5063987981b59d6e619332ef52249be8243572ef10868", s: "0x07e381afe644d9bb56b213f6e08374c893db308ac1a5ae2bf8b33bcddcb0f76a", yParity: 0, networkV: null }
 
@@ -251,6 +255,8 @@ const signout = () => {
 
 onMounted(() => {
     init()
+    // NOTE: Make sure we have SESSION ID.
+    // setTimeout(init, 1000)
 })
 
 // onBeforeUnmount(() => {
@@ -265,17 +271,19 @@ onMounted(() => {
             You are signed in
         </h2>
 
-        <NuxtLink :to="'https://explorer.nexa.org/address/' + Profile.session.profileid" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
-            NexID
+        <NuxtLink v-if="Profile.session.profileid" :to="'https://nexa.sh/address/' + Profile.session.profileid" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
+            <h2 class="text-xl font-bold tracking-widest">
+                MetaNet Address
+            </h2>
             {{Profile.session.profileid}}
         </NuxtLink>
 
-        <NuxtLink :to="'https://explorer.nexa.org/address/' + Wallet.address" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
+        <NuxtLink v-if="Wallet.address" :to="'https://explorer.nexa.org/address/' + Wallet.address" target="_blank" class="text-sm font-medium text-blue-500 hover:text-blue-400">
             Wallet
             {{Wallet.address}}
         </NuxtLink>
 
-        <small class="text-sm font-medium">
+        <small v-if="Wallet.entropy" class="text-sm font-medium">
             Entropy {{Wallet.entropy}}
         </small>
 

@@ -80,6 +80,8 @@ export const useProfileStore = defineStore('profile', {
             // FIXME Validate ALL required params.
             // NOTE: Reset legacy session details.
             if (this.sessionid && !this.challenge) {
+                console.error('LEGACY: Resetting session challenge!')
+
                 /* Delete (browser) session. */
                 this.deleteSession()
 

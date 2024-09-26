@@ -5,10 +5,10 @@ import PouchDB from 'pouchdb'
 
 /* Import (local) modules. */
 import createSession from '../shared/createSession.js'
-import getProfile from '../shared/getProfile.js'
+// import getProfile from '../shared/getProfile.js'
 
 /* Initialize databases. */
-const logsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
+// const logsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
 const profilesDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.AVASDAODB_ENDPOINT}/profiles`)
 const sessionsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/sessions`)
 
@@ -160,43 +160,66 @@ export default defineEventHandler(async (event) => {
         .catch(err => console.error(err))
     console.log('SESSION UPDATE:', result)
 
+    /* Validate profile ID. */
     if (profileid) {
         /* Request profile. */
         profile = await profilesDb
             .get(profileid)
             .catch(err => console.error(err))
         // console.log('PROFILE:', profile)
+
+        /* Validate profile. */
+        if (!profile) {
+            /* Create NEW profile. */
+            profile = {
+                _id: profileid,
+                nickname: null,
+                auths: 1,
+                createdAt: moment().unix(),
+            }
+        } else {
+            profile = {
+                ...profile,
+                auths: profile.auths + 1,
+                updatedAt: moment().unix(),
+            }
+        }
+
+        /* Request profile update. */
+        result = await profilesDb
+            .put(profile)
+            .catch(err => console.error(err))
+        console.log('PROFILE UPDATE:', result)
     }
 
-    if (!profile) {
-        /* Create NEW profile. */
+    if (profile) {
+        /* Sanitize to profile. */
         profile = {
-            _id: profileid,
-            nickname: null,
-            auths: 1,
-            createdAt: moment().unix(),
-        }
-    } else {
-        profile = {
+            id: profile._id,
             ...profile,
-            auths: profile.auths + 1,
-            updatedAt: moment().unix(),
         }
+        delete profile._id
+        delete profile._rev
+
+        /* Return profile. */
+        return profile
+    } else {
+        /* Sanitize to session. */
+        session = {
+            id: session._id,
+            ...session,
+        }
+        delete session._id
+        delete session._rev
+
+        /* Return session. */
+        return session
     }
 
-    /* Request profile update. */
-    result = await profilesDb
-        .put(profile)
-        .catch(err => console.error(err))
-    // console.log('PROFILE UPDATE:', result)
-
-    /* Return profile. */
-    return profile
-
-    return getProfile(
-        sessionid,
-        publicKey,
-        signature,
-        timestamp,
-    )
+    // return getProfile(
+    //     sessionid,
+    //     publicKey,
+    //     signature,
+    //     timestamp,
+    // )
 })

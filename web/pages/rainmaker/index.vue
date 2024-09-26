@@ -1,7 +1,6 @@
 <script setup lang="ts">
 /* Import modules. */
 import makeBlockie from 'ethereum-blockies-base64'
-// import numeral from 'numeral'
 
 definePageMeta({
     layout: 'admin',
@@ -86,11 +85,11 @@ onMounted(() => {
         </header>
 
         <fieldset class="mt-5">
-            <legend class="pl-5 text-xs font-medium tracking-widest text-gray-400 uppercase">
+            <legend class="pl-3 text-xs font-medium tracking-widest text-gray-400 uppercase">
                 Choose a Manager
             </legend>
 
-            <div class="mt-1 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
+            <div class="mt-3 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
                 <!-- Active: "border-indigo-600 ring-2 ring-indigo-600", Not Active: "border-gray-300" -->
                 <label class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none">
                     <input type="radio" name="project-type" value="Newsletter" class="sr-only" aria-labelledby="project-type-0-label" aria-describedby="project-type-0-description-0 project-type-0-description-1" />
@@ -117,7 +116,7 @@ onMounted(() => {
                 Active: "border", Not Active: "border-2"
                 Checked: "border-indigo-600", Not Checked: "border-transparent"
             -->
-                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true"></span>
+                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent" aria-hidden="true"></span>
                 </label>
 
                 <!-- Active: "border-indigo-600 ring-2 ring-indigo-600", Not Active: "border-gray-300" -->
@@ -149,7 +148,7 @@ onMounted(() => {
                 Active: "border", Not Active: "border-2"
                 Checked: "border-indigo-600", Not Checked: "border-transparent"
             -->
-                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true"></span>
+                    <span class="pointer-events-none absolute -inset-px rounded-lg border border-indigo-600" aria-hidden="true"></span>
                 </label>
 
                 <!-- Active: "border-indigo-600 ring-2 ring-indigo-600", Not Active: "border-gray-300" -->
@@ -178,7 +177,7 @@ onMounted(() => {
                 Active: "border", Not Active: "border-2"
                 Checked: "border-indigo-600", Not Checked: "border-transparent"
             -->
-                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true"></span>
+                    <span class="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent" aria-hidden="true"></span>
                 </label>
             </div>
         </fieldset>

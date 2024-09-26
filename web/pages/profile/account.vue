@@ -9,12 +9,6 @@ import {
 } from '@nexajs/crypto'
 import { hexToBin } from '@nexajs/utils'
 
-/* Import library to manage bitcoin cash data structures. */
-import {
-    CashAddressType,
-    encodeCashAddress,
-} from '@bitauth/libauth'
-
 /* Import components. */
 import Transfer from './transfer'
 
@@ -234,8 +228,8 @@ const initWallet = async () => {
     const publicKeyHash = ripemd160(sha256(publicKey))
 
     /* Encode the public key hash into a P2PKH cash address. */
-    bchAddress.value = encodeCashAddress(
-            'bitcoincash', CashAddressType.P2PKH, publicKeyHash)
+    // bchAddress.value = encodeCashAddress(
+    //         'bitcoincash', CashAddressType.P2PKH, publicKeyHash)
 
     /* Initialize monitor. */
     // initElectrumMonitor() // bch.imaginary.cash

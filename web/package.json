@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "24.9.25",
+  "version": "24.9.26",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -10,7 +10,6 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@bitauth/libauth": "1.19.1",
     "@pinia/nuxt": "0.5.3",
     "dompurify": "3.0.0",
     "ethereum-blockies-base64": "1.0.2",

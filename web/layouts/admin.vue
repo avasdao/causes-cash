@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/* Import modules. */
+import makeBlockie from 'ethereum-blockies-base64'
+
 useHead({
     title: 'Admin — Causes Cash',
     meta: [
@@ -462,7 +465,7 @@ onMounted(() => {
                         <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
                             <span class="sr-only">View notifications</span>
 
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <svg class="h-8 w-auto" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
@@ -479,9 +482,9 @@ onMounted(() => {
                             <button @click="isShowingProfileMenu = !isShowingProfileMenu" type="button" class="-m-1.5 flex items-center p-1.5" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                 <span class="sr-only">Open user menu</span>
                                 <img
-                                    class="h-8 w-8 rounded-full bg-gray-50"
-                                    src="https://i.ibb.co/BCr9zDX/image.png"
-                                    alt=""
+                                    class="h-10 w-auto rounded-full bg-gray-50"
+                                    :src="makeBlockie(Wallet.address || 'guest')"
+                                    :alt="Wallet.address || 'guest'"
                                 />
 
                                 <span class="hidden lg:flex lg:items-center">

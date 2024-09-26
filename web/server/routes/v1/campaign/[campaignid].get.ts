@@ -2,20 +2,75 @@
 import moment from 'moment'
 import numeral from 'numeral'
 import PouchDB from 'pouchdb'
+import { decodeAddress } from '@nexajs/address'
+import { binToHex } from '@nexajs/utils'
 
-import {
-    decodeAddress,
-} from '@nexajs/address'
+/* Set (REST) API endpoints. */
+const ROSTRUM_ENDPOINT = 'https://nexa.sh/v1/rostrum'
 
-import {
-    getAddressBalance,
-    getAddressHistory,
-    getTransaction,
-} from '@nexajs/rostrum'
+/* Set constants. */
+const ROSTRUM_METHOD = 'POST'
 
-import {
-    binToHex,
-} from '@nexajs/utils'
+/* Initialize globals. */
+let body
+let response
+
+const headers = new Headers()
+headers.append('Content-Type', 'application/json')
+
+const getAddressBalance = async (_address) => {
+    body = JSON.stringify({
+        request: 'blockchain.address.get_balance',
+        params: _address,
+    })
+
+    // NOTE: Native `fetch` requires Node v21+.
+    response = await fetch(ROSTRUM_ENDPOINT, {
+        method: ROSTRUM_METHOD,
+        headers,
+        body,
+    }).catch(err => console.error(err))
+    response = await response.json()
+    // console.log('RESPONSE', response)
+
+    return response
+}
+
+const getAddressHistory = async (_address) => {
+    body = JSON.stringify({
+        request: 'blockchain.address.get_history',
+        params: _address,
+    })
+
+    // NOTE: Native `fetch` requires Node v21+.
+    response = await fetch(ROSTRUM_ENDPOINT, {
+        method: ROSTRUM_METHOD,
+        headers,
+        body,
+    }).catch(err => console.error(err))
+    response = await response.json()
+    // console.log('RESPONSE', response)
+
+    return response
+}
+
+const getTransaction = async (_id) => {
+    body = JSON.stringify({
+        request: 'blockchain.transaction.get',
+        params: [_id, true],
+    })
+
+    // NOTE: Native `fetch` requires Node v21+.
+    response = await fetch(ROSTRUM_ENDPOINT, {
+        method: ROSTRUM_METHOD,
+        headers,
+        body,
+    }).catch(err => console.error(err))
+    response = await response.json()
+    // console.log('RESPONSE', response)
+
+    return response
+}
 
 /* Initialize databases. */
 const campaignsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/campaigns`)
@@ -31,7 +86,12 @@ let campaignGoalIdx = 0 // FIXME: FOR DEV ONLY
 let usd
 
 const updateMarket = async () => {
-    usd = Number(await $fetch(`https://nexa.exchange/_mex`))
+    let response
+
+    response = await $fetch(`https://telr.exchange/v1/ticker/price/NEXA`)
+        .catch(err => console.error(err))
+
+    usd = Number(response) * 1000000
     console.log('USD (mex):', usd)
 }
 

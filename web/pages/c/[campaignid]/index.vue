@@ -300,7 +300,12 @@ const loadCampaign = async () => {
 }
 
 const loadMarket = async () => {
-    usd.value = Number(await $fetch(`https://nexa.exchange/_mex`))
+    let response
+
+    response = await $fetch(`https://telr.exchange/v1/ticker/price/NEXA`)
+        .catch(err => console.error(err))
+
+    usd.value = Number(response) * 1000000
     // console.log('USD (mex):', usd.value)
 }
 

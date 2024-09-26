@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "24.8.28",
+  "version": "24.9.25",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -20,7 +20,7 @@
     "js-confetti": "0.12.0",
     "jsdom": "21.1.0",
     "moment": "2.29.4",
-    "nexajs": "24.8.16",
+    "nexajs": "24.9.24",
     "numeral": "2.0.6",
     "nuxt": "3.12.4",
     "pinia": "2.2.2",
@@ -29,7 +29,7 @@
     "qrcode": "1.5.1",
     "scrypt-js": "3.0.1",
     "showdown": "2.1.0",
-    "uuid": "9.0.0"
+    "uuid": "10.0.0"
   },
   "devDependencies": {
     "@kevinmarrec/nuxt-pwa": "0.17.0",

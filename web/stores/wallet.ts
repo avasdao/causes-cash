@@ -200,51 +200,6 @@ export const useWalletStore = defineStore('wallet', {
             return this.wallet
         },
 
-        // getAddress(_accountIdx) {
-        //     return this.wallet.getAddress(_accountIdx)
-        // },
-
-        // async groupTokens() {
-        //     /* Validate tokens. */
-        //     if (!this.tokens) {
-        //         return []
-        //     }
-
-        //     /* Initialize (group) tokens. */
-        //     const tokens = {}
-
-        //     for (let i = 0; i < this.tokens.length; i++) {
-        //         const token = this.tokens[i]
-        //         // console.log('TOKEN (grouped):', token)
-
-        //         // console.log('DETAILS', this.assets[token.tokenid])
-        //         if (!tokens[token.tokenid]) {
-        //             let tokenidHex
-        //             let ticker
-
-        //             tokenidHex = this.assets[token.tokenid]?.token_id_hex
-
-        //             if (tokenidHex) {
-        //                 ticker = await $fetch(`https://nexa.exchange/v1/ticker/quote/${tokenidHex}`)
-        //                     .catch(err => console.error(err))
-        //             }
-
-        //             tokens[token.tokenid] = {
-        //                 name: this.assets[token.tokenid]?.name || 'Unknown Asset',
-        //                 decimals: this.assets[token.tokenid]?.decimal_places || 0,
-        //                 iconUrl: this.assets[token.tokenid]?.iconUrl || '',
-        //                 tokens: token.tokens,
-        //                 tokenidHex,
-        //                 ticker,
-        //             }
-        //         } else {
-        //             tokens[token.tokenid].tokens += token.tokens
-        //         }
-        //     }
-
-        //     return tokens
-        // },
-
         destroy() {
             /* Reset wallet. */
             this._entropy = null

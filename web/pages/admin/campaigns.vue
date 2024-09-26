@@ -117,7 +117,7 @@ onMounted(() => {
                         </span>
                     </div>
 
-                    <NuxtLink v-if="campaign.address" :to="'https://nexa.exchange/address/' + campaign.address" target="_blank" class="group flex justify-center gap-x-4 py-3 bg-sky-300 rounded-lg shadow hover:bg-sky-200">
+                    <NuxtLink v-if="campaign.address" :to="'https://telr.exchange/address/' + campaign.address" target="_blank" class="group flex justify-center gap-x-4 py-3 bg-sky-300 rounded-lg shadow hover:bg-sky-200">
                         <span class="text-sky-700 font-medium text-xl group-hover:text-sky-900">
                             Open Address Details
                         </span>

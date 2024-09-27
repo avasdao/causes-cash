@@ -124,6 +124,8 @@ const doWork = async (
         wallet = await Wallet.init(process.env.MNEMONIC)
         // console.log('WALLET', wallet)
 
+        sleep(TRANSACTION_DELAY) // 5-second pause
+
         address = wallet.address
         console.log('ADDRESS', address)
 

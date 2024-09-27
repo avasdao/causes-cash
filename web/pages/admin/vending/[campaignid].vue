@@ -14,15 +14,32 @@ useHead({
 })
 
 /* Initialize stores. */
+import { useProfileStore } from '@/stores/profile'
 import { useSystemStore } from '@/stores/system'
+const Profile = useProfileStore()
 const System = useSystemStore()
 
 const route = useRoute()
 const campaignid = route.params.campaignid
 // console.log('Campaign ID:', campaignid)
 
+const campaign = ref(null)
+
+const init = async () => {
+    campaign.value = await $fetch('/api/admin/vendingDetail', {
+        method: 'POST',
+        body: {
+            sessionid: Profile.sessionid,
+            campaignid,
+        }
+    }).catch(err => console.error(err))
+    console.log('CAMPAIGN', campaign.value)
+}
+
 onMounted(() => {
     console.log('HISTORY', MetanetHistory)
+
+    init()
 })
 
 // onBeforeUnmount(() => {
@@ -45,8 +62,6 @@ onMounted(() => {
             Run Audit
         </button>
 
-        <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id eius voluptatem minus natus at eveniet dolorum eos mollitia, maxime animi excepturi harum omnis illum odit recusandae pariatur! Unde, explicabo molestias.
-        </p>
+        <pre>{{ campaign }}</pre>
     </main>
 </template>

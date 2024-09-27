@@ -13,10 +13,10 @@ export default defineEventHandler(async (event) => {
     let adminid
     let admins
     let body
-    let data
-    let doc
-    let error
-    let pkg
+    let campaign
+    let campaignDetail
+    let campaignid
+    let payouts
     let response
     let session
     let sessionid
@@ -29,10 +29,13 @@ console.log('ADMINS', admins)
 
     /* Set (request) body. */
     body = await readBody(event)
-    console.log('VENDINGS (body):', body)
+    console.log('VENDING DETAILS (body):', body)
 
     sessionid = body?.sessionid
     console.log('SESSION ID', sessionid)
+
+    campaignid = body?.campaignid
+    console.log('CAMPAIGN ID', campaignid)
 
     /* Validate session id. */
     if (!sessionid || typeof sessionid === 'undefined') {
@@ -72,61 +75,51 @@ console.log('ADMINS', admins)
         }
     }
 
+    /* Initialize response handler. */
+    response = {}
+
     /* Request ALL vending. */
-    response = await vendingDb
-        .allDocs({
-            include_docs: true,
-        })
+    campaign = await vendingDb.get(campaignid)
         .catch(err => console.error(err))
-    console.log('CAMPAIGNS', response)
+    console.log('CAMPAIGN', campaign)
 
-    /* Validate response. */
-    if (response) {
-        if (!data) {
-            data = {}
-        }
+    if (campaign) {
+        /* Sanitize campaign. */
+        delete campaign._id
+        delete campaign._rev
 
-        data.campaigns = response.rows.map(_entry => {
-            /* Set document. */
-            doc = _entry.doc
-
-            /* Sanitize document. */
-            delete doc._id
-            delete doc._rev
-
-            /* Return document. */
-            return doc
-        })
+        /* Set (campaign) response. */
+        response.campaign = campaign
     }
 
-    response = await vendingPayoutsDb
-        .query('api/byCreation', {
-            include_docs: true,
-            limit: 10,
-            descending: true,
-        })
-        .catch(err => console.error(err))
-    console.log('PAYOUTS', response)
+    // response = await vendingPayoutsDb
+    //     .query('api/byCreation', {
+    //         include_docs: true,
+    //         limit: 10,
+    //         descending: true,
+    //     })
+    //     .catch(err => console.error(err))
+    // console.log('PAYOUTS', response)
 
-    /* Validate response. */
-    if (response) {
-        if (!data) {
-            data = {}
-        }
+    // /* Validate response. */
+    // if (response) {
+    //     if (!data) {
+    //         data = {}
+    //     }
 
-        data.payouts = response.rows.map(_entry => {
-            /* Set document. */
-            doc = _entry.doc
+    //     data.payouts = response.rows.map(_entry => {
+    //         /* Set document. */
+    //         doc = _entry.doc
 
-            /* Sanitize document. */
-            delete doc._id
-            delete doc._rev
+    //         /* Sanitize document. */
+    //         delete doc._id
+    //         delete doc._rev
 
-            /* Return document. */
-            return doc
-        })
-    }
+    //         /* Return document. */
+    //         return doc
+    //     })
+    // }
 
     /* Return response. */
-    return data
+    return response
 })

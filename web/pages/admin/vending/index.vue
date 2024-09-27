@@ -28,8 +28,7 @@ const init = async () => {
         body: {
             sessionid: Profile.sessionid,
         }
-    })
-    .catch(err => console.error(err))
+    }).catch(err => console.error(err))
     console.log('VENDING', vending.value)
 }
 

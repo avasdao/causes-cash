@@ -3,15 +3,41 @@ import {
     binToHex,
     encodeAddress,
     encodeDataPush,
-    getTransaction,
+    hash160,
     hexToBin,
     OP,
-    sha256,
 } from 'nexajs'
 
-/* Libauth helpers. */
-import { instantiateRipemd160 } from '@bitauth/libauth'
-const ripemd160 = await instantiateRipemd160()
+/* Set (REST) API endpoints. */
+const ROSTRUM_ENDPOINT = 'https://nexa.sh/v1/rostrum'
+
+/* Set constants. */
+const ROSTRUM_METHOD = 'POST'
+
+/* Initialize globals. */
+let body
+let response
+
+const headers = new Headers()
+headers.append('Content-Type', 'application/json')
+
+const getTransaction = async (_id) => {
+    body = JSON.stringify({
+        request: 'blockchain.transaction.get',
+        params: [_id, true],
+    })
+
+    // NOTE: Native `fetch` requires Node v21+.
+    response = await fetch(ROSTRUM_ENDPOINT, {
+        method: ROSTRUM_METHOD,
+        headers,
+        body,
+    }).catch(err => console.error(err))
+    response = await response.json()
+    // console.log('RESPONSE', response)
+
+    return response
+}
 
 /**
  * Parse Transaction
@@ -54,7 +80,7 @@ export default async (_receiver, _txid) => {
     /* Hash the public key hash according to the P2PKH/P2PKT scheme. */
     scriptPushPubKey = encodeDataPush(publicKey)
 
-    publicKeyHash = ripemd160.hash(sha256(scriptPushPubKey))
+    publicKeyHash = hash160(scriptPushPubKey)
 
     scriptPubKey = new Uint8Array([
         OP.ZERO,

@@ -12,18 +12,47 @@ import { v4 as uuidv4 } from 'uuid'
 /* Import libraries. */
 import parseTx from './libs/parseTx.js'
 
-/* Import source. */
-import getAddressHistory from './src/getAddressHistory.js'
+/* Set (REST) API endpoints. */
+const ROSTRUM_ENDPOINT = 'https://nexa.sh/v1/rostrum'
+
+/* Set constants. */
+const ROSTRUM_METHOD = 'POST'
+
+/* Initialize globals. */
+let body
+let response
+
+const headers = new Headers()
+headers.append('Content-Type', 'application/json')
+
+const getAddressHistory = async (_address) => {
+    body = JSON.stringify({
+        request: 'blockchain.address.get_history',
+        params: _address,
+    })
+
+    // NOTE: Native `fetch` requires Node v21+.
+    response = await fetch(ROSTRUM_ENDPOINT, {
+        method: ROSTRUM_METHOD,
+        headers,
+        body,
+    }).catch(err => console.error(err))
+    response = await response.json()
+    // console.log('RESPONSE', response)
+
+    return response
+}
+
 // import getInfo from './src/getInfo.js'
 
 /* Initialize sleep. */
 const sleep = ms => new Promise(r => setTimeout(r, ms))
 
 /* Initialize databases. */
-const logsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
-const systemDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/system`)
-const vendingDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/vending`)
-const vendingPayoutsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/vending_payouts`)
+const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
+const systemDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/system`)
+const vendingDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/vending`)
+const vendingPayoutsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/vending_payouts`)
 
 console.info('Causes Cash DB is starting...')
 
@@ -184,7 +213,7 @@ const run = async () => {
     vms = results.rows.map(_row => {
         return _row.doc
     })
-    console.log('VENDING MACHINES', vms)
+    // console.log('VENDING MACHINES', vms)
 
     /* Handle each vending machine. */
     for (let i = 0; i < vms.length; i++) {
@@ -197,14 +226,12 @@ const run = async () => {
         tokenid    = vm.tokenid
         rate       = vm.rate
         receiver   = vm.receiver
+        txCount    = vm.txCount
 
         /* Request history. */
         history = await getAddressHistory(receiver)
             .catch(err => console.error(err))
         // console.log('HISTORY for', receiver, history)
-
-        /* Set transaction count. */
-        txCount = vm.txCount
 
         /* Validate transaction count. */
         if (history.length > txCount) {

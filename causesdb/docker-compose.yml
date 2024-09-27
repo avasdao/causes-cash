@@ -30,6 +30,7 @@ services:
     environment:
       - COUCHDB_USER=${COUCHDB_USER}
       - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+      - COUCHDB_ENDPOINT=${COUCHDB_ENDPOINT}
       - MNEMONIC=${MNEMONIC}
     logging: # apply better controls to Docker overlay folder
       driver: 'json-file'

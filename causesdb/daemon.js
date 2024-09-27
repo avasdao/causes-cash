@@ -182,7 +182,7 @@ const doWork = async (
             .catch(err => console.error(err))
         console.log('UPDATE (payout):', response)
 
-        await sleep(TRANSACTION_DELAY) // 5-second pause
+        // await sleep(TRANSACTION_DELAY) // 5-second pause
     }
 }
 

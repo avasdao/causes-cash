@@ -260,10 +260,11 @@ const run = async () => {
 
             /* Validate "next" VM. */
             if ((i + 1) < vms.length) {
-                await sleep(PROCESSING_DELAY) // 3-second pause
+                await sleep(PROCESSING_DELAY * 5) // 15-second pause
             }
         } else {
             console.error('ERROR! Transaction history COULD NOT be retrieved.')
+            await sleep(PROCESSING_DELAY * 20) // 60-second pause
         }
     }
 }

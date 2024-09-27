@@ -193,6 +193,7 @@ const run = async () => {
     /* Initialize locals. */
     let campaignid
     let history
+    let historyLen
     let rate
     let receiver
     let results

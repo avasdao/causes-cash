@@ -23,14 +23,14 @@ export default defineEventHandler(async (event) => {
 admins = [
     '0xE2266286745fEFdDeC42D895abC85a33710a2078',
 ]
-console.log('ADMINS', admins)
+// console.log('ADMINS', admins)
 
     /* Set (request) body. */
     body = await readBody(event)
     console.log('CAMPAIGNS (body):', body)
 
     sessionid = body?.sessionid
-    console.log('SESSION ID', sessionid)
+    // console.log('SESSION ID', sessionid)
 
     /* Validate session id. */
     if (!sessionid || typeof sessionid === 'undefined') {
@@ -47,7 +47,7 @@ console.log('ADMINS', admins)
             console.error(err)
             error = err
         })
-    console.log('SESSION', session)
+    // console.log('SESSION', session)
 
     /* Validate session id. */
     if (!session) {
@@ -60,7 +60,7 @@ console.log('ADMINS', admins)
     /* Set profile id. */
     // NOTE: This is typically a (33-byte) public key.
     adminid = session?.profileid
-    console.log('ADMINID', adminid)
+    // console.log('ADMINID', adminid)
 
     /* Validate administrator. */
     if (!admins || !admins.includes(adminid)) {
@@ -76,7 +76,7 @@ console.log('ADMINS', admins)
             include_docs: true,
         })
         .catch(err => console.error(err))
-    console.log('CAMPAIGNS (allDocs)', response)
+    // console.log('CAMPAIGNS (allDocs)', response)
 
     /* Validate response. */
     if (response) {

@@ -45,34 +45,46 @@ const missingHistory = computed(() => {
 })
 
 const runAudit = async () => {
-    const partialHistory = MetanetHistory
+    /* Initialize locals. */
+    let auditorIdx
+    let partialHistory
+    let tributes
+
+    /* Clear click handler. */
+    clicked.value = {}
+
+    partialHistory = MetanetHistory
         .slice(Number(historyStart.value), Number(historyStart.value) + BATCH_SIZE)
 
-    let auditorIdx = Number(historyStart.value)
+    auditorIdx = Number(historyStart.value)
 
     /* Reset starting index. */
     historyStart.value = Number(historyStart.value) + BATCH_SIZE
 
-    const tributes = []
+    tributes = []
 
     partialHistory.forEach(async _tx => {
-        const txHash = _tx.tx_hash
+        /* Initialize locals. */
+        let decoded
+        let pkScriptHash
+        let response
+        let source
+        let txHash
+
+        txHash = _tx.tx_hash
 
         /* Decode receiving address. */
-        const decoded = decodeAddress('nexa:nqtsq5g5k99c8530p4a0znzph6rckj6rfw456e3kqefv60lu')
+        decoded = decodeAddress('nexa:nqtsq5g5k99c8530p4a0znzph6rckj6rfw456e3kqefv60lu')
 
         /* Set public key script hash. */
-        const pkScriptHash = binToHex(decoded.hash)
+        pkScriptHash = binToHex(decoded.hash)
 
         /* Parse source info. */
-        const source = await Wallet.parseTx(pkScriptHash, txHash)
+        source = await Wallet.parseTx(pkScriptHash, txHash)
         // console.log('SOURCE', source, pkScriptHash, txHash)
 
         /* Validate source. */
         if (source) {
-            /* Initialize locals. */
-            let response
-
             /* Request vending detail. */
             response = await $fetch('/api/admin/auditor', {
                 method: 'POST',
@@ -116,6 +128,11 @@ const completeVending = async (_tx) => {
     let response
     let satoshis
 
+    /* Validate mnemonic. */
+    if (!mnemonic.value) {
+        return alert('Oops! You forgot to give me a mnemonic for the Wallet.')
+    }
+
     /* Set (clicked) flag. */
     clicked.value[_tx.idx] = true
 
@@ -124,11 +141,6 @@ const completeVending = async (_tx) => {
     satoshis = _tx.satoshis
 
     receiver = _tx.sender
-
-    /* Validate mnemonic. */
-    if (!mnemonic.value) {
-        return alert('Oops! You forgot to give me a mnemonic for the Wallet.')
-    }
 
     /* Request vending detail. */
     response = await $fetch('/api/admin/vendingDetail', {

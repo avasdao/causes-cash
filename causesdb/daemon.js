@@ -6,6 +6,7 @@ import {
     binToHex,
     decodeAddress,
 } from 'nexajs'
+import { sleep } from '@nexajs/utils'
 import { Wallet } from '@nexajs/wallet'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -45,9 +46,6 @@ const getAddressHistory = async (_address) => {
 
 // import getInfo from './src/getInfo.js'
 
-/* Initialize sleep. */
-const sleep = ms => new Promise(r => setTimeout(r, ms))
-
 /* Initialize databases. */
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/logs`)
 const systemDb = new PouchDB(`http://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/system`)
@@ -59,7 +57,8 @@ console.info('Causes Cash DB is starting...')
 // const AVAS_TOKEN_ID = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000'
 // const AVAS_TOKEN_GROUP = 'nexa:tptlgmqhvmwqppajq7kduxenwt5ljzcccln8ysn9wdzde540vcqqqcra40x0x'
 const AVAS_TOKEN_DECIMALS = 8 // TODO: Pull from `getInfo` dynamically
-
+const TRANSACTION_DELAY = 5000
+const PROCESSING_DELAY = 3000
 
 /**
  * Do Work
@@ -180,6 +179,8 @@ const doWork = async (
             .put(payout)
             .catch(err => console.error(err))
         console.log('UPDATE (payout):', response)
+
+        await sleep(TRANSACTION_DELAY) // 5-second pause
     }
 }
 
@@ -233,8 +234,11 @@ const run = async () => {
             .catch(err => console.error(err))
         // console.log('HISTORY for', receiver, history)
 
+        historyLen = history.length
+        console.log('HISTORY LENGTH', historyLen, 'vs', txCount)
+
         /* Validate transaction count. */
-        if (history.length > txCount) {
+        if (historyLen > txCount) {
             /* Do work! */
             await doWork(
                 vmid,
@@ -251,7 +255,7 @@ const run = async () => {
 
         /* Validate "next" VM. */
         if ((i + 1) < vms.length) {
-            await sleep(3000) // 3-second pause
+            await sleep(PROCESSING_DELAY) // 3-second pause
         }
     }
 }
@@ -278,5 +282,5 @@ while (true) {
         // console.log('UPDATED', response)
     }
 
-    await sleep(3000) // 3-second pause
+    await sleep(PROCESSING_DELAY) // 3-second pause
 }

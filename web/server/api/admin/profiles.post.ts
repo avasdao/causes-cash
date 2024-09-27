@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     console.log('PROFILES (body):', body)
 
     sessionid = body?.sessionid
-    console.log('SESSION ID', sessionid)
+    // console.log('SESSION ID', sessionid)
 
     /* Validate session id. */
     if (!sessionid || typeof sessionid === 'undefined') {
@@ -49,8 +49,8 @@ export default defineEventHandler(async (event) => {
     /* Set profile id. */
     // NOTE: This is typically a (33-byte) public key.
     adminid = session.profileid
-    console.log('ADMINID', adminid)
-    console.log('ADMINS', process.env.ADMINS)
+    // console.log('ADMINID', adminid)
+    // console.log('ADMINS', process.env.ADMINS)
 
     if (!process.env.ADMINS?.includes(adminid)) {
         return {
@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
         // txs: [], // NOTE: Will hold txidems.
         createdAt: moment().unix(),
     }
-    console.log('PROFILE PKG', pkg)
+    // console.log('PROFILE PKG', pkg)
 
     /* Return response. */
     return pkg

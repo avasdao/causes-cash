@@ -24,16 +24,31 @@ const campaignid = route.params.campaignid
 // console.log('Campaign ID:', campaignid)
 
 const campaign = ref(null)
+const history = ref(null)
+
+const runAudit = async () => {
+    history.value = MetanetHistory.slice(0, 10)
+}
 
 const init = async () => {
-    campaign.value = await $fetch('/api/admin/vendingDetail', {
+    /* Initialize locals. */
+    let response
+
+    /* Request vending detail. */
+    response = await $fetch('/api/admin/vendingDetail', {
         method: 'POST',
         body: {
             sessionid: Profile.sessionid,
             campaignid,
         }
     }).catch(err => console.error(err))
-    console.log('CAMPAIGN', campaign.value)
+
+    /* Validate response. */
+    if (response) {
+        /* Set campaign. */
+        campaign.value = response.campaign
+        console.log('CAMPAIGN', campaign.value)
+    }
 }
 
 onMounted(() => {
@@ -54,14 +69,97 @@ onMounted(() => {
             Campaign Details
         </h1>
 
-        <h3 class="text-xl text-gray-400 font-bold tracking-widest">
+        <h3 class="-mt-3 pl-2 text-base text-gray-400 font-bold tracking-widest">
             {{campaignid}}
         </h3>
 
-        <button class="w-fit px-5 py-2 text-xl font-medium text-amber-100 bg-amber-600 border border-amber-700 rounded-xl shadow hover:bg-amber-500">
+        <button @click="runAudit" class="w-fit px-5 py-2 text-xl font-medium text-lime-100 bg-lime-600 border-2 border-lime-400 rounded-lg shadow hover:bg-lime-500">
             Run Audit
         </button>
 
-        <pre>{{ campaign }}</pre>
+        <section v-if="campaign">
+            <div class="mt-3 grid grid-cols-3 gap-x-4 gap-y-2">
+                <span class="text-right font-medium">
+                    Status
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.isActive ? 'Active' : 'Not Active'}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Receiver
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.receiver}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Goal
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.goal}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Asset ID
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.tokenid}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Token ID
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.groupid}}
+                </span>
+
+                <span class="text-right font-medium">
+                    # Tokens
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.tokens}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Rate
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.rate}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Paid
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.paid}}
+                </span>
+
+                <span class="text-right font-medium">
+                    # Transactions
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.txCount}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Created
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.createdAt}}
+                </span>
+
+                <span class="text-right font-medium">
+                    Last Update
+                </span>
+                <span class="col-span-2 truncate">
+                    {{campaign.updatedAt}}
+                </span>
+            </div>
+        </section>
+
+        <!-- <pre>{{ campaign }}</pre> -->
+
+        <pre>{{ history }}</pre>
     </main>
 </template>

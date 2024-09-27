@@ -29,10 +29,12 @@ const campaignid = route.params.campaignid
 // console.log('Campaign ID:', campaignid)
 
 const campaign = ref(null)
+const clicked = ref(null)
 const history = ref(null)
-const historyStart = ref(0)
+const historyStart = ref(null)
+const mnemonic = ref(null)
 
-const BATCH_SIZE = 50
+const BATCH_SIZE = 100
 
 const missingHistory = computed(() => {
     if (!history.value) {
@@ -64,7 +66,7 @@ const runAudit = async () => {
 
         /* Parse source info. */
         const source = await Wallet.parseTx(pkScriptHash, txHash)
-        console.log('SOURCE', source, pkScriptHash, txHash)
+        // console.log('SOURCE', source, pkScriptHash, txHash)
 
         /* Validate source. */
         if (source) {
@@ -79,7 +81,7 @@ const runAudit = async () => {
                     txidem: source.txidem,
                 }
             }).catch(err => console.error(err))
-            console.log('RESPONSE (auditor)', response)
+            // console.log('RESPONSE (auditor)', response)
 
             if (!response) {
                 /* Add source to tributes. */
@@ -99,17 +101,69 @@ const runAudit = async () => {
             /* Increment auditor index. */
             auditorIdx++
         }
-        console.log('TRIBUTES', tributes)
+        // console.log('TRIBUTES', tributes)
 
         /* Update history (display). */
         history.value = [ ...tributes ]
-        console.log('HISTORY LENGTH', history.value.length)
+        // console.log('HISTORY LENGTH', history.value.length)
     })
+}
+
+const completeVending = async (_tx) => {
+    /* Initialize locals. */
+    let tokenid
+    let receiver
+    let response
+    let satoshis
+
+    /* Set (clicked) flag. */
+    clicked.value[_tx.idx] = true
+
+    tokenid = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // $AVAS
+
+    satoshis = _tx.satoshis
+
+    receiver = _tx.sender
+
+    /* Validate mnemonic. */
+    if (!mnemonic.value) {
+        return alert('Oops! You forgot to give me a mnemonic for the Wallet.')
+    }
+
+    /* Request vending detail. */
+    response = await $fetch('/api/admin/vendingDetail', {
+        method: 'POST',
+        body: {
+            sessionid: Profile.sessionid,
+            campaignid,
+            mnemonic: mnemonic.value,
+            tokenid,
+            receiver,
+            satoshis,
+            txidem: _tx.txidem,
+            rate: campaign.value.rate,
+        }
+    }).catch(err => console.error(err))
+    console.log('RESPONSE (vending)', response)
+
+    /* Validate response. */
+    // if (response) {
+    //     /* Set campaign. */
+    //     campaign.value = response.campaign
+    //     // console.log('CAMPAIGN', campaign.value)
+    // }
 }
 
 const init = async () => {
     /* Initialize locals. */
     let response
+
+    /* Initialize history value. */
+    // TODO Save to Profile
+    historyStart.value = 0
+
+    /* Initialize button click handler. */
+    clicked.value = {}
 
     /* Request vending detail. */
     response = await $fetch('/api/admin/vendingDetail', {
@@ -124,7 +178,7 @@ const init = async () => {
     if (response) {
         /* Set campaign. */
         campaign.value = response.campaign
-        console.log('CAMPAIGN', campaign.value)
+        // console.log('CAMPAIGN', campaign.value)
     }
 }
 
@@ -158,7 +212,15 @@ onMounted(() => {
             <input
                 v-model="historyStart"
                 type="numeric"
-                class="w-16 h-full px-5 bg-amber-50 border border-amber-200 rounded-lg shadow"
+                placeholder="0"
+                class="w-20 h-full px-5 bg-amber-50 border border-amber-200 rounded-lg shadow"
+            />
+
+            <input
+                v-model="mnemonic"
+                type="text"
+                placeholder="correct horse battery staple"
+                class="w-64 h-full px-5 bg-amber-50 border border-amber-200 rounded-lg shadow"
             />
 
         </section>
@@ -271,6 +333,16 @@ onMounted(() => {
                 <div class="-mt-10 text-right text-xl font-bold">
                     #{{tx.idx}}
                 </div>
+
+                <button
+                    @click="completeVending(tx)"
+                    v-if="!tx.found"
+                    class="my-5 px-5 py-3 text-2xl text-red-100 font-bold bg-red-700 border-2 border-red-900 rounded-xl shadow"
+                    :class="[ clicked[tx.idx] ? 'opacity-30' : '' ]"
+                    :disabled="clicked[tx.idx]"
+                >
+                    Complete Vending
+                </button>
             </div>
         </section>
 

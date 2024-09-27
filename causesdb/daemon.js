@@ -163,7 +163,7 @@ const doWork = async (
         payout = {
             _id: source.txidem,
             campaignid: _campaignid,
-            txid: source.txid,
+            // txid: source.txid,
             amount: source.satoshis / 100.0,
             satoshis: source.satoshis,
             payout: {

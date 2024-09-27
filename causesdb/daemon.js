@@ -232,33 +232,38 @@ const run = async () => {
         receiver   = vm.receiver
         txCount    = vm.txCount
 
-        /* Request history. */
+        /* Request (transacation) history. */
         history = await getAddressHistory(receiver)
             .catch(err => console.error(err))
         // console.log('HISTORY for', receiver, history)
 
-        historyLen = history.length
-        console.log('HISTORY LENGTH', historyLen, 'vs', txCount)
+        /* Validate (transacation) history. */
+        if (history) {
+            historyLen = history.length
+            console.log('HISTORY LENGTH', historyLen, 'vs', txCount)
 
-        /* Validate transaction count. */
-        if (historyLen > txCount) {
-            /* Do work! */
-            await doWork(
-                vmid,
-                campaignid,
-                tokenid,
-                receiver,
-                rate,
-                history,
-                txCount
-            )
+            /* Validate transaction count. */
+            if (historyLen > txCount) {
+                /* Do work! */
+                await doWork(
+                    vmid,
+                    campaignid,
+                    tokenid,
+                    receiver,
+                    rate,
+                    history,
+                    txCount
+                )
+            } else {
+                console.log(campaignid, 'is all caught up!')
+            }
+
+            /* Validate "next" VM. */
+            if ((i + 1) < vms.length) {
+                await sleep(PROCESSING_DELAY) // 3-second pause
+            }
         } else {
-            console.log(campaignid, 'is all caught up!')
-        }
-
-        /* Validate "next" VM. */
-        if ((i + 1) < vms.length) {
-            await sleep(PROCESSING_DELAY) // 3-second pause
+            console.error('ERROR! Transaction history COULD NOT be retrieved.')
         }
     }
 }

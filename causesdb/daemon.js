@@ -260,11 +260,10 @@ const run = async () => {
     }
 }
 
-/* Initialize response holder. */
-let response
-
 while (true) {
-// while (!response) {
+    /* Initialize response holder. */
+    let response
+
     // console.time('\n\n\n  Starting next run...\n\n\n')
     await run()
 

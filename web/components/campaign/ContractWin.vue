@@ -3,9 +3,6 @@
 import JSConfetti from 'js-confetti'
 import numeral from 'numeral'
 
-import {
-} from '@nexajs/rostrum'
-
 const props = defineProps({
     isLoading: Boolean,
     isExecuting: Boolean,

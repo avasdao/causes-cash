@@ -1,19 +1,11 @@
 <script setup lang="ts">
 /* Import modules. */
-import { listUnspent } from '@nexajs/address'
-
-import { sha256 } from '@nexajs/crypto'
-
-import { encodePrivateKeyWif } from '@nexajs/hdnode'
-
-import { sendCoin } from '@nexajs/purse'
-
-import { subscribeAddress } from '@nexajs/rostrum'
-
-import { Wallet } from '@nexajs/wallet'
-
 import QRCode from 'qrcode'
-
+import { listUnspent } from '@nexajs/address'
+import { sha256 } from '@nexajs/crypto'
+import { encodePrivateKeyWif } from '@nexajs/hdnode'
+import { sendCoin } from '@nexajs/purse'
+import { Wallet } from '@nexajs/wallet'
 
 const props = defineProps({
     isPledging: Boolean,
@@ -205,8 +197,8 @@ watch(() => props.isPledging, async (_status) => {
         // console.log('MY ADDRESS', myAddress)
 
         /* Start monitoring address. */
-        cleanup.value = await subscribeAddress(depositAddress.value, depositHandler)
-        console.log('CLEANUP', cleanup.value)
+        // cleanup.value = await subscribeAddress(depositAddress.value, depositHandler)
+        // console.log('CLEANUP', cleanup.value)
     } else {
         console.log('CLEANUP MONITORING', cleanup.value)
 

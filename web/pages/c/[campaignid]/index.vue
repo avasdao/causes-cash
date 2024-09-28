@@ -433,7 +433,7 @@ const copyToClipboard = () => {
 const init = async () => {
     /* Set flags. */
     isActive.value = false
-    isContract.value = true // FOR DEV ONLY
+    isContract.value = false // FOR DEV ONLY
     isLoading.value = true
 
     history.value = []

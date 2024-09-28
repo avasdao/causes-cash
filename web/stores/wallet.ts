@@ -196,7 +196,7 @@ export const useWalletStore = defineStore('wallet', {
 
             /* Handle balance updates. */
             this.wallet.on('balances', async (_assets) => {
-                console.log('Wallet Balances (onChanges):', _assets)
+                // console.log('Wallet Balances (onChanges):', _assets)
 
                 /* Close asset locally. */
 // FIXME Read ASSETS directly from library (getter).

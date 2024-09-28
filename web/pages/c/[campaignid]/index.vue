@@ -239,7 +239,7 @@ const closeContract = () => {
  * Open a side panel with options for customizing the pledge.
  */
 const makePledge = async () => {
-    return alert(`Oops! This feature is temporarily unavailable. \n\nPlease COPY the campaign address and PASTE into directly into your device's wallet.\n\nSorry for the inconvenience...`)
+    return alert(`Oops! This feature is temporarily unavailable. \n\nPlease COPY the campaign address and PASTE it directly into your device's wallet.\n\nSorry for the inconvenience...`)
     /* Set pledging flag. */
     // TODO Set to state.
     isPledging.value = true

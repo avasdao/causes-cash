@@ -1,10 +1,7 @@
 /* Import modules. */
 import moment from 'moment'
 import PouchDB from 'pouchdb'
-import {
-    ripemd160,
-    sha256,
-} from '@nexajs/crypto'
+import { hash160 } from '@nexajs/crypto'
 
 /* Initialize databases. */
 const rainmakerCampaignsDb = new PouchDB(`https://${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}@${process.env.COUCHDB_ENDPOINT}/rainmaker_campaigns`)
@@ -61,12 +58,18 @@ export default defineEventHandler(async (event) => {
 
     // TODO Validate session.
 
+    campaign = await rainmakerCampaignsDb
+        .get(campaignid)
+        .catch(err => console.error(err))
+    console.log('CAMPAIGN', campaign)
+
     /* Set profile id. */
     // NOTE: This is typically a (33-byte) public key.
-    ownerid = session.profileid
-    // console.log('OWNERID', ownerid)
+    // ownerid = session.profileid
+    ownerid = campaign.ownerid
+    console.log('OWNERID', ownerid)
 
-    receiverid = ripemd160(sha256(`${ownerid}:${address}`))
+    receiverid = hash160(`${ownerid}:${address}`)
     // console.log('RECEIVERID', receiverid)
 
     response = await rainmakerReceiversDb
@@ -105,11 +108,6 @@ export default defineEventHandler(async (event) => {
         // console.log('RESPONSE', response)
     }
 
-    campaign = await rainmakerCampaignsDb
-        .get(campaignid)
-        .catch(err => console.error(err))
-    // console.log('CAMPAIGN', campaign)
-
     receivers = campaign?.receivers
     // console.log('RECEIVERS-1', receivers)
 
@@ -131,6 +129,7 @@ export default defineEventHandler(async (event) => {
     response = await rainmakerCampaignsDb
         .put(campaign)
         .catch(err => console.error(err))
+    console.log('UPDATE CAMPAIGN', response)
 
     /* Return response. */
     return campaign

@@ -26,8 +26,9 @@ const campaignid = ref(route.params.campaignid)
 
 // const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
 // const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000' // STUDIO
-const TOKEN_ID_HEX = 'a15c9e7e68170259fd31bc26610b542625c57e13fdccb5f3e1cb7fb03a420000' // NXL
-const TOKENS_PER_RECEIVER = '1250000'
+// const TOKEN_ID_HEX = 'a15c9e7e68170259fd31bc26610b542625c57e13fdccb5f3e1cb7fb03a420000' // NXL
+const TOKEN_ID_HEX = '5f2456fa44a88c4a831a4b7d1b1f34176a29a3f28845af639eb9b1c88dd40000' // NXY
+const TOKENS_PER_RECEIVER = '55000000'
 
 const campaign = ref(null)
 const profiles = ref(null)
@@ -72,7 +73,7 @@ const airdrop = async () => {
             tokens: BigInt(profile.tokens),
         })
     })
-
+return console.log('WALLET RECEIVERS', walletReceivers)
     /* Broadcast (to profiles). */
     response = await Wallet.broadcast(walletReceivers)
         .catch(err => console.error(err))
@@ -109,8 +110,7 @@ const init = async () => {
             sessionid: Profile.sessionid,
             campaignid: campaignid.value,
         },
-    })
-    .catch(err => console.error(err))
+    }).catch(err => console.error(err))
     console.log('RAINMAKER (campaign):', campaign.value)
 
     profiles.value = []
@@ -122,8 +122,10 @@ const init = async () => {
 
     /* Set profiles. */
     Object.keys(campaign.value.receivers).forEach(_receiverid => {
+        /* Set receiver. */
         const receiver = campaign.value.receivers[_receiverid]
 
+        /* Add profile. */
         profiles.value.push({
             id: _receiverid,
             ...receiver,
@@ -169,12 +171,12 @@ onMounted(() => {
             </NuxtLink>
         </div>
 
-        <div v-if="campaign?.receivers" class="mt-6 py-5 bg-amber-50 border-2 border-amber-400 rounded-xl shadow-md">
+        <div class="mt-6 py-5 bg-amber-50 border-2 border-amber-400 rounded-xl shadow-md">
             <div class="px-3 sm:flex sm:items-center">
-                <div class="">
+                <div v-if="campaign?.receivers">
                     <h1 class="text-2xl font-semibold leading-6 text-gray-900">
                         Receivers
-                        <span class="">( {{Object.keys(campaign.receivers).length}} )</span>
+                        <span class="">( {{Object.keys(campaign.receivers || {}).length}} )</span>
                     </h1>
 
                     <p class="mt-2 text-sm text-gray-700">

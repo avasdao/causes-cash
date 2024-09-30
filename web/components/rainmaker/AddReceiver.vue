@@ -32,8 +32,7 @@ const addReceiver = async () => {
             campaignid: campaignid.value,
             address,
         },
-    })
-    .catch(err => console.error(err))
+    }).catch(err => console.error(err))
     console.log('ADD RECEIVER (response):', response)
 
     /* Reset form. */

@@ -52,44 +52,50 @@ export default defineEventHandler(async (event) => {
     ownerid = session.profileid
     // console.log('OWNERID', ownerid)
 
+    /* Validate campaign ID. */
     if (campaignid) {
         campaign = await rainmakerCampaignsDb
             .get(campaignid)
             .catch(err => console.error(err))
+        console.log('CAMPAIGN', campaign)
 
+        /* Validate campaign receivers. */
+        if (campaign.receivers !== null) {
+            let profiles
+            let receiver
+            let receiverid
+
+            /* Initialize IDs. */
+            let ids = []
+
+            Object.keys(campaign.receivers).map(_receiverid => {
+                // console.log('RECEIVER ID', _receiverid)
+
+                ids.push(_receiverid)
+            })
+            console.log('IDS??', ids)
+
+            profiles = await rainmakerReceiversDb
+                .allDocs({
+                    keys: ids,
+                    include_docs: true,
+                })
+                .catch(err => console.error(err))
+            // console.log('PROFILES-1', profiles)
+
+            /* Handle profiles. */
+            profiles.rows.forEach(_profile => {
+                console.log('PROFILE (matching):', _profile)
+
+                /* Set receiver address. */
+                campaign.receivers[_profile.id].address = _profile.doc.address
+            })
+            // console.log('PROFILES-2', profiles)
+        }
+
+        /* Sanitize campaign. */
         delete campaign._id
         delete campaign._rev
-
-        let profiles
-        let receiver
-        let receiverid
-
-        let ids = []
-
-        Object.keys(campaign.receivers).map(async _receiverid => {
-            // console.log('RECEIVER ID', _receiverid)
-
-            ids.push(_receiverid)
-
-        })
-        console.log('THIS DOES NOT WAIT!!!', ids)
-
-        profiles = await rainmakerReceiversDb
-            .allDocs({
-                keys: ids,
-                include_docs: true,
-            })
-            .catch(err => console.error(err))
-        // console.log('PROFILES-1', profiles)
-
-        /* Handle profiles. */
-        profiles.rows.forEach(_profile => {
-            console.log('PROFILE (matching):', _profile)
-
-            /* Set receiver address. */
-            campaign.receivers[_profile.id].address = _profile.doc.address
-        })
-        // console.log('PROFILES-2', profiles)
 
         /* Return campaign. */
         return campaign

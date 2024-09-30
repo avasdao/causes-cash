@@ -2,6 +2,10 @@
 /* Import modules. */
 import makeBlockie from 'ethereum-blockies-base64'
 import numeral from 'numeral'
+import {
+    decodeAddress,
+    encodeAddress,
+} from '@nexajs/address'
 
 useHead({
     title: `Campaign Manager — Causes Cash`,
@@ -27,8 +31,9 @@ const campaignid = ref(route.params.campaignid)
 // const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
 // const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000' // STUDIO
 // const TOKEN_ID_HEX = 'a15c9e7e68170259fd31bc26610b542625c57e13fdccb5f3e1cb7fb03a420000' // NXL
-const TOKEN_ID_HEX = '5f2456fa44a88c4a831a4b7d1b1f34176a29a3f28845af639eb9b1c88dd40000' // NXY
-const TOKENS_PER_RECEIVER = '55000000'
+// const TOKEN_ID_HEX = '5f2456fa44a88c4a831a4b7d1b1f34176a29a3f28845af639eb9b1c88dd40000' // NXY
+// const TOKENS_PER_RECEIVER = 55000000
+// const TOKEN_TICKER = 'NXY'
 
 const campaign = ref(null)
 const profiles = ref(null)
@@ -36,7 +41,20 @@ const txidem = ref(null)
 
 const isAddingReceiver = ref(false)
 
+/* Initialize constants. */
+const NEXA_PREFIX = 'nexa'
+
+const tokenAmount = computed(() => {
+    if (!campaign.value?.tokens || !campaign.value?.decimals) {
+        return 0
+    }
+
+    return parseInt(campaign.value?.tokens / 10**campaign.value?.decimals)
+})
+
 const airdrop = async () => {
+    console.log('CAMPAIGN', campaign.value)
+    console.log('TOKEN AMOUNT', tokenAmount.value)
     // console.log('PROFILES', profiles.value)
     if (!profiles.value) {
         return alert('NO profiles available for airdrop.')
@@ -44,9 +62,9 @@ const airdrop = async () => {
 
     const msg = `Your Rainmaker Airdrop is ready to broadcast to Nexa Mainnet. Are you sure you want to continue?
 
-        ↪ You are sending ( ${numeral((TOKENS_PER_RECEIVER * profiles.value.length)).format('0,0[.]0000')} ) $NXL
+        ↪ You are sending ( ${numeral((tokenAmount.value * profiles.value.length)).format('0,0[.]0000')} ) $${campaign.value.ticker}
         ↪ You are sending to ( ${profiles.value.length} ) wallets
-        ↪ Each wallet will receive ( ${numeral(TOKENS_PER_RECEIVER).format('0,0[.]0000')} ) $NXL
+        ↪ Each wallet will receive ( ${numeral(tokenAmount.value).format('0,0[.]0000')} ) $${campaign.value.ticker}
     `
     if (!confirm(msg)) {
         return
@@ -59,21 +77,35 @@ const airdrop = async () => {
     const walletReceivers = []
 
     Object.keys(profiles.value).forEach(_profileid => {
+        /* Initialize locals. */
+        let address
+        let decoded
+        let profile
+
         /* Set profile. */
-        const profile = profiles.value[_profileid]
+        profile = profiles.value[_profileid]
         // console.log('PROFILE', profile)
 
-        // const found = campaign.value.receivers.find(_receiver => _receiver.id === profile.id)
-        // console.log('FOUND', found)
+        /* Decode address. */
+        decoded = decodeAddress(profile.address)
+        // console.log('DECODED', decoded)
 
+        /* Encode address to Nexa (core) format. */
+        address = encodeAddress(
+            NEXA_PREFIX,
+            decoded.type,
+            decoded.hash
+        )
+
+        /* Add wallet receivers. */
         walletReceivers.push({
-            address: profile.address,
-            tokenid: TOKEN_ID_HEX, // TODO Allow auto-format conversion.
-            // tokenid: campaign.value.tokenid,
+            address,
+            // tokenid: TOKEN_ID_HEX, // TODO Allow auto-format conversion.
+            tokenid: campaign.value.tokenid,
             tokens: BigInt(profile.tokens),
         })
     })
-return console.log('WALLET RECEIVERS', walletReceivers)
+
     /* Broadcast (to profiles). */
     response = await Wallet.broadcast(walletReceivers)
         .catch(err => console.error(err))
@@ -83,6 +115,7 @@ return console.log('WALLET RECEIVERS', walletReceivers)
     txidem.value = response.result
     console.log('TXIDEM', txidem.value)
 
+    /* Validate (broadcast) transaction. */
     if (txidem.value) {
         /* Request rainmaker profile. */
         response = await $fetch('/api/rainmaker/broadcast', {
@@ -92,8 +125,7 @@ return console.log('WALLET RECEIVERS', walletReceivers)
                 // receivers,
                 txidem: txidem.value,
             },
-        })
-        .catch(err => console.error(err))
+        }).catch(err => console.error(err))
         console.log('BROADCAST (response):', response)
     }
 }
@@ -145,8 +177,8 @@ onMounted(() => {
 
 <template>
     <main class="max-w-7xl mx-auto px-3 py-5 flex flex-col gap-4">
-        <h1 class="text-5xl font-medium">
-            Campaign Manager
+        <h1 class="text-gray-600 text-4xl font-medium">
+            {{campaign?.title || 'Campaign'}} Manager
         </h1>
 
         <div class="mt-5 flex items-center justify-end gap-x-6">
@@ -161,7 +193,7 @@ onMounted(() => {
                 @click="airdrop"
                 class="rounded-2xl bg-lime-600 border-2 border-lime-800 px-5 py-3 text-xl font-semibold text-white shadow-sm hover:bg-lime-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-600"
             >
-                Start Airdrop
+                Make It RAIN
             </button>
         </div>
 

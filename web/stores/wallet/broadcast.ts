@@ -1,16 +1,10 @@
 /* Import modules. */
-import { encodeAddress } from '@nexajs/address'
+import { broadcast } from '@nexajs/provider'
+import { getCoins } from '@nexajs/purse'
+import { encodeNullData } from '@nexajs/script'
 import {
-    getCoins,
-    sendCoins,
-} from '@nexajs/purse'
-import {
-    encodeNullData,
-    OP,
-} from '@nexajs/script'
-import {
+    buildTokens,
     getTokens,
-    sendToken,
 } from '@nexajs/token'
 
 export default async function (_receivers) {
@@ -39,27 +33,28 @@ export default async function (_receivers) {
 
     coins = await getCoins(this.wallet.wif)
         .catch(err => console.error(err))
-    console.log('\n  Coins:', coins)
+    console.log('COINS', coins)
 
     tokens = await getTokens(this.wallet.wif)
         .catch(err => console.error(err))
-    console.log('\n  Tokens:', tokens)
+    console.log('TOKENS', tokens)
 
     /* Filter tokens. */
     // NOTE: Currently limited to a "single" Id.
     tokens = tokens.filter(_token => {
         return _token.tokenidHex === tokenidHex
     })
-    console.log('\n  Tokens (filtered):', tokens)
+    console.log('TOKENS (filtered):', tokens)
 
     userData = [
         'RAIN',
-        `$NXL Twitter / X Airdrop`,
+        `$NXY's 1st Airdrop`,
     ]
 
     /* Initialize hex data. */
     nullData = encodeNullData(userData)
 
+    /* Finalize receivers (w/ message). */
     receivers = [
         {
             data: nullData,
@@ -67,33 +62,20 @@ export default async function (_receivers) {
         ..._receivers,
     ]
 
-//     _receivers.forEach(_receiver => {
-//         receivers.push(        {
-//             address: _receiver.address,
-//             tokenid: tokenidHex, // TODO Allow auto-format conversion.
-//             tokens: BigInt(_receiver.tokens),
-//         },
-// )
-//     })
-
     receivers.push({
         address: this.address,
     })
-    console.log('\n  Receivers:', receivers)
-return
+    console.log('RECEIVERS', receivers)
+
     /* Send UTXO request. */
-    response = await sendToken(coins, tokens, receivers)
-    console.log('Send UTXO (response):', response)
+    response = await buildTokens(coins, tokens, receivers)
+    console.log('RAW TX', response.hex)
+// return
+    txResult = await broadcast(response.hex)
+    console.log('TX RESULT', txResult)
 
-    try {
-        txResult = JSON.parse(response)
-        console.log('TX RESULT', txResult)
-
-        if (txResult.error) {
-            console.error(txResult.error)
-        }
-    } catch (err) {
-        console.error(err)
+    if (txResult.error) {
+        console.error(txResult.error)
     }
 
     return txResult

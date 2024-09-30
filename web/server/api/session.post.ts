@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 
     /* Set (request) body. */
     body = await readBody(event)
-    // console.log('SESSIONS.POST (body):', body)
+    console.log('SESSIONS.POST (body):', body)
 
     /* Set session id. */
     sessionid = body?.sessionid
@@ -90,9 +90,9 @@ export default defineEventHandler(async (event) => {
     }
 
     /* Request session (if available). */
-    session = await sessionsDb
-        .get(sessionid)
-        .catch(err => console.error(err))
+    // session = await sessionsDb
+    //     .get(sessionid)
+    //     .catch(err => console.error(err))
     // console.log('SESSION (api):', session)
 
 

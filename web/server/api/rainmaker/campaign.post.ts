@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
     session = await sessionsDb
         .get(sessionid)
         .catch(err => console.error(err))
-    // console.log('SESSION', session)
+    console.log('SESSION', session)
 
     /* Set profile id. */
     ownerid = session.profileid
@@ -72,7 +72,6 @@ export default defineEventHandler(async (event) => {
             error = err
         })
     // console.log('RESPONSE', response)
-
 
     /* Return response. */
     return response

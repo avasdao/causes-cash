@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /* Import modules. */
 import makeBlockie from 'ethereum-blockies-base64'
+import moment from 'moment'
 
 definePageMeta({
     layout: 'admin',
@@ -16,15 +17,8 @@ useHead({
 /* Initialize stores. */
 import { useProfileStore } from '@/stores/profile'
 import { useRainmakerStore } from '@/stores/rainmaker'
-import { useSystemStore } from '@/stores/system'
-import { useWalletStore } from '@/stores/wallet'
 const Profile = useProfileStore()
 const Rainmaker = useRainmakerStore()
-const System = useSystemStore()
-const Wallet = useWalletStore()
-
-// const TOKEN_ID_HEX = '57f46c1766dc0087b207acde1b3372e9f90b18c7e67242657344dcd2af660000' // AVAS
-const TOKEN_ID_HEX = '9732745682001b06e332b6a4a0dd0fffc4837c707567f8cbfe0f6a9b12080000' // STUDIO
 
 const campaign = ref(null)
 const campaigns = ref(null)
@@ -33,7 +27,20 @@ const txidem = ref(null)
 
 const isAddingCampaign = ref(false)
 
-const TOKENS_PER_RECEIVER = 10000000
+const sortedCampaigns = computed(() => {
+    /* Validate campaigns. */
+    if (!campaigns.value) {
+        return []
+    }
+
+    /* Sort campaigns. */
+    let sorted = campaigns.value.sort((a, b) => {
+        return b.updatedAt - a.updatedAt
+    })
+
+    /* Return (sorted) campaigns. */
+    return sorted
+})
 
 const reset = () => {
     // TODO
@@ -52,8 +59,7 @@ const init = async () => {
         body: {
             sessionid: Profile.sessionid,
         },
-    })
-        .catch(err => console.error(err))
+    }).catch(err => console.error(err))
     console.log('RAINMAKER (campaigns):', response)
 
     /* Set campaigns. */
@@ -61,8 +67,10 @@ const init = async () => {
 }
 
 onMounted(() => {
+    /* Initialize Rainmaker (store). */
     Rainmaker.init()
 
+    /* Initialize campaigns. */
     init()
 })
 
@@ -194,60 +202,54 @@ onMounted(() => {
             </div>
         </div>
 
-        <section class="my-5 px-3 py-2 bg-amber-100 border-2 border-amber-300 rounded-lg shadow">
-            <h2>Select a Campaign</h2>
+        <div class="my-5 px-5 border-t border-gray-300" />
 
-            <div class="mt-3 flex flex-col gap-3">
+        <section class="mt-5">
+            <legend class="pl-3 text-xs font-medium tracking-widest text-gray-400 uppercase">
+                Select a Campaign
+            </legend>
+
+            <div class="mt-3 flex flex-col gap-6">
                 <NuxtLink
-                    v-for="campaign of campaigns" :key="campaign.id"
+                    v-for="campaign of sortedCampaigns" :key="campaign.id"
                     :to="'/rainmaker/' + campaign.id"
-                    class="px-3 hover:bg-amber-200"
+                    class="px-5 py-5 flex flex-row items-start bg-amber-50 border-2 border-amber-500 rounded-xl shadow hover:bg-amber-100"
                 >
-                    <div class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
-                        campaign.id <pre>{{ campaign }}</pre>
-                        <div v-if="campaign.id" class="flex items-center truncate">
-                            <img
-                                class="h-16 w-auto lg:h-20 rounded-full object-cover"
-                                :src="makeBlockie(campaign.id)"
-                                :alt="campaign.id"
-                            />
+                    <img
+                        class="h-16 w-auto lg:h-20 rounded-full object-cover"
+                        :src="makeBlockie(campaign.id)"
+                        :alt="campaign.id"
+                    />
 
-                            <div class="ml-4">
-                                <div class="mt-1 text-gray-500 truncate">
-                                    Campaign Id: {{campaign?.id}}
-                                </div>
+                    <section class="ml-4 flex flex-col gap-2">
+                        <h3 class="text-xl font-medium text-gray-500 tracking-tighter">
+                            {{campaign?.title}}
+                        </h3>
 
-                                <div class="mt-1 text-gray-500 truncate">
-                                    Owner Id: {{campaign?.ownerid}}
-                                </div>
-
-                                <div class="mt-1 text-gray-500 truncate">
-                                    Title: {{campaign?.title}}
-                                </div>
-
-                                <div class="mt-1 text-gray-500 truncate">
-                                    # of receivers {{Object.keys(campaign?.receivers || {}).length}}
-                                </div>
-
-                                <div class="mt-1 text-gray-500 truncate">
-                                    Completed? {{campaign?.isComplete}}
-                                </div>
-
-                                <div class="mt-1 text-gray-500 truncate">
-                                    Created {{campaign?.createdAt}}
-                                </div>
-
-                                <div class="mt-1 text-gray-500 truncate">
-                                    Updated {{campaign?.updatedAt}}
-                                </div>
-
-                                <!-- <span class="font-medium text-blue-500 hover:blue-text-400 truncate">
-                                    <pre>{{campaign}}</pre>
-                                </span> -->
-
-                            </div>
+                        <div class="text-gray-500 truncate">
+                            Campaign Id: {{campaign?.id}}
                         </div>
-                    </div>
+
+                        <div class="text-gray-500 truncate">
+                            Owner Id: {{campaign?.ownerid}}
+                        </div>
+
+                        <div class="text-gray-500 truncate">
+                            # of receivers {{Object.keys(campaign?.receivers || {}).length}}
+                        </div>
+
+                        <div class="text-gray-500 truncate">
+                            Completed? {{campaign?.isComplete}}
+                        </div>
+
+                        <div class="text-gray-500 truncate">
+                            Created {{moment.unix(campaign?.createdAt).format('llll')}}
+                        </div>
+
+                        <div v-if="campaign?.updatedAt" class="text-gray-500 truncate">
+                            Updated {{moment.unix(campaign?.updatedAt).format('llll')}}
+                        </div>
+                    </section>
                 </NuxtLink>
             </div>
         </section>

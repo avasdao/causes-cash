@@ -29,8 +29,7 @@ const addCampaign = async () => {
             title: title.value,
             tokenid: tokenid.value,
         },
-    })
-    .catch(err => console.error(err))
+    }).catch(err => console.error(err))
     console.log('ADD CAMPAIGN (response):', response)
 
     /* Clear inputs. */
@@ -134,5 +133,4 @@ const addCampaign = async () => {
             </div>
         </div>
     </div>
-
 </template>

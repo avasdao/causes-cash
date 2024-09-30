@@ -1,4 +1,6 @@
 <script setup>
+/* Import modules. */
+import { copyToClipboard } from '@nexajs/app'
 import QRCode from 'qrcode'
 
 /* Define properties. */
@@ -12,6 +14,8 @@ import { useWalletStore } from '@/stores/wallet'
 const System = useSystemStore()
 const Wallet = useWalletStore()
 
+const ADDRESS_POLLING_DELAY = 100
+
 const dataUrl = ref(null)
 const depositAmount = ref(null)
 
@@ -23,6 +27,12 @@ const isShowingCurrencyOptions = ref(false)
  * Uses BIP-21 to encode a data URI.
  */
  const updateQrCode = async () => {
+    if (!Wallet.address) {
+        return setTimeout(() => {
+            updateQrCode()
+        }, ADDRESS_POLLING_DELAY)
+    }
+
     let bip21Url
 
     /* Handle (user-defined) amount. */
@@ -38,16 +48,20 @@ const isShowingCurrencyOptions = ref(false)
     dataUrl.value = await QRCode.toDataURL(bip21Url)
 }
 
-const copyToClipboard = () => {
+const clipboardHandler = () => {
     /* Copy address to clipboard. */
-    Clipboard.copy(Wallet.address)
-
-    alert('Your address has been copied to the clipboard.')
+    if (copyToClipboard(Wallet.address)) {
+        alert(`[ ${Wallet.address} ] has been copied to the clipboard.`)
+    } else {
+        alert(`Oops! Unfortunately, something went wrong.`)
+    }
 }
 
 onMounted(() => {
     /* Update the QR code. */
     updateQrCode()
+
+    console.log('PROPS', typeof props.isFullScreen, props.isFullScreen)
 })
 
 // onBeforeUnmount(() => {
@@ -58,7 +72,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <main class="" :class="[ isFullScreen === true ? 'grid lg:grid-cols-2 gap-8' : '' ]">
+    <main class="" :class="[ props.isFullScreen === true ? 'grid lg:grid-cols-2 gap-8' : '' ]">
         <NuxtLink :to="Wallet.address">
             <section class="w-full px-3 py-2 my-5 bg-amber-500 border-2 border-amber-700 rounded-lg shadow">
                 <h2 class="text-lg sm:text-xl text-amber-700 font-medium text-center uppercase">
@@ -162,7 +176,7 @@ onMounted(() => {
 
             <div class="mb-5 flex flex-row gap-3">
                 <button
-                    @click="copyToClipboard"
+                    @click="clipboardHandler"
                     class="w-full block px-3 py-1 text-2xl font-medium bg-blue-200 border-2 border-blue-400 rounded-md shadow hover:bg-blue-300"
                 >
                     Copy

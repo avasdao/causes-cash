@@ -120,11 +120,16 @@ const displayDecimalAmount = (_token) => {
     if (_token.group === '0') {
         decimalValue = _token.satoshis * BigInt(1e4)
     } else {
-        decimalValue = _token.amount * BigInt(1e4)
+        /* Validate amount type. */
+        if (typeof _token.amount !== 'bigint') {
+            decimalValue = BigInt(0)
+        } else {
+            decimalValue = _token.amount * BigInt(1e4)
+        }
     }
 
     /* Handle UI (value) formatting. */
-    if (_token.decimal_places > 0) {
+    if (_token?.decimal_places > 0) {
         bigIntValue = decimalValue / BigInt(10**_token.decimal_places)
     } else {
         bigIntValue = decimalValue
@@ -156,11 +161,19 @@ const displayIcon = (_token) => {
     let parentid
     let tokenid
 
-    /* Set parent id. */
-    parentid = _token.token_id_hex.slice(0, 64)
+    /* Validate token. */
+    if (!_token) {
+        return null
+    }
 
-    /* Set token id. */
-    tokenid = _token.token_id_hex
+    /* Validate token ID. */
+    if (_token.token_id_hex) {
+        /* Set parent id. */
+        parentid = _token.token_id_hex.slice(0, 64)
+
+        /* Set token id. */
+        tokenid = _token.token_id_hex
+    }
 
     /* Handle icon URL. */
     if (!_token.iconUrl || _token.iconUrl === '') {
@@ -180,7 +193,7 @@ const displayIcon = (_token) => {
     }
 
     /* Return icon URL. */
-    return _token.iconUrl
+    return _token.iconUrl || null
 }
 
 const loadCollection = async () => {
@@ -189,6 +202,7 @@ const loadCollection = async () => {
     let info
     let tokenid
 
+    /* Handle wallet assets. */
     Object.keys(Wallet.assets).forEach(async _assetid => {
         console.log('ASSET ID', _assetid)
 
@@ -198,7 +212,7 @@ const loadCollection = async () => {
 
             tokenid = collectible.token_id_hex
 
-            info = await $fetch(`https://nexa.garden/_token/${tokenid}`)
+            info = await $fetch(`https://eternaldb.org/_token/${tokenid}`)
                 .catch(err => console.error(err))
             console.log('COLLETIBLE INFO', info)
         }

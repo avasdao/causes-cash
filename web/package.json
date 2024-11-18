@@ -1,6 +1,6 @@
 {
   "name": "causes-cash",
-  "version": "24.9.28",
+  "version": "24.11.17",
   "license": "MIT",
   "scripts": {
     "build": "nuxt build",
@@ -10,6 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@kevinmarrec/nuxt-pwa": "0.17.0",
+    "@nuxtjs/i18n": "8.0.0-rc.3",
+    "@nuxtjs/tailwindcss": "6.4.1",
     "@pinia/nuxt": "0.5.3",
     "dompurify": "3.0.0",
     "ethereum-blockies-base64": "1.0.2",
@@ -28,12 +31,10 @@
     "qrcode": "1.5.1",
     "scrypt-js": "3.0.1",
     "showdown": "2.1.0",
+    "typescript": "5.6.3",
     "uuid": "10.0.0"
   },
   "devDependencies": {
-    "@kevinmarrec/nuxt-pwa": "0.17.0",
-    "@nuxtjs/i18n": "8.0.0-rc.3",
-    "@nuxtjs/tailwindcss": "6.4.1",
     "@types/node": "18.14.2",
     "@types/pouchdb": "6.4.0",
     "@types/uuid": "9.0.1"
